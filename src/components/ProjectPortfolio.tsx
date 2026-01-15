@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, ArrowRight, Code2, Database, Layout, Box, Globe, Cpu, Bot } from 'lucide-react';
+import { ExternalLink, Github, ArrowRight, Code2, Database, Layout, Globe, Cpu, Bot } from 'lucide-react';
 
 
 

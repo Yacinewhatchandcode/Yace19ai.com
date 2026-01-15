@@ -1,5 +1,3 @@
-
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Activity, ArrowRight } from 'lucide-react';
 import asiremBanner from '../assets/asirem-banner.png';
