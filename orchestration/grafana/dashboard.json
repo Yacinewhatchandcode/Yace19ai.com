@@ -1,0 +1,234 @@
+{
+    "annotations": {
+        "list": []
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "fillOpacity": 80
+                    },
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green"
+                            },
+                            {
+                                "color": "yellow",
+                                "value": 0.7
+                            },
+                            {
+                                "color": "red",
+                                "value": 0.5
+                            }
+                        ]
+                    }
+                }
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 0
+            },
+            "id": 1,
+            "title": "Readiness Score",
+            "type": "gauge",
+            "targets": [
+                {
+                    "expr": "avg(orchestrator_readiness_score)",
+                    "legendFormat": "Readiness"
+                }
+            ]
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    }
+                }
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 0
+            },
+            "id": 2,
+            "title": "Consensus Time (p95)",
+            "type": "timeseries",
+            "targets": [
+                {
+                    "expr": "histogram_quantile(0.95, sum(rate(orchestrator_consensus_duration_seconds_bucket[5m])) by (le))",
+                    "legendFormat": "p95"
+                }
+            ]
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 8,
+                "x": 0,
+                "y": 8
+            },
+            "id": 3,
+            "title": "Fallback Rate",
+            "type": "stat",
+            "targets": [
+                {
+                    "expr": "sum(rate(orchestrator_fallback_total[5m])) / sum(rate(orchestrator_proposals_total[5m]))",
+                    "legendFormat": "Fallback %"
+                }
+            ]
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 8,
+                "x": 8,
+                "y": 8
+            },
+            "id": 4,
+            "title": "Pass Rate",
+            "type": "stat",
+            "targets": [
+                {
+                    "expr": "sum(rate(orchestrator_tests_passed_total[5m])) / sum(rate(orchestrator_tests_total[5m]))",
+                    "legendFormat": "Pass %"
+                }
+            ]
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 8,
+                "x": 16,
+                "y": 8
+            },
+            "id": 5,
+            "title": "Flakiness Score",
+            "type": "stat",
+            "targets": [
+                {
+                    "expr": "avg(orchestrator_test_flakiness)",
+                    "legendFormat": "Flakiness"
+                }
+            ]
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 16
+            },
+            "id": 6,
+            "title": "Agent Activity",
+            "type": "timeseries",
+            "targets": [
+                {
+                    "expr": "sum by (agent) (rate(orchestrator_agent_actions_total[5m]))",
+                    "legendFormat": "{{agent}}"
+                }
+            ]
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 24
+            },
+            "id": 7,
+            "title": "MCP Latency (p95)",
+            "type": "timeseries",
+            "targets": [
+                {
+                    "expr": "histogram_quantile(0.95, sum(rate(mcp_request_duration_seconds_bucket[5m])) by (le))",
+                    "legendFormat": "p95"
+                }
+            ]
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "prometheus"
+            },
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 24
+            },
+            "id": 8,
+            "title": "Votes Distribution",
+            "type": "piechart",
+            "targets": [
+                {
+                    "expr": "sum by (decision) (orchestrator_votes_total)",
+                    "legendFormat": "{{decision}}"
+                }
+            ]
+        }
+    ],
+    "refresh": "10s",
+    "schemaVersion": 38,
+    "style": "dark",
+    "tags": [
+        "orchestrator",
+        "multi-agent",
+        "claude-4.5"
+    ],
+    "templating": {
+        "list": []
+    },
+    "time": {
+        "from": "now-1h",
+        "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Multi-Agent Orchestrator Dashboard",
+    "uid": "orchestrator-2026",
+    "version": 1
+}

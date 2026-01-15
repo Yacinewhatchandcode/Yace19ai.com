@@ -1,0 +1,99 @@
+# Multi-Agent Orchestration — Kubernetes Deployment — January 2026
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: orchestrator
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: orchestrator-config
+  namespace: orchestrator
+data:
+  PRIMARY_MODEL: "claude-4.5-opus"
+  CONFIDENCE_THRESHOLD: "0.75"
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: orchestrator-policy
+  namespace: orchestrator
+spec:
+  podSelector:
+    matchLabels:
+      app: orchestrator
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: agent
+      ports:
+        - port: 8443
+  egress:
+    - ports: [{protocol: UDP, port: 53}]
+    - to:
+        - namespaceSelector: {}
+      ports: [{port: 9092}, {port: 9000}, {port: 5432}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orchestrator
+  namespace: orchestrator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: orchestrator
+  template:
+    metadata:
+      labels:
+        app: orchestrator
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: orchestrator
+          image: your-registry/orchestrator:2026.1
+          ports:
+            - containerPort: 8443
+          resources:
+            requests: {cpu: "500m", memory: "512Mi"}
+            limits: {cpu: "2000m", memory: "2Gi"}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orchestrator-service
+  namespace: orchestrator
+spec:
+  selector:
+    app: orchestrator
+  ports:
+    - port: 8443
+      targetPort: 8443
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: orchestrator-hpa
+  namespace: orchestrator
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: orchestrator
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70

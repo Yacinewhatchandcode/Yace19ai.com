@@ -1,0 +1,185 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#   Multi-Agent Orchestration — Repository Agent Manifest
+#   .agent.yaml — Claude-4.5 Opus Configuration — January 2026
+# ═══════════════════════════════════════════════════════════════════════════════
+
+agent_name: "agent-yace19ai"
+repo: "Yace19ai.com"
+workdir: "/workspace/Yace19ai.com"
+entry_point: "orchestration/scripts/run_agent.sh"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# MCP Communication
+# ═══════════════════════════════════════════════════════════════════════════════
+mcp:
+  url: "https://mcp.internal:8443"
+  auth_token_ref: "VAULT:agent_token"
+  topics:
+    proposals: "proposals"
+    votes: "votes"
+    events: "events"
+    metrics: "metrics"
+  retry_policy:
+    max_retries: 3
+    backoff_ms: 1000
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Port Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+ports:
+  local_dev_port: 3000
+  debug_port: 9229
+  metrics_port: 9090
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Allowed Tools
+# ═══════════════════════════════════════════════════════════════════════════════
+allowed_tools:
+  - git
+  - docker
+  - npm
+  - npx
+  - node
+  - python3
+  - pytest
+  - eslint
+  - ruff
+  - curl
+  - jq
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Multi-LLM Fallback Policy
+# ═══════════════════════════════════════════════════════════════════════════════
+fallback_policy:
+  primary_model: "claude-4.5-opus"
+  secondary_model: "local-deterministic-llm-v1"
+  tertiary_model: "consensus_comparer"
+  retries: 2
+  confidence_threshold: 0.75
+  divergence_threshold: 0.15
+  temperature: 0
+  
+  # Fallback triggers
+  triggers:
+    - type: "low_confidence"
+      threshold: 0.75
+      action: "fallback_to_secondary"
+    - type: "output_divergence"
+      threshold: 0.15
+      action: "invoke_consensus"
+    - type: "timeout"
+      threshold_ms: 30000
+      action: "mark_needs_human"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Security Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+security:
+  secret_store: "vault"
+  image_policy: "signed_only"
+  network_policy: "internal_only"
+  
+  # PII redaction before storage
+  redaction:
+    enabled: true
+    patterns:
+      - type: "email"
+        regex: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+      - type: "api_key"
+        regex: "(sk-|api_|token_)[a-zA-Z0-9]{20,}"
+  
+  # Prohibited actions
+  deny:
+    - "external_api_calls"
+    - "secret_logging"
+    - "raw_data_export"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Reporting & Artifacts
+# ═══════════════════════════════════════════════════════════════════════════════
+reporting:
+  artifact_bucket: "s3://artifacts-opus"
+  ui_preview: "https://dash.internal/preview/Yace19ai.com"
+  
+  # Output formats
+  formats:
+    summary: "json"
+    visual: "svg"
+    audit: "pdf"
+    demo: "mp4"
+  
+  # Retention policy
+  retention:
+    artifacts: "90d"
+    logs: "30d"
+    audit: "365d"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Audit & Compliance
+# ═══════════════════════════════════════════════════════════════════════════════
+audit:
+  enabled: true
+  hash_chain: true
+  
+  # Required fields for each action
+  record_fields:
+    - proposal_id
+    - timestamp
+    - inputs
+    - model_version
+    - prompt_snapshot
+    - confidence_score
+    - decision
+    - runtime_ms
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Agent Workflow Steps
+# ═══════════════════════════════════════════════════════════════════════════════
+workflow:
+  phases:
+    - name: "scan"
+      command: "./orchestration/scripts/run_agent.sh scan"
+      output: "scan_result.json"
+      timeout_s: 300
+      
+    - name: "triage"
+      command: "./orchestration/scripts/run_agent.sh triage"
+      output: "triage_result.json"
+      depends_on: ["scan"]
+      
+    - name: "propose"
+      command: "./orchestration/scripts/run_agent.sh propose"
+      output: "proposal.json"
+      depends_on: ["triage"]
+      
+    - name: "vote"
+      command: "./orchestration/scripts/run_agent.sh vote"
+      depends_on: ["propose"]
+      mcp_publish: true
+      
+    - name: "verify"
+      command: "./orchestration/scripts/run_agent.sh verify"
+      depends_on: ["vote"]
+      outputs:
+        - "report.svg"
+        - "summary.json"
+        - "demo.mp4"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Observability
+# ═══════════════════════════════════════════════════════════════════════════════
+observability:
+  metrics:
+    exporter: "prometheus"
+    port: 9090
+    path: "/metrics"
+    
+  tracing:
+    enabled: true
+    provider: "opentelemetry"
+    endpoint: "http://otel-collector:4317"
+    
+  logging:
+    level: "info"
+    format: "json"
+    output: "./orchestration/logs"

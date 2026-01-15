@@ -1,0 +1,68 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#   Multi-Agent Orchestration — Dockerfile.agent
+#   Claude-4.5 Opus Agent Container — January 2026
+# ═══════════════════════════════════════════════════════════════════════════════
+
+FROM python:3.12-slim-bookworm AS base
+
+# Security: Run as non-root user
+RUN groupadd -r agent && useradd -r -g agent agent
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    jq \
+    bc \
+    uuid-runtime \
+    gnupg2 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Docker CLI (for container operations)
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list \
+    && apt-get update && apt-get install -y docker-ce-cli \
+    && rm -rf /var/lib/apt/lists/*
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Python Dependencies
+# ═══════════════════════════════════════════════════════════════════════════════
+
+WORKDIR /app
+
+COPY requirements.agent.txt ./
+RUN pip install --no-cache-dir -r requirements.agent.txt
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Agent Runtime
+# ═══════════════════════════════════════════════════════════════════════════════
+
+FROM base AS runtime
+
+# Copy agent code
+COPY --chown=agent:agent agent/ /app/agent/
+COPY --chown=agent:agent scripts/ /app/scripts/
+COPY --chown=agent:agent config/ /app/config/
+
+# Environment configuration
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PRIMARY_MODEL=claude-4.5-opus \
+    FALLBACK_MODEL=local-deterministic-llm-v1 \
+    CONFIDENCE_THRESHOLD=0.75 \
+    MCP_URL=https://mcp.internal:8443
+
+# Create workspace mount point
+RUN mkdir -p /workspace && chown agent:agent /workspace
+
+# Switch to non-root user
+USER agent
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+EXPOSE 8080
+
+ENTRYPOINT ["python", "-m", "agent.runner"]
+CMD ["--scan", "--propose", "--run-tests", "--publish-mcp"]

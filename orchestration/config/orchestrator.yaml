@@ -1,0 +1,174 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Multi-Agent Orchestration — Prime Enterprise Config
+# Master Configuration for Claude-4.5 Opus — January 2026
+# ═══════════════════════════════════════════════════════════════════════════════
+
+version: "2026.1"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Core Settings
+# ═══════════════════════════════════════════════════════════════════════════════
+core:
+  environment: "development"
+  log_level: "info"
+  timezone: "UTC"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Model Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+models:
+  primary:
+    name: "claude-4.5-opus"
+    temperature: 0
+    max_tokens: 8192
+    timeout_s: 60
+    
+  fallback:
+    - name: "local-deterministic-llm-v1"
+      priority: 1
+      timeout_s: 30
+    - name: "consensus_comparer"
+      priority: 2
+      timeout_s: 45
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Consensus Configuration
+# ═══════════════════════════════════════════════════════════════════════════════
+consensus:
+  quorum_percentage: 60
+  confidence_threshold: 0.75
+  divergence_threshold: 0.15
+  
+  voting:
+    timeout_s: 30
+    min_voters: 3
+    require_security_vote: true
+    
+  escalation:
+    low_confidence_action: "fallback_manager"
+    divergence_action: "consensus_comparer"
+    timeout_action: "mark_needs_human"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Agent Fleet
+# ═══════════════════════════════════════════════════════════════════════════════
+agents:
+  - name: "CodeScanner"
+    role: "detection"
+    tools: ["git", "ruff", "eslint"]
+    weight: 1.0
+    
+  - name: "BugTriager"
+    role: "analysis"
+    tools: ["pytest", "npm"]
+    weight: 1.0
+    
+  - name: "FixGenerator"
+    role: "synthesis"
+    tools: ["git", "docker"]
+    weight: 1.2
+    
+  - name: "UnitTester"
+    role: "verification"
+    tools: ["pytest", "npm", "docker"]
+    weight: 1.0
+    
+  - name: "SecurityAgent"
+    role: "audit"
+    tools: ["trivy", "ruff"]
+    weight: 1.5
+    required: true
+    
+  - name: "MergeGate"
+    role: "finalization"
+    tools: ["git"]
+    weight: 1.0
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Infrastructure
+# ═══════════════════════════════════════════════════════════════════════════════
+infrastructure:
+  mcp:
+    url: "${MCP_URL:-https://mcp.internal:8443}"
+    auth_method: "bearer"
+    
+  kafka:
+    brokers: "${KAFKA_BROKERS:-localhost:9092}"
+    topics:
+      proposals: "proposals"
+      votes: "votes"
+      events: "events"
+      metrics: "metrics"
+      audit: "audit"
+      
+  postgres:
+    host: "${POSTGRES_HOST:-localhost}"
+    port: 5432
+    database: "orchestrator"
+    
+  redis:
+    url: "${REDIS_URL:-redis://localhost:6379}"
+    
+  s3:
+    endpoint: "${S3_ENDPOINT:-http://localhost:9000}"
+    bucket: "${S3_BUCKET:-artifacts-opus}"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Security
+# ═══════════════════════════════════════════════════════════════════════════════
+security:
+  secrets:
+    store: "vault"
+    path: "secret/orchestrator"
+    
+  images:
+    policy: "signed_only"
+    registry: "your-registry"
+    scan_on_build: true
+    scanner: "trivy"
+    
+  network:
+    restrict_external: true
+    allowed_hosts:
+      - "mcp.internal"
+      - "kafka"
+      - "postgres"
+      - "minio"
+      
+  pii:
+    redact_before_storage: true
+    patterns:
+      - "email"
+      - "api_key"
+      - "password"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Observability
+# ═══════════════════════════════════════════════════════════════════════════════
+observability:
+  metrics:
+    provider: "prometheus"
+    port: 9090
+    path: "/metrics"
+    scrape_interval: "15s"
+    
+  tracing:
+    provider: "opentelemetry"
+    endpoint: "${OTEL_ENDPOINT:-http://localhost:4317}"
+    sample_rate: 1.0
+    
+  logging:
+    format: "json"
+    level: "info"
+    output: "stdout"
+    
+  alerts:
+    - name: "high_mcp_latency"
+      condition: "mcp_request_duration_p95 > 1s"
+      severity: "warning"
+      notify: ["slack"]
+      
+    - name: "high_fallback_rate"
+      condition: "fallback_rate > 0.2"
+      severity: "critical"
+      notify: ["slack", "pagerduty"]

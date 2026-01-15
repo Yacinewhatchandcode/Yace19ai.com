@@ -1,0 +1,78 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+#   Multi-Agent Orchestration — Dockerfile.orchestrator
+#   Central MCP Orchestrator — January 2026
+# ═══════════════════════════════════════════════════════════════════════════════
+
+FROM node:20-bookworm-slim AS base
+
+# Security: Non-root user
+RUN groupadd -r orchestrator && useradd -r -g orchestrator orchestrator
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    jq \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Dependencies Stage
+# ═══════════════════════════════════════════════════════════════════════════════
+
+FROM base AS dependencies
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Build Stage
+# ═══════════════════════════════════════════════════════════════════════════════
+
+FROM base AS builder
+
+COPY package*.json ./
+RUN npm ci
+
+COPY tsconfig.json ./
+COPY src/ ./src/
+
+RUN npm run build
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Production Runtime
+# ═══════════════════════════════════════════════════════════════════════════════
+
+FROM base AS runtime
+
+# Copy production dependencies
+COPY --from=dependencies /app/node_modules ./node_modules/
+
+# Copy built application
+COPY --from=builder /app/dist ./dist/
+COPY --from=builder /app/package.json ./
+
+# Copy configuration
+COPY config/ ./config/
+
+# Environment
+ENV NODE_ENV=production \
+    PORT=8443 \
+    MCP_MODE=orchestrator \
+    KAFKA_BROKERS=kafka:9092 \
+    POSTGRES_HOST=postgres \
+    S3_ENDPOINT=http://minio:9000
+
+# Create data directories
+RUN mkdir -p /app/data /app/logs && chown -R orchestrator:orchestrator /app
+
+USER orchestrator
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost:${PORT}/health || exit 1
+
+EXPOSE 8443
+
+ENTRYPOINT ["node", "dist/server.js"]
