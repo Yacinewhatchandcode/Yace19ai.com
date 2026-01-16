@@ -1,17 +1,17 @@
 
+import { motion } from "framer-motion";
+import { ArrowRight, Github, Menu, Rocket, Twitter, X } from "lucide-react";
 import React from 'react';
-import NeuralMeshwork3D from './components/NeuralMeshwork3D';
-import ProjectPortfolio from './components/ProjectPortfolio';
+import "./App.css";
+import founderImage from "./assets/founder.jpg";
+import Achievements from "./components/Achievements";
 import AgentStack from './components/AgentStack';
-import DeploymentProtocols from './components/DeploymentProtocols';
-import AziReMCatalog from './components/AziReMCatalog';
+import AziReMCatalog from "./components/AziReMCatalog";
+import DeploymentProtocols from "./components/DeploymentProtocols";
 import Footer from './components/Footer';
-import Achievements from './components/Achievements';
+import NeuralMeshwork3D from "./components/NeuralMeshwork3D";
 import Philosophy from './components/Philosophy';
-import { motion } from 'framer-motion';
-import { Github, Twitter, Menu, X, ArrowRight, Rocket } from 'lucide-react';
-import founderImage from './assets/founder.jpg';
-import './App.css';
+import ProjectPortfolio from "./components/ProjectPortfolio";
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -22,18 +22,18 @@ function App() {
       <div className="min-h-screen text-white relative z-20 selection:bg-cyan-500/30 font-sans overflow-x-hidden pb-12 bg-transparent">
 
         {/* Improved Navigation */}
-        <nav className="fixed w-full px-6 py-4 flex justify-between items-center z-50 backdrop-blur-md bg-black/40 border-b border-white/10">
+        <nav className="fixed w-full px-6 py-4 flex justify-between items-center z-50 bg-transparent">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
               <span className="font-bold text-white">Y</span>
             </div>
-            <span className="font-bold tracking-tight text-xl">Yace19.ai</span>
+            <span className="font-bold tracking-tight text-xl" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Yace19.ai</span>
           </div>
 
           <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
-            <a href="#projects" className="hover:text-white transition-colors">Projects</a>
-            <a href="#agent-stack" className="hover:text-white transition-colors">Philosophy</a>
-            <a href="#deployment-protocols" className="hover:text-white transition-colors">Stack</a>
+            <a href="#projects" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Projects</a>
+            <a href="#agent-stack" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Philosophy</a>
+            <a href="#deployment-protocols" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Stack</a>
             <div className="flex items-center gap-4 ml-4">
               <a href="https://github.com/Yacinewhatchandcode" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
                 <Github className="w-5 h-5 cursor-pointer hover:text-white transition-colors" />
@@ -66,7 +66,7 @@ function App() {
           {/* Main Feed Area */}
           <main className="flex-grow min-w-0">
             {/* Professional Profile Banner */}
-            <div className="mb-12 relative">
+            <div className="mb-12 relative bg-transparent">
               <div className="flex flex-col md:flex-row gap-8 items-start">
                 <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl border-2 border-white/10 overflow-hidden shadow-2xl shrink-0 bg-gray-800">
                   <img src={founderImage} alt="Yacine" className="w-full h-full object-cover" />
