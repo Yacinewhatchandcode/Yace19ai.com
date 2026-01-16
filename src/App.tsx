@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <NeuralMeshwork3D />
-      <div className="min-h-screen text-white relative z-10 selection:bg-cyan-500/30 font-sans overflow-x-hidden pb-12">
+      <div className="min-h-screen text-white relative z-20 selection:bg-cyan-500/30 font-sans overflow-x-hidden pb-12">
 
         {/* Improved Navigation */}
         <nav className="fixed w-full px-6 py-4 flex justify-between items-center z-50 backdrop-blur-xl bg-black/80 border-b border-white/5">

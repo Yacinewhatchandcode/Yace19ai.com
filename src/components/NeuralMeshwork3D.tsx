@@ -4,7 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { PointMaterial, Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#2266aa', count = 400 }) => {
+const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', count = 500 }) => {
     const pointsRef = useRef<THREE.Points>(null);
     const linesRef = useRef<THREE.LineSegments>(null);
     const groupRef = useRef<THREE.Group>(null);
@@ -65,7 +65,7 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#2266aa', count = 400 }
                 // - Special check for "base pairs" (roughly diameter distance, same height)
 
                 // Adjustable threshold for "neural mesh" density
-                const meshThreshold = 2.5;
+                const meshThreshold = 3.0;
 
                 // Add probability to reduce clutter if needed
                 if (dist < meshThreshold) {
@@ -116,10 +116,10 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#2266aa', count = 400 }
                 <PointMaterial
                     transparent
                     color={nodeColor}
-                    size={0.12} // Slightly smaller for elegance
+                    size={0.25}
                     sizeAttenuation={true}
                     depthWrite={false}
-                    opacity={0.8}
+                    opacity={1.0}
                 />
             </points>
             <lineSegments ref={linesRef}>
@@ -136,8 +136,8 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#2266aa', count = 400 }
                     attach="material"
                     color={lineColor}
                     transparent
-                    opacity={0.15} // Very subtle lines
-                    linewidth={1}
+                    opacity={0.5}
+                    linewidth={2}
                 />
             </lineSegments>
         </group>
@@ -150,8 +150,8 @@ interface NeuralMeshwork3DProps {
 }
 
 const NeuralMeshwork3D: React.FC<NeuralMeshwork3DProps> = ({
-    nodeColor = '#00f2ff', // Cyan for nodes
-    lineColor = '#4488ff' // Blueish for lines
+    nodeColor = '#00ffff', // Bright cyan for nodes
+    lineColor = '#00aaff' // Brighter blue for lines
 }) => {
     return (
         <div style={{
@@ -160,13 +160,15 @@ const NeuralMeshwork3D: React.FC<NeuralMeshwork3DProps> = ({
             left: 0,
             width: '100vw',
             height: '100vh',
-            zIndex: -1,
-            // Premium deep void background
+            zIndex: 0,
+            pointerEvents: 'none',
             background: 'radial-gradient(ellipse at bottom, #050510 0%, #000000 100%)'
         }}>
             <Canvas camera={{ position: [0, 0, 20], fov: 45 }} dpr={[1, 2]}>
-                <fog attach="fog" args={['#000000', 10, 50]} />
-                <ambientLight intensity={0.5} />
+                <fog attach="fog" args={['#000000', 15, 60]} />
+                <ambientLight intensity={1.2} />
+                <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />
+                <pointLight position={[-10, -10, -10]} intensity={0.6} color="#4488ff" />
 
                 <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
                     <DNAStrand nodeColor={nodeColor} lineColor={lineColor} />
