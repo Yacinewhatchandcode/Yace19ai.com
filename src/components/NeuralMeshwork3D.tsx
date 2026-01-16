@@ -92,12 +92,36 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', count = 500 }
     }, [count]);
 
     useFrame((state) => {
+        const time = state.clock.getElapsedTime();
+        
         if (groupRef.current) {
             // Slow, majestic rotation
-            groupRef.current.rotation.y = state.clock.getElapsedTime() * 0.1;
+            groupRef.current.rotation.y = time * 0.1;
 
             // Subtle "breathing" or floating
-            groupRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.5;
+            groupRef.current.position.y = Math.sin(time * 0.5) * 0.5;
+        }
+
+        // Animated sparkly effects for points
+        if (pointsRef.current) {
+            const material = pointsRef.current.material as THREE.PointsMaterial;
+            // Pulsing size for sparkle effect
+            material.size = 0.25 + Math.sin(time * 3) * 0.15;
+            // Twinkling opacity
+            material.opacity = 0.7 + Math.sin(time * 4) * 0.3;
+            // Color cycling for flashy effect
+            const hue = (time * 0.2) % 1;
+            material.color.setHSL(hue, 1, 0.6);
+        }
+
+        // Animated glow for lines
+        if (linesRef.current) {
+            const material = linesRef.current.material as THREE.LineBasicMaterial;
+            // Pulsing opacity
+            material.opacity = 0.3 + Math.sin(time * 2.5) * 0.3;
+            // Color cycling
+            const hue = ((time * 0.15) + 0.5) % 1;
+            material.color.setHSL(hue, 0.9, 0.7);
         }
     });
 
@@ -119,7 +143,8 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', count = 500 }
                     size={0.25}
                     sizeAttenuation={true}
                     depthWrite={false}
-                    opacity={1.0}
+                    opacity={0.8}
+                    blending={THREE.AdditiveBlending}
                 />
             </points>
             <lineSegments ref={linesRef}>
@@ -136,8 +161,9 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', count = 500 }
                     attach="material"
                     color={lineColor}
                     transparent
-                    opacity={0.5}
+                    opacity={0.4}
                     linewidth={2}
+                    blending={THREE.AdditiveBlending}
                 />
             </lineSegments>
         </group>
@@ -167,8 +193,10 @@ const NeuralMeshwork3D: React.FC<NeuralMeshwork3DProps> = ({
             <Canvas camera={{ position: [0, 0, 20], fov: 45 }} dpr={[1, 2]}>
                 <fog attach="fog" args={['#000000', 15, 60]} />
                 <ambientLight intensity={1.2} />
-                <pointLight position={[10, 10, 10]} intensity={0.8} color="#00f2ff" />
-                <pointLight position={[-10, -10, -10]} intensity={0.6} color="#4488ff" />
+                <pointLight position={[10, 10, 10]} intensity={1.2} color="#00f2ff" />
+                <pointLight position={[-10, -10, -10]} intensity={1.0} color="#4488ff" />
+                <pointLight position={[0, 15, 0]} intensity={0.8} color="#ff00ff" />
+                <pointLight position={[0, -15, 0]} intensity={0.8} color="#00ffff" />
 
                 <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
                     <DNAStrand nodeColor={nodeColor} lineColor={lineColor} />
