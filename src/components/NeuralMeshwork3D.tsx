@@ -4,125 +4,214 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import React, { useMemo, useRef } from "react";
 import * as THREE from 'three';
 
-// Clean Tron-style lines: minimal, elegant, from edges to helix
-const TronGridLines = () => {
-    const linesRef = useRef<THREE.LineSegments>(null);
+// 4 Blue "Snake" particles that build/traverse the structure
+const SnakeBuilders = () => {
+    const snakesRef = useRef<THREE.Group>(null);
+    const trailCount = 20; // Length of snake trail
+    const snakeCount = 4;
     
-    // Helix parameters
-    const radius = 3.5;
-    const height = 40;
-    const turns = 4;
-    
-    // Calculate screen bounds
-    const cameraDistance = 20;
-    const fov = 45;
-    const aspect = window.innerWidth / window.innerHeight;
-    const fovRad = (fov * Math.PI) / 180;
-    const screenHeight = 2 * Math.tan(fovRad / 2) * cameraDistance;
-    const screenWidth = screenHeight * aspect;
-    const edgeZ = -8; // Further back for cleaner look
-    
-    // Sample helix points for connection targets
-    const helixTargets = useMemo(() => {
-        const points: number[] = [];
-        const count = 30;
-        for (let i = 0; i < count; i++) {
-            const t = i / count;
-            const isStrandA = i % 2 === 0;
-            const strandOffset = isStrandA ? 0 : Math.PI;
-            const angle = (t * turns * Math.PI * 2) + strandOffset;
-            const y = (t - 0.5) * height;
-            const x = radius * Math.cos(angle);
-            const z = radius * Math.sin(angle);
-            points.push(x, y, z);
-        }
-        return points;
+    // Create trails for each snake
+    const trails = useMemo(() => {
+        return Array.from({ length: snakeCount }).map(() => ({
+            positions: new Float32Array(trailCount * 3),
+            currentPos: new THREE.Vector3(0, 0, 0),
+            velocity: new THREE.Vector3(),
+            phase: Math.random() * Math.PI * 2
+        }));
     }, []);
-    
-    // Minimal lines: 4 top, 1 bottom, 1 left, 1 right = 7 total
-    const { edgeLines } = useMemo(() => {
-        const positions: number[] = [];
-        const helixCenter = [0, 0, 0];
-        
-        // Top edge - 4 clean lines
-        for (let i = 0; i < 4; i++) {
-            const x = ((i / 3) - 0.5) * screenWidth * 0.7;
-            const y = screenHeight * 0.4;
-            
-            // Connect to helix points or center
-            const helixIdx = Math.floor((i / 4) * (helixTargets.length / 3)) * 3;
-            const targetX = helixTargets[helixIdx] || helixCenter[0];
-            const targetY = helixTargets[helixIdx + 1] || helixCenter[1];
-            const targetZ = helixTargets[helixIdx + 2] || helixCenter[2];
-            
-            positions.push(x, y, edgeZ);
-            positions.push(targetX, targetY, targetZ);
-        }
-        
-        // Bottom edge - 1 line
-        positions.push(0, -screenHeight * 0.4, edgeZ);
-        positions.push(helixCenter[0], helixCenter[1] - 5, helixCenter[2]);
-        
-        // Left edge - 1 line
-        positions.push(-screenWidth * 0.4, 0, edgeZ);
-        positions.push(helixCenter[0] - 2, helixCenter[1], helixCenter[2]);
-        
-        // Right edge - 1 line
-        positions.push(screenWidth * 0.4, 0, edgeZ);
-        positions.push(helixCenter[0] + 2, helixCenter[1], helixCenter[2]);
-        
-        return {
-            edgeLines: new Float32Array(positions)
-        };
-    }, [helixTargets, screenWidth, screenHeight]);
-    
+
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
-        const cycleTime = 10; // Slower, more elegant cycle
-        const cycleProgress = (time % cycleTime) / cycleTime;
         
-        if (linesRef.current) {
-            const material = linesRef.current.material as THREE.LineBasicMaterial;
+        trails.forEach((snake, i) => {
+            // Calculate new head position
+            // Movement: Spiral outward from center to edge, then reset
+            const cycle = (time * 0.5 + i * (1/snakeCount)) % 1; // 0 to 1
+            const reset = cycle < 0.01;
             
-            // Smooth fade in, hold, fade out
-            let opacity = 0;
-            if (cycleProgress < 0.2) {
-                // Fade in (0-20%)
-                opacity = (cycleProgress / 0.2) * 0.6;
-            } else if (cycleProgress < 0.5) {
-                // Hold visible (20-50%)
-                opacity = 0.6;
-            } else if (cycleProgress < 0.7) {
-                // Fade out (50-70%)
-                opacity = 0.6 * (1 - (cycleProgress - 0.5) / 0.2);
+            if (reset) {
+                snake.currentPos.set(0, (Math.random() - 0.5) * 10, 0);
             }
-            // 70-100%: invisible (rest period)
+
+            // Path: Helical/Snake movement towards edges
+            // Target roughly the 4 corners/edges based on index
+            const angle = i * (Math.PI / 2) + time * 0.5;
+            const radius = 2 + cycle * 15; // Expand outward
+            const height = (Math.sin(time * 2 + i) * 10) + (i % 2 === 0 ? 10 : -10) * cycle;
             
-            material.opacity = opacity;
-            material.color.setHex(0x00ffff); // Clean Tron cyan
+            const targetX = Math.cos(angle) * radius;
+            const targetZ = Math.sin(angle) * radius;
+            const targetY = height;
+
+            // Lerp towards target for smooth "snake" movement
+            snake.currentPos.x += (targetX - snake.currentPos.x) * 0.1;
+            snake.currentPos.y += (targetY - snake.currentPos.y) * 0.1;
+            snake.currentPos.z += (targetZ - snake.currentPos.z) * 0.1;
+
+            // Shift trail positions
+            for (let j = trailCount - 1; j > 0; j--) {
+                snake.positions[j * 3] = snake.positions[(j - 1) * 3];
+                snake.positions[j * 3 + 1] = snake.positions[(j - 1) * 3 + 1];
+                snake.positions[j * 3 + 2] = snake.positions[(j - 1) * 3 + 2];
+            }
+            
+            // Set head
+            snake.positions[0] = snake.currentPos.x;
+            snake.positions[1] = snake.currentPos.y;
+            snake.positions[2] = snake.currentPos.z;
+        });
+
+        if (snakesRef.current) {
+            snakesRef.current.children.forEach((mesh, i) => {
+                const geometry = (mesh as THREE.Line).geometry;
+                geometry.attributes.position.array.set(trails[i].positions);
+                geometry.attributes.position.needsUpdate = true;
+            });
         }
     });
-    
+
     return (
-        <lineSegments ref={linesRef}>
+        <group ref={snakesRef}>
+            {trails.map((_, i) => (
+                <line key={i}>
+                    <bufferGeometry>
+                        <bufferAttribute
+                            attach="attributes-position"
+                            count={trailCount}
+                            array={new Float32Array(trailCount * 3)}
+                            itemSize={3}
+                            args={[new Float32Array(trailCount * 3), 3]}
+                        />
+                    </bufferGeometry>
+                    <lineBasicMaterial
+                        color="#0088ff" // Blue
+                        transparent
+                        opacity={0.8}
+                        linewidth={3}
+                        blending={THREE.AdditiveBlending}
+                    />
+                </line>
+            ))}
+        </group>
+    );
+};
+
+// Synaptic Sparks: Random flashes on the helix
+const SynapticSparks = ({ points }: { points: Float32Array }) => {
+    const sparksRef = useRef<THREE.Points>(null);
+    const sparkCount = 20; // Number of active sparks
+    
+    const sparkData = useMemo(() => {
+        const positions = new Float32Array(sparkCount * 3);
+        // Store target indices to jump between points
+        const indices = new Float32Array(sparkCount); 
+        for(let i=0; i<sparkCount; i++) indices[i] = Math.floor(Math.random() * (points.length/3));
+        return { positions, indices };
+    }, [points]);
+
+    useFrame((state) => {
+        const time = state.clock.getElapsedTime();
+        
+        if (sparksRef.current) {
+            const positions = sparksRef.current.geometry.attributes.position.array as Float32Array;
+            
+            for (let i = 0; i < sparkCount; i++) {
+                // Randomly jump to a new neuron/point
+                if (Math.random() > 0.95) {
+                    sparkData.indices[i] = Math.floor(Math.random() * (points.length/3));
+                }
+                
+                const idx = sparkData.indices[i] * 3;
+                positions[i*3] = points[idx];
+                positions[i*3+1] = points[idx+1];
+                positions[i*3+2] = points[idx+2];
+            }
+            sparksRef.current.geometry.attributes.position.needsUpdate = true;
+            
+            // Material flicker
+            const material = sparksRef.current.material as THREE.PointsMaterial;
+            material.size = 0.4 + Math.sin(time * 10) * 0.2;
+            material.opacity = 0.8 + Math.sin(time * 20) * 0.2;
+        }
+    });
+
+    return (
+        <points ref={sparksRef}>
             <bufferGeometry>
-                <bufferAttribute
-                    attach="attributes-position"
-                    count={edgeLines.length / 3}
-                    array={edgeLines}
-                    itemSize={3}
-                    args={[edgeLines, 3]}
-                />
+                    <bufferAttribute
+                        attach="attributes-position"
+                        count={sparkCount}
+                        array={sparkData.positions}
+                        itemSize={3}
+                        args={[sparkData.positions, 3]}
+                    />
             </bufferGeometry>
-            <lineBasicMaterial
-                attach="material"
-                color="#00ffff"
+            <PointMaterial
                 transparent
-                opacity={0}
-                linewidth={1.5}
+                color="#ffffff" // White hot sparks
+                size={0.5}
+                sizeAttenuation={true}
+                depthWrite={false}
                 blending={THREE.AdditiveBlending}
             />
-        </lineSegments>
+        </points>
+    );
+};
+
+// Electron/Proton Orbiters
+const OrbitingParticles = () => {
+    const groupRef = useRef<THREE.Group>(null);
+    const particleCount = 50;
+    
+    const particles = useMemo(() => {
+        const pos = new Float32Array(particleCount * 3);
+        const randoms = new Float32Array(particleCount * 3); // For orbit variations
+        for(let i=0; i<particleCount*3; i++) randoms[i] = Math.random();
+        return { pos, randoms };
+    }, []);
+
+    useFrame((state) => {
+        const time = state.clock.getElapsedTime();
+        if (groupRef.current) {
+            const positions = (groupRef.current.children[0] as THREE.Points).geometry.attributes.position.array as Float32Array;
+            
+            for(let i=0; i<particleCount; i++) {
+                const r = 5 + particles.randoms[i*3] * 3; // Orbit radius
+                const speed = 0.5 + particles.randoms[i*3+1];
+                const angle = time * speed + particles.randoms[i*3+2] * Math.PI * 2;
+                const height = Math.sin(time * 0.5 + particles.randoms[i*3] * 10) * 20;
+                
+                positions[i*3] = Math.cos(angle) * r;
+                positions[i*3+1] = height;
+                positions[i*3+2] = Math.sin(angle) * r;
+            }
+            (groupRef.current.children[0] as THREE.Points).geometry.attributes.position.needsUpdate = true;
+        }
+    });
+
+    return (
+        <group ref={groupRef}>
+             <points>
+                <bufferGeometry>
+                    <bufferAttribute
+                        attach="attributes-position"
+                        count={particleCount}
+                        array={particles.pos}
+                        itemSize={3}
+                        args={[particles.pos, 3]}
+                    />
+                </bufferGeometry>
+                <PointMaterial
+                    transparent
+                    color="#4488ff" // Electron blue
+                    size={0.15}
+                    sizeAttenuation={true}
+                    depthWrite={false}
+                    opacity={0.6}
+                    blending={THREE.AdditiveBlending}
+                />
+            </points>
+        </group>
     );
 };
 
@@ -232,7 +321,7 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', count = 500 }
             // Twinkling opacity
             material.opacity = 0.7 + Math.sin(time * 4) * 0.3;
             // Color cycling for flashy effect
-            const hue = (time * 0.2) % 1;
+            const hue = (time * 0.1) % 1; // Slower cycle
             material.color.setHSL(hue, 1, 0.6);
         }
 
@@ -242,7 +331,7 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', count = 500 }
             // Pulsing opacity
             material.opacity = 0.3 + Math.sin(time * 2.5) * 0.3;
             // Color cycling
-            const hue = ((time * 0.15) + 0.5) % 1;
+            const hue = ((time * 0.1) + 0.5) % 1;
             material.color.setHSL(hue, 0.9, 0.7);
         }
     });
@@ -288,6 +377,7 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', count = 500 }
                     blending={THREE.AdditiveBlending}
                 />
             </lineSegments>
+            <SynapticSparks points={particles} />
         </group>
     );
 };
@@ -322,7 +412,8 @@ const NeuralMeshwork3D: React.FC<NeuralMeshwork3DProps> = ({
 
                 <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
                     <DNAStrand nodeColor={nodeColor} lineColor={lineColor} />
-                    <TronGridLines />
+                    <SnakeBuilders />
+                    <OrbitingParticles />
                 </Float>
             </Canvas>
         </div>
