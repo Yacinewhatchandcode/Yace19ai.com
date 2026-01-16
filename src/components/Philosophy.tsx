@@ -14,8 +14,10 @@ const Philosophy: React.FC = () => {
                 >
                     <img 
                         src={philosophyBanner} 
-                        alt="Prime AI Philosophy - En sa mémoire" 
-                        className="w-full h-auto object-contain"
+                        alt="Prime AI Philosophy - A magical garden where human creativity meets AI innovation" 
+                        className="w-full h-auto object-cover"
+                        loading="lazy"
+                        decoding="async"
                     />
                 </motion.div>
 

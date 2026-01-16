@@ -34,6 +34,8 @@ export default function AziReMCatalog() {
                         src={asiremBanner} 
                         alt="ASIREM - Where the gears turn with grace, and hope blooms eternal" 
                         className="w-full h-auto object-cover"
+                        loading="lazy"
+                        decoding="async"
                     />
                     
                     {/* Overlay CTA */}
