@@ -1,8 +1,88 @@
 
-import React, { useMemo, useRef } from 'react';
+import { Float, PointMaterial } from "@react-three/drei";
 import { Canvas, useFrame } from '@react-three/fiber';
-import { PointMaterial, Float } from '@react-three/drei';
+import React, { useMemo, useRef } from "react";
 import * as THREE from 'three';
+
+// Tron-style code lines showing helix construction
+const TronCodeLines = () => {
+    const linesRef = useRef<THREE.LineSegments>(null);
+
+    const codeLines = useMemo(() => {
+        const positions: number[] = [];
+        const radius = 3.5;
+        const height = 40;
+        const turns = 4;
+        const segments = 100;
+
+        // Create construction lines that trace the helix path
+        for (let i = 0; i < segments; i++) {
+            const t = i / segments;
+            const angle1 = t * turns * Math.PI * 2;
+            const angle2 = t * turns * Math.PI * 2 + Math.PI;
+            const y = (t - 0.5) * height;
+
+            // Strand A
+            const x1 = radius * Math.cos(angle1);
+            const z1 = radius * Math.sin(angle1);
+            const x2 = radius * Math.cos(angle1 + 0.1);
+            const z2 = radius * Math.sin(angle1 + 0.1);
+            const y2 = ((t + 0.01) - 0.5) * height;
+
+            positions.push(x1, y, z1);
+            positions.push(x2, y2, z2);
+
+            // Strand B
+            const x3 = radius * Math.cos(angle2);
+            const z3 = radius * Math.sin(angle2);
+            const x4 = radius * Math.cos(angle2 + 0.1);
+            const z4 = radius * Math.sin(angle2 + 0.1);
+
+            positions.push(x3, y, z3);
+            positions.push(x4, y2, z4);
+
+            // Base pair connections
+            if (i % 5 === 0) {
+                positions.push(x1, y, z1);
+                positions.push(x3, y, z3);
+            }
+        }
+
+        return new Float32Array(positions);
+    }, []);
+
+    useFrame((state) => {
+        const time = state.clock.getElapsedTime();
+
+        if (linesRef.current) {
+            const material = linesRef.current.material as THREE.LineBasicMaterial;
+            // Pulsing glow effect
+            material.opacity = 0.4 + Math.sin(time * 3) * 0.3;
+        }
+    });
+
+    return (
+        <lineSegments ref={linesRef}>
+            <bufferGeometry>
+                <bufferAttribute
+                    attach="attributes-position"
+                    count={codeLines.length / 3}
+                    array={codeLines}
+                    itemSize={3}
+                    args={[codeLines, 3]}
+                />
+            </bufferGeometry>
+            <lineBasicMaterial
+                attach="material"
+                color="#00ffff"
+                transparent
+                opacity={0.5}
+                linewidth={1}
+                blending={THREE.AdditiveBlending}
+            />
+        </lineSegments>
+    );
+};
 
 const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', count = 500 }) => {
     const pointsRef = useRef<THREE.Points>(null);
@@ -200,6 +280,7 @@ const NeuralMeshwork3D: React.FC<NeuralMeshwork3DProps> = ({
 
                 <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
                     <DNAStrand nodeColor={nodeColor} lineColor={lineColor} />
+                    <TronCodeLines />
                 </Float>
             </Canvas>
         </div>

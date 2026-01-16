@@ -19,10 +19,10 @@ function App() {
   return (
     <>
       <NeuralMeshwork3D />
-      <div className="min-h-screen text-white relative z-20 selection:bg-cyan-500/30 font-sans overflow-x-hidden pb-12">
+      <div className="min-h-screen text-white relative z-20 selection:bg-cyan-500/30 font-sans overflow-x-hidden pb-12 bg-transparent">
 
         {/* Improved Navigation */}
-        <nav className="fixed w-full px-6 py-4 flex justify-between items-center z-50 backdrop-blur-xl bg-black/80 border-b border-white/5">
+        <nav className="fixed w-full px-6 py-4 flex justify-between items-center z-50 backdrop-blur-md bg-black/40 border-b border-white/10">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
               <span className="font-bold text-white">Y</span>
@@ -45,7 +45,7 @@ function App() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button className="md:hidden text-white" onClick={() => setIsMenuOpen(true)}>
+          <button className="md:hidden text-white" onClick={() => setIsMenuOpen(true)} aria-label="Open menu">
             <Menu size={24} />
           </button>
         </nav>
@@ -53,7 +53,7 @@ function App() {
         {/* Mobile Navigation Drawer */}
         {isMenuOpen && (
           <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl md:hidden flex flex-col items-center justify-center gap-8 p-6">
-            <button className="absolute top-6 right-6" onClick={() => setIsMenuOpen(false)}><X size={32} /></button>
+            <button className="absolute top-6 right-6" onClick={() => setIsMenuOpen(false)} aria-label="Close menu"><X size={32} /></button>
             <a href="#projects" className="text-2xl font-bold text-cyan-400" onClick={() => setIsMenuOpen(false)}>Projects</a>
             <a href="#agent-stack" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Philosophy</a>
             <a href="#deployment-protocols" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Stack</a>
