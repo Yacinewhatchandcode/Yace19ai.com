@@ -4,28 +4,28 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import React, { useMemo, useRef } from "react";
 import * as THREE from 'three';
 
-// Tron-style lines from edges converging to build helix (cinematic, minimal)
+// Clean Tron-style lines: minimal, elegant, from edges to helix
 const TronGridLines = () => {
     const linesRef = useRef<THREE.LineSegments>(null);
     
-    // Helix parameters (must match DNAStrand)
+    // Helix parameters
     const radius = 3.5;
     const height = 40;
     const turns = 4;
     
-    // Calculate screen edge positions
+    // Calculate screen bounds
     const cameraDistance = 20;
     const fov = 45;
     const aspect = window.innerWidth / window.innerHeight;
     const fovRad = (fov * Math.PI) / 180;
     const screenHeight = 2 * Math.tan(fovRad / 2) * cameraDistance;
     const screenWidth = screenHeight * aspect;
-    const edgeZ = -5;
+    const edgeZ = -8; // Further back for cleaner look
     
-    // Generate helix target points for connections
+    // Sample helix points for connection targets
     const helixTargets = useMemo(() => {
         const points: number[] = [];
-        const count = 50; // Sample points along helix
+        const count = 30;
         for (let i = 0; i < count; i++) {
             const t = i / count;
             const isStrandA = i % 2 === 0;
@@ -39,82 +39,37 @@ const TronGridLines = () => {
         return points;
     }, []);
     
-    // Create lines: top (6), bottom (2), left (2), right (2) = 12 total
+    // Minimal lines: 4 top, 1 bottom, 1 left, 1 right = 7 total
     const { edgeLines } = useMemo(() => {
         const positions: number[] = [];
+        const helixCenter = [0, 0, 0];
         
-        // Top edge - 6 lines
-        const topCount = 6;
-        for (let i = 0; i < topCount; i++) {
-            const x = ((i / (topCount - 1)) - 0.5) * screenWidth * 0.9;
-            const y = screenHeight * 0.45;
-            const startX = x;
-            const startY = y;
-            const startZ = edgeZ;
+        // Top edge - 4 clean lines
+        for (let i = 0; i < 4; i++) {
+            const x = ((i / 3) - 0.5) * screenWidth * 0.7;
+            const y = screenHeight * 0.4;
             
-            // Target: helix center or specific helix point
-            const helixIdx = Math.floor((i / topCount) * (helixTargets.length / 3)) * 3;
-            const endX = helixTargets[helixIdx] || 0;
-            const endY = helixTargets[helixIdx + 1] || 0;
-            const endZ = helixTargets[helixIdx + 2] || 0;
+            // Connect to helix points or center
+            const helixIdx = Math.floor((i / 4) * (helixTargets.length / 3)) * 3;
+            const targetX = helixTargets[helixIdx] || helixCenter[0];
+            const targetY = helixTargets[helixIdx + 1] || helixCenter[1];
+            const targetZ = helixTargets[helixIdx + 2] || helixCenter[2];
             
-            positions.push(startX, startY, startZ);
-            positions.push(endX, endY, endZ);
+            positions.push(x, y, edgeZ);
+            positions.push(targetX, targetY, targetZ);
         }
         
-        // Bottom edge - 2 lines
-        const bottomCount = 2;
-        for (let i = 0; i < bottomCount; i++) {
-            const x = ((i / (bottomCount - 1)) - 0.5) * screenWidth * 0.6;
-            const y = -screenHeight * 0.45;
-            const startX = x;
-            const startY = y;
-            const startZ = edgeZ;
-            
-            const helixIdx = Math.floor((0.7 + i * 0.15) * (helixTargets.length / 3)) * 3;
-            const endX = helixTargets[helixIdx] || 0;
-            const endY = helixTargets[helixIdx + 1] || 0;
-            const endZ = helixTargets[helixIdx + 2] || 0;
-            
-            positions.push(startX, startY, startZ);
-            positions.push(endX, endY, endZ);
-        }
+        // Bottom edge - 1 line
+        positions.push(0, -screenHeight * 0.4, edgeZ);
+        positions.push(helixCenter[0], helixCenter[1] - 5, helixCenter[2]);
         
-        // Left edge - 2 lines
-        const leftCount = 2;
-        for (let i = 0; i < leftCount; i++) {
-            const x = -screenWidth * 0.45;
-            const y = ((i / (leftCount - 1)) - 0.5) * screenHeight * 0.6;
-            const startX = x;
-            const startY = y;
-            const startZ = edgeZ;
-            
-            const helixIdx = Math.floor((0.2 + i * 0.3) * (helixTargets.length / 3)) * 3;
-            const endX = helixTargets[helixIdx] || 0;
-            const endY = helixTargets[helixIdx + 1] || 0;
-            const endZ = helixTargets[helixIdx + 2] || 0;
-            
-            positions.push(startX, startY, startZ);
-            positions.push(endX, endY, endZ);
-        }
+        // Left edge - 1 line
+        positions.push(-screenWidth * 0.4, 0, edgeZ);
+        positions.push(helixCenter[0] - 2, helixCenter[1], helixCenter[2]);
         
-        // Right edge - 2 lines
-        const rightCount = 2;
-        for (let i = 0; i < rightCount; i++) {
-            const x = screenWidth * 0.45;
-            const y = ((i / (rightCount - 1)) - 0.5) * screenHeight * 0.6;
-            const startX = x;
-            const startY = y;
-            const startZ = edgeZ;
-            
-            const helixIdx = Math.floor((0.3 + i * 0.3) * (helixTargets.length / 3)) * 3;
-            const endX = helixTargets[helixIdx] || 0;
-            const endY = helixTargets[helixIdx + 1] || 0;
-            const endZ = helixTargets[helixIdx + 2] || 0;
-            
-            positions.push(startX, startY, startZ);
-            positions.push(endX, endY, endZ);
-        }
+        // Right edge - 1 line
+        positions.push(screenWidth * 0.4, 0, edgeZ);
+        positions.push(helixCenter[0] + 2, helixCenter[1], helixCenter[2]);
         
         return {
             edgeLines: new Float32Array(positions)
@@ -123,29 +78,28 @@ const TronGridLines = () => {
     
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
-        const cycleTime = 8; // Full cycle duration in seconds
+        const cycleTime = 10; // Slower, more elegant cycle
         const cycleProgress = (time % cycleTime) / cycleTime;
         
         if (linesRef.current) {
             const material = linesRef.current.material as THREE.LineBasicMaterial;
             
-            // Animate: appear (0-0.3), visible (0.3-0.7), fade away (0.7-1.0)
+            // Smooth fade in, hold, fade out
             let opacity = 0;
-            if (cycleProgress < 0.3) {
-                // Appearing
-                opacity = (cycleProgress / 0.3) * 0.8;
+            if (cycleProgress < 0.2) {
+                // Fade in (0-20%)
+                opacity = (cycleProgress / 0.2) * 0.6;
+            } else if (cycleProgress < 0.5) {
+                // Hold visible (20-50%)
+                opacity = 0.6;
             } else if (cycleProgress < 0.7) {
-                // Fully visible
-                opacity = 0.8;
-            } else {
-                // Fading away
-                opacity = 0.8 * (1 - (cycleProgress - 0.7) / 0.3);
+                // Fade out (50-70%)
+                opacity = 0.6 * (1 - (cycleProgress - 0.5) / 0.2);
             }
+            // 70-100%: invisible (rest period)
             
             material.opacity = opacity;
-            
-            // Tron cyan color
-            material.color.setHex(0x00ffff);
+            material.color.setHex(0x00ffff); // Clean Tron cyan
         }
     });
     
@@ -165,7 +119,7 @@ const TronGridLines = () => {
                 color="#00ffff"
                 transparent
                 opacity={0}
-                linewidth={2}
+                linewidth={1.5}
                 blending={THREE.AdditiveBlending}
             />
         </lineSegments>
