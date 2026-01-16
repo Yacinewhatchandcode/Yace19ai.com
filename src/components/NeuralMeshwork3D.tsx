@@ -4,83 +4,142 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import React, { useMemo, useRef } from "react";
 import * as THREE from 'three';
 
-// Tron-style code lines showing helix construction
-const TronCodeLines = () => {
+// Tron-style grid lines from screen edges converging to build the helix
+const TronGridLines = () => {
     const linesRef = useRef<THREE.LineSegments>(null);
-
-    const codeLines = useMemo(() => {
+    const groupRef = useRef<THREE.Group>(null);
+    
+    // Helix parameters (must match DNAStrand)
+    const radius = 3.5;
+    const height = 40;
+    const turns = 4;
+    const helixPoints = 200; // Points along helix to connect to
+    
+    const { gridLines } = useMemo(() => {
         const positions: number[] = [];
-        const radius = 3.5;
-        const height = 40;
-        const turns = 4;
-        const segments = 100;
-
-        // Create construction lines that trace the helix path
-        for (let i = 0; i < segments; i++) {
-            const t = i / segments;
-            const angle1 = t * turns * Math.PI * 2;
-            const angle2 = t * turns * Math.PI * 2 + Math.PI;
+        const edgePositions: number[] = [];
+        
+        // Screen edge positions in 3D space (far from camera, at z=0 plane)
+        // Camera is at [0, 0, 20], fov=45, so we calculate screen bounds
+        const cameraDistance = 20;
+        const fov = 45;
+        const aspect = window.innerWidth / window.innerHeight;
+        const fovRad = (fov * Math.PI) / 180;
+        const screenHeight = 2 * Math.tan(fovRad / 2) * cameraDistance;
+        const screenWidth = screenHeight * aspect;
+        
+        // Edge grid points - create a grid along screen edges
+        const edgeGridSize = 15; // Number of points along each edge
+        const edgeZ = -5; // Position edges slightly in front
+        
+        // Top edge
+        for (let i = 0; i < edgeGridSize; i++) {
+            const x = (i / (edgeGridSize - 1) - 0.5) * screenWidth * 0.8;
+            const y = screenHeight * 0.4;
+            edgePositions.push(x, y, edgeZ);
+        }
+        
+        // Bottom edge
+        for (let i = 0; i < edgeGridSize; i++) {
+            const x = (i / (edgeGridSize - 1) - 0.5) * screenWidth * 0.8;
+            const y = -screenHeight * 0.4;
+            edgePositions.push(x, y, edgeZ);
+        }
+        
+        // Left edge
+        for (let i = 0; i < edgeGridSize; i++) {
+            const x = -screenWidth * 0.4;
+            const y = (i / (edgeGridSize - 1) - 0.5) * screenHeight * 0.8;
+            edgePositions.push(x, y, edgeZ);
+        }
+        
+        // Right edge
+        for (let i = 0; i < edgeGridSize; i++) {
+            const x = screenWidth * 0.4;
+            const y = (i / (edgeGridSize - 1) - 0.5) * screenHeight * 0.8;
+            edgePositions.push(x, y, edgeZ);
+        }
+        
+        // Generate helix target points
+        const helixTargets: number[] = [];
+        for (let i = 0; i < helixPoints; i++) {
+            const t = i / helixPoints;
+            const isStrandA = i % 2 === 0;
+            const strandOffset = isStrandA ? 0 : Math.PI;
+            const angle = (t * turns * Math.PI * 2) + strandOffset;
             const y = (t - 0.5) * height;
-
-            // Strand A
-            const x1 = radius * Math.cos(angle1);
-            const z1 = radius * Math.sin(angle1);
-            const x2 = radius * Math.cos(angle1 + 0.1);
-            const z2 = radius * Math.sin(angle1 + 0.1);
-            const y2 = ((t + 0.01) - 0.5) * height;
-
-            positions.push(x1, y, z1);
-            positions.push(x2, y2, z2);
-
-            // Strand B
-            const x3 = radius * Math.cos(angle2);
-            const z3 = radius * Math.sin(angle2);
-            const x4 = radius * Math.cos(angle2 + 0.1);
-            const z4 = radius * Math.sin(angle2 + 0.1);
-
-            positions.push(x3, y, z3);
-            positions.push(x4, y2, z4);
-
-            // Base pair connections
-            if (i % 5 === 0) {
-                positions.push(x1, y, z1);
-                positions.push(x3, y, z3);
+            const r = radius;
+            const x = r * Math.cos(angle);
+            const z = r * Math.sin(angle);
+            helixTargets.push(x, y, z);
+        }
+        
+        // Connect edge points to helix points
+        for (let i = 0; i < edgePositions.length; i += 3) {
+            const edgeX = edgePositions[i];
+            const edgeY = edgePositions[i + 1];
+            const edgeZ = edgePositions[i + 2];
+            
+            // Connect to nearest helix points (sample a few)
+            const connectionsPerEdge = 3;
+            for (let j = 0; j < connectionsPerEdge; j++) {
+                const helixIdx = Math.floor((i / 3 + j * 10) % helixPoints) * 3;
+                const helixX = helixTargets[helixIdx];
+                const helixY = helixTargets[helixIdx + 1];
+                const helixZ = helixTargets[helixIdx + 2];
+                
+                positions.push(edgeX, edgeY, edgeZ);
+                positions.push(helixX, helixY, helixZ);
             }
         }
-
-        return new Float32Array(positions);
+        
+        return {
+            gridLines: new Float32Array(positions)
+        };
     }, []);
-
+    
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
-
+        
         if (linesRef.current) {
             const material = linesRef.current.material as THREE.LineBasicMaterial;
-            // Pulsing glow effect
-            material.opacity = 0.4 + Math.sin(time * 3) * 0.3;
+            // Animated glow with construction pulse
+            const pulse = Math.sin(time * 2) * 0.2;
+            material.opacity = 0.3 + pulse;
+            
+            // Color shift
+            const hue = (time * 0.1) % 1;
+            material.color.setHSL(hue, 0.8, 0.6);
+        }
+        
+        // Subtle rotation
+        if (groupRef.current) {
+            groupRef.current.rotation.z = Math.sin(time * 0.3) * 0.05;
         }
     });
-
+    
     return (
-        <lineSegments ref={linesRef}>
-            <bufferGeometry>
-                <bufferAttribute
-                    attach="attributes-position"
-                    count={codeLines.length / 3}
-                    array={codeLines}
-                    itemSize={3}
-                    args={[codeLines, 3]}
+        <group ref={groupRef}>
+            <lineSegments ref={linesRef}>
+                <bufferGeometry>
+                    <bufferAttribute
+                        attach="attributes-position"
+                        count={gridLines.length / 3}
+                        array={gridLines}
+                        itemSize={3}
+                        args={[gridLines, 3]}
+                    />
+                </bufferGeometry>
+                <lineBasicMaterial
+                    attach="material"
+                    color="#00ffff"
+                    transparent
+                    opacity={0.4}
+                    linewidth={1}
+                    blending={THREE.AdditiveBlending}
                 />
-            </bufferGeometry>
-            <lineBasicMaterial
-                attach="material"
-                color="#00ffff"
-                transparent
-                opacity={0.5}
-                linewidth={1}
-                blending={THREE.AdditiveBlending}
-            />
-        </lineSegments>
+            </lineSegments>
+        </group>
     );
 };
 
@@ -280,7 +339,7 @@ const NeuralMeshwork3D: React.FC<NeuralMeshwork3DProps> = ({
 
                 <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
                     <DNAStrand nodeColor={nodeColor} lineColor={lineColor} />
-                    <TronCodeLines />
+                    <TronGridLines />
                 </Float>
             </Canvas>
         </div>
