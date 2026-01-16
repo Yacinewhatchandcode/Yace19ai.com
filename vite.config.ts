@@ -13,10 +13,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         assetFileNames: (assetInfo) => {
+          const timestamp = Date.now();
           if (/\.(png|jpe?g|svg|gif|webp)$/i.test(assetInfo.name || "")) {
-            return `assets/[name]-[hash][extname]`;
+            return `assets/[name]-[hash]-${timestamp}[extname]`;
           }
-          return "assets/[name]-[hash][extname]";
+          return `assets/[name]-[hash]-${timestamp}[extname]`;
         },
         manualChunks: {
           "react-vendor": ["react", "react-dom"],
