@@ -1,0 +1,22 @@
+{
+    "name": "Yacine Benhamou - AI Portfolio",
+    "short_name": "YB AI",
+    "description": "Lead AI Builder | Agentic AI Strategy & Multi-System Orchestration",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0a192f",
+    "theme_color": "#0891b2",
+    "icons": [
+        {
+            "src": "/favicon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}

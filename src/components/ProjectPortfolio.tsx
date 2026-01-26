@@ -19,52 +19,40 @@ interface Project {
 
 const projects: Project[] = [
     {
+        id: 'sovereign-ecosystem',
+        title: 'Sovereign Ecosystem',
+        category: 'Multi-Agent Framework',
+        description: 'The complete Sovereign Ecosystem codebase including aSiReM agents, dashboard, and infrastructure. Full autonomous multi-agent system for enterprise automation and orchestration.',
+        tech: ['Python', 'Multi-Agent', 'Docker', 'Infrastructure'],
+        link: 'https://github.com/Yacinewhatchandcode/Sovereign-Ecosystem',
+        color: 'from-violet-500/20 to-purple-500/5',
+        icon: <Cpu size={24} className="text-violet-400" />,
+        status: 'live',
+        aiModel: 'Claude Sonnet 3.7'
+    },
+    {
         id: 'prime-ai',
-        title: 'Prime-AI',
+        title: 'Prime.AI',
         category: 'Multi-Agent Framework',
         description: 'Main multi-agent orchestration system with specialized agents for architecture, QA, backend, and deployment automation. Built with Docker and Ollama for autonomous task execution.',
         tech: ['Python', 'Docker', 'Ollama', 'LangChain'],
-        link: 'https://github.com/Yacinewhatchandcode/Prime-AI',
+        link: 'https://github.com/Yacinewhatchandcode/Prime.AI',
         color: 'from-emerald-500/20 to-teal-500/5',
         icon: <Cpu size={24} className="text-emerald-400" />,
         status: 'live',
         aiModel: 'Claude Sonnet 3.7'
     },
     {
-        id: 'open-ai-news',
-        title: 'Open-AI News Agency',
-        category: 'Multi-Agent System',
-        description: 'Multi-Agent News Pipeline with 4 specialized AI agents for automated journalism, fact-checking, bi-directional revision loops, and RAG integration for accurate news generation.',
-        tech: ['Python', 'AI Agents', 'RAG', 'NLP'],
-        link: 'https://github.com/Yacinewhatchandcode/Open-AI-News-Agency',
-        color: 'from-purple-500/20 to-blue-500/5',
-        icon: <Globe size={24} className="text-purple-400" />,
+        id: 'yace19ai-portfolio',
+        title: 'Yace19ai.com',
+        category: 'Portfolio Website',
+        description: 'Professional portfolio showcasing AI Builder expertise with ASIREM multi-agent ecosystem. Features 3D neural meshwork, interactive project showcase, and modern web design.',
+        tech: ['TypeScript', 'React', 'Three.js', 'Tailwind CSS'],
+        link: 'https://github.com/Yacinewhatchandcode/Yace19ai.com',
+        color: 'from-cyan-500/20 to-blue-500/5',
+        icon: <Globe size={24} className="text-cyan-400" />,
         status: 'live',
-        aiModel: 'GPT-4 + Claude'
-    },
-    {
-        id: 'faith-video',
-        title: 'Faith VideoGenerator',
-        category: 'AI Video Creation',
-        description: 'AI-powered video generation system with scene creation and automated editing. Integrates with SiliconFlow API for intelligent video content production.',
-        tech: ['TypeScript', 'React', 'AI APIs', 'FFmpeg'],
-        link: 'https://github.com/Yacinewhatchandcode/Faith',
-        color: 'from-pink-500/20 to-rose-500/5',
-        icon: <Layout size={24} className="text-pink-400" />,
-        status: 'live',
-        aiModel: 'Claude Sonnet 3.5'
-    },
-    {
-        id: 'bsq',
-        title: 'BSQ - Autonomous Multi-Agent',
-        category: 'Spiritual AI System',
-        description: "Bahá'í Spiritual Quest - Autonomous Multi-Agent System for spiritual guidance and knowledge exploration with intelligent conversation flows.",
-        tech: ['Python', 'Multi-Agent', 'NLP', 'Knowledge Base'],
-        link: 'https://github.com/Yacinewhatchandcode/BSQ',
-        color: 'from-blue-500/20 to-cyan-500/5',
-        icon: <Bot size={24} className="text-blue-400" />,
-        status: 'live',
-        aiModel: 'Claude Sonnet 3.7'
+        aiModel: 'Google AI Studio'
     },
     {
         id: 'mcp-registry',
@@ -79,7 +67,31 @@ const projects: Project[] = [
         aiModel: 'Multi-Model Support'
     },
     {
-        id: 'hyperswitch',
+        id: 'faith-video',
+        title: 'Faith VideoGenerator',
+        category: 'AI Video Creation',
+        description: 'AI-powered video generation system with scene creation and automated editing. Integrates with SiliconFlow API for intelligent video content production.',
+        tech: ['TypeScript', 'React', 'AI APIs', 'FFmpeg'],
+        link: 'https://github.com/Yacinewhatchandcode/Faith',
+        color: 'from-pink-500/20 to-rose-500/5',
+        icon: <Layout size={24} className="text-pink-400" />,
+        status: 'live',
+        aiModel: 'Claude Sonnet 3.5'
+    },
+    {
+        id: 'aia-creative-lab',
+        title: 'AIA Creative Lab',
+        category: 'Creative AI Platform',
+        description: 'Vision 2030 - Creative AI laboratory for innovative digital experiences and AI-powered content generation.',
+        tech: ['TypeScript', 'React', 'AI Integration', 'Creative Tools'],
+        link: 'https://github.com/Yacinewhatchandcode/AIA-Creative-Lab',
+        color: 'from-indigo-500/20 to-purple-500/5',
+        icon: <Layout size={24} className="text-indigo-400" />,
+        status: 'live',
+        aiModel: 'GPT-4'
+    },
+    {
+        id: 'hyperswitch-cloud',
         title: 'Hyperswitch Cloud',
         category: 'Payment Infrastructure',
         description: 'Hyperswitch payment system deployed on Railway cloud with multi-provider support, secure transaction handling, and unified payment gateway.',
@@ -89,6 +101,90 @@ const projects: Project[] = [
         icon: <Code2 size={24} className="text-yellow-400" />,
         status: 'live',
         aiModel: 'Claude Sonnet 3.5'
+    },
+    {
+        id: 'hyperswitch-railway',
+        title: 'Hyperswitch Railway',
+        category: 'Payment Infrastructure',
+        description: 'Hyperswitch payment system - clean Railway deployment with optimized cloud infrastructure and seamless integration.',
+        tech: ['Python', 'Railway', 'Payment Gateway', 'Cloud Deploy'],
+        link: 'https://github.com/Yacinewhatchandcode/hyperswitch-railway',
+        color: 'from-amber-500/20 to-yellow-500/5',
+        icon: <Database size={24} className="text-amber-400" />,
+        status: 'live',
+        aiModel: 'Claude Sonnet 3.5'
+    },
+    {
+        id: 'converse-final',
+        title: 'Converse Final Solution',
+        category: 'Conversational AI',
+        description: 'Advanced conversational AI system with intelligent dialogue management and multi-turn conversation capabilities.',
+        tech: ['TypeScript', 'AI Agents', 'NLP', 'Conversation'],
+        link: 'https://github.com/Yacinewhatchandcode/converse-final-solution',
+        color: 'from-teal-500/20 to-green-500/5',
+        icon: <Bot size={24} className="text-teal-400" />,
+        status: 'live',
+        aiModel: 'GPT-4'
+    },
+    {
+        id: 'lovable-spirit-forge',
+        title: 'Lovable Spirit Forge',
+        category: 'Creative Development',
+        description: 'Spirit forge project for creative AI applications and experimental digital experiences.',
+        tech: ['TypeScript', 'React', 'Creative Tools', 'AI'],
+        link: 'https://github.com/Yacinewhatchandcode/lovable-spirit-forge',
+        color: 'from-rose-500/20 to-pink-500/5',
+        icon: <Layout size={24} className="text-rose-400" />,
+        status: 'live',
+        aiModel: 'Claude Sonnet'
+    },
+    {
+        id: 'bsq',
+        title: 'BSQ - Autonomous Multi-Agent',
+        category: 'Spiritual AI System',
+        description: "Bahá'í Spiritual Quest - Autonomous Multi-Agent System for spiritual guidance and knowledge exploration with intelligent conversation flows.",
+        tech: ['Python', 'Multi-Agent', 'NLP', 'Knowledge Base'],
+        link: 'https://github.com/Yacinewhatchandcode/BSQ',
+        color: 'from-blue-500/20 to-cyan-500/5',
+        icon: <Bot size={24} className="text-blue-400" />,
+        status: 'live',
+        aiModel: 'Claude Sonnet 3.7'
+    },
+    {
+        id: 'sq-baha',
+        title: 'SQ BAHA',
+        category: 'Spiritual AI System',
+        description: 'Spiritual Quest system complementing BSQ with enhanced spiritual knowledge exploration and guidance capabilities.',
+        tech: ['Python', 'AI Agents', 'Knowledge Graph', 'NLP'],
+        link: 'https://github.com/Yacinewhatchandcode/SQ_BAHA',
+        color: 'from-sky-500/20 to-blue-500/5',
+        icon: <Bot size={24} className="text-sky-400" />,
+        status: 'live',
+        aiModel: 'GPT-4'
+    },
+    {
+        id: 'agent-coder-ybe',
+        title: 'AgentCoderYBE',
+        category: 'AI Code Generation',
+        description: 'Autonomous agent-based code generation system for intelligent software development and automated programming tasks.',
+        tech: ['Python', 'Code Generation', 'AI Agents', 'Automation'],
+        link: 'https://github.com/Yacinewhatchandcode/AgentCoderYBE',
+        color: 'from-green-500/20 to-emerald-500/5',
+        icon: <Code2 size={24} className="text-green-400" />,
+        status: 'live',
+        aiModel: 'GPT-4 + Claude'
+    },
+    {
+        id: 'aia-discovery-mirror',
+        title: 'AIA Discovery',
+        category: 'Research Platform',
+        description: 'AIA lab discovery platform for AI research and experimental development.',
+        tech: ['TypeScript', 'Research Tools', 'AI Integration'],
+        link: 'https://github.com/Yacinewhatchandcode/https-github.com-Yacinewhatchandcode-AIA-DiscoVery',
+        color: 'from-fuchsia-500/20 to-purple-500/5',
+        icon: <Globe size={24} className="text-fuchsia-400" />,
+        status: 'live',
+        aiModel: 'Multi-Model'
     }
 ];
 
