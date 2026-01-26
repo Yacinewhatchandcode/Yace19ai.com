@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, Twitter, Linkedin, Mail, ExternalLink } from 'lucide-react';
+import { Github, Twitter, Linkedin, Mail, ExternalLink, Users } from 'lucide-react';
 
 const Footer: React.FC = () => {
     const currentYear = new Date().getFullYear();
@@ -8,6 +8,7 @@ const Footer: React.FC = () => {
         { icon: <Github size={20} />, href: 'https://github.com/Yacinewhatchandcode', label: 'GitHub' },
         { icon: <Twitter size={20} />, href: 'https://twitter.com/yace19ai', label: 'Twitter' },
         { icon: <Linkedin size={20} />, href: 'https://www.linkedin.com/in/yacine-benhamou-b26386124', label: 'LinkedIn' },
+        { icon: <Users size={20} />, href: 'https://skool.com/together-with-ai-9145', label: 'Skool Community' },
         { icon: <Mail size={20} />, href: 'mailto:info.primeai@gmail.com', label: 'Email' }
     ];
 
