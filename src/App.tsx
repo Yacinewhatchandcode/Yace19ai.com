@@ -1,6 +1,7 @@
 
 import { motion } from "framer-motion";
-import { ArrowRight, Github, Menu, Rocket, Twitter, X } from "lucide-react";
+import { ArrowRight, Gamepad2, Github, Menu, Rocket, Twitter, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import React from 'react';
 import "./App.css";
 import founderImage from "./assets/founder.jpg";
@@ -34,6 +35,7 @@ function App() {
             <a href="#projects" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Projects</a>
             <a href="#agent-stack" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Philosophy</a>
             <a href="#deployment-protocols" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Stack</a>
+            <Link to="/games" className="hover:text-white transition-colors flex items-center gap-1.5" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}><Gamepad2 size={15} /> Games</Link>
             <div className="flex items-center gap-4 ml-4">
               <a href="https://github.com/Yacinewhatchandcode" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
                 <Github className="w-5 h-5 cursor-pointer hover:text-white transition-colors" />
@@ -57,6 +59,7 @@ function App() {
             <a href="#projects" className="text-2xl font-bold text-cyan-400" onClick={() => setIsMenuOpen(false)}>Projects</a>
             <a href="#agent-stack" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Philosophy</a>
             <a href="#deployment-protocols" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Stack</a>
+            <Link to="/games" className="text-2xl font-bold text-cyan-400 flex items-center gap-2" onClick={() => setIsMenuOpen(false)}><Gamepad2 size={24} /> Games</Link>
           </div>
         )}
 
