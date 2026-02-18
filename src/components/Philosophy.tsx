@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React from "react";
-import philosophyBanner from "../assets/philosophy-banner.png";
+import philosophyBanner from "../assets/philosophy-banner.webp";
 
 const Philosophy: React.FC = () => {
   return (

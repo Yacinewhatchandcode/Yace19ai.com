@@ -109,14 +109,7 @@ function App() {
               </div>
             </div>
 
-            {/* Filter/Status Chips - Simplified */}
-            <div className="flex gap-3 mb-12 overflow-x-auto pb-2 scrollbar-hide">
-              {['Featured', 'Infrastructure', 'Agents', 'UI/UX'].map((chip, i) => (
-                <button key={chip} className={`px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors border ${i === 0 ? 'bg-white text-black border-white' : 'bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white'}`}>
-                  {chip}
-                </button>
-              ))}
-            </div>
+
 
             {/* The Real Portfolio */}
             <div id="projects">

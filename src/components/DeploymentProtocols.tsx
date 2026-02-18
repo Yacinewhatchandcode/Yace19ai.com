@@ -104,8 +104,8 @@ const DeploymentProtocols: React.FC = () => {
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.15 }}
                             className={`group relative p-8 rounded-2xl backdrop-blur-xl transition-all duration-500 flex flex-col ${tier.isPrime
-                                    ? 'bg-gradient-to-br from-gray-900/90 to-cyan-900/20 border-2 border-cyan-500/50 shadow-xl shadow-cyan-500/10'
-                                    : 'bg-gray-900/60 border border-white/10 hover:border-white/20'
+                                ? 'bg-gradient-to-br from-gray-900/90 to-cyan-900/20 border-2 border-cyan-500/50 shadow-xl shadow-cyan-500/10'
+                                : 'bg-gray-900/60 border border-white/10 hover:border-white/20'
                                 }`}
                         >
                             {/* Prime Badge */}
@@ -117,8 +117,8 @@ const DeploymentProtocols: React.FC = () => {
 
                             {/* Icon */}
                             <div className={`mb-6 w-14 h-14 rounded-xl flex items-center justify-center ${tier.isPrime
-                                    ? 'bg-gradient-to-br from-cyan-500/30 to-blue-500/30 text-cyan-300'
-                                    : 'bg-white/5 text-gray-400 group-hover:text-white group-hover:bg-white/10'
+                                ? 'bg-gradient-to-br from-cyan-500/30 to-blue-500/30 text-cyan-300'
+                                : 'bg-white/5 text-gray-400 group-hover:text-white group-hover:bg-white/10'
                                 } transition-all`}>
                                 {tier.icon}
                             </div>
@@ -142,13 +142,16 @@ const DeploymentProtocols: React.FC = () => {
                             </ul>
 
                             {/* CTA */}
-                            <button className={`w-full py-3 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all ${tier.isPrime
+                            <a
+                                href={`mailto:info.primeai@gmail.com?subject=${encodeURIComponent(tier.name + ' — Inquiry')}`}
+                                className={`w-full py-3 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all ${tier.isPrime
                                     ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:shadow-lg hover:shadow-cyan-500/30 hover:scale-[1.02]'
                                     : 'bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20'
-                                }`}>
+                                    }`}
+                            >
                                 Contact Us
                                 <ArrowRight size={16} />
-                            </button>
+                            </a>
                         </motion.div>
                     ))}
                 </div>
