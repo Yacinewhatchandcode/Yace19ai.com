@@ -52,11 +52,11 @@ const Footer: React.FC = () => {
 
                     {/* Navigation Links */}
                     <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 mb-8">
-                        <a href="#" className="hover:text-white transition-colors">Projects</a>
+                        <a href="#projects" className="hover:text-white transition-colors">Projects</a>
                         <span className="text-gray-700">•</span>
-                        <a href="#" className="hover:text-white transition-colors">Philosophy</a>
+                        <a href="#philosophy" className="hover:text-white transition-colors">Philosophy</a>
                         <span className="text-gray-700">•</span>
-                        <a href="#" className="hover:text-white transition-colors">Stack</a>
+                        <a href="#agent-stack" className="hover:text-white transition-colors">Stack</a>
                         <span className="text-gray-700">•</span>
                         <a href="mailto:info.primeai@gmail.com" className="hover:text-white transition-colors flex items-center gap-1">
                             Contact <ExternalLink size={12} />

@@ -33,8 +33,8 @@ function App() {
 
           <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
             <a href="#projects" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Projects</a>
-            <a href="#agent-stack" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Philosophy</a>
-            <a href="#deployment-protocols" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Stack</a>
+            <a href="#philosophy" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Philosophy</a>
+            <a href="#agent-stack" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Stack</a>
             <Link to="/games" className="hover:text-white transition-colors flex items-center gap-1.5" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}><Gamepad2 size={15} /> Games</Link>
             <div className="flex items-center gap-4 ml-4">
               <a href="https://github.com/Yacinewhatchandcode" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
@@ -57,8 +57,8 @@ function App() {
           <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl md:hidden flex flex-col items-center justify-center gap-8 p-6">
             <button className="absolute top-6 right-6" onClick={() => setIsMenuOpen(false)} aria-label="Close menu"><X size={32} /></button>
             <a href="#projects" className="text-2xl font-bold text-cyan-400" onClick={() => setIsMenuOpen(false)}>Projects</a>
-            <a href="#agent-stack" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Philosophy</a>
-            <a href="#deployment-protocols" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Stack</a>
+            <a href="#philosophy" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Philosophy</a>
+            <a href="#agent-stack" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Stack</a>
             <Link to="/games" className="text-2xl font-bold text-cyan-400 flex items-center gap-2" onClick={() => setIsMenuOpen(false)}><Gamepad2 size={24} /> Games</Link>
           </div>
         )}
@@ -128,7 +128,9 @@ function App() {
         </div>
 
         {/* Philosophy & Vision */}
-        <Philosophy />
+        <div id="philosophy">
+          <Philosophy />
+        </div>
 
         {/* AziReM Catalogue (Agent Feed) */}
         <AziReMCatalog />
