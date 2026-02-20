@@ -1,0 +1,189 @@
+:root {
+  --bg-color: #030812;
+  --text-color: #f8fafc;
+  --accent-blue: #38bdf8;
+  --accent-cyan: #22d3ee;
+  --card-bg: rgba(255, 255, 255, 0.03);
+  --card-border: rgba(255, 255, 255, 0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Space Grotesk', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+.hub-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 50% 0%, #0c4a6e 0%, transparent 50%),
+              radial-gradient(circle at 100% 50%, #4c1d95 0%, transparent 50%),
+              radial-gradient(circle at 0% 100%, #881337 0%, transparent 50%);
+  opacity: 0.5;
+}
+
+.hub-header {
+  text-align: center;
+  padding: 4rem 1rem 2rem;
+}
+
+.logo-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  background: linear-gradient(to right, #fff, var(--accent-cyan));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.accent { color: var(--accent-blue); -webkit-text-fill-color: initial; }
+
+.tagline {
+  color: #94a3b8;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.hub-main {
+  max-w: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.group-section {
+  margin-bottom: 4rem;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.group-badge {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.group-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2rem;
+}
+
+.group-age { color: #94a3b8; }
+
+.games-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.game-card {
+  text-decoration: none;
+  color: white;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 2rem;
+  border-radius: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 1.5rem;
+  padding: 2px;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Glow Variations */
+.card-glow-pink:hover { box-shadow: 0 10px 40px -10px rgba(2ec, 72, 153, 0.5); border-color: #ec4899; }
+.card-glow-green:hover { box-shadow: 0 10px 40px -10px rgba(34, 197, 94, 0.5); border-color: #22c55e;}
+.card-glow-yellow:hover { box-shadow: 0 10px 40px -10px rgba(234, 179, 8, 0.5); border-color: #eab308;}
+.card-glow-cyan:hover { box-shadow: 0 10px 40px -10px rgba(6, 182, 212, 0.5); border-color: #06b6d4;}
+.card-glow-purple:hover { box-shadow: 0 10px 40px -10px rgba(168, 85, 247, 0.5); border-color: #a855f7;}
+.card-glow-orange:hover { box-shadow: 0 10px 40px -10px rgba(249, 115, 22, 0.5); border-color: #f97316;}
+.card-glow-blue:hover { box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.5); border-color: #3b82f6;}
+.card-glow-teal:hover { box-shadow: 0 10px 40px -10px rgba(20, 184, 166, 0.5); border-color: #14b8a6;}
+.card-glow-red:hover { box-shadow: 0 10px 40px -10px rgba(239, 68, 68, 0.5); border-color: #ef4444;}
+
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.game-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.game-card p {
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+  flex-grow: 1;
+}
+
+.card-tag {
+  align-self: flex-start;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: rgba(255,255,255,0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 2rem;
+  font-weight: 600;
+}
+
+.hub-footer {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: #64748b;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: 4rem;
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.5rem; }
+  .hub-main { padding: 1rem; }
+}
