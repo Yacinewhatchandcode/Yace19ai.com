@@ -26,7 +26,17 @@ const getHelixPos = (t: number, strand: 0 | 1) => {
 // "Amas de Galaxies" - Galaxy Clusters background
 const GalaxyParticles = () => {
     const groupRef = useRef<THREE.Group>(null);
-    const particleCount = 12000; // many small points
+    const [particleCount, setParticleCount] = useState(3000); // Default to mobile-safe
+
+    // Ensure edge device profiling is performed at mount
+    React.useEffect(() => {
+        const handleResize = () => {
+            setParticleCount(window.innerWidth < 768 ? 3000 : 12000);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const particles = useMemo(() => {
         const pos = new Float32Array(particleCount * 3);
@@ -61,10 +71,10 @@ const GalaxyParticles = () => {
             if (isCore && mix > 0.5) targetColor = coreColor; // Bright core
 
             targetColor.toArray(colors, i * 3);
-            sizes[i] = (Math.random() * 0.05) + (isCore ? 0.03 : 0.01);
+            sizes[i] = (Math.random() * 0.05) + (isCore ? 0.04 : 0.02); // Slightly larger relative to screen
         }
         return { pos, colors, sizes };
-    }, []);
+    }, [particleCount]);
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
