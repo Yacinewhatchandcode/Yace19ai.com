@@ -28,3 +28,13 @@ dist-ssr
 .vercel
 .env*.local
 1fb5ef0d-7241-4e99-bd70-befcbfe76faa.jpeg
+
+# Security - never commit secrets
+.env.local
+.env.production
+.env.development
+*.pem
+*.key
+id_rsa
+id_ed25519
+credentials.json
