@@ -87,7 +87,9 @@ function App() {
                   {/* Hero CTAs */}
                   <div className="flex flex-wrap gap-4">
                     <motion.a
-                      href="mailto:info.primeai@gmail.com"
+                      href="https://calendly.com/info-primeai/30min"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-shadow"

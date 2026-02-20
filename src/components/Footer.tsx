@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         { icon: <Twitter size={20} />, href: 'https://twitter.com/yace19ai', label: 'Twitter' },
         { icon: <Linkedin size={20} />, href: 'https://www.linkedin.com/in/yacine-benhamou-b26386124', label: 'LinkedIn' },
         { icon: <Users size={20} />, href: 'https://skool.com/together-with-ai-9145', label: 'Skool Community' },
-        { icon: <Mail size={20} />, href: 'mailto:info.primeai@gmail.com', label: 'Email' }
+        { icon: <Mail size={20} />, href: 'https://calendly.com/info-primeai/30min', label: 'Email' }
     ];
 
     return (
@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
                         <span className="text-gray-700">•</span>
                         <a href="#agent-stack" className="hover:text-white transition-colors">Stack</a>
                         <span className="text-gray-700">•</span>
-                        <a href="mailto:info.primeai@gmail.com" className="hover:text-white transition-colors flex items-center gap-1">
+                        <a href="https://calendly.com/info-primeai/30min" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-1">
                             Contact <ExternalLink size={12} />
                         </a>
                     </div>

@@ -40,7 +40,9 @@ export default function AziReMCatalog() {
                     {/* Overlay CTA */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-center pb-12 opacity-0 hover:opacity-100 transition-opacity duration-300">
                         <a
-                            href="mailto:info.primeai@gmail.com?subject=ASIREM Agent Deployment Inquiry"
+                            href="https://calendly.com/info-primeai/30min"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold text-lg shadow-2xl hover:shadow-amber-500/50 transition-all hover:scale-105"
                         >
                             Explore ASIREM Agents
@@ -63,7 +65,9 @@ export default function AziReMCatalog() {
                         in composing solutions that are both technically elegant and beautifully human.
                     </p>
                     <a
-                        href="mailto:info.primeai@gmail.com?subject=ASIREM Agent System Consultation"
+                        href="https://calendly.com/info-primeai/30min"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 text-white font-semibold border border-white/10 hover:bg-white/10 hover:border-amber-500/30 transition-all"
                     >
                         Request Consultation

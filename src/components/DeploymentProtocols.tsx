@@ -143,7 +143,9 @@ const DeploymentProtocols: React.FC = () => {
 
                             {/* CTA */}
                             <a
-                                href={`mailto:info.primeai@gmail.com?subject=${encodeURIComponent(tier.name + ' — Inquiry')}`}
+                                href="https://calendly.com/info-primeai/30min"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className={`w-full py-3 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition-all ${tier.isPrime
                                     ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:shadow-lg hover:shadow-cyan-500/30 hover:scale-[1.02]'
                                     : 'bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20'
