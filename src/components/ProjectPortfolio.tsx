@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, ArrowRight, Code2, Database, Layout, Cpu, Bot, PlayCircle, X } from 'lucide-react';
+import { ExternalLink, Github, Code2, Database, Layout, Cpu, Bot, PlayCircle, X } from 'lucide-react';
 
 interface Project {
     id: string;
@@ -140,10 +140,10 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`group relative bg-gray-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-900/10 flex flex-col h-full ${isPlaying ? 'md:col-span-2 lg:col-span-2 row-span-2 z-10 scale-105' : ''}`}
+            className={`group relative bg - gray - 900 / 40 backdrop - blur - md border border - white / 5 rounded - 2xl overflow - hidden hover: border - white / 10 transition - all duration - 300 hover: shadow - 2xl hover: shadow - purple - 900 / 10 flex flex - col h - full ${isPlaying ? 'md:col-span-2 lg:col-span-2 row-span-2 z-10 scale-105' : ''} `}
         >
             {/* Header / Graphic / Video Demo */}
-            <div className={`transition-all duration-500 bg-gradient-to-br ${project.color} relative overflow-hidden flex flex-col justify-center items-center ${isPlaying ? 'h-80 md:h-96' : 'h-32 p-6'}`}>
+            <div className={`transition - all duration - 500 bg - gradient - to - br ${project.color} relative overflow - hidden flex flex - col justify - center items - center ${isPlaying ? 'h-80 md:h-96' : 'h-32 p-6'} `}>
 
                 {isPlaying ? (
                     <div className="absolute inset-0 w-full h-full bg-black">
@@ -167,15 +167,19 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                         <div className="absolute top-4 right-4 bg-black/20 backdrop-blur-md p-2 rounded-lg border border-white/5 z-10">
                             {project.icon}
                         </div>
+                        <div className="absolute top-4 left-4 bg-gradient-to-r from-red-600 to-red-700 backdrop-blur-md px-4 py-1.5 rounded-lg border border-red-500 z-10 shadow-lg shadow-red-900/50 flex items-center gap-2">
+                            <span className="text-white font-black tracking-wide">149€ HT</span>
+                            <span className="text-red-200/70 text-xs line-through font-medium">239€</span>
+                        </div>
                         <div className="absolute bottom-4 left-6 flex gap-2 z-10">
                             <span className="text-xs font-bold tracking-wider uppercase text-white/60 bg-black/20 px-2 py-1 rounded backdrop-blur-md">
                                 {project.category}
                             </span>
                             {project.status && (
-                                <span className={`text-xs font-bold tracking-wider uppercase px-2 py-1 rounded backdrop-blur-md ${project.status === 'live' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
+                                <span className={`text - xs font - bold tracking - wider uppercase px - 2 py - 1 rounded backdrop - blur - md ${project.status === 'live' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
                                     project.status === 'development' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' :
                                         'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                                    }`}>
+                                    } `}>
                                     {project.status === 'live' ? '● Live' : project.status === 'development' ? '◐ In Dev' : '○ Concept'}
                                 </span>
                             )}
@@ -227,33 +231,36 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                 </div>
 
                 {/* Action Footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
-                    {project.link ? (
-                        <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-cyan-400 transition-colors group/btn"
-                        >
-                            View Source Code
-                            <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
-                        </a>
-                    ) : (
-                        <span className="text-sm font-medium text-gray-500">Private Repository</span>
-                    )}
-                    <div className="flex gap-2 text-gray-500">
-                        {project.link && (
-                            <>
-                                <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label="View on GitHub">
-                                    <Github size={18} className="hover:text-white cursor-pointer transition-colors" />
-                                </a>
-                                {(project.demoUrl) && (
-                                    <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" aria-label="Open App in Full tab">
-                                        <ExternalLink size={18} className="hover:text-white cursor-pointer transition-colors" />
-                                    </a>
-                                )}
-                            </>
+                <div className="pt-4 border-t border-white/5 mt-auto flex flex-col gap-4">
+                    <a
+                        href="https://prime-ai.fr"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#172554] to-[#1e3a8a] text-white py-3 rounded-lg border border-blue-400/20 hover:border-blue-400/40 hover:shadow-lg hover:shadow-blue-900/40 font-bold transition-all"
+                    >
+                        Acquire Source & Setup <ExternalLink size={16} />
+                    </a>
+
+                    <div className="flex items-center justify-between px-1">
+                        {project.link ? (
+                            <a
+                                href={project.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 text-xs font-semibold text-gray-400 hover:text-white transition-colors"
+                            >
+                                <Github size={14} /> Review Technical Code
+                            </a>
+                        ) : (
+                            <span className="text-xs font-medium text-gray-600">Private Enterprise Repo</span>
                         )}
+                        <div className="flex gap-2 text-gray-500">
+                            {(project.demoUrl) && (
+                                <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" aria-label="Open App in Full tab" className="text-xs font-semibold text-cyan-500 hover:text-cyan-400 flex items-center gap-1 transition-colors">
+                                    <PlayCircle size={14} /> Live Play
+                                </a>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
