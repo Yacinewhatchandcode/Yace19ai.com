@@ -11,6 +11,7 @@ interface Project {
     link?: string;
     demoUrl?: string; // If an iframe or site is available
     videoFile?: string; // If a recorded mp4 demo is available
+    image?: string; // Auto-generated repo screenshots
     color: string;
     icon: React.ReactNode;
     status?: 'live' | 'development' | 'concept';
@@ -42,7 +43,8 @@ const projects: Project[] = [
         color: 'from-violet-500/20 to-purple-500/5',
         icon: <Cpu size={24} className="text-violet-400" />,
         status: 'live',
-        aiModel: 'Claude Sonnet 3.7'
+        aiModel: 'Claude Sonnet 3.7',
+        image: '/repo-Sovereign-Ecosystem.png'
     },
     {
         id: 'prime-ai',
@@ -55,7 +57,8 @@ const projects: Project[] = [
         color: 'from-emerald-500/20 to-teal-500/5',
         icon: <Cpu size={24} className="text-emerald-400" />,
         status: 'live',
-        aiModel: 'Llama-3 (Sovereign)'
+        aiModel: 'Llama-3 (Sovereign)',
+        image: '/repo-Prime.AI.png'
     },
     {
         id: 'faith-video',
@@ -68,7 +71,8 @@ const projects: Project[] = [
         color: 'from-pink-500/20 to-rose-500/5',
         icon: <Layout size={24} className="text-pink-400" />,
         status: 'live',
-        aiModel: 'SiliconFlow API'
+        aiModel: 'SiliconFlow API',
+        image: '/repo-Faith.png'
     },
     {
         id: 'mcp-registry',
@@ -80,7 +84,8 @@ const projects: Project[] = [
         color: 'from-orange-500/20 to-red-500/5',
         icon: <Database size={24} className="text-orange-400" />,
         status: 'live',
-        aiModel: 'Multi-Model Support'
+        aiModel: 'Multi-Model Support',
+        image: '/repo-mcp-registry.png'
     },
     {
         id: 'aia-creative-lab',
@@ -92,7 +97,8 @@ const projects: Project[] = [
         color: 'from-indigo-500/20 to-purple-500/5',
         icon: <Layout size={24} className="text-indigo-400" />,
         status: 'live',
-        aiModel: 'GPT-4'
+        aiModel: 'GPT-4',
+        image: '/repo-AIA-Creative-Lab.png'
     },
     {
         id: 'hyperswitch-cloud',
@@ -104,7 +110,8 @@ const projects: Project[] = [
         color: 'from-yellow-500/20 to-amber-500/5',
         icon: <Code2 size={24} className="text-yellow-400" />,
         status: 'live',
-        aiModel: 'Architecture'
+        aiModel: 'Architecture',
+        image: '/repo-hyperswitch-cloud.png'
     },
     {
         id: 'converse-final',
@@ -116,7 +123,8 @@ const projects: Project[] = [
         color: 'from-teal-500/20 to-green-500/5',
         icon: <Bot size={24} className="text-teal-400" />,
         status: 'live',
-        aiModel: 'GPT-4'
+        aiModel: 'GPT-4',
+        image: '/repo-converse-final-solution.png'
     },
     {
         id: 'agent-coder-ybe',
@@ -128,7 +136,8 @@ const projects: Project[] = [
         color: 'from-green-500/20 to-emerald-500/5',
         icon: <Code2 size={24} className="text-green-400" />,
         status: 'live',
-        aiModel: 'Claude Engineer'
+        aiModel: 'Claude Engineer',
+        image: '/repo-AgentCoderYBE.png'
     }
 ];
 
@@ -140,10 +149,10 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`group relative bg - gray - 900 / 40 backdrop - blur - md border border - white / 5 rounded - 2xl overflow - hidden hover: border - white / 10 transition - all duration - 300 hover: shadow - 2xl hover: shadow - purple - 900 / 10 flex flex - col h - full ${isPlaying ? 'md:col-span-2 lg:col-span-2 row-span-2 z-10 scale-105' : ''} `}
+            className={`group relative bg-gray-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-900/20 flex flex-col h-full ${isPlaying ? 'md:col-span-2 lg:col-span-2 row-span-2 z-10 scale-[1.02]' : ''}`}
         >
             {/* Header / Graphic / Video Demo */}
-            <div className={`transition - all duration - 500 bg - gradient - to - br ${project.color} relative overflow - hidden flex flex - col justify - center items - center ${isPlaying ? 'h-80 md:h-96' : 'h-32 p-6'} `}>
+            <div className={`transition-all duration-500 bg-gray-900 relative overflow-hidden flex flex-col justify-center items-center ${isPlaying ? 'h-96 md:h-[500px]' : 'h-48 group-hover:h-56'}`}>
 
                 {isPlaying ? (
                     <div className="absolute inset-0 w-full h-full bg-black">
@@ -157,45 +166,54 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                         ) : project.demoUrl ? (
                             <iframe
                                 src={project.demoUrl}
-                                className="w-full h-full border-none"
+                                className="w-full h-full border-none bg-white"
                                 title={`${project.title} Live Demo`}
                             />
                         ) : null}
                     </div>
                 ) : (
                     <>
-                        <div className="absolute top-4 right-4 bg-black/20 backdrop-blur-md p-2 rounded-lg border border-white/5 z-10">
+                        {project.image ? (
+                            <>
+                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent z-10" />
+                                <img
+                                    src={project.image}
+                                    alt={project.title}
+                                    className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+                                />
+                                {/* Abstract decorative lines representing scanning */}
+                                <div className="absolute top-0 left-0 w-full h-1 bg-cyan-400/50 shadow-[0_0_15px_rgba(6,182,212,1)] opacity-0 group-hover:opacity-100 group-hover:animate-[scan_2s_ease-in-out_infinite] z-20 pointer-events-none" />
+                            </>
+                        ) : (
+                            <div className={`absolute inset-0 bg-gradient-to-br ${project.color}`} />
+                        )}
+
+                        <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md p-2 rounded-lg border border-white/10 z-20">
                             {project.icon}
                         </div>
-                        <div className="absolute top-4 left-4 bg-gradient-to-r from-red-600 to-red-700 backdrop-blur-md px-4 py-1.5 rounded-lg border border-red-500 z-10 shadow-lg shadow-red-900/50 flex items-center gap-2">
-                            <span className="text-white font-black tracking-wide">149€ HT</span>
-                            <span className="text-red-200/70 text-xs line-through font-medium">239€</span>
-                        </div>
-                        <div className="absolute bottom-4 left-6 flex gap-2 z-10">
-                            <span className="text-xs font-bold tracking-wider uppercase text-white/60 bg-black/20 px-2 py-1 rounded backdrop-blur-md">
+
+                        <div className="absolute bottom-4 left-6 flex gap-2 z-20">
+                            <span className="text-[10px] font-bold tracking-wider uppercase text-white bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10 backdrop-saturate-150">
                                 {project.category}
                             </span>
                             {project.status && (
-                                <span className={`text - xs font - bold tracking - wider uppercase px - 2 py - 1 rounded backdrop - blur - md ${project.status === 'live' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
+                                <span className={`text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded backdrop-blur-md ${project.status === 'live' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
                                     project.status === 'development' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' :
                                         'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                                    } `}>
+                                    }`}>
                                     {project.status === 'live' ? '● Live' : project.status === 'development' ? '◐ In Dev' : '○ Concept'}
                                 </span>
                             )}
                         </div>
 
-                        {/* Abstract decorative circles */}
-                        <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors" />
-                        <div className="absolute -left-4 -bottom-4 w-32 h-32 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors" />
-
                         {(project.videoFile || project.demoUrl) && (
-                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
                                 <button
                                     onClick={() => setIsPlaying(true)}
-                                    className="flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white font-semibold transition-all shadow-lg hover:scale-105"
+                                    className="flex items-center gap-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border border-cyan-400/50 backdrop-blur-md px-6 py-3 rounded-full text-white font-bold transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:-translate-y-1"
                                 >
-                                    <PlayCircle size={20} /> Watch Agent Demo
+                                    <PlayCircle size={24} className="animate-pulse" />
+                                    {project.videoFile ? "Watch Visual Demo" : "Open Live Interface"}
                                 </button>
                             </div>
                         )}
@@ -205,7 +223,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                 {isPlaying && (
                     <button
                         onClick={() => setIsPlaying(false)}
-                        className="absolute top-4 right-4 bg-red-500/80 hover:bg-red-500 text-white p-2 rounded-full backdrop-blur-md z-30 shadow-2xl transition-all"
+                        className="absolute top-4 right-4 bg-red-500/80 hover:bg-red-500 border border-white/20 text-white p-2 rounded-full backdrop-blur-md z-30 shadow-2xl transition-all"
                     >
                         <X size={20} />
                     </button>
@@ -213,7 +231,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
             </div>
 
             {/* Content */}
-            <div className="p-6 flex-grow flex flex-col bg-gray-900/40">
+            <div className="p-6 flex-grow flex flex-col bg-gray-900/40 relative z-20">
                 <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
                     {project.title}
                 </h3>
