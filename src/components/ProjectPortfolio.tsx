@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, Code2, Database, Layout, Cpu, Bot, PlayCircle, X } from 'lucide-react';
+import { Github, Code2, Database, Layout, Cpu, Bot, PlayCircle, X } from 'lucide-react';
 
 interface Project {
     id: string;
@@ -26,7 +26,7 @@ const projects: Project[] = [
         description: 'Complete Sovereign Sales Intelligence Layer. Captures WebRTC Audio Live, parses objections using Whisper, classifies deal probabilities, and pushes Drafts to Gmail and Contacts to HubSpot autonomously.',
         tech: ['Next.js', 'WebRTC', 'OpenAI Whisper', 'HubSpot API', 'Google APIs', 'Supabase'],
         link: 'https://github.com/Yacinewhatchandcode/ran-sales-copilot',
-        demoUrl: 'https://ran-sales-copilot.vercel.app', // Highly visual iframe component
+        demoUrl: 'https://ran-sales-copilot.vercel.app',
         color: 'from-amber-500/20 to-orange-500/5',
         icon: <Bot size={24} className="text-amber-400" />,
         status: 'live',
@@ -57,22 +57,21 @@ const projects: Project[] = [
         color: 'from-emerald-500/20 to-teal-500/5',
         icon: <Cpu size={24} className="text-emerald-400" />,
         status: 'live',
-        aiModel: 'Llama-3 (Sovereign)',
+        aiModel: 'Claude Sonnet 3.7',
         image: '/repo-Prime.AI.png'
     },
     {
-        id: 'faith-video',
-        title: 'Faith VideoGenerator',
-        category: 'AI Video Creation',
-        description: 'AI-powered video generation system with scene creation and automated editing. Orchestrates the visual matrix using local rendering pipes and GPU scaling.',
-        tech: ['TypeScript', 'React', 'AI APIs', 'FFmpeg'],
-        link: 'https://github.com/Yacinewhatchandcode/Faith',
-        videoFile: '/videos/faith-demo.mp4',
-        color: 'from-pink-500/20 to-rose-500/5',
-        icon: <Layout size={24} className="text-pink-400" />,
+        id: 'yace19ai',
+        title: 'Yace19ai.com',
+        category: 'Portfolio Website',
+        description: 'Professional portfolio showcasing AI Builder expertise with ASIREM multi-agent ecosystem. Features 3D neural meshwork, interactive project showcase, and modern web design.',
+        tech: ['TypeScript', 'React', 'Three.js', 'Tailwind CSS'],
+        link: 'https://github.com/Yacinewhatchandcode/Yace19ai.com',
+        color: 'from-cyan-500/20 to-blue-500/5',
+        icon: <Layout size={24} className="text-cyan-400" />,
         status: 'live',
-        aiModel: 'SiliconFlow API',
-        image: '/repo-Faith.png'
+        aiModel: 'Google AI Studio',
+        image: '/repo-Yace19ai.com.png'
     },
     {
         id: 'mcp-registry',
@@ -88,10 +87,24 @@ const projects: Project[] = [
         image: '/repo-mcp-registry.png'
     },
     {
+        id: 'faith-video',
+        title: 'Faith VideoGenerator',
+        category: 'AI Video Creation',
+        description: 'AI-powered video generation system with scene creation and automated editing. Integrates with SiliconFlow API for intelligent video content production.',
+        tech: ['TypeScript', 'React', 'AI APIs', 'FFmpeg'],
+        link: 'https://github.com/Yacinewhatchandcode/Faith',
+        videoFile: '/videos/faith-demo.mp4',
+        color: 'from-pink-500/20 to-rose-500/5',
+        icon: <Layout size={24} className="text-pink-400" />,
+        status: 'live',
+        aiModel: 'Claude Sonnet 3.5',
+        image: '/repo-Faith.png'
+    },
+    {
         id: 'aia-creative-lab',
         title: 'AIA Creative Lab',
         category: 'Creative AI Platform',
-        description: 'Vision 2030 - Creative AI laboratory for innovative digital experiences and AI-powered cinematic generation.',
+        description: 'Vision 2030 - Creative AI laboratory for innovative digital experiences and AI-powered content generation.',
         tech: ['TypeScript', 'React', 'AI Integration', 'Creative Tools'],
         link: 'https://github.com/Yacinewhatchandcode/AIA-Creative-Lab',
         color: 'from-indigo-500/20 to-purple-500/5',
@@ -110,34 +123,99 @@ const projects: Project[] = [
         color: 'from-yellow-500/20 to-amber-500/5',
         icon: <Code2 size={24} className="text-yellow-400" />,
         status: 'live',
-        aiModel: 'Architecture',
+        aiModel: 'Claude Sonnet 3.5',
         image: '/repo-hyperswitch-cloud.png'
     },
     {
+        id: 'hyperswitch-railway',
+        title: 'Hyperswitch Railway',
+        category: 'Payment Infrastructure',
+        description: 'Hyperswitch payment system - clean Railway deployment with optimized cloud infrastructure and seamless integration.',
+        tech: ['Python', 'Railway', 'Payment Gateway', 'Cloud Deploy'],
+        link: 'https://github.com/Yacinewhatchandcode/hyperswitch-railway',
+        color: 'from-teal-500/20 to-emerald-500/5',
+        icon: <Database size={24} className="text-teal-400" />,
+        status: 'live',
+        aiModel: 'Claude Sonnet 3.5',
+        image: '/repo-hyperswitch-railway.png'
+    },
+    {
         id: 'converse-final',
-        title: 'Converse Final Matrix',
+        title: 'Converse Final Solution',
         category: 'Conversational AI',
-        description: 'Advanced conversational AI system with intelligent dialogue management, state tracking, and memory retention across large multi-turn sequences.',
+        description: 'Advanced conversational AI system with intelligent dialogue management and multi-turn conversation capabilities.',
         tech: ['TypeScript', 'AI Agents', 'NLP', 'Conversation'],
         link: 'https://github.com/Yacinewhatchandcode/converse-final-solution',
-        color: 'from-teal-500/20 to-green-500/5',
-        icon: <Bot size={24} className="text-teal-400" />,
+        color: 'from-blue-500/20 to-indigo-500/5',
+        icon: <Bot size={24} className="text-blue-400" />,
         status: 'live',
         aiModel: 'GPT-4',
         image: '/repo-converse-final-solution.png'
     },
     {
+        id: 'lovable-spirit-forge',
+        title: 'Lovable Spirit Forge',
+        category: 'Creative Development',
+        description: 'Spirit forge project for creative AI applications and experimental digital experiences.',
+        tech: ['TypeScript', 'React', 'Creative Tools', 'AI'],
+        link: 'https://github.com/Yacinewhatchandcode/lovable-spirit-forge',
+        color: 'from-pink-500/20 to-fuchsia-500/5',
+        icon: <Layout size={24} className="text-pink-400" />,
+        status: 'live',
+        aiModel: 'Claude Sonnet',
+        image: '/repo-lovable-spirit-forge.png'
+    },
+    {
+        id: 'bsq',
+        title: 'BSQ - Autonomous Multi-Agent',
+        category: 'Spiritual AI System',
+        description: 'Bahá\'í Spiritual Quest - Autonomous Multi-Agent System for spiritual guidance and knowledge exploration with intelligent conversation flows.',
+        tech: ['Python', 'Multi-Agent', 'NLP', 'Knowledge Base'],
+        link: 'https://github.com/Yacinewhatchandcode/BSQ-Autonomous-Multi-Agent',
+        color: 'from-amber-500/20 to-yellow-500/5',
+        icon: <Bot size={24} className="text-amber-400" />,
+        status: 'live',
+        aiModel: 'Claude Sonnet 3.7',
+        image: '/repo-BSQ-Autonomous-Multi-Agent.png'
+    },
+    {
+        id: 'sq-baha',
+        title: 'SQ BAHA',
+        category: 'Spiritual AI System',
+        description: 'Spiritual Quest system complementing BSQ with enhanced spiritual knowledge exploration and guidance capabilities.',
+        tech: ['Python', 'AI Agents', 'Knowledge Graph', 'NLP'],
+        link: 'https://github.com/Yacinewhatchandcode/SQ-BAHA',
+        color: 'from-orange-500/20 to-red-500/5',
+        icon: <Cpu size={24} className="text-orange-400" />,
+        status: 'live',
+        aiModel: 'GPT-4',
+        image: '/repo-SQ-BAHA.png'
+    },
+    {
         id: 'agent-coder-ybe',
         title: 'AgentCoderYBE',
-        category: 'Autonomous Programming',
-        description: 'Autonomous agent-based code generation system. Programs entire frontend apps from text intent and self-corrects based on compiler errors in real-time.',
+        category: 'AI Code Generation',
+        description: 'Autonomous agent-based code generation system for intelligent software development and automated programming tasks.',
         tech: ['Python', 'Code Generation', 'AI Agents', 'Automation'],
         link: 'https://github.com/Yacinewhatchandcode/AgentCoderYBE',
-        color: 'from-green-500/20 to-emerald-500/5',
-        icon: <Code2 size={24} className="text-green-400" />,
+        color: 'from-emerald-500/20 to-cyan-500/5',
+        icon: <Code2 size={24} className="text-emerald-400" />,
         status: 'live',
-        aiModel: 'Claude Engineer',
+        aiModel: 'GPT-4 + Claude',
         image: '/repo-AgentCoderYBE.png'
+    },
+    {
+        id: 'aia-discovery',
+        title: 'AIA Discovery',
+        category: 'Research Platform',
+        description: 'AIA lab discovery platform for AI research and experimental development.',
+        tech: ['TypeScript', 'Research Tools', 'AI Integration'],
+        link: 'https://github.com/Yacinewhatchandcode/AIA-Discovery',
+        color: 'from-blue-500/20 to-cyan-500/5',
+        icon: <Database size={24} className="text-blue-400" />,
+        status: 'live',
+        aiModel: 'Multi-Model',
+        image: '/repo-AIA-Discovery.png'
     }
 ];
 
@@ -149,10 +227,10 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`group relative bg-gray-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-900/20 flex flex-col h-full ${isPlaying ? 'md:col-span-2 lg:col-span-2 row-span-2 z-10 scale-[1.02]' : ''}`}
+            className={`group relative bg-gray-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-900/20 flex flex-col h-full items-stretch ${isPlaying ? 'md:col-span-2 lg:col-span-2 row-span-2 z-10 scale-[1.02]' : ''}`}
         >
             {/* Header / Graphic / Video Demo */}
-            <div className={`transition-all duration-500 bg-gray-900 relative overflow-hidden flex flex-col justify-center items-center ${isPlaying ? 'h-96 md:h-[500px]' : 'h-48 group-hover:h-56'}`}>
+            <div className={`transition-all duration-500 bg-gray-900 relative overflow-hidden flex flex-col justify-center items-center shrink-0 ${isPlaying ? 'h-96 md:h-[500px]' : 'h-48 group-hover:h-56'}`}>
 
                 {isPlaying ? (
                     <div className="absolute inset-0 w-full h-full bg-black">
@@ -180,6 +258,10 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                                     src={project.image}
                                     alt={project.title}
                                     className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
+                                    onError={(e) => {
+                                        // Fallback if image doesn't exist
+                                        (e.target as HTMLImageElement).style.display = 'none';
+                                    }}
                                 />
                                 {/* Abstract decorative lines representing scanning */}
                                 <div className="absolute top-0 left-0 w-full h-1 bg-cyan-400/50 shadow-[0_0_15px_rgba(6,182,212,1)] opacity-0 group-hover:opacity-100 group-hover:animate-[scan_2s_ease-in-out_infinite] z-20 pointer-events-none" />
@@ -193,24 +275,21 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                         </div>
 
                         <div className="absolute bottom-4 left-6 flex gap-2 z-20">
+                            {project.aiModel && (
+                                <span className="text-[10px] font-bold tracking-wider uppercase text-cyan-300 bg-cyan-900/40 px-2 py-1 rounded backdrop-blur-md border border-cyan-500/30">
+                                    {project.aiModel}
+                                </span>
+                            )}
                             <span className="text-[10px] font-bold tracking-wider uppercase text-white bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10 backdrop-saturate-150">
                                 {project.category}
                             </span>
-                            {project.status && (
-                                <span className={`text-[10px] font-bold tracking-wider uppercase px-2 py-1 rounded backdrop-blur-md ${project.status === 'live' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
-                                    project.status === 'development' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' :
-                                        'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                                    }`}>
-                                    {project.status === 'live' ? '● Live' : project.status === 'development' ? '◐ In Dev' : '○ Concept'}
-                                </span>
-                            )}
                         </div>
 
                         {(project.videoFile || project.demoUrl) && (
                             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
                                 <button
                                     onClick={() => setIsPlaying(true)}
-                                    className="flex items-center gap-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border border-cyan-400/50 backdrop-blur-md px-6 py-3 rounded-full text-white font-bold transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] hover:-translate-y-1"
+                                    className={`flex items-center gap-3 border backdrop-blur-md px-6 py-3 rounded-full text-white font-bold transition-all hover:-translate-y-1 ${project.videoFile ? 'bg-gradient-to-r from-red-600 to-red-800 border-red-400/50 shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_30px_rgba(220,38,38,0.6)]' : 'bg-gradient-to-r from-cyan-600 to-blue-600 border-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)]'}`}
                                 >
                                     <PlayCircle size={24} className="animate-pulse" />
                                     {project.videoFile ? "Watch Visual Demo" : "Open Live Interface"}
@@ -240,7 +319,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                 </p>
 
                 {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className="flex flex-wrap gap-2 mb-6">
                     {project.tech.map((t) => (
                         <span key={t} className="text-xs font-medium px-2 py-1 rounded-md bg-white/5 text-gray-300 border border-white/5">
                             {t}
@@ -249,37 +328,25 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                 </div>
 
                 {/* Action Footer */}
-                <div className="pt-4 border-t border-white/5 mt-auto flex flex-col gap-4">
-                    <a
-                        href="https://prime-ai.fr"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#172554] to-[#1e3a8a] text-white py-3 rounded-lg border border-blue-400/20 hover:border-blue-400/40 hover:shadow-lg hover:shadow-blue-900/40 font-bold transition-all"
-                    >
-                        Acquire Source & Setup <ExternalLink size={16} />
-                    </a>
-
-                    <div className="flex items-center justify-between px-1">
-                        {project.link ? (
-                            <a
-                                href={project.link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 text-xs font-semibold text-gray-400 hover:text-white transition-colors"
-                            >
-                                <Github size={14} /> Review Technical Code
-                            </a>
-                        ) : (
-                            <span className="text-xs font-medium text-gray-600">Private Enterprise Repo</span>
-                        )}
-                        <div className="flex gap-2 text-gray-500">
-                            {(project.demoUrl) && (
-                                <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" aria-label="Open App in Full tab" className="text-xs font-semibold text-cyan-500 hover:text-cyan-400 flex items-center gap-1 transition-colors">
-                                    <PlayCircle size={14} /> Live Play
-                                </a>
-                            )}
-                        </div>
-                    </div>
+                <div className="mt-auto">
+                    {project.link ? (
+                        <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ padding: '0.75rem' }}
+                            className={`w-full flex items-center justify-center gap-2 text-white rounded-lg border font-bold transition-all shadow-lg text-sm
+                                ${project.videoFile
+                                    ? 'bg-gradient-to-r from-red-600 to-red-800 border-red-500 shadow-red-900/40 hover:border-red-400'
+                                    : 'bg-gradient-to-r from-blue-600 to-blue-800 border-blue-500 shadow-blue-900/40 hover:border-blue-400'}`}
+                        >
+                            <Github size={18} /> {project.videoFile ? 'Access Full Github & Video' : 'Review Complete Github Repo'}
+                        </a>
+                    ) : (
+                        <span style={{ padding: '0.75rem' }} className="w-full flex items-center justify-center gap-2 bg-gray-800 text-gray-400 rounded-lg border border-gray-700 font-bold text-sm">
+                            <Github size={18} /> Private Enterprise Repo
+                        </span>
+                    )}
                 </div>
             </div>
         </motion.div>
