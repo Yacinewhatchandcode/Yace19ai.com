@@ -28,6 +28,17 @@ interface Game {
 
 const GAMES: Game[] = [
     {
+        id: "sovereign-matrix",
+        title: "Sovereign OS: Active Matrix",
+        desc: "Interactive 3D terminal replacing the text IDE. Command internal Swarm agents natively by moving your avatar and approaching execution nodes.",
+        icon: Cpu,
+        demoUrl: "/sovereign/index.html",
+        category: "System Interface",
+        status: "Live",
+        gradient: "from-green-600 to-emerald-400",
+        emoji: "🌐",
+    },
+    {
         id: "platformer",
         title: "Sovereign Platformer 3D",
         desc: "A custom 3D platformer running natively in your browser. Defy gravity, dodge obstacles, and survive the Mario-like challenges!",
