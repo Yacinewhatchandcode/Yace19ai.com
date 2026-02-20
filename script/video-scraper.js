@@ -1,8 +1,16 @@
 import { chromium } from 'playwright';
+import fs from 'fs';
+import path from 'path';
 
 const repos = [
+    'Sovereign-Ecosystem',
+    'Prime.AI',
+    'Yace19ai.com',
     'Faith',
-    'AgentCoderYBE'
+    'AIA-Creative-Lab',
+    'BSQ',
+    'SQ_BAHA',
+    'AgentCoderYBE',
 ];
 
 async function recordRepos() {
@@ -14,17 +22,25 @@ async function recordRepos() {
 
     for (const repo of repos) {
         console.log(`Recording: ${repo}...`);
-        const page = await context.newPage();
-        await page.goto(`https://github.com/Yacinewhatchandcode/${repo}`);
-        await page.waitForTimeout(3000); // 3 seconds video
-        await page.mouse.wheel(0, 500);
-        await page.waitForTimeout(2000);
-        const videoPath = await page.video().path();
-        await page.close();
+        try {
+            const page = await context.newPage();
+            await page.goto(`https://github.com/Yacinewhatchandcode/${repo}`);
+            await page.waitForTimeout(2000);
+            await page.mouse.wheel(0, 400);
+            await page.waitForTimeout(1000);
+            await page.mouse.wheel(0, 400);
+            await page.waitForTimeout(1000);
 
-        // Rename video
-        const fs = await import('fs');
-        fs.renameSync(videoPath, `../public/video-${repo}.webm`);
+            const videoPath = await page.video().path();
+            await page.close();
+
+            // Rename video to match repo name
+            const newPath = path.join('../public', `video-${repo}.webm`);
+            if (fs.existsSync(newPath)) fs.unlinkSync(newPath); // Remove if exists
+            fs.renameSync(videoPath, newPath);
+        } catch (e) {
+            console.error(`Error recording ${repo}:`, e.message);
+        }
     }
 
     await browser.close();
