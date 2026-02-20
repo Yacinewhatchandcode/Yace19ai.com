@@ -15,6 +15,7 @@ interface Project {
     icon: React.ReactNode;
     status?: 'live' | 'development' | 'concept';
     aiModel?: string;
+    imagePath?: string;
 }
 
 const projects: Project[] = [
@@ -28,7 +29,8 @@ const projects: Project[] = [
         color: 'from-violet-500/20 to-purple-500/5',
         icon: <Cpu size={24} className="text-violet-400" />,
         status: 'live',
-        aiModel: 'Claude Sonnet 3.7'
+        aiModel: 'Claude Sonnet 3.7',
+        image: '/repo-Sovereign-Ecosystem.png'
     },
     {
         id: 'prime-ai',
@@ -40,7 +42,8 @@ const projects: Project[] = [
         color: 'from-emerald-500/20 to-teal-500/5',
         icon: <Cpu size={24} className="text-emerald-400" />,
         status: 'live',
-        aiModel: 'Claude Sonnet 3.7'
+        aiModel: 'Claude Sonnet 3.7',
+        image: '/repo-Prime.AI.png'
     },
     {
         id: 'yace19ai-portfolio',
@@ -52,7 +55,8 @@ const projects: Project[] = [
         color: 'from-cyan-500/20 to-blue-500/5',
         icon: <Globe size={24} className="text-cyan-400" />,
         status: 'live',
-        aiModel: 'Google AI Studio'
+        aiModel: 'Google AI Studio',
+        image: '/repo-Yace19ai.com.png'
     },
     {
         id: 'mcp-registry',
@@ -64,7 +68,8 @@ const projects: Project[] = [
         color: 'from-orange-500/20 to-red-500/5',
         icon: <Database size={24} className="text-orange-400" />,
         status: 'live',
-        aiModel: 'Multi-Model Support'
+        aiModel: 'Multi-Model Support',
+        image: '/repo-mcp-registry.png'
     },
     {
         id: 'faith-video',
@@ -76,7 +81,8 @@ const projects: Project[] = [
         color: 'from-pink-500/20 to-rose-500/5',
         icon: <Layout size={24} className="text-pink-400" />,
         status: 'live',
-        aiModel: 'Claude Sonnet 3.5'
+        aiModel: 'Claude Sonnet 3.5',
+        image: '/repo-Faith.png'
     },
     {
         id: 'aia-creative-lab',
@@ -88,7 +94,8 @@ const projects: Project[] = [
         color: 'from-indigo-500/20 to-purple-500/5',
         icon: <Layout size={24} className="text-indigo-400" />,
         status: 'live',
-        aiModel: 'GPT-4'
+        aiModel: 'GPT-4',
+        image: '/repo-AIA-Creative-Lab.png'
     },
     {
         id: 'hyperswitch-cloud',
@@ -100,7 +107,8 @@ const projects: Project[] = [
         color: 'from-yellow-500/20 to-amber-500/5',
         icon: <Code2 size={24} className="text-yellow-400" />,
         status: 'live',
-        aiModel: 'Claude Sonnet 3.5'
+        aiModel: 'Claude Sonnet 3.5',
+        image: '/repo-hyperswitch-cloud.png'
     },
     {
         id: 'hyperswitch-railway',
@@ -112,7 +120,8 @@ const projects: Project[] = [
         color: 'from-amber-500/20 to-yellow-500/5',
         icon: <Database size={24} className="text-amber-400" />,
         status: 'live',
-        aiModel: 'Claude Sonnet 3.5'
+        aiModel: 'Claude Sonnet 3.5',
+        image: '/repo-hyperswitch-railway.png'
     },
     {
         id: 'converse-final',
@@ -124,7 +133,8 @@ const projects: Project[] = [
         color: 'from-teal-500/20 to-green-500/5',
         icon: <Bot size={24} className="text-teal-400" />,
         status: 'live',
-        aiModel: 'GPT-4'
+        aiModel: 'GPT-4',
+        image: '/repo-converse-final-solution.png'
     },
     {
         id: 'lovable-spirit-forge',
@@ -136,7 +146,8 @@ const projects: Project[] = [
         color: 'from-rose-500/20 to-pink-500/5',
         icon: <Layout size={24} className="text-rose-400" />,
         status: 'live',
-        aiModel: 'Claude Sonnet'
+        aiModel: 'Claude Sonnet',
+        image: '/repo-lovable-spirit-forge.png'
     },
     {
         id: 'bsq',
@@ -148,7 +159,8 @@ const projects: Project[] = [
         color: 'from-blue-500/20 to-cyan-500/5',
         icon: <Bot size={24} className="text-blue-400" />,
         status: 'live',
-        aiModel: 'Claude Sonnet 3.7'
+        aiModel: 'Claude Sonnet 3.7',
+        imagePath: '/repo-BSQ.png'
     },
     {
         id: 'sq-baha',
@@ -160,7 +172,8 @@ const projects: Project[] = [
         color: 'from-sky-500/20 to-blue-500/5',
         icon: <Bot size={24} className="text-sky-400" />,
         status: 'live',
-        aiModel: 'GPT-4'
+        aiModel: 'GPT-4',
+        imagePath: '/repo-SQ_BAHA.png'
     },
     {
         id: 'agent-coder-ybe',
@@ -172,7 +185,8 @@ const projects: Project[] = [
         color: 'from-green-500/20 to-emerald-500/5',
         icon: <Code2 size={24} className="text-green-400" />,
         status: 'live',
-        aiModel: 'GPT-4 + Claude'
+        aiModel: 'GPT-4 + Claude',
+        imagePath: '/repo-AgentCoderYBE.png'
     },
     {
         id: 'aia-discovery-mirror',
@@ -184,7 +198,8 @@ const projects: Project[] = [
         color: 'from-fuchsia-500/20 to-purple-500/5',
         icon: <Globe size={24} className="text-fuchsia-400" />,
         status: 'live',
-        aiModel: 'Multi-Model'
+        aiModel: 'Multi-Model',
+        imagePath: '/repo-https-github.com-Yacinewhatchandcode-AIA-DiscoVery.png'
     }
 ];
 
@@ -197,28 +212,42 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
             className="group relative bg-gray-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-900/10 flex flex-col h-full"
         >
             {/* Header / Graphic */}
-            <div className={`h-32 bg-gradient-to-br ${project.color} p-6 relative overflow-hidden`}>
-                <div className="absolute top-4 right-4 bg-black/20 backdrop-blur-md p-2 rounded-lg border border-white/5">
+            <div className={`h-40 bg-gradient-to-br ${project.color} p-6 relative overflow-hidden flex items-end`}>
+                {project.imagePath && (
+                    <div className="absolute inset-0 z-0">
+                        <img
+                            src={project.imagePath}
+                            alt={project.title}
+                            className="w-full h-full object-cover object-top opacity-50 mix-blend-screen group-hover:opacity-80 transition-opacity duration-500 filter sepia-[50%] hue-rotate-180"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+                    </div>
+                )}
+
+                <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md p-2 rounded-lg border border-white/10 z-10">
                     {project.icon}
                 </div>
-                <div className="absolute bottom-4 left-6 flex gap-2">
-                    <span className="text-xs font-bold tracking-wider uppercase text-white/60 bg-black/20 px-2 py-1 rounded backdrop-blur-md">
+                <div className="relative z-10 flex gap-2">
+                    <span className="text-xs font-bold tracking-wider uppercase text-white/80 bg-black/40 px-2 py-1 rounded backdrop-blur-md">
                         {project.category}
                     </span>
                     {project.status && (
-                        <span className={`text-xs font-bold tracking-wider uppercase px-2 py-1 rounded backdrop-blur-md ${
-                            project.status === 'live' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
+                        <span className={`text-xs font-bold tracking-wider uppercase px-2 py-1 rounded backdrop-blur-md ${project.status === 'live' ? 'bg-green-500/20 text-green-300 border border-green-500/30' :
                             project.status === 'development' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' :
-                            'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                        }`}>
+                                'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+                            }`}>
                             {project.status === 'live' ? '● Live' : project.status === 'development' ? '◐ In Dev' : '○ Concept'}
                         </span>
                     )}
                 </div>
 
-                {/* Abstract decorative circles */}
-                <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors" />
-                <div className="absolute -left-4 -bottom-4 w-32 h-32 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors" />
+                {/* Abstract decorative circles (hidden if image exists) */}
+                {!project.imagePath && (
+                    <>
+                        <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors z-0" />
+                        <div className="absolute -left-4 -bottom-4 w-32 h-32 bg-white/5 rounded-full blur-2xl group-hover:bg-white/10 transition-colors z-0" />
+                    </>
+                )}
             </div>
 
             {/* Content */}
@@ -252,7 +281,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                 {/* Action Footer */}
                 <div className="flex items-center justify-between pt-4 border-t border-white/5 mt-auto">
                     {project.link ? (
-                        <a 
+                        <a
                             href={project.link}
                             target="_blank"
                             rel="noopener noreferrer"
