@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion';
 import { Activity, ArrowRight } from 'lucide-react';
 import asiremBanner from '../assets/asirem-banner.webp';
-
-
+import GamesCatalog from './GamesCatalog';
 
 export default function AziReMCatalog() {
     return (
@@ -30,17 +29,17 @@ export default function AziReMCatalog() {
                     viewport={{ once: true }}
                     className="relative rounded-3xl overflow-hidden shadow-2xl border border-amber-500/20 mb-12"
                 >
-                    <img 
-                        src={asiremBanner} 
-                        alt="ASIREM - Where the gears turn with grace, and hope blooms eternal" 
+                    <img
+                        src={asiremBanner}
+                        alt="ASIREM - Where the gears turn with grace, and hope blooms eternal"
                         className="w-full h-auto object-cover"
                         loading="lazy"
                         decoding="async"
                     />
-                    
+
                     {/* Overlay CTA */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end justify-center pb-12 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                        <a 
+                        <a
                             href="mailto:info.primeai@gmail.com?subject=ASIREM Agent Deployment Inquiry"
                             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold text-lg shadow-2xl hover:shadow-amber-500/50 transition-all hover:scale-105"
                         >
@@ -59,11 +58,11 @@ export default function AziReMCatalog() {
                     className="text-center max-w-3xl mx-auto"
                 >
                     <p className="text-gray-400 leading-relaxed mb-6">
-                        ASIREM represents the harmonious fusion of mechanical precision and organic creativity. 
-                        Our multi-agent ecosystem operates like a steampunk orchestra, where each agent plays its unique role 
+                        ASIREM represents the harmonious fusion of mechanical precision and organic creativity.
+                        Our multi-agent ecosystem operates like a steampunk orchestra, where each agent plays its unique role
                         in composing solutions that are both technically elegant and beautifully human.
                     </p>
-                    <a 
+                    <a
                         href="mailto:info.primeai@gmail.com?subject=ASIREM Agent System Consultation"
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 text-white font-semibold border border-white/10 hover:bg-white/10 hover:border-amber-500/30 transition-all"
                     >
@@ -71,6 +70,11 @@ export default function AziReMCatalog() {
                         <ArrowRight size={18} />
                     </a>
                 </motion.div>
+
+                {/* Encapsulated Games/Interactive Modules */}
+                <div className="mt-20">
+                    <GamesCatalog />
+                </div>
             </div>
         </section>
     );

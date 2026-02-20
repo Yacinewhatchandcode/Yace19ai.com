@@ -145,7 +145,7 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
                                 onClick={() => setIsPlaying(true)}
                                 className="flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white font-semibold transition-all shadow-lg hover:scale-105"
                             >
-                                <PlayCircle size={20} /> Play Game Instantly
+                                <PlayCircle size={20} /> Test Live Mechanics
                             </button>
                         </div>
                     </>
@@ -176,10 +176,10 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
                 <div className="flex flex-col gap-3 mt-auto">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                            <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest">
-                                Free Web Version
-                            </span>
+                            <div className="bg-gradient-to-r from-red-600 to-red-700 backdrop-blur-md px-3 py-1 rounded-lg border border-red-500 shadow-lg flex items-center gap-2">
+                                <span className="text-white font-black tracking-wide text-xs">149€ HT</span>
+                                <span className="text-red-200/70 text-[10px] line-through font-medium">239€</span>
+                            </div>
                         </div>
                         <div className="flex gap-2">
                             {game.apkUrl && (
@@ -202,8 +202,8 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
 
 export default function GamesCatalog() {
     return (
-        <section className="py-20 px-4 relative">
-            <div className="w-full max-w-7xl mx-auto">
+        <div className="w-full relative">
+            <div className="w-full mx-auto">
                 <div className="flex flex-col items-center text-center mb-16">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -213,15 +213,15 @@ export default function GamesCatalog() {
                     >
                         <Sparkles className="w-4 h-4 text-cyan-400" />
                         <span className="text-cyan-300 text-xs font-bold tracking-widest uppercase">
-                            Free AI Game Catalog
+                            ASIREM Interactive Modules
                         </span>
                     </motion.div>
 
                     <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                        Play <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">AI Games</span> In Your Browser
+                        Explore <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Live Engines</span> In Your Browser
                     </h2>
                     <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-                        From reflex-based platformers to strategic AI simulations. Every game runs natively in this viewport. No downloads. No installs. No cost.
+                        From reflex-based graphical mechanics to strategic AI simulations. Every module runs natively in this viewport. Test live, then acquire the full source code logic.
                     </p>
                 </div>
 
@@ -231,6 +231,6 @@ export default function GamesCatalog() {
                     ))}
                 </div>
             </div>
-        </section>
+        </div>
     );
 }
