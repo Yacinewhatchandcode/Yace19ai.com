@@ -9,6 +9,7 @@ import {
     ChevronRight,
     ArrowLeft,
     Sparkles,
+    Smartphone,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -19,6 +20,8 @@ const GAMES = [
         desc: "A custom 3D platformer running natively in your browser. Defy gravity, dodge obstacles, and survive the Mario-like challenges!",
         icon: Zap,
         href: "/games/platformer/index.html",
+        apkUrl: "/downloads/Sovereign-Platformer_Android.apk",
+        iosInfo: "iOS Native Ready (Requires Local Xcode compilation)",
         category: "Action / Platformer",
         status: "Live",
         gradient: "from-red-600 to-orange-500",
@@ -30,6 +33,8 @@ const GAMES = [
         desc: "A Vampire-Survivor style auto-battler. Command your AI swarm, upgrade node levels, and protect the core integrity!",
         icon: Swords,
         href: "/games/swarm-architect/index.html",
+        apkUrl: "/downloads/Swarm-Architect_Android.apk",
+        iosInfo: "iOS Native Ready (Requires Local Xcode compilation)",
         category: "Auto-Battler",
         status: "Live",
         gradient: "from-purple-600 to-indigo-500",
@@ -41,6 +46,8 @@ const GAMES = [
         desc: "A collection of 9 tailored educational games for young explorers aged 3-12. Enjoy Puzzle solving, Coding and more!",
         icon: Bot,
         href: "/games/kids-games/index.html",
+        apkUrl: "/downloads/Antigravity-Kids_Android.apk",
+        iosInfo: "iOS Native Ready (Requires Local Xcode compilation)",
         category: "Education",
         status: "Live",
         gradient: "from-blue-600 to-cyan-500",
@@ -160,16 +167,13 @@ export default function GamesPage() {
                 {/* Game Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {GAMES.map((game, i) => (
-                        <motion.a
+                        <motion.div
                             key={game.id}
-                            href={game.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.25 + i * 0.08 }}
                             whileHover={{ y: -4, scale: 1.01 }}
-                            className="group relative rounded-2xl overflow-hidden border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] transition-all duration-500 cursor-pointer block"
+                            className="group relative rounded-2xl overflow-hidden border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] transition-all duration-500 block"
                         >
                             {/* Gradient overlay on hover */}
                             <div
@@ -201,24 +205,48 @@ export default function GamesPage() {
                                     {game.desc}
                                 </p>
 
-                                {/* Footer: Free + Play button */}
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                                        <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest">
-                                            Free
-                                        </span>
+                                {/* Footer: Action Buttons */}
+                                <div className="flex flex-col gap-3 mt-4">
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                                            <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest">
+                                                Free
+                                            </span>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            {game.apkUrl && (
+                                                <a
+                                                    href={game.apkUrl}
+                                                    download
+                                                    className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-sm font-bold border border-white/10 transition-colors"
+                                                >
+                                                    <Smartphone className="w-4 h-4" />
+                                                    APK
+                                                </a>
+                                            )}
+                                            <a
+                                                href={game.href}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-shadow relative z-20"
+                                            >
+                                                Web
+                                                <ChevronRight className="w-4 h-4" />
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-sm font-bold shadow-lg shadow-cyan-500/20 group-hover:shadow-cyan-500/40 transition-shadow">
-                                        Play Now
-                                        <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-                                    </div>
+                                    {game.iosInfo && (
+                                        <div className="text-[10px] text-gray-500 flex items-center justify-end gap-1 px-1">
+                                            <span className="opacity-80">🍏 {game.iosInfo}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
                             {/* Subtle animated border glow on hover */}
                             <div className="absolute inset-0 rounded-2xl border border-cyan-500/0 group-hover:border-cyan-500/20 transition-colors duration-500 pointer-events-none" />
-                        </motion.a>
+                        </motion.div>
                     ))}
                 </div>
 
