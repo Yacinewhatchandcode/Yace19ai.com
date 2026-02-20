@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRIME.AI — Sovereign Platformer 3D</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Rajdhani', sans-serif;
+            color: #fff;
+            cursor: none;
+        }
+
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #custom-cursor {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0, 200, 255, 0.8);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.4);
+            transition: width 0.1s, height 0.1s;
+        }
+
+        #custom-cursor.click {
+            width: 14px;
+            height: 14px;
+            border-color: #ff0066;
+            box-shadow: 0 0 15px #ff0066;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="custom-cursor"></div>
+    <canvas id="game"></canvas>
+    <script src="audio.js"></script>
+    <script src="engine3d.js"></script>
+    <script src="engine3d_game.js"></script>
+</body>
+
+</html>
