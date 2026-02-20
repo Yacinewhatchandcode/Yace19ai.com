@@ -20,6 +20,19 @@ interface Project {
 
 const projects: Project[] = [
     {
+        id: 'eu-ai-act',
+        title: 'EU AI Act Compliance',
+        category: 'Regulatory AI Platform',
+        description: 'Full-Stack EU AI Act Compliance System — AI Risk Classification, Audit Engine, Knowledge Base, and Bot Integration. Built for enterprise regulatory compliance.',
+        tech: ['Python', 'Flask', 'PWA', 'OpenAI', 'EU AI Act'],
+        link: 'https://github.com/Yacinewhatchandcode/EU-AI-Act-Compliance',
+        videoFile: '/demo.mp4',
+        color: 'from-indigo-600/20 to-violet-500/5',
+        icon: <Cpu size={24} className="text-indigo-400" />,
+        status: 'live',
+        aiModel: 'GPT-4 + Custom NLP'
+    },
+    {
         id: 'ran-sales-copilot',
         title: 'RAN AI Sales Co-Pilot',
         category: 'B2B Enterprise SaaS',
@@ -225,6 +238,67 @@ const projects: Project[] = [
         status: 'live',
         aiModel: 'Multi-Model',
         image: '/repo-AIA-Discovery.png'
+    },
+    {
+        id: 'agent-y',
+        title: 'AgentY',
+        category: 'Autonomous AI Agent',
+        description: 'Autonomous AI Coding Agent with Semantic Memory — multi-model routing, intelligent code generation, and autonomous task execution across any language.',
+        tech: ['Python', 'LangChain', 'ChromaDB', 'OpenAI'],
+        link: 'https://github.com/Yacinewhatchandcode/AgentY',
+        color: 'from-purple-600/20 to-fuchsia-500/5',
+        icon: <Bot size={24} className="text-purple-400" />,
+        status: 'live',
+        aiModel: 'Multi-Model Router'
+    },
+    {
+        id: 'voice-cloning',
+        title: 'VoiceCloning',
+        category: 'Voice AI Pipeline',
+        description: 'Real-Time TTS & Voice Cloning Pipeline with F5-TTS, PyTorch, and Gradio. Full end-to-end voice agent capabilities.',
+        tech: ['Python', 'F5-TTS', 'PyTorch', 'Gradio'],
+        link: 'https://github.com/Yacinewhatchandcode/VoiceCloning',
+        color: 'from-rose-500/20 to-red-500/5',
+        icon: <Cpu size={24} className="text-rose-400" />,
+        status: 'live',
+        aiModel: 'F5-TTS + VoxCPM'
+    },
+    {
+        id: 'calendly-connect',
+        title: 'Calendly Connect',
+        category: 'MCP Integration',
+        description: 'Model Context Protocol server that enables AI agents to autonomously manage Calendly scheduling and appointments.',
+        tech: ['TypeScript', 'MCP', 'Calendly API', 'Node.js'],
+        link: 'https://github.com/Yacinewhatchandcode/calendly-connect',
+        color: 'from-sky-500/20 to-blue-500/5',
+        icon: <Code2 size={24} className="text-sky-400" />,
+        status: 'live',
+        aiModel: 'MCP Protocol'
+    },
+    {
+        id: 'networking',
+        title: 'NETWORKING',
+        category: 'Cyber Security',
+        description: 'Cyber Radar & Security Dashboard — network visualization, multi-agent security monitoring, and web security assessment tools.',
+        tech: ['JavaScript', 'Canvas API', 'WebSocket'],
+        link: 'https://github.com/Yacinewhatchandcode/NETWORKING',
+        color: 'from-green-600/20 to-emerald-500/5',
+        icon: <Database size={24} className="text-green-400" />,
+        status: 'live',
+        aiModel: 'Custom Detection'
+    },
+    {
+        id: 'antigravity-game',
+        title: 'Antigravity Game',
+        category: '3D Browser Game',
+        description: '3D Space Explorer with JEPA AI Agent — gravity-flip mechanics, Three.js rendering, runs entirely in the browser.',
+        tech: ['JavaScript', 'Three.js', 'WebGL', 'JEPA'],
+        link: 'https://github.com/Yacinewhatchandcode/antigravity-game',
+        demoUrl: 'https://antigravity-game.vercel.app',
+        color: 'from-teal-500/20 to-cyan-500/5',
+        icon: <Layout size={24} className="text-teal-400" />,
+        status: 'live',
+        aiModel: 'JEPA Agent'
     }
 ];
 
@@ -337,16 +411,27 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                 </div>
 
                 {/* Action Footer */}
-                <div className="mt-auto">
+                <div className="mt-auto flex gap-2">
+                    {project.link && (
+                        <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ padding: '0.75rem' }}
+                            className="flex-1 flex items-center justify-center gap-2 text-white rounded-lg border font-bold transition-all shadow-lg text-sm bg-gray-800/80 border-white/10 hover:border-white/30 hover:bg-gray-700/80"
+                        >
+                            <Github size={16} /> Source
+                        </a>
+                    )}
                     <a
                         href={`https://prime-ai.fr/checkout?product=${project.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ padding: '0.75rem' }}
-                        className={`w-full flex items-center justify-center gap-2 text-white rounded-lg border font-bold transition-all shadow-lg text-sm
+                        className={`flex-1 flex items-center justify-center gap-2 text-white rounded-lg border font-bold transition-all shadow-lg text-sm
                             bg-gradient-to-r from-blue-600 to-blue-800 border-blue-500 shadow-blue-900/40 hover:border-blue-400`}
                     >
-                        Acquire Source & Setup ↗
+                        Acquire & Setup ↗
                     </a>
                 </div>
             </div>
@@ -380,11 +465,11 @@ export default function ProjectPortfolio() {
                     {/* Stat 1 */}
                     <div className="bg-gray-900/80 p-6 flex flex-col justify-center items-center group hover:bg-gray-800/80 transition-colors">
                         <div className="text-4xl font-black text-white mb-2 group-hover:scale-110 transition-transform">
-                            77
+                            21
                             <span className="text-green-500 text-lg ml-1">🟢</span>
                         </div>
                         <div className="text-xs text-gray-400 font-mono text-center tracking-widest uppercase">
-                            Git Repositories
+                            GitHub Repositories
                         </div>
                     </div>
 
