@@ -1,8 +1,8 @@
-
 import { motion } from 'framer-motion';
 import { ArrowRight, Terminal, Monitor, Github } from "lucide-react";
 import { Link } from 'react-router-dom';
 
+import VoiceOrbInterface from '../components/VoiceOrbInterface';
 import ReinforcementSandbox from '../components/ReinforcementSandbox';
 import CommandTerminal from '../components/CommandTerminal';
 import AziReMCatalog from '../components/AziReMCatalog';
@@ -17,6 +17,8 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="flex flex-col gap-6 pt-12"
         >
+            <VoiceOrbInterface />
+
             {/* HER0 BENTO GRID */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-min">
 
