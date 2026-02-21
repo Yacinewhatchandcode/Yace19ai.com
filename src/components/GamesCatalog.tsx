@@ -28,6 +28,17 @@ interface Game {
 
 const GAMES: Game[] = [
     {
+        id: "sovereign-arcade",
+        title: "Sovereign Arcade",
+        desc: "6 classic arcade games with built-in AI agents. Play manually, challenge the agent, or watch it dominate. Runner, Invaders, Pipeline Dash, Snake, Breakout, Pong.",
+        icon: Sparkles,
+        demoUrl: "https://sovereign-arcade.vercel.app",
+        category: "Arcade / AI Agent",
+        status: "Live",
+        gradient: "from-cyan-600 via-purple-600 to-pink-500",
+        emoji: "🕹️",
+    },
+    {
         id: "sovereign-matrix",
         title: "Sovereign OS: Active Matrix",
         desc: "Interactive 3D terminal replacing the text IDE. Command internal Swarm agents natively by moving your avatar and approaching execution nodes.",
