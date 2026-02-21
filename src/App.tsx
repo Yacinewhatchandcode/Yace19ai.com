@@ -12,6 +12,7 @@ import NeuralMeshwork3D from "./components/NeuralMeshwork3D";
 import HomePage from "./pages/HomePage";
 import FleetPage from "./pages/FleetPage";
 import PhilosophyPage from "./pages/PhilosophyPage";
+import SovereignSearchPage from "./pages/SovereignSearchPage";
 
 function Navigation() {
   const location = useLocation();
@@ -19,7 +20,8 @@ function Navigation() {
   const navLinks = [
     { path: "/", label: "HOME", color: "text-cyan-400" },
     { path: "/fleet", label: "OUR WORK", color: "text-violet-400" },
-    { path: "/philosophy", label: "ABOUT US", color: "text-fuchsia-400" }
+    { path: "/philosophy", label: "ABOUT US", color: "text-fuchsia-400" },
+    { path: "/sovereign", label: "SOVEREIGN AI", color: "text-emerald-400" }
   ];
 
   return (
@@ -68,6 +70,7 @@ function AnimatedRoutes() {
         <Route path="/" element={<HomePage />} />
         <Route path="/fleet" element={<FleetPage />} />
         <Route path="/philosophy" element={<PhilosophyPage />} />
+        <Route path="/sovereign" element={<SovereignSearchPage />} />
       </Routes>
     </AnimatePresence>
   );
