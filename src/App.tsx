@@ -13,6 +13,8 @@ import HomePage from "./pages/HomePage";
 import FleetPage from "./pages/FleetPage";
 import PhilosophyPage from "./pages/PhilosophyPage";
 
+import LiveVisitorCounter from "./components/LiveVisitorCounter";
+
 function Navigation() {
   const location = useLocation();
 
@@ -45,6 +47,8 @@ function Navigation() {
             {link.label}
           </Link>
         ))}
+
+        <LiveVisitorCounter />
       </div>
 
       <a
