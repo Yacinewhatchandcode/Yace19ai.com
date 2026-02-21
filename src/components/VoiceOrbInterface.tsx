@@ -7,6 +7,37 @@ export default function VoiceOrbInterface() {
     const [isProcessing, setIsProcessing] = useState(false);
     const [query, setQuery] = useState('');
     const [responseText, setResponseText] = useState<string | null>(null);
+    const recognitionRef = React.useRef<any>(null);
+
+    React.useEffect(() => {
+        // @ts-ignore
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+
+            recognition.onresult = (event: any) => {
+                let currentTranscript = '';
+                for (let i = 0; i < event.results.length; i++) {
+                    currentTranscript += event.results[i][0].transcript;
+                }
+                setQuery(currentTranscript);
+            };
+
+            recognition.onerror = (event: any) => {
+                console.error("Speech recognition error:", event.error);
+                setIsListening(false);
+            };
+
+            recognition.onend = () => {
+                setIsListening(false);
+            };
+
+            recognitionRef.current = recognition;
+        }
+    }, []);
 
     // SEO textual representation
     const orbTitle = "AMLAZR Voice Intelligence System";
@@ -17,13 +48,26 @@ export default function VoiceOrbInterface() {
 
         if (isListening) {
             setIsListening(false);
-            handleSimulatedSpeechSubmit();
+            if (recognitionRef.current) {
+                recognitionRef.current.stop();
+            }
+            if (query.trim()) {
+                handleSimulatedSpeechSubmit(query);
+            } else {
+                handleSimulatedSpeechSubmit();
+            }
         } else {
             setIsListening(true);
             setResponseText(null);
             setQuery('');
 
-            // In a real implementation: initialize MediaRecorder here
+            if (recognitionRef.current) {
+                try {
+                    recognitionRef.current.start();
+                } catch (e) {
+                    console.error("Transcription already started.", e);
+                }
+            }
         }
     };
 
@@ -35,8 +79,9 @@ export default function VoiceOrbInterface() {
     };
 
     // Real Web Search AI Pipeline
-    const handleSimulatedSpeechSubmit = async () => {
+    const handleSimulatedSpeechSubmit = async (customQuery?: string) => {
         setIsProcessing(true);
+        const finalQuery = customQuery || query || "Test Sovereign Voice Interface";
 
         try {
             const res = await fetch('http://localhost:8082/api/asirem/speak', {
@@ -44,14 +89,14 @@ export default function VoiceOrbInterface() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message: query || "Test Sovereign Voice Interface" })
+                body: JSON.stringify({ message: finalQuery })
             });
 
             const data = await res.json();
             setIsProcessing(false);
 
             if (data.success) {
-                const synthesizedText = `Command received and delegated to Sovereign Agents: "${query}"`;
+                const synthesizedText = `Command received and delegated to Sovereign Agents: "${finalQuery}"`;
                 setResponseText(synthesizedText);
 
                 if (data.audio_url) {
