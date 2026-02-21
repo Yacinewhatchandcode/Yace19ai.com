@@ -1,155 +1,90 @@
+import { AnimatePresence } from "framer-motion";
+import { Rocket, Globe } from "lucide-react";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Gamepad2, Github, Menu, Rocket, Twitter, X } from "lucide-react";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 
-import React from 'react';
 import "./App.css";
-import founderImage from "./assets/founder.jpg";
-import Achievements from "./components/Achievements";
-import AgentStack from './components/AgentStack';
-import AziReMCatalog from "./components/AziReMCatalog";
-import DeploymentProtocols from "./components/DeploymentProtocols";
-import Footer from './components/Footer';
-import NeuralMeshwork3D from "./components/NeuralMeshwork3D";
-import Philosophy from './components/Philosophy';
-import ProjectPortfolio from "./components/ProjectPortfolio";
 
-function App() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+// Shared Background
+import NeuralMeshwork3D from "./components/NeuralMeshwork3D";
+
+// Pages
+import HomePage from "./pages/HomePage";
+import FleetPage from "./pages/FleetPage";
+import PhilosophyPage from "./pages/PhilosophyPage";
+
+function Navigation() {
+  const location = useLocation();
+
+  const navLinks = [
+    { path: "/", label: "HUB [0]", color: "text-cyan-400" },
+    { path: "/fleet", label: "SWARM [1]", color: "text-violet-400" },
+    { path: "/philosophy", label: "CORE [2]", color: "text-fuchsia-400" }
+  ];
 
   return (
-    <>
-      <NeuralMeshwork3D />
-      <div className="min-h-screen text-white relative z-20 selection:bg-cyan-500/30 font-sans overflow-x-hidden pb-12 bg-transparent">
-
-        {/* Improved Navigation */}
-        <nav className="fixed w-full px-6 py-4 flex justify-between items-center z-50 bg-transparent">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-              <span className="font-bold text-white">Y</span>
-            </div>
-            <span className="font-bold tracking-tight text-xl" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Yace19.ai</span>
-          </div>
-
-          <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
-            <a href="#projects" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Projects</a>
-            <a href="#philosophy" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Philosophy</a>
-            <a href="#agent-stack" className="hover:text-white transition-colors text-shadow-lg" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}>Stack</a>
-            <a href="#asirem" className="hover:text-white transition-colors flex items-center gap-1.5" style={{ textShadow: '0 0 10px rgba(0,0,0,0.8), 0 2px 4px rgba(0,0,0,0.9)' }}><Gamepad2 size={15} /> ASIREM Modules</a>
-            <div className="flex items-center gap-4 ml-4">
-              <a href="https://github.com/Yacinewhatchandcode" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
-                <Github className="w-5 h-5 cursor-pointer hover:text-white transition-colors" />
-              </a>
-              <a href="https://twitter.com/yace19ai" target="_blank" rel="noopener noreferrer" aria-label="Twitter Profile">
-                <Twitter className="w-5 h-5 cursor-pointer hover:text-white transition-colors" />
-              </a>
-            </div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button className="md:hidden text-white" onClick={() => setIsMenuOpen(true)} aria-label="Open menu">
-            <Menu size={24} />
-          </button>
-        </nav>
-
-        {/* Mobile Navigation Drawer */}
-        {isMenuOpen && (
-          <div className="fixed inset-0 z-[60] bg-black/95 backdrop-blur-xl md:hidden flex flex-col items-center justify-center gap-8 p-6">
-            <button className="absolute top-6 right-6" onClick={() => setIsMenuOpen(false)} aria-label="Close menu"><X size={32} /></button>
-            <a href="#projects" className="text-2xl font-bold text-cyan-400" onClick={() => setIsMenuOpen(false)}>Projects</a>
-            <a href="#philosophy" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Philosophy</a>
-            <a href="#agent-stack" className="text-2xl font-bold text-white" onClick={() => setIsMenuOpen(false)}>Stack</a>
-            <a href="#asirem" className="text-2xl font-bold text-cyan-400 flex items-center gap-2" onClick={() => setIsMenuOpen(false)}><Gamepad2 size={24} /> ASIREM Modules</a>
-          </div>
-        )}
-
-        {/* Main Content Container */}
-        <div className="pt-32 px-4 md:px-8 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-12">
-
-          {/* Main Feed Area */}
-          <main className="flex-grow min-w-0">
-            {/* Professional Profile Banner */}
-            <div className="mb-12 relative bg-transparent">
-              <div className="flex flex-col md:flex-row gap-8 items-start">
-                <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl border-2 border-white/10 overflow-hidden shadow-2xl shrink-0 bg-gray-800">
-                  <img src={founderImage} alt="Yacine" className="w-full h-full object-cover" />
-                </div>
-                <div className="flex-grow pt-2">
-                  <h1 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight leading-tight">
-                    Yacine Benhamou
-                    <span className="block text-xl md:text-2xl font-normal text-gray-400 mt-2 font-mono">Lead AI Builder | Agentic AI Strategy, Core Development & Multi-System Orchestration</span>
-                  </h1>
-                  <p className="text-gray-300 text-lg max-w-2xl leading-relaxed mb-6">
-                    Founder of Prime-AI, architecting autonomous multi-agent systems for enterprise automation.
-                    Specialized in <span className="text-cyan-400 font-semibold">Agentic AI Strategy</span>, <span className="text-purple-400 font-semibold">Multi-System Orchestration</span>, and building intelligent agents that drive real-world outcomes.
-                  </p>
-
-                  {/* Hero CTAs */}
-                  <div className="flex flex-wrap gap-4">
-                    <motion.a
-                      href="https://calendly.com/info-primeai/30min"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-shadow"
-                    >
-                      <Rocket size={18} />
-                      Start Collaboration
-                    </motion.a>
-                    <motion.a
-                      href="#projects"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 text-white font-semibold border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all"
-                    >
-                      View Case Studies
-                      <ArrowRight size={18} />
-                    </motion.a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-
-            {/* The Real Portfolio */}
-            <div id="projects">
-              <ProjectPortfolio />
-            </div>
-
-            {/* Achievements & Certifications */}
-            <Achievements />
-
-          </main>
+    <nav className="fixed w-full px-6 py-4 flex justify-between items-center z-[100] backdrop-blur-xl border-b border-white/[0.05] bg-[#02050A]/70">
+      <Link to="/" className="flex items-center gap-3 group">
+        <div className="w-8 h-8 rounded bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center relative overflow-hidden">
+          <Globe className="text-cyan-400 w-4 h-4 z-10 group-hover:rotate-180 transition-transform duration-700" />
+          <div className="absolute inset-0 bg-cyan-400/20 translate-y-full group-hover:translate-y-0 transition-transform" />
         </div>
-
-        {/* Agent Stack Section */}
-        <div id="agent-stack">
-          <AgentStack />
+        <div className="font-display font-black tracking-[0.2em] text-sm uppercase">
+          <span className="text-white">PRIME</span>
+          <span className="text-cyan-400">_AI</span>
         </div>
+      </Link>
 
-        {/* Philosophy & Vision */}
-        <div id="philosophy">
-          <Philosophy />
-        </div>
-
-        {/* AziReM Catalogue (Agent Feed) & Modules */}
-        <div id="asirem">
-          <AziReMCatalog />
-        </div>
-
-        {/* Deployment Protocols (Service Tiers) */}
-        <div id="deployment-protocols">
-          <DeploymentProtocols />
-        </div>
-
-        {/* Footer */}
-        <Footer />
-
+      <div className="hidden md:flex items-center gap-8 font-mono text-xs tracking-widest font-bold">
+        {navLinks.map((link) => (
+          <Link
+            key={link.path}
+            to={link.path}
+            className={`transition-all duration-300 ${location.pathname === link.path ? link.color : 'text-gray-500 hover:text-white'}`}
+          >
+            {link.label}
+          </Link>
+        ))}
       </div>
-    </>
+
+      <a
+        href="https://calendly.com/info-primeai/30min"
+        target="_blank"
+        rel="noreferrer"
+        className="px-5 py-2 rounded border border-purple-500/30 bg-purple-500/10 text-purple-400 font-mono text-xs font-bold tracking-widest uppercase hover:bg-purple-500/20 hover:border-purple-500/50 transition-all flex items-center gap-2 group"
+      >
+        <Rocket size={14} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+        DEPLOY SWARM
+      </a>
+    </nav>
   );
 }
 
-export default App;
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/fleet" element={<FleetPage />} />
+        <Route path="/philosophy" element={<PhilosophyPage />} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <div className="fixed inset-0 z-0 bg-[#02050A]">
+        <NeuralMeshwork3D />
+      </div>
+      <div className="relative z-10 min-h-screen text-white font-sans overflow-x-hidden selection:bg-cyan-500/30 selection:text-white flex flex-col pt-20">
+        <Navigation />
+        <div className="flex-1 w-full max-w-[1600px] mx-auto px-4 md:px-8 pb-12">
+          <AnimatedRoutes />
+        </div>
+      </div>
+    </Router>
+  );
+}

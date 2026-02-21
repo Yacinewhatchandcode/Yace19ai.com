@@ -77,8 +77,8 @@ const projects: Project[] = [
     {
         id: 'yace19ai',
         title: 'Yace19ai.com',
-        category: 'Portfolio Website',
-        description: 'Professional portfolio showcasing AI Builder expertise with ASIREM multi-agent ecosystem. Features 3D neural meshwork, interactive project showcase, and modern web design.',
+        category: 'Sovereign OS',
+        description: 'Sovereign OS Hub showcasing AI Builder expertise with ASIREM multi-agent ecosystem. Features 3D neural meshwork, active swarm nodes, and modern web architecture.',
         tech: ['TypeScript', 'React', 'Three.js', 'Tailwind CSS'],
         link: 'https://github.com/Yacinewhatchandcode/Yace19ai.com',
         videoFile: '/video-Yace19ai.com.webm',
@@ -441,7 +441,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
 
 export default function ProjectPortfolio() {
     return (
-        <div className="w-full max-w-7xl mx-auto pb-20">
+        <div className="w-full h-full pb-20">
             {/* Live Deep Audit Metrics */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -511,11 +511,11 @@ export default function ProjectPortfolio() {
             <div className="flex items-center justify-between mb-8 px-2 md:px-0">
                 <div className="flex items-center gap-3">
                     <Layout className="text-cyan-500" size={24} />
-                    <h2 className="text-2xl font-bold text-white tracking-tight">Agent Deployments & Architectures</h2>
+                    <h2 className="text-2xl font-bold text-white tracking-tight font-display uppercase">Active Swarm Nodes</h2>
                 </div>
-                <div className="text-sm text-gray-400 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
-                    Portfolio Showcase
+                <div className="text-sm font-mono tracking-widest text-cyan-400 flex items-center gap-2 bg-cyan-900/20 px-3 py-1 border border-cyan-500/30 rounded">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                    LIVE DEPLOYMENTS
                 </div>
             </div>
 
