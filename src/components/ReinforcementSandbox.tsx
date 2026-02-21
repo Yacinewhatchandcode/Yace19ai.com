@@ -14,14 +14,14 @@ export default function ReinforcementSandbox() {
                 <div className="flex items-center gap-3">
                     <Gamepad2 size={18} className="text-[#8B5CF6]" />
                     <span className="text-sm font-display font-medium tracking-widest uppercase text-gray-200">
-                        Reinforcement Learning Sandbox
+                        Interactive Arcade
                     </span>
                     <span className="bg-red-500/10 border border-red-500/20 text-red-400 text-[9px] px-2 py-0.5 rounded uppercase tracking-widest font-bold ml-2 animate-pulse">
-                        Live Feed
+                        Play Now
                     </span>
                 </div>
                 <div className="flex gap-4 items-center">
-                    <span className="text-xs font-mono text-gray-500 hidden sm:block">Status: AUTONOMOUS</span>
+                    <span className="text-xs font-mono text-gray-500 hidden sm:block">Status: ONLINE</span>
                     <a
                         href="https://sovereign-arcade.vercel.app"
                         target="_blank"

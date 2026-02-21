@@ -8,7 +8,8 @@ import {
     Sparkles,
     PlayCircle,
     X,
-    Smartphone
+    Smartphone,
+    Apple
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -129,10 +130,10 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.08 }}
-            className={`group relative rounded-2xl overflow-hidden border border-white/[0.06] bg-gray-900/40 backdrop-blur-md hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-900/10 flex flex-col h-full ${isPlaying ? 'md:col-span-2 lg:col-span-2 row-span-2 z-30 scale-[1.02]' : ''}`}
+            className={`group relative rounded-2xl overflow-hidden border border-white/[0.06] bg-gray-900/40 backdrop-blur-md hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-900/10 flex flex-col h-full ${isPlaying ? 'col-span-1 md:col-span-2 lg:col-span-2 row-span-2 z-30 scale-[1.02]' : ''}`}
         >
             {/* Header / Graphic / Iframe Container */}
-            <div className={`transition-all duration-500 bg-gradient-to-br ${game.gradient} relative overflow-hidden flex flex-col justify-center items-center ${isPlaying ? 'h-96 md:h-[500px]' : 'h-32 p-7'}`}>
+            <div className={`transition-all duration-500 bg-gradient-to-br ${game.gradient} relative overflow-hidden flex flex-col justify-center items-center ${isPlaying ? 'h-[60vh] md:h-[500px]' : 'h-32 p-7'}`}>
 
                 {isPlaying ? (
                     <div className="absolute inset-0 w-full h-full bg-black">
@@ -203,17 +204,30 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
                                 <span className="text-red-200/70 text-[10px] line-through font-medium">239€</span>
                             </div>
                         </div>
-                        <div className="flex gap-2">
-                            {game.apkUrl && (
+                        <div className="flex gap-2 flex-wrap justify-end mt-2 md:mt-0">
+                            {game.apkUrl ? (
                                 <a
                                     href={game.apkUrl}
                                     download
-                                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-bold border border-white/10 transition-colors"
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-bold border border-white/10 transition-colors"
                                 >
                                     <Smartphone className="w-4 h-4" />
-                                    APK
+                                    Android
                                 </a>
+                            ) : (
+                                <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 text-white/50 text-xs font-bold border border-white/5 cursor-not-allowed">
+                                    <Smartphone className="w-4 h-4" />
+                                    Android
+                                </span>
                             )}
+                            <a
+                                href={game.iosInfo || "#"}
+                                onClick={(e) => !game.iosInfo && e.preventDefault()}
+                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border transition-colors ${game.iosInfo ? 'bg-white/5 hover:bg-white/10 text-white border-white/10' : 'bg-white/5 text-white/50 border-white/5 cursor-not-allowed'}`}
+                            >
+                                <Apple className="w-4 h-4" />
+                                iOS
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -240,10 +254,10 @@ export default function GamesCatalog() {
                     </motion.div>
 
                     <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                        Explore <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Live Engines</span> In Your Browser
+                        Explore <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Live Experiences</span> Anywhere
                     </h2>
                     <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-                        From reflex-based graphical mechanics to strategic AI simulations. Every module runs natively in this viewport. Test live, then acquire the full source code logic.
+                        Play these immersive experiences directly in your browser on desktop and mobile, or download the native apps for iOS and Android. Our technology is built to be responsive everywhere.
                     </p>
                 </div>
 

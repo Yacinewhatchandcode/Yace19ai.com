@@ -17,9 +17,9 @@ function Navigation() {
   const location = useLocation();
 
   const navLinks = [
-    { path: "/", label: "HUB [0]", color: "text-cyan-400" },
-    { path: "/fleet", label: "SWARM [1]", color: "text-violet-400" },
-    { path: "/philosophy", label: "CORE [2]", color: "text-fuchsia-400" }
+    { path: "/", label: "HOME", color: "text-cyan-400" },
+    { path: "/fleet", label: "OUR WORK", color: "text-violet-400" },
+    { path: "/philosophy", label: "ABOUT US", color: "text-fuchsia-400" }
   ];
 
   return (
@@ -54,7 +54,7 @@ function Navigation() {
         className="px-5 py-2 rounded border border-purple-500/30 bg-purple-500/10 text-purple-400 font-mono text-xs font-bold tracking-widest uppercase hover:bg-purple-500/20 hover:border-purple-500/50 transition-all flex items-center gap-2 group"
       >
         <Rocket size={14} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
-        DEPLOY SWARM
+        START PROJECT
       </a>
     </nav>
   );
