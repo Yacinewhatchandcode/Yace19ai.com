@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Code2, Database, Layout, Cpu, Bot, PlayCircle, X } from 'lucide-react';
+import CheckoutModal from './CheckoutModal';
 
 interface Project {
     id: string;
@@ -304,6 +305,7 @@ const projects: Project[] = [
 
 const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, index }) => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
     return (
         <motion.div
@@ -423,16 +425,20 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                             <Github size={16} /> Source
                         </a>
                     )}
-                    <a
-                        href={`https://prime-ai.fr/checkout?product=${project.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <button
+                        onClick={() => setIsCheckoutOpen(true)}
                         style={{ padding: '0.75rem' }}
-                        className={`flex-1 flex items-center justify-center gap-2 text-white rounded-lg border font-bold transition-all shadow-lg text-sm
-                            bg-gradient-to-r from-blue-600 to-blue-800 border-blue-500 shadow-blue-900/40 hover:border-blue-400`}
+                        className={`flex-1 flex items-center justify-center gap-2 text-white rounded-lg border font-bold transition-all shadow-lg text-sm cursor-pointer
+                            bg-gradient-to-r from-blue-600 to-blue-800 border-blue-500 shadow-blue-900/40 hover:border-blue-400 hover:scale-[1.02]`}
                     >
-                        Acquire & Setup ↗
-                    </a>
+                        Acquire €1 ↗
+                    </button>
+                    <CheckoutModal
+                        isOpen={isCheckoutOpen}
+                        onClose={() => setIsCheckoutOpen(false)}
+                        projectId={project.id}
+                        projectTitle={project.title}
+                    />
                 </div>
             </div>
         </motion.div>
