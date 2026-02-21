@@ -199,10 +199,17 @@ const GameCard: React.FC<{ game: Game; index: number }> = ({ game, index }) => {
                 <div className="flex flex-col gap-3 mt-auto">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <div className="bg-gradient-to-r from-red-600 to-red-700 backdrop-blur-md px-3 py-1 rounded-lg border border-red-500 shadow-lg flex items-center gap-2">
-                                <span className="text-white font-black tracking-wide text-xs">149€ HT</span>
-                                <span className="text-red-200/70 text-[10px] line-through font-medium">239€</span>
-                            </div>
+                            <a
+                                href={`https://prime-ai.fr/checkout?product=${game.id}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 backdrop-blur-md px-4 py-1.5 rounded-xl border border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] hover:shadow-[0_0_20px_rgba(16,185,129,0.6)] flex items-center gap-2 transition-all group cursor-pointer"
+                            >
+                                <span className="text-white font-black tracking-widest text-xs uppercase group-hover:scale-105 transition-transform flex items-center gap-2">
+                                    Download Source: 1€
+                                </span>
+                                <span className="text-emerald-200/70 text-[10px] line-through font-medium">149€</span>
+                            </a>
                         </div>
                         <div className="flex gap-2 flex-wrap justify-end mt-2 md:mt-0">
                             {game.apkUrl ? (
