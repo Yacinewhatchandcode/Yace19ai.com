@@ -23,7 +23,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./init-scripts/postgres:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U orchestrator -d orchestrator"]
+      test: [ "CMD-SHELL", "pg_isready -U orchestrator -d orchestrator" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -42,12 +42,12 @@ services:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin2026}
     ports:
-      - "9000:9000"   # S3 API
-      - "9001:9001"   # Console
+      - "9000:9000" # S3 API
+      - "9001:9001" # Console
     volumes:
       - minio_data:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 30s
       timeout: 20s
       retries: 3
@@ -62,15 +62,7 @@ services:
       minio:
         condition: service_healthy
     entrypoint: >
-      /bin/sh -c "
-      mc alias set myminio http://minio:9000 minioadmin minioadmin2026;
-      mc mb myminio/artifacts-opus --ignore-existing;
-      mc mb myminio/proposals --ignore-existing;
-      mc mb myminio/reports --ignore-existing;
-      mc mb myminio/audit-logs --ignore-existing;
-      mc anonymous set download myminio/reports;
-      exit 0;
-      "
+      /bin/sh -c " mc alias set myminio http://minio:9000 ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-minioadmin2026}; mc mb myminio/artifacts-opus --ignore-existing; mc mb myminio/proposals --ignore-existing; mc mb myminio/reports --ignore-existing; mc mb myminio/audit-logs --ignore-existing; mc anonymous set download myminio/reports; exit 0; "
     networks:
       - orchestrator-net
 
@@ -112,7 +104,7 @@ services:
     volumes:
       - kafka_data:/var/lib/kafka/data
     healthcheck:
-      test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
+      test: [ "CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -127,15 +119,7 @@ services:
       kafka:
         condition: service_healthy
     entrypoint: >
-      /bin/sh -c "
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic proposals --partitions 3 --replication-factor 1;
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic votes --partitions 3 --replication-factor 1;
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic events --partitions 3 --replication-factor 1;
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic metrics --partitions 1 --replication-factor 1;
-      kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic audit --partitions 1 --replication-factor 1;
-      echo 'Kafka topics created successfully';
-      exit 0;
-      "
+      /bin/sh -c " kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic proposals --partitions 3 --replication-factor 1; kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic votes --partitions 3 --replication-factor 1; kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic events --partitions 3 --replication-factor 1; kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic metrics --partitions 1 --replication-factor 1; kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic audit --partitions 1 --replication-factor 1; echo 'Kafka topics created successfully'; exit 0; "
     networks:
       - orchestrator-net
 
@@ -152,7 +136,7 @@ services:
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -180,12 +164,12 @@ services:
     environment:
       NODE_ENV: development
       PORT: 8443
-      DATABASE_URL: postgres://orchestrator:orchestrator_dev_2026@postgres:5432/orchestrator
+      DATABASE_URL: postgres://${POSTGRES_USER:-orchestrator}:${POSTGRES_PASSWORD:-orchestrator_dev_2026}@postgres:5432/orchestrator
       KAFKA_BROKERS: kafka:9092
       REDIS_URL: redis://redis:6379
       S3_ENDPOINT: http://minio:9000
-      S3_ACCESS_KEY: minioadmin
-      S3_SECRET_KEY: minioadmin2026
+      S3_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
+      S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin2026}
       S3_BUCKET: artifacts-opus
     ports:
       - "8443:8443"
