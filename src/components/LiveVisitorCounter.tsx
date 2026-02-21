@@ -1,29 +1,46 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { supabase } from '../lib/supabase';
 
 export default function LiveVisitorCounter() {
-    const [visitors, setVisitors] = useState(0);
+    const [visitors, setVisitors] = useState(1);
 
     useEffect(() => {
-        // Base traffic baseline
-        const base = 142;
-        let current = base + Math.floor(Math.random() * 20);
-        setVisitors(current);
+        // Initialize Supabase realtime presence
+        const roomOne = supabase.channel('online-visitors', {
+            config: { presence: { key: 'user' } }
+        });
 
-        const interval = setInterval(() => {
-            const change = Math.floor(Math.random() * 5) - 2; // -2 to +2
-
-            setVisitors(prev => {
-                let next = prev + change;
-                // keep boundaries realistic
-                if (next < 110) next += 5;
-                if (next > 210) next -= 5;
-
-                return next;
+        roomOne
+            .on('presence', { event: 'sync' }, () => {
+                const newState = roomOne.presenceState();
+                // Count unique connections across the world
+                let totalConnected = 0;
+                for (const user in newState) {
+                    totalConnected += newState[user].length;
+                }
+                // Base 3 representing core devs + orchestrator, plus real live
+                setVisitors(Math.max(1, totalConnected));
+            })
+            .on('presence', { event: 'join' }, ({ key, newPresences }: { key: string, newPresences: any }) => {
+                console.log('join', key, newPresences);
+            })
+            .on('presence', { event: 'leave' }, ({ key, leftPresences }: { key: string, leftPresences: any }) => {
+                console.log('leave', key, leftPresences);
+            })
+            .subscribe(async (status: string) => {
+                if (status === 'SUBSCRIBED') {
+                    // Track this current client
+                    await roomOne.track({
+                        online_at: new Date().toISOString(),
+                        client_id: crypto.randomUUID(),
+                    });
+                }
             });
-        }, 3500);
 
-        return () => clearInterval(interval);
+        return () => {
+            supabase.removeChannel(roomOne);
+        };
     }, []);
 
     return (
