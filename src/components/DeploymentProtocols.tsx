@@ -14,41 +14,41 @@ interface ServiceTier {
 const tiers: ServiceTier[] = [
     {
         icon: <Rocket size={28} />,
-        name: 'MVP Velocity',
-        tagline: 'Launch fast, iterate faster',
+        name: 'MVP Acceleration',
+        tagline: 'Accelerate Time-to-Market',
         features: [
-            'Typical 7-day delivery timeline*',
-            'Full-stack development',
-            'Responsive design included',
-            'Deployment & handoff support',
-            '30-day post-launch support*'
+            'Accelerated 7-14 Day Delivery Cycle',
+            'End-to-End Scalable Architecture',
+            'Mobile-First Conversion Optimization',
+            'Seamless Enterprise Handoff',
+            '30-Day Technical Warranty & Support'
         ]
     },
     {
         icon: <Building2 size={28} />,
-        name: 'Enterprise Swarm',
-        badge: 'Prime Standard',
-        tagline: 'Sovereign AI at scale',
+        name: 'Enterprise AI Transformation',
+        badge: 'Executive Standard',
+        tagline: 'Secure & Scalable Data Sovereignty',
         features: [
-            'Private cloud deployment',
-            'Custom agent training',
-            'Full code ownership',
-            'Dedicated agent fleet',
-            'Priority support channel',
-            'Quarterly architecture reviews'
+            'Private Cloud & On-Premise Deployment',
+            'Proprietary Workflow Agent Training',
+            '100% Intellectual Property Transfer',
+            'Dedicated Autonomous Workforce',
+            'Priority SLAs & Infrastructure Monitoring',
+            'Quarterly AI Strategy & Architecture Reviews'
         ],
         isPrime: true
     },
     {
         icon: <Brain size={28} />,
-        name: 'Neural Architecture',
-        tagline: 'Strategic AI consulting',
+        name: 'Executive AI Consulting',
+        tagline: 'Digital Transformation Strategies',
         features: [
-            'System design workshops',
-            'Protocol integration',
-            'Team enablement sessions',
-            'Technology audits',
-            'Roadmap planning'
+            'C-Suite AI Roadmap Workshops',
+            'Legacy System Modernization',
+            'Corporate AI Enablement Training',
+            'Comprehensive Technical Debt Audits',
+            'Long-Term Scalability Planning'
         ]
     }
 ];
@@ -71,7 +71,7 @@ const DeploymentProtocols: React.FC = () => {
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-cyan-500/10 border border-white/10 mb-6"
                     >
                         <Sparkles size={16} className="text-purple-400" />
-                        <span className="text-sm font-medium text-gray-300">Engagement Models</span>
+                        <span className="text-sm font-medium text-gray-300">B2B Partnership</span>
                     </motion.div>
 
                     <motion.h2
@@ -81,7 +81,7 @@ const DeploymentProtocols: React.FC = () => {
                         transition={{ delay: 0.1 }}
                         className="text-3xl md:text-4xl font-bold text-white mb-4"
                     >
-                        Deployment Protocols
+                        Enterprise Licensing
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -90,7 +90,7 @@ const DeploymentProtocols: React.FC = () => {
                         transition={{ delay: 0.2 }}
                         className="text-gray-400 max-w-2xl mx-auto text-lg"
                     >
-                        Choose your path to sovereign intelligence
+                        Select the optimal integration framework for your business scalability.
                     </motion.p>
                 </div>
 
@@ -151,7 +151,7 @@ const DeploymentProtocols: React.FC = () => {
                                     : 'bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20'
                                     }`}
                             >
-                                Contact Us
+                                Book Execution Call
                                 <ArrowRight size={16} />
                             </a>
                         </motion.div>

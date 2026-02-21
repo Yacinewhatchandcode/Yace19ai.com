@@ -33,9 +33,9 @@ export default function HomePage() {
                 {/* SMALL TILE BOTTOM RIGHT: Repo / UIs Quick Stats */}
                 <div className="flex flex-col gap-4">
                     {[
-                        { label: 'GITHUB REPOS', value: '77', icon: Github, color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/30' },
-                        { label: 'FUNCTIONAL APPS', value: '125', icon: Monitor, color: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/30' },
-                        { label: 'PLAYABLE GAMES', value: '12', icon: Terminal, color: 'text-fuchsia-400', bg: 'bg-fuchsia-500/10', border: 'border-fuchsia-500/30' }
+                        { label: 'SCALABLE SYSTEMS', value: '77', icon: Github, color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/30' },
+                        { label: 'ENTERPRISE DEPLOYMENTS', value: '125', icon: Monitor, color: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/30' },
+                        { label: 'AI TRAINING MODULES', value: '12', icon: Terminal, color: 'text-fuchsia-400', bg: 'bg-fuchsia-500/10', border: 'border-fuchsia-500/30' }
                     ].map((stat, i) => (
                         <Link to="/fleet" key={i} className={`flex items-center justify-between p-4 rounded-2xl border ${stat.border} ${stat.bg} hover:bg-opacity-20 transition-all group`}>
                             <div className="flex items-center gap-4">

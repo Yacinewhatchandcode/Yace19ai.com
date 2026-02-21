@@ -30,19 +30,19 @@ interface Game {
 const GAMES: Game[] = [
     {
         id: "sovereign-arcade",
-        title: "Sovereign Arcade",
-        desc: "6 classic arcade games with built-in AI agents. Play manually, challenge the agent, or watch it dominate. Runner, Invaders, Pipeline Dash, Snake, Breakout, Pong.",
+        title: "AI Training Simulations",
+        desc: "6 distinct reinforcement learning environments engineered to train autonomous agents. Observe real-time algorithmic decision-making, predictive pathing, and strategic optimization.",
         icon: Sparkles,
         demoUrl: "https://sovereign-arcade.vercel.app",
-        category: "Arcade / AI Agent",
+        category: "Reinforcement Learning",
         status: "Live",
         gradient: "from-cyan-600 via-purple-600 to-pink-500",
         emoji: "🕹️",
     },
     {
         id: "sovereign-matrix",
-        title: "Sovereign OS: Active Matrix",
-        desc: "Interactive 3D terminal replacing the text IDE. Command internal Swarm agents natively by moving your avatar and approaching execution nodes.",
+        title: "Sovereign Command Matrix",
+        desc: "Immersive 3D data visualization and control center. Manage internal enterprise automation fleets securely by interacting with real-time execution nodes.",
         icon: Cpu,
         demoUrl: "/sovereign/index.html",
         category: "System Interface",
@@ -52,70 +52,70 @@ const GAMES: Game[] = [
     },
     {
         id: "platformer",
-        title: "Sovereign Platformer 3D",
-        desc: "A custom 3D platformer running natively in your browser. Defy gravity, dodge obstacles, and survive the Mario-like challenges!",
+        title: "Workflow Navigation Simulator",
+        desc: "A high-performance interactive simulation demonstrating advanced real-time physics and collision avoidance algorithms. Demonstrates low-latency edge computing integration.",
         icon: Zap,
         demoUrl: "https://prime-ai.fr/games/platformer/index.html",
         apkUrl: "/downloads/Sovereign-Platformer_Android.apk",
         iosInfo: "iOS Native Ready",
-        category: "Action / Platformer",
+        category: "Pathfinding Optimization",
         status: "Live",
         gradient: "from-red-600 to-orange-500",
         emoji: "🍄",
     },
     {
         id: "swarm-architect",
-        title: "Swarm Architect",
-        desc: "A Vampire-Survivor style auto-battler. Command your AI swarm, upgrade node levels, and protect the core integrity!",
+        title: "Autonomous Swarm Optimizer",
+        desc: "A strategic resource allocation simulator. Command a scalable network of AI nodes, optimize processing loads dynamically, and fortify enterprise data core integrity.",
         icon: Swords,
         demoUrl: "https://prime-ai.fr/games/swarm-architect/index.html",
         apkUrl: "/downloads/Swarm-Architect_Android.apk",
-        category: "Auto-Battler",
+        category: "Resource Management",
         status: "Live",
         gradient: "from-purple-600 to-indigo-500",
         emoji: "⚔️",
     },
     {
         id: "kids-games",
-        title: "Antigravity Kids",
-        desc: "A collection of 9 tailored educational games for young explorers aged 3-12. Enjoy Puzzle solving, Coding and more!",
+        title: "Next-Gen EdTech Automation",
+        desc: "A comprehensive suite of 9 interactive cognitive development modules. Built for scalable EdTech platforms focusing on problem-solving and algorithmic reasoning.",
         icon: Bot,
         demoUrl: "https://prime-ai.fr/games/kids-games/index.html",
         apkUrl: "/downloads/Antigravity-Kids_Android.apk",
-        category: "Education",
+        category: "EdTech Solutions",
         status: "Live",
         gradient: "from-blue-600 to-cyan-500",
         emoji: "🚀",
     },
     {
         id: "arena",
-        title: "Agent Arena",
-        desc: "12 autonomous AI agents in a real-time battle royale. Strategic combat, kill feeds, and only one winner.",
+        title: "Multi-Agent Neural Arena",
+        desc: "Observe 12 sovereign AI agents competing in a zero-sum resource acquisition simulation. Demonstrates real-time strategic adaptation and competitive edge algorithms.",
         icon: Swords,
         demoUrl: "https://prime-ai.fr/games/arena",
-        category: "Strategy / AI",
+        category: "Strategic Algorithmic Theory",
         status: "Live",
         gradient: "from-pink-600 to-rose-500",
         emoji: "⚔️",
     },
     {
         id: "werewolf",
-        title: "Project Werewolf",
-        desc: "AI social deduction simulation. 8 agents negotiate, accuse, and deceive across night/day cycles.",
+        title: "Social Dynamics Simulation",
+        desc: "Advanced Natural Language Processing simulation focusing on negotiation, deception detection, and strategic diplomacy using 8 autonomous LLM agents.",
         icon: Bot,
         demoUrl: "https://prime-ai.fr/games/werewolf",
-        category: "Agent Simulation",
+        category: "Social Engineering AI",
         status: "Live",
         gradient: "from-fuchsia-600 to-purple-500",
         emoji: "🐺",
     },
     {
         id: "chess",
-        title: "Sovereign Chess",
-        desc: "Full chess engine with minimax AI. Play against the computer or watch two AI engines clash.",
+        title: "Strategic Decision AI",
+        desc: "Enterprise-grade logic engine utilizing the Minimax algorithm for complex decision tree analysis. Demonstrates multi-step predictive planning and deterministic optimization.",
         icon: Cpu,
         demoUrl: "https://prime-ai.fr/games/chess",
-        category: "Distributed AI",
+        category: "Decision Matrix",
         status: "Live",
         gradient: "from-emerald-600 to-teal-500",
         emoji: "♟️",
@@ -256,15 +256,15 @@ export default function GamesCatalog() {
                     >
                         <Sparkles className="w-4 h-4 text-cyan-400" />
                         <span className="text-cyan-300 text-xs font-bold tracking-widest uppercase">
-                            ASIREM Interactive Modules
+                            Autonomous AI Solutions
                         </span>
                     </motion.div>
 
                     <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-                        Explore <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Live Experiences</span> Anywhere
+                        Test <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Live Business Cases</span> Instantly
                     </h2>
                     <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-                        Play these immersive experiences directly in your browser on desktop and mobile, or download the native apps for iOS and Android. Our technology is built to be responsive everywhere.
+                        From predictive data models to automated customer interactions. Every dynamic simulation runs securely in this browser viewport. Evaluate the processing logic live, then seamlessly license the 100% intellectual property source code directly for your enterprise scale application.
                     </p>
                 </div>
 
