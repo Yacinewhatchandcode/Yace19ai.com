@@ -1,7 +1,11 @@
 {
     "rewrites": [
         {
-            "source": "/((?!sovereign/|_next/|assets/|.*\\..*).*)$",
+            "source": "/api/:path*",
+            "destination": "http://31.97.52.22:8082/api/:path*"
+        },
+        {
+            "source": "/((?!sovereign/|_next/|assets/|.*\\..*).*)",
             "destination": "/index.html"
         }
     ]
