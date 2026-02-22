@@ -16,7 +16,10 @@ export default function PhilosophyPage() {
             <Philosophy />
 
             <div className="relative">
-                <div className="absolute inset-0 bg-violet-500/5 clip-path-polygon-[0_0,100%_10%,100%_100%,0_90%] -z-10"></div>
+                <div
+                    className="absolute inset-0 bg-violet-500/5 -z-10"
+                    style={{ clipPath: 'polygon(0 0, 100% 10%, 100% 100%, 0 90%)' }}
+                />
                 <AgentStack />
             </div>
 

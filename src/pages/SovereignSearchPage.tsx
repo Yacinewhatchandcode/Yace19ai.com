@@ -3,12 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Mic, Square, Loader, Volume2, AlertCircle,
     Globe, Zap, Bot, Brain, Code2, Cpu, Database, Shield,
-    Activity, CheckCircle2, Sparkles, Terminal, Eye, Layers,
+    Activity, CheckCircle2, Sparkles, Terminal, Eye, Layers, Languages,
 } from 'lucide-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 declare global { interface Window { SpeechRecognition: any; webkitSpeechRecognition: any; } }
 type OrbState = 'idle' | 'listening' | 'processing' | 'speaking' | 'error';
+type VoiceLang = 'en' | 'fr';
 
 // ─── Agent Fleet ────────────────────────────────────────────────────────────
 const AGENTS = [
@@ -60,6 +61,9 @@ export default function SovereignSearchPage() {
     const [activeAgent, setActiveAgent] = useState('asirem');
     const [logs, setLogs] = useState<LogEntry[]>([]);
     const [inputFocused, setInputFocused] = useState(false);
+    const [lang, setLang] = useState<VoiceLang>('en');
+    const [code, setCode] = useState<string | null>(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const recognitionRef = useRef<any>(null);
     const finalRef = useRef('');
@@ -78,7 +82,7 @@ export default function SovereignSearchPage() {
         const recognition = new SR();
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.lang = 'en-US';
+        recognition.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
         recognition.onresult = (e: any) => {
             let interim = ''; let final = '';
             for (let i = e.resultIndex; i < e.results.length; i++) {
@@ -89,12 +93,15 @@ export default function SovereignSearchPage() {
             setQuery(finalRef.current + interim);
         };
         recognition.onerror = (e: any) => {
-            setError(e.error === 'not-allowed' ? 'Microphone access denied.' : `Error: ${e.error}`);
+            const msg = lang === 'fr'
+                ? (e.error === 'not-allowed' ? 'Accès au micro refusé.' : `Erreur: ${e.error}`)
+                : (e.error === 'not-allowed' ? 'Microphone access denied.' : `Error: ${e.error}`);
+            setError(msg);
             setOrbState('error');
         };
         recognition.onend = () => setOrbState(s => s === 'listening' ? 'idle' : s);
         recognitionRef.current = recognition;
-    }, []);
+    }, [lang]);
 
     // ── Auto-scroll logs ───────────────────────────────────────────────────
     useEffect(() => { logBottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [logs]);
@@ -114,37 +121,68 @@ export default function SovereignSearchPage() {
         if (!q.trim()) return;
         setOrbState('processing');
         setResponse(null);
+        setCode(null);
+        setPreviewUrl(null);
         setError(null);
-        addLog('aSiReM', `Processing: "${q.slice(0, 60)}..."`, 'processing');
+        addLog(activeAgent === 'codex' ? 'Codex' : 'aSiReM', `Processing: "${q.slice(0, 60)}..."`, 'processing');
 
         let aiText = '';
+        let isCodeQuery = activeAgent === 'codex' || q.toLowerCase().includes('generate') || q.toLowerCase().includes('code') || q.toLowerCase().includes('ui') || q.toLowerCase().includes('component');
+
         if (backendOnline) {
             try {
-                const res = await fetch('/api/asirem/speak', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: q }),
-                });
-                const data = await res.json();
-                aiText = (data.success && data.message) ? data.message : generateResponse(q);
+                if (isCodeQuery) {
+                    const res = await fetch('/api/codex/generate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ prompt: q, lang, outputFormat: 'html' }),
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        aiText = lang === 'fr'
+                            ? `Génération terminée : ${data.description}`
+                            : `Generation complete: ${data.description}`;
+                        if (data.code) setCode(data.code);
+                        if (data.previewUrl) setPreviewUrl(data.previewUrl);
+                    } else {
+                        aiText = lang === 'fr' ? 'Erreur de génération de code.' : 'Code generation error.';
+                    }
+                    setActiveAgent('codex'); // Ensure UI reflects the agent that responded
+                } else {
+                    const res = await fetch('/api/asirem/speak', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: q, lang }),
+                    });
+                    const data = await res.json();
+                    aiText = (data.success && data.message) ? data.message : generateResponse(q);
+                    setActiveAgent('asirem');
+                }
             } catch { aiText = generateResponse(q); }
         } else { aiText = generateResponse(q); }
 
         setResponse(aiText);
         addLog('aSiReM', aiText.slice(0, 90) + '...', 'success');
 
-        // TTS
+        // TTS with bilingual voice
         setOrbState('speaking');
         window.speechSynthesis.cancel();
         const utter = new SpeechSynthesisUtterance(aiText);
         utter.rate = 1.05; utter.pitch = 1.0;
+        utter.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
         const voices = window.speechSynthesis.getVoices();
-        const v = voices.find(v => v.lang.startsWith('en') && v.name.includes('Samantha'))
-            || voices.find(v => v.lang.startsWith('en'));
+        const langPrefix = lang === 'fr' ? 'fr' : 'en';
+        const preferredNames = lang === 'fr' ? ['Thomas', 'Amelie', 'Marie'] : ['Samantha', 'Karen', 'Alex'];
+        let v = null;
+        for (const name of preferredNames) {
+            v = voices.find(voice => voice.lang.startsWith(langPrefix) && voice.name.includes(name));
+            if (v) break;
+        }
+        if (!v) v = voices.find(voice => voice.lang.startsWith(langPrefix));
         if (v) utter.voice = v;
         utter.onend = () => setOrbState('idle');
         window.speechSynthesis.speak(utter);
-    }, [backendOnline, addLog]);
+    }, [backendOnline, addLog, lang]);
 
     // ── Orb click ──────────────────────────────────────────────────────────
     const handleOrb = () => {
@@ -254,6 +292,17 @@ export default function SovereignSearchPage() {
                     <p className="text-sm text-gray-500 font-mono">
                         Voice command · Text · Agent fleet · Live execution
                     </p>
+                    <motion.button
+                        onClick={() => setLang(l => l === 'en' ? 'fr' : 'en')}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] transition-all cursor-pointer"
+                    >
+                        <Languages className="w-3.5 h-3.5 text-cyan-400" />
+                        <span className="text-[10px] font-mono font-bold text-white tracking-widest">
+                            {lang === 'en' ? '🇬🇧 ENGLISH' : '🇫🇷 FRANÇAIS'}
+                        </span>
+                    </motion.button>
                 </motion.div>
 
                 {/* ── Voice Orb ─────────────────────────────────────────────── */}
@@ -371,14 +420,53 @@ export default function SovereignSearchPage() {
                         >
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-3">
-                                    <div className="w-7 h-7 rounded-lg bg-violet-500/20 border border-violet-500/30 flex items-center justify-center">
-                                        <Brain size={12} className="text-violet-400" />
+                                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${activeAgent === 'codex' ? 'bg-emerald-500/20 border-emerald-500/30' : 'bg-violet-500/20 border-violet-500/30'} border`}>
+                                        {activeAgent === 'codex' ? (
+                                            <Code2 size={12} className="text-emerald-400" />
+                                        ) : (
+                                            <Brain size={12} className="text-violet-400" />
+                                        )}
                                     </div>
-                                    <span className="text-xs font-mono font-bold text-violet-400 uppercase tracking-widest">aSiReM Response</span>
+                                    <span className={`text-xs font-mono font-bold uppercase tracking-widest ${activeAgent === 'codex' ? 'text-emerald-400' : 'text-violet-400'}`}>
+                                        {activeAgent === 'codex' ? 'Codex Output' : 'aSiReM Response'}
+                                    </span>
                                 </div>
                                 <CheckCircle2 size={14} className="text-emerald-400" />
                             </div>
                             <p className="text-sm text-gray-200 leading-relaxed font-sans">{response}</p>
+
+                            {/* Self-Coding Preview UI Matrix */}
+                            {(code || previewUrl) && (
+                                <div className="mt-6 flex flex-col xl:flex-row gap-4">
+                                    {previewUrl && (
+                                        <div className="flex-1 bg-white rounded-xl overflow-hidden shadow-2xl border-4 border-emerald-500/20 min-h-[300px]">
+                                            <div className="bg-gray-800 text-xs px-3 py-1.5 flex items-center justify-between border-b border-gray-700 text-gray-400 font-mono">
+                                                <span>Live Preview</span>
+                                                <div className="flex gap-1.5">
+                                                    <div className="w-2.5 h-2.5 rounded-full bg-red-400/80"></div>
+                                                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/80"></div>
+                                                    <div className="w-2.5 h-2.5 rounded-full bg-green-400/80"></div>
+                                                </div>
+                                            </div>
+                                            <iframe
+                                                src={previewUrl}
+                                                className="w-full h-full min-h-[300px] border-none bg-white"
+                                                title="Code Preview Sandbox"
+                                            />
+                                        </div>
+                                    )}
+                                    {code && (
+                                        <div className="flex-1 bg-[#0d1117] rounded-xl overflow-hidden border border-white/10 font-mono text-xs shadow-inner flex flex-col max-h-[400px]">
+                                            <div className="bg-white/5 border-b border-white/10 px-3 py-1.5 flex justify-between items-center text-gray-400 shrink-0">
+                                                <span>Source Code</span>
+                                            </div>
+                                            <pre className="p-4 overflow-auto text-emerald-400/90 flex-1">
+                                                <code>{code}</code>
+                                            </pre>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </motion.div>
                     )}
                 </AnimatePresence>

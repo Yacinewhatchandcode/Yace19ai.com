@@ -1,16 +1,18 @@
 [build]
-  command = "npm run build"
   publish = "dist"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Netlify Edge Functions use the /netlify/functions directory automatically
 
 [[redirects]]
-  from = "/sovereign/*"
-  to = "/sovereign/:splat"
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
   status = 200
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-[build.environment]
-  NODE_VERSION = "20"

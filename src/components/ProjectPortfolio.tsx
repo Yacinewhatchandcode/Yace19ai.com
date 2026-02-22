@@ -27,7 +27,6 @@ const projects: Project[] = [
         description: 'Full-Stack EU AI Act Compliance System — AI Risk Classification, Audit Engine, Knowledge Base, and Bot Integration. Built for enterprise regulatory compliance.',
         tech: ['Python', 'Flask', 'PWA', 'OpenAI', 'EU AI Act'],
         link: 'https://github.com/Yacinewhatchandcode/EU-AI-Act-Compliance',
-        videoFile: '/demo.mp4',
         color: 'from-indigo-600/20 to-violet-500/5',
         icon: <Cpu size={24} className="text-indigo-400" />,
         status: 'live',
@@ -197,7 +196,7 @@ const projects: Project[] = [
         icon: <Bot size={24} className="text-amber-400" />,
         status: 'live',
         aiModel: 'Claude Sonnet 3.7',
-        image: '/repo-BSQ-Autonomous-Multi-Agent.png'
+        image: '/repo-BSQ.png'
     },
     {
         id: 'sq-baha',
@@ -211,7 +210,7 @@ const projects: Project[] = [
         icon: <Cpu size={24} className="text-orange-400" />,
         status: 'live',
         aiModel: 'GPT-4',
-        image: '/repo-SQ-BAHA.png'
+        image: '/repo-SQ_BAHA.png'
     },
     {
         id: 'agent-coder-ybe',
@@ -238,7 +237,7 @@ const projects: Project[] = [
         icon: <Database size={24} className="text-blue-400" />,
         status: 'live',
         aiModel: 'Multi-Model',
-        image: '/repo-AIA-Discovery.png'
+        image: '/repo-https-github.com-Yacinewhatchandcode-AIA-DiscoVery.png'
     },
     {
         id: 'agent-y',

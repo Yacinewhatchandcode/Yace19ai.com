@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mic, Search, Loader, Globe, Square, Volume2, AlertCircle } from 'lucide-react';
+import { Mic, Search, Loader, Globe, Square, Volume2, AlertCircle, Languages } from 'lucide-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 declare global {
@@ -11,19 +11,43 @@ declare global {
 }
 
 type OrbState = 'idle' | 'listening' | 'processing' | 'speaking' | 'error';
+type VoiceLang = 'en' | 'fr';
 
-// ─── AI Text Generation (used when backend unavailable) ───────────────────────
-const generateAIResponse = (input: string): string => {
+const LANG_CONFIG: Record<VoiceLang, { recognitionLang: string; label: string; flag: string; voiceNames: string[] }> = {
+    en: {
+        recognitionLang: 'en-US',
+        label: 'English',
+        flag: '🇬🇧',
+        voiceNames: ['Samantha', 'Google US English', 'Female', 'Alex', 'Karen'],
+    },
+    fr: {
+        recognitionLang: 'fr-FR',
+        label: 'Français',
+        flag: '🇫🇷',
+        voiceNames: ['Thomas', 'Amelie', 'Google français', 'Marie', 'Audrey'],
+    }
+};
+
+// ─── AI Text Generation (fallback when backend unavailable) ───────────────────
+const generateAIResponse = (input: string, lang: VoiceLang): string => {
     const trimmed = input.trim().toLowerCase();
-    if (trimmed.includes('sovereign') || trimmed.includes('prime')) {
+
+    if (lang === 'fr') {
+        if (trimmed.includes('souverain') || trimmed.includes('prime'))
+            return `Le Sovereign OS est pleinement opérationnel. La flotte multi-agents AMLAZR fonctionne sur 77 dépôts avec 125 déploiements actifs. L'orchestrateur ASiReM attend votre prochaine directive, Commandant.`;
+        if (trimmed.includes('statut') || trimmed.includes('santé') || trimmed.includes('status'))
+            return `Santé du système nominale. Nœuds backend en ligne. Cluster GPU en veille. 12 modules d'entraînement IA actifs. Tous les agents souverains rapportent vert sur le réseau.`;
+        if (trimmed.includes('qui') || trimmed.includes('quoi'))
+            return `Je suis ASiReM — Intelligence Souveraine Autonome pour la Gestion d'Entreprise en Temps Réel. Je coordonne l'ensemble de l'écosystème Prime AI, y compris vos essaims d'agents, clusters GPU, et pipelines de déploiement automatisés.`;
+        return `Directive reçue: "${input}". Routage vers le Réseau Souverain. L'essaim d'agents analyse votre requête et prépare une réponse optimale. En attente de mise à jour d'exécution.`;
+    }
+
+    if (trimmed.includes('sovereign') || trimmed.includes('prime'))
         return `Sovereign OS is fully operational. The AMLAZR multi-agent fleet is running across 77 repositories with 125 active deployments. The ASiReM orchestrator is standing by for your next directive, Commander.`;
-    }
-    if (trimmed.includes('status') || trimmed.includes('health')) {
+    if (trimmed.includes('status') || trimmed.includes('health'))
         return `System health nominal. Backend nodes online. GPU cluster on standby. 12 AI training modules active. All sovereign agents reporting green across the mesh.`;
-    }
-    if (trimmed.includes('who') || trimmed.includes('what are you')) {
+    if (trimmed.includes('who') || trimmed.includes('what are you'))
         return `I am ASiReM — Autonomous Sovereign Intelligence for Real-time Enterprise Management. I coordinate the entire Prime AI ecosystem including your agent swarms, GPU clusters, and automated deployment pipelines.`;
-    }
     return `Directive received: "${input}". Routing to Sovereign Mesh. The agent swarm is analyzing your query and preparing an optimal response. Standby for execution update.`;
 };
 
@@ -35,6 +59,7 @@ export default function VoiceOrbInterface() {
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [supported, setSupported] = useState(true);
     const [backendOnline, setBackendOnline] = useState(false);
+    const [lang, setLang] = useState<VoiceLang>('en');
 
     const recognitionRef = useRef<any>(null);
     const synthRef = useRef<SpeechSynthesisUtterance | null>(null);
@@ -47,7 +72,7 @@ export default function VoiceOrbInterface() {
             .catch(() => setBackendOnline(false));
     }, []);
 
-    // ─── Initialize speech recognition ──────────────────────────────────────
+    // ─── Initialize speech recognition (re-init on lang change) ─────────────
     useEffect(() => {
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SR) {
@@ -58,7 +83,7 @@ export default function VoiceOrbInterface() {
         const recognition = new SR();
         recognition.continuous = true;
         recognition.interimResults = true;
-        recognition.lang = 'en-US';
+        recognition.lang = LANG_CONFIG[lang].recognitionLang;
 
         recognition.onresult = (event: any) => {
             let interim = '';
@@ -79,8 +104,10 @@ export default function VoiceOrbInterface() {
 
         recognition.onerror = (event: any) => {
             const msg = event.error === 'not-allowed'
-                ? 'Microphone access denied. Please allow microphone in your browser settings.'
-                : `Recognition error: ${event.error}`;
+                ? lang === 'fr'
+                    ? 'Accès au microphone refusé. Veuillez autoriser le microphone dans les paramètres de votre navigateur.'
+                    : 'Microphone access denied. Please allow microphone in your browser settings.'
+                : `${lang === 'fr' ? 'Erreur de reconnaissance' : 'Recognition error'}: ${event.error}`;
             setErrorMsg(msg);
             setOrbState('error');
         };
@@ -93,7 +120,23 @@ export default function VoiceOrbInterface() {
         };
 
         recognitionRef.current = recognition;
-    }, []); // eslint-disable-line
+    }, [lang]); // eslint-disable-line
+
+    // ─── Find appropriate voice for current language ────────────────────────
+    const findVoice = useCallback((targetLang: VoiceLang): SpeechSynthesisVoice | null => {
+        const voices = window.speechSynthesis.getVoices();
+        const config = LANG_CONFIG[targetLang];
+        const langPrefix = targetLang === 'fr' ? 'fr' : 'en';
+
+        // Try to find a preferred named voice
+        for (const name of config.voiceNames) {
+            const found = voices.find(v => v.lang.startsWith(langPrefix) && v.name.includes(name));
+            if (found) return found;
+        }
+
+        // Fallback to any voice in the target language
+        return voices.find(v => v.lang.startsWith(langPrefix)) || null;
+    }, []);
 
     // ─── Speak text via browser TTS ─────────────────────────────────────────
     const speakText = useCallback((text: string) => {
@@ -104,12 +147,10 @@ export default function VoiceOrbInterface() {
         utter.pitch = 1.0;
         utter.volume = 1.0;
 
-        // Prefer a female English voice if available
-        const voices = window.speechSynthesis.getVoices();
-        const preferred = voices.find(v =>
-            v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Google US English') || v.name.includes('Female'))
-        ) || voices.find(v => v.lang.startsWith('en'));
-        if (preferred) utter.voice = preferred;
+        const voice = findVoice(lang);
+        if (voice) utter.voice = voice;
+        // Set lang explicitly on utterance
+        utter.lang = LANG_CONFIG[lang].recognitionLang;
 
         utter.onstart = () => setOrbState('speaking');
         utter.onend = () => setOrbState('idle');
@@ -117,7 +158,7 @@ export default function VoiceOrbInterface() {
 
         synthRef.current = utter;
         window.speechSynthesis.speak(utter);
-    }, []);
+    }, [lang, findVoice]);
 
     // ─── Submit the query to backend or fallback────────────────────────────
     const submitQuery = useCallback(async (query: string) => {
@@ -136,7 +177,7 @@ export default function VoiceOrbInterface() {
                 const res = await fetch('/api/asirem/speak', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: query }),
+                    body: JSON.stringify({ message: query, lang }),
                 });
                 const data = await res.json();
 
@@ -144,18 +185,26 @@ export default function VoiceOrbInterface() {
                     aiText = data.message;
                 } else {
                     // Backend responded but no real content — use local AI
-                    aiText = generateAIResponse(query);
+                    aiText = generateAIResponse(query, lang);
                 }
             } catch {
-                aiText = generateAIResponse(query);
+                aiText = generateAIResponse(query, lang);
             }
         } else {
-            aiText = generateAIResponse(query);
+            aiText = generateAIResponse(query, lang);
         }
 
         setResponseText(aiText);
         speakText(aiText);
-    }, [backendOnline, speakText]);
+    }, [backendOnline, speakText, lang]);
+
+    // ─── Toggle language ────────────────────────────────────────────────────
+    const toggleLang = useCallback(() => {
+        if (orbState === 'listening' || orbState === 'processing') return;
+        window.speechSynthesis.cancel();
+        setOrbState('idle');
+        setLang(prev => prev === 'en' ? 'fr' : 'en');
+    }, [orbState]);
 
     // ─── Orb click handler ─────────────────────────────────────────────────
     const handleOrbClick = () => {
@@ -228,10 +277,10 @@ export default function VoiceOrbInterface() {
 
     const statusLabel = {
         idle: <span className="text-cyan-400">STANDBY</span>,
-        listening: <span className="text-red-400 flex items-center gap-2"><span className="animate-pulse w-2 h-2 rounded-full bg-red-500 inline-block" /> RECORDING</span>,
-        processing: <span className="text-yellow-400 flex items-center gap-2"><Loader className="w-3 h-3 animate-spin" /> PROCESSING</span>,
-        speaking: <span className="text-green-400 flex items-center gap-2"><Volume2 className="w-3 h-3 animate-pulse" /> SPEAKING</span>,
-        error: <span className="text-red-400 flex items-center gap-2"><AlertCircle className="w-3 h-3" /> ERROR</span>,
+        listening: <span className="text-red-400 flex items-center gap-2"><span className="animate-pulse w-2 h-2 rounded-full bg-red-500 inline-block" /> {lang === 'fr' ? 'ENREGISTREMENT' : 'RECORDING'}</span>,
+        processing: <span className="text-yellow-400 flex items-center gap-2"><Loader className="w-3 h-3 animate-spin" /> {lang === 'fr' ? 'TRAITEMENT' : 'PROCESSING'}</span>,
+        speaking: <span className="text-green-400 flex items-center gap-2"><Volume2 className="w-3 h-3 animate-pulse" /> {lang === 'fr' ? 'PARLE' : 'SPEAKING'}</span>,
+        error: <span className="text-red-400 flex items-center gap-2"><AlertCircle className="w-3 h-3" /> {lang === 'fr' ? 'ERREUR' : 'ERROR'}</span>,
     }[orbState];
 
     return (
@@ -242,7 +291,9 @@ export default function VoiceOrbInterface() {
             {/* SEO - screen reader only */}
             <h2 className="sr-only">AMLAZR Voice Intelligence System</h2>
             <p className="sr-only">
-                Speak naturally to interact with the Sovereign AI network. Voice commands are transcribed and answered aloud in real-time.
+                {lang === 'fr'
+                    ? 'Parlez naturellement pour interagir avec le réseau IA Souverain. Les commandes vocales sont transcrites et répondues en temps réel.'
+                    : 'Speak naturally to interact with the Sovereign AI network. Voice commands are transcribed and answered aloud in real-time.'}
             </p>
 
             {/* Header */}
@@ -256,9 +307,23 @@ export default function VoiceOrbInterface() {
                 )}
             </div>
 
-            {/* Status */}
-            <div className="absolute top-4 right-4 md:top-6 md:right-6 font-mono text-[9px] md:text-[10px] uppercase tracking-widest">
-                {statusLabel}
+            {/* Language Toggle + Status */}
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 flex items-center gap-3">
+                <motion.button
+                    onClick={toggleLang}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    title={`Switch to ${lang === 'en' ? 'Français' : 'English'}`}
+                    className="flex items-center gap-1.5 px-2 py-1 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] transition-all cursor-pointer"
+                >
+                    <Languages className="w-3 h-3 text-cyan-400" />
+                    <span className="text-[10px] font-mono font-bold text-white tracking-widest">
+                        {LANG_CONFIG[lang].flag} {LANG_CONFIG[lang].label.toUpperCase()}
+                    </span>
+                </motion.button>
+                <div className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest">
+                    {statusLabel}
+                </div>
             </div>
 
             {/* Orb */}
@@ -278,8 +343,8 @@ export default function VoiceOrbInterface() {
                     onClick={handleOrbClick}
                     whileHover={{ scale: 1.06 }}
                     whileTap={{ scale: 0.93 }}
-                    aria-label={orbState === 'listening' ? 'Stop recording' : 'Start recording'}
-                    title={orbState === 'listening' ? 'Tap to stop & send' : orbState === 'speaking' ? 'Tap to stop speaking' : 'Tap to speak'}
+                    aria-label={orbState === 'listening' ? (lang === 'fr' ? 'Arrêter l\'enregistrement' : 'Stop recording') : (lang === 'fr' ? 'Commencer l\'enregistrement' : 'Start recording')}
+                    title={orbState === 'listening' ? (lang === 'fr' ? 'Tapez pour arrêter et envoyer' : 'Tap to stop & send') : orbState === 'speaking' ? (lang === 'fr' ? 'Tapez pour interrompre' : 'Tap to stop speaking') : (lang === 'fr' ? 'Tapez pour parler' : 'Tap to speak')}
                     disabled={orbState === 'processing'}
                     className={`relative z-10 w-40 h-40 rounded-full flex items-center justify-center border-2 cursor-pointer shadow-lg transition-colors duration-500 disabled:opacity-40 ${borderColor}`}
                 >
@@ -305,11 +370,15 @@ export default function VoiceOrbInterface() {
 
             {/* Hint */}
             <p className="text-xs text-gray-600 font-mono mb-6 text-center">
-                {orbState === 'listening' ? 'Speaking — tap orb again to stop & send' :
-                    orbState === 'speaking' ? 'Tap orb to interrupt' :
-                        orbState === 'processing' ? 'Processing your command...' :
-                            supported ? 'Tap the orb to speak. The AI will answer aloud.' :
-                                'Your browser doesn\'t support Speech Recognition. Use the text box below.'}
+                {orbState === 'listening'
+                    ? (lang === 'fr' ? 'En écoute — tapez l\'orbe pour arrêter et envoyer' : 'Speaking — tap orb again to stop & send')
+                    : orbState === 'speaking'
+                        ? (lang === 'fr' ? 'Tapez l\'orbe pour interrompre' : 'Tap orb to interrupt')
+                        : orbState === 'processing'
+                            ? (lang === 'fr' ? 'Traitement de votre commande...' : 'Processing your command...')
+                            : supported
+                                ? (lang === 'fr' ? 'Tapez l\'orbe pour parler. L\'IA répondra à voix haute.' : 'Tap the orb to speak. The AI will answer aloud.')
+                                : (lang === 'fr' ? 'Votre navigateur ne supporte pas la Reconnaissance Vocale. Utilisez la zone de texte.' : 'Your browser doesn\'t support Speech Recognition. Use the text box below.')}
             </p>
 
             {/* Input + Output */}
@@ -320,7 +389,9 @@ export default function VoiceOrbInterface() {
                         value={transcript}
                         onChange={(e) => setTranscript(e.target.value)}
                         disabled={orbState === 'processing'}
-                        placeholder={orbState === 'listening' ? 'Listening...' : 'Or type your question here...'}
+                        placeholder={orbState === 'listening'
+                            ? (lang === 'fr' ? 'En écoute...' : 'Listening...')
+                            : (lang === 'fr' ? 'Ou tapez votre question ici...' : 'Or type your question here...')}
                         className="w-full bg-white/[0.03] border border-white/10 rounded-full px-4 py-3 md:px-6 md:py-4 outline-none text-white font-mono text-xs md:text-sm placeholder:text-gray-600 focus:border-cyan-500/50 focus:bg-white/[0.05] transition-all"
                         aria-label="Query input"
                     />
@@ -355,7 +426,14 @@ export default function VoiceOrbInterface() {
                         >
                             <div className="flex items-center gap-3 mb-3">
                                 <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                                <h3 className="text-xs font-mono font-bold tracking-widest text-green-400 uppercase">ASiReM Response</h3>
+                                <h3 className="text-xs font-mono font-bold tracking-widest text-green-400 uppercase">
+                                    {lang === 'fr' ? 'Réponse ASiReM' : 'ASiReM Response'}
+                                </h3>
+                                {backendOnline && (
+                                    <span className="text-[8px] font-mono text-cyan-500 bg-cyan-900/30 border border-cyan-500/20 px-1.5 py-0.5 rounded">
+                                        NVIDIA NIM
+                                    </span>
+                                )}
                             </div>
                             <p className="text-sm font-light leading-relaxed">{responseText}</p>
                         </motion.article>
