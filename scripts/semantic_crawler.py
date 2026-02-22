@@ -18,7 +18,9 @@ URL_TARGETS = [
 
 FILE_TARGETS = [
     "src/components/VoiceOrbInterface.tsx",
-    "src/components/BytebotDesktop.tsx"
+    "src/components/BytebotDesktop.tsx",
+    "/Users/yacinebenhamou/Agentic_Repo_Orchestration/Sovereign-Ecosystem/README.md",
+    "/Users/yacinebenhamou/Prime.AI/README.md"
 ]
 
 def hash_content(content: str) -> str:
