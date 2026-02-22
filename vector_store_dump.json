@@ -1,0 +1,84 @@
+{
+    "dump_id": "vector_store_dump_104615",
+    "namespace": "PrimeAI_Semantic_Knowledge",
+    "generated_at": "2026-02-22T10:46:15Z",
+    "vector_dimensions": 384,
+    "vectors": [
+        {
+            "id": "node_voice_orb",
+            "embedding": [
+                0.012,
+                -0.045,
+                0.103,
+                0.002,
+                -0.007
+            ],
+            "metadata": {
+                "type": "UI_Component",
+                "name": "VoiceOrbInterface",
+                "agentBindings": "ASiReM, AMLAZR_Swarm"
+            }
+        },
+        {
+            "id": "node_vps_bytebot",
+            "embedding": [
+                0.022,
+                0.015,
+                -0.033,
+                0.112,
+                0.047
+            ],
+            "metadata": {
+                "type": "Infrastructure",
+                "name": "Bytebot VNC Desktop",
+                "agentBindings": "Bytebot_Ubuntu_Agent"
+            }
+        },
+        {
+            "id": "node_arcade_sandbox",
+            "embedding": [
+                -0.012,
+                0.085,
+                0.023,
+                0.042,
+                -0.017
+            ],
+            "metadata": {
+                "type": "Environment",
+                "name": "Reinforcement Sandbox",
+                "agentBindings": "Agent_Swarm_Architect, Live_Avatar"
+            }
+        },
+        {
+            "id": "node_prime_intelligence",
+            "embedding": [
+                0.072,
+                0.005,
+                -0.013,
+                0.022,
+                0.097
+            ],
+            "metadata": {
+                "type": "Platform",
+                "name": "Prime AI Enterprise Architecture",
+                "agentBindings": "Executive_Intelligence_Agent"
+            }
+        },
+        {
+            "id": "node_orchestrator",
+            "embedding": [
+                0.092,
+                -0.015,
+                0.083,
+                -0.002,
+                -0.037
+            ],
+            "metadata": {
+                "type": "Agent",
+                "name": "ASiReM",
+                "capabilities": "Workflow Orchestration, Fleet Coordination, Real-time TTS/STT Processing"
+            }
+        }
+    ],
+    "note": "Embeddings are compressed for machine ingestion mocking. In a real scenario, this is passed directly to the Vector DB via the ingestion script."
+}

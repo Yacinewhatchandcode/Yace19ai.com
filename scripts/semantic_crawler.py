@@ -87,19 +87,24 @@ def run_semantic_crawl():
         # Here we would trigger the LLM to rebuild `prime_semantic_graph.json` 
         # and `agentic_workflow_blueprints.json`.
         # For now, we update the timestamp in the existing JSONs to prove the cron works.
-        update_graph_timestamps()
+        update_graph_timestamps(current_hashes)
         
         print("Semantic memory synchronized. Graph updated.")
     else:
         print("No semantic mutations detected. Graph remains stable.")
 
-def update_graph_timestamps():
+def update_graph_timestamps(current_hashes):
     try:
-        now = datetime.now(timezone.utc).isoformat()
+        now_dt = datetime.now(timezone.utc)
+        iso_now = now_dt.isoformat()
+        version_stamp = now_dt.strftime("%Y%m%d_%H%M%S")
+        
         if os.path.exists(GRAPH_FILE):
             with open(GRAPH_FILE, 'r+') as f:
                 data = json.load(f)
-                data['timestamp'] = now
+                data['timestamp'] = iso_now
+                # Link snapshot hash mapping
+                data['source_checksums'] = current_hashes
                 f.seek(0)
                 json.dump(data, f, indent=2)
                 f.truncate()
@@ -107,12 +112,23 @@ def update_graph_timestamps():
         if os.path.exists(BLUEPRINTS_FILE):
             with open(BLUEPRINTS_FILE, 'r+') as f:
                 data = json.load(f)
-                data['timestamp'] = now
+                data['timestamp'] = iso_now
                 f.seek(0)
                 json.dump(data, f, indent=2)
                 f.truncate()
+                
+        # Versioning Implementation (Archival Snapshot)
+        import shutil
+        snapshot_dir = "semantic_snapshots"
+        os.makedirs(snapshot_dir, exist_ok=True)
+        
+        if os.path.exists(GRAPH_FILE):
+            shutil.copy(GRAPH_FILE, f"{snapshot_dir}/prime_semantic_graph_{version_stamp}.json")
+            
+        print(f"Graph snapshots versioned and linked to stamp {version_stamp}")
+        
     except Exception as e:
-        print(f"Failed to update timestamps: {e}")
+        print(f"Failed to update timestamps and versioning: {e}")
 
 if __name__ == "__main__":
     run_semantic_crawl()
