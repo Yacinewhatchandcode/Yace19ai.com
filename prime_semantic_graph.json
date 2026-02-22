@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "PrimeAI Semantic Knowledge Graph",
+  "version": "1.0.0",
+  "timestamp": "2026-02-22T10:39:37.491533+00:00",
+  "entities": [
+    {
+      "id": "node_voice_orb",
+      "type": "UI_Component",
+      "name": "VoiceOrbInterface",
+      "source": "file:///Users/yacinebenhamou/Yace19ai.com/src/components/VoiceOrbInterface.tsx",
+      "description": "AMLAZR Voice Intelligence System handling natural language to AI agent interactions.",
+      "endpoints": [
+        "/api/asirem/speak"
+      ],
+      "agentBindings": [
+        "ASiReM",
+        "AMLAZR_Swarm"
+      ],
+      "states": [
+        "idle",
+        "listening",
+        "processing",
+        "speaking",
+        "error"
+      ]
+    },
+    {
+      "id": "node_vps_bytebot",
+      "type": "Infrastructure",
+      "name": "Bytebot VNC Desktop",
+      "source": "file:///Users/yacinebenhamou/Yace19ai.com/src/components/BytebotDesktop.tsx",
+      "description": "Sovereign VPS VNC integration for active UI observability and agent interaction.",
+      "endpoints": [
+        "http://31.97.52.22:9990/vnc.html"
+      ],
+      "agentBindings": [
+        "Bytebot_Ubuntu_Agent"
+      ]
+    },
+    {
+      "id": "node_arcade_sandbox",
+      "type": "Environment",
+      "name": "Reinforcement Sandbox",
+      "source": "https://sovereign-arcade.vercel.app",
+      "description": "Playable reinforcement learning environment for agent testing and human-in-the-loop validation.",
+      "agentBindings": [
+        "Agent_Swarm_Architect",
+        "Live_Avatar"
+      ]
+    },
+    {
+      "id": "node_prime_intelligence",
+      "type": "Platform",
+      "name": "Prime AI Enterprise Architecture",
+      "source": "https://prime-ai.fr",
+      "description": "Enterprise intelligence architecture optimized for executive decision-making, predictive analytics, and real-time cost intelligence.",
+      "agentBindings": [
+        "Executive_Intelligence_Agent"
+      ]
+    },
+    {
+      "id": "node_orchestrator",
+      "type": "Agent",
+      "name": "ASiReM",
+      "description": "Autonomous Sovereign Intelligence for Real-time Enterprise Management. Coordinates the Prime AI ecosystem, GPU clusters, and pipelines.",
+      "capabilities": [
+        "Workflow Orchestration",
+        "Fleet Coordination",
+        "Real-time TTS/STT Processing"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "source": "node_voice_orb",
+      "target": "node_orchestrator",
+      "type": "INVOKES"
+    },
+    {
+      "source": "node_vps_bytebot",
+      "target": "node_orchestrator",
+      "type": "MONITORED_BY"
+    },
+    {
+      "source": "node_arcade_sandbox",
+      "target": "node_orchestrator",
+      "type": "PROVISIONS_TRAINING_FOR"
+    }
+  ]
+}
