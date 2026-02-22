@@ -21,6 +21,19 @@ interface Project {
 
 const projects: Project[] = [
     {
+        id: 'draft-aiy',
+        title: 'Draft AIY',
+        category: 'Sovereign Workspace',
+        description: 'Zero-illusion execution protocol whiteboard. Real-time multi-agent interactions with Edge Generative UI and Sovereign Matrix persistence.',
+        tech: ['React Flow', 'Supabase', 'OpenRouter', 'Framer Motion'],
+        link: 'https://github.com/Yacinewhatchandcode/DraftIAY',
+        demoUrl: 'https://draft-aiy.vercel.app/',
+        color: 'from-blue-600/20 to-purple-600/5',
+        icon: <Layout size={24} className="text-blue-400" />,
+        status: 'live',
+        aiModel: 'Llama 3.3 70B'
+    },
+    {
         id: 'eu-ai-act',
         title: 'EU AI Act Compliance',
         category: 'Regulatory AI Platform',
