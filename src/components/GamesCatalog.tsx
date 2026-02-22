@@ -29,6 +29,17 @@ interface Game {
 
 const GAMES: Game[] = [
     {
+        id: "draft-aiy",
+        title: "Draft AIY",
+        desc: "Zero-illusion execution protocol whiteboard. Real-time multi-agent interactions with Edge Generative UI and Sovereign Matrix persistence.",
+        icon: Sparkles,
+        demoUrl: "https://draft-aiy.vercel.app",
+        category: "Sovereign Workspace",
+        status: "Live",
+        gradient: "from-blue-600 via-indigo-600 to-purple-500",
+        emoji: "🧠",
+    },
+    {
         id: "sovereign-arcade",
         title: "AI Training Simulations",
         desc: "6 distinct reinforcement learning environments engineered to train autonomous agents. Observe real-time algorithmic decision-making, predictive pathing, and strategic optimization.",
