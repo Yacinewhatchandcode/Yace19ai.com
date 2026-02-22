@@ -15,7 +15,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col gap-6 pt-12"
+            className="flex flex-col gap-6 pt-8 md:pt-12"
         >
             <VoiceOrbInterface />
 

@@ -237,7 +237,7 @@ export default function VoiceOrbInterface() {
     return (
         <section
             aria-label="AMLAZR Voice Intelligence System"
-            className="relative w-full overflow-hidden rounded-3xl mb-12 glass-panel border border-cyan-500/20 shadow-[0_0_40px_#00ffff15] bg-[#02050A]/80 flex flex-col items-center justify-center min-h-[500px] p-6"
+            className="relative w-full overflow-hidden rounded-3xl mb-8 md:mb-12 glass-panel border border-cyan-500/20 shadow-[0_0_40px_#00ffff15] bg-[#02050A]/80 flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] px-4 py-8 md:p-6"
         >
             {/* SEO - screen reader only */}
             <h2 className="sr-only">AMLAZR Voice Intelligence System</h2>
@@ -246,9 +246,9 @@ export default function VoiceOrbInterface() {
             </p>
 
             {/* Header */}
-            <div className="absolute top-6 left-6 flex items-center gap-3">
-                <Globe className="text-cyan-400 w-5 h-5" />
-                <span className="font-mono text-xs text-cyan-400 tracking-widest font-black uppercase">Neural Voice Search</span>
+            <div className="absolute top-4 left-4 md:top-6 md:left-6 flex items-center gap-2 md:gap-3">
+                <Globe className="text-cyan-400 w-4 h-4 md:w-5 md:h-5 shrink-0" />
+                <span className="hidden sm:inline font-mono text-xs text-cyan-400 tracking-widest font-black uppercase">Neural Voice Search</span>
                 {backendOnline && (
                     <span className="ml-2 text-[9px] font-mono text-green-500 uppercase tracking-widest border border-green-500/30 px-1.5 py-0.5 rounded">
                         Backend Live
@@ -257,12 +257,12 @@ export default function VoiceOrbInterface() {
             </div>
 
             {/* Status */}
-            <div className="absolute top-6 right-6 font-mono text-[10px] uppercase tracking-widest">
+            <div className="absolute top-4 right-4 md:top-6 md:right-6 font-mono text-[9px] md:text-[10px] uppercase tracking-widest">
                 {statusLabel}
             </div>
 
             {/* Orb */}
-            <div className="relative mt-12 mb-10 flex items-center justify-center">
+            <div className="relative mt-16 md:mt-12 mb-8 md:mb-10 flex items-center justify-center">
                 {/* Glow halo */}
                 <motion.div
                     animate={{
@@ -284,9 +284,9 @@ export default function VoiceOrbInterface() {
                     className={`relative z-10 w-40 h-40 rounded-full flex items-center justify-center border-2 cursor-pointer shadow-lg transition-colors duration-500 disabled:opacity-40 ${borderColor}`}
                 >
                     <div className={`absolute inset-0 rounded-full blur-xl opacity-40 bg-gradient-to-tr ${orbState === 'listening' ? 'from-red-500 to-transparent' :
-                            orbState === 'processing' ? 'from-yellow-400 to-transparent' :
-                                orbState === 'speaking' ? 'from-green-400 to-transparent' :
-                                    'from-cyan-500 to-transparent'
+                        orbState === 'processing' ? 'from-yellow-400 to-transparent' :
+                            orbState === 'speaking' ? 'from-green-400 to-transparent' :
+                                'from-cyan-500 to-transparent'
                         }`} />
 
                     {orbState === 'listening' ? (
@@ -321,7 +321,7 @@ export default function VoiceOrbInterface() {
                         onChange={(e) => setTranscript(e.target.value)}
                         disabled={orbState === 'processing'}
                         placeholder={orbState === 'listening' ? 'Listening...' : 'Or type your question here...'}
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-6 py-4 outline-none text-white font-mono text-sm placeholder:text-gray-600 focus:border-cyan-500/50 focus:bg-white/[0.05] transition-all"
+                        className="w-full bg-white/[0.03] border border-white/10 rounded-full px-4 py-3 md:px-6 md:py-4 outline-none text-white font-mono text-xs md:text-sm placeholder:text-gray-600 focus:border-cyan-500/50 focus:bg-white/[0.05] transition-all"
                         aria-label="Query input"
                     />
                     <button
@@ -351,7 +351,7 @@ export default function VoiceOrbInterface() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 10 }}
-                            className="w-full bg-green-500/5 border border-green-500/20 rounded-2xl p-6 text-green-50"
+                            className="w-full bg-green-500/5 border border-green-500/20 rounded-2xl p-4 md:p-6 text-green-50"
                         >
                             <div className="flex items-center gap-3 mb-3">
                                 <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />

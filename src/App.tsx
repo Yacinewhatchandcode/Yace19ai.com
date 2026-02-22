@@ -25,7 +25,7 @@ function Navigation() {
   ];
 
   return (
-    <nav className="fixed w-full px-6 py-4 flex justify-between items-center z-[100] backdrop-blur-xl border-b border-white/[0.05] bg-[#02050A]/70">
+    <nav className="fixed w-full px-4 md:px-6 py-3 md:py-4 flex justify-between items-center z-[100] backdrop-blur-xl border-b border-white/[0.05] bg-[#02050A]/70">
       <Link to="/" className="flex items-center gap-3 group">
         <div className="w-8 h-8 rounded bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center relative overflow-hidden">
           <Globe className="text-cyan-400 w-4 h-4 z-10 group-hover:rotate-180 transition-transform duration-700" />
@@ -53,10 +53,11 @@ function Navigation() {
         href="https://calendly.com/info-primeai/30min"
         target="_blank"
         rel="noreferrer"
-        className="px-5 py-2 rounded border border-purple-500/30 bg-purple-500/10 text-purple-400 font-mono text-xs font-bold tracking-widest uppercase hover:bg-purple-500/20 hover:border-purple-500/50 transition-all flex items-center gap-2 group"
+        className="px-4 py-2 md:px-5 md:py-2 rounded border border-purple-500/30 bg-purple-500/10 text-purple-400 font-mono text-xs font-bold tracking-widest uppercase hover:bg-purple-500/20 hover:border-purple-500/50 transition-all flex items-center gap-2 group"
       >
         <Rocket size={14} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
-        START PROJECT
+        <span className="hidden sm:inline">START PROJECT</span>
+        <span className="sm:hidden">START</span>
       </a>
     </nav>
   );
@@ -82,9 +83,9 @@ export default function App() {
       <div className="fixed inset-0 z-0 bg-[#02050A]">
         <NeuralMeshwork3D />
       </div>
-      <div className="relative z-10 min-h-screen text-white font-sans overflow-x-hidden selection:bg-cyan-500/30 selection:text-white flex flex-col pt-20">
+      <div className="relative z-10 min-h-[100dvh] text-white font-sans overflow-x-hidden selection:bg-cyan-500/30 selection:text-white flex flex-col pt-16 md:pt-20">
         <Navigation />
-        <div className="flex-1 w-full max-w-[1600px] mx-auto px-4 md:px-8 pb-12">
+        <div className="flex-1 w-full max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8 pb-12">
           <AnimatedRoutes />
         </div>
       </div>
