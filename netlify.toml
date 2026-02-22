@@ -5,12 +5,7 @@
 [build.environment]
   NODE_VERSION = "20"
 
-# Netlify Edge Functions use the /netlify/functions directory automatically
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+# Netlify Edge Functions routes are defined inside the edge-functions using export const config = { path: '/api/something'}
 
 [[redirects]]
   from = "/*"
