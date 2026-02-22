@@ -180,7 +180,7 @@ export default function SovereignSearchPage() {
     }[orbState];
 
     return (
-        <div className="flex h-[calc(100vh-5rem)] gap-0 -mx-4 md:-mx-8 overflow-hidden">
+        <div className="flex h-[calc(100vh-5rem)] gap-0 -mx-4 md:-mx-8 -mb-12 overflow-hidden">
 
             {/* ══ LEFT SIDEBAR — Agent Fleet ═══════════════════════════════════ */}
             <aside className="hidden lg:flex flex-col w-64 shrink-0 border-r border-white/[0.06] bg-black/30 backdrop-blur-md overflow-y-auto">
