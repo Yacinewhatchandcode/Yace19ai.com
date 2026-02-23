@@ -4,7 +4,7 @@ import {
     Code2, Send, Loader, Copy, Check, Trash2, Brain,
     Sparkles, Terminal, FileCode, Eye, EyeOff,
     RefreshCw, Bug, BookOpen, TestTube, Settings,
-    Zap, Cpu, X, Maximize2,
+    Zap, Cpu, X,
 } from 'lucide-react';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
 
