@@ -66,6 +66,7 @@ export default function SelfCodingPage() {
     const [framework, setFramework] = useState('react');
     const [loading, setLoading] = useState(false);
     const [activeCode, setActiveCode] = useState<CodeBlock | null>(null);
+    const [previewSrc, setPreviewSrc] = useState<string>('');
     const [copied, setCopied] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
     const [showPreview, setShowPreview] = useState(true);
@@ -86,21 +87,14 @@ export default function SelfCodingPage() {
         setTimeout(() => setCopied(false), 2000);
     }, []);
 
-    const renderPreview = useCallback((code: string) => {
-        if (!iframeRef.current) return;
-        const iframe = iframeRef.current;
-        const doc = iframe.contentDocument || iframe.contentWindow?.document;
-        if (!doc) return;
-        doc.open();
-        doc.write(code);
-        doc.close();
-    }, []);
-
+    // When activeCode changes and it's previewable, set the srcdoc
     useEffect(() => {
         if (activeCode?.previewable && showPreview) {
-            setTimeout(() => renderPreview(activeCode.code), 100);
+            setPreviewSrc(activeCode.code);
+        } else {
+            setPreviewSrc('');
         }
-    }, [activeCode, showPreview, renderPreview]);
+    }, [activeCode, showPreview]);
 
     const submit = useCallback(async () => {
         if (!input.trim() || loading) return;
@@ -200,10 +194,7 @@ export default function SelfCodingPage() {
         setActiveCode(null);
         historyRef.current = [];
         setMobilePanel('chat');
-        if (iframeRef.current) {
-            const doc = iframeRef.current.contentDocument;
-            if (doc) { doc.open(); doc.write(''); doc.close(); }
-        }
+        setPreviewSrc('');
     };
 
     // Code preview panel content (shared between mobile and desktop)
@@ -259,13 +250,14 @@ export default function SelfCodingPage() {
             <div className="flex-1 overflow-auto relative">
                 {activeCode ? (
                     <>
-                        {activeCode.previewable && showPreview && (
+                        {activeCode.previewable && showPreview && previewSrc && (
                             <div className="absolute inset-0 bg-white">
                                 <iframe
                                     ref={iframeRef}
                                     title="Live Preview"
+                                    srcDoc={previewSrc}
                                     className="w-full h-full border-0"
-                                    sandbox="allow-scripts"
+                                    sandbox="allow-scripts allow-same-origin"
                                 />
                             </div>
                         )}
