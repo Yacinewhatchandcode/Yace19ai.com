@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 
 const API_BASE = 'https://amlazr.com';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mxssdqqttwwcgxpkbgam.supabase.co';
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14c3NkcXF0dHd3Y2d4cGtiZ2FtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4MzA2MDIsImV4cCI6MjA3MDQwNjYwMn0.WFADLRaPThKICQWkdNT2ayYLTNtSquZ04WVWps5UN08';
 
 type Mode = 'generate' | 'refactor' | 'debug' | 'explain' | 'test';
 type PipelineMode = 'analyze' | 'implement' | 'fix' | 'test' | 'full_cycle';
@@ -176,7 +178,7 @@ export default function SelfCodingPage() {
         localStorage.setItem('selfcoding_onboarded', '1');
     };
 
-    // Main submit
+    // Main submit — uses Supabase voice-chat (primary, working) with orb-dispatch fallback
     const submit = useCallback(async () => {
         if (!input.trim() || loading) return;
         if (showOnboarding) dismissOnboarding();
@@ -189,22 +191,31 @@ export default function SelfCodingPage() {
 
         const t0 = Date.now();
         try {
-            const res = await fetch(`${API_BASE}/api/orb-dispatch`, {
+            const promptBody = `[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX.\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts.\n7. ALL code INLINE in the HTML.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\n${input}`;
+
+            // ── Primary: Supabase Voice-Chat Edge Function ──
+            const res = await fetch(`${SUPABASE_URL}/functions/v1/voice-chat`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'apikey': SUPABASE_ANON_KEY,
+                },
                 body: JSON.stringify({
-                    message: `[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX.\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts.\n7. ALL code INLINE in the HTML.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\n${input}`,
-                    conversationHistory: historyRef.current.slice(-8),
+                    message: promptBody,
                     lang: 'en',
-                    context: { url: '/build', title: 'Self-Coding Engine' },
+                    history: historyRef.current.slice(-8),
                 }),
             });
+
             const data = await res.json();
             const latency = Date.now() - t0;
 
-            if (data.response) {
-                const rawOutput = data.response;
+            // Handle both response formats: Supabase ({message}) and orb-dispatch ({response})
+            const rawOutput = data.message || data.response;
+
+            if (rawOutput) {
+                // Extract code blocks
                 const codeBlocks: CodeBlock[] = [];
                 const codeRegex = /```(\w+)?\n([\s\S]*?)```/g;
                 let match;
@@ -216,15 +227,14 @@ export default function SelfCodingPage() {
                 }
                 const explanation = rawOutput.replace(/```[\s\S]*?```/g, '').trim();
 
-                let provider = 'openrouter';
-                const modules = data.activeModules || [];
-                if (modules.some((m: string) => m.toLowerCase().includes('groq'))) provider = 'groq';
-                else if (modules.some((m: string) => m.toLowerCase().includes('gemini'))) provider = 'google';
+                // Provider info
+                const provider = data.provider || 'groq';
+                const model = data.model || 'Multi-Provider';
 
                 const assistantMsg: Message = {
                     role: 'assistant', content: rawOutput, codeBlocks, explanation, provider,
-                    model: modules.join(' → ') || 'Multi-Provider', latencyMs: latency,
-                    cascade: modules, mode, timestamp: Date.now(), source: 'orb-dispatch',
+                    model, latencyMs: latency,
+                    cascade: data.cascade || [provider], mode, timestamp: Date.now(), source: 'voice-chat',
                 };
                 setMessages(prev => [...prev, assistantMsg]);
                 historyRef.current.push({ role: 'assistant', content: rawOutput });
