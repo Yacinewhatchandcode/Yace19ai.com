@@ -8,7 +8,12 @@ import {
     Sparkles,
     Clock,
     Timer,
-    Leaf,
+    Rocket,
+    Code,
+    Search,
+    MessageSquare,
+    Layers,
+    BarChart3,
 } from "lucide-react";
 
 const API_BASE = "https://prime-ai.fr";
@@ -21,6 +26,27 @@ const TIME_PACKS = [
     { euros: 50, minutes: 480, label: "8 hours", emoji: "👑" },
 ];
 
+// ═══════════════════════════════════════════════════════════════
+// TRUTH-ONLY: Features that ACTUALLY work in production
+// ═══════════════════════════════════════════════════════════════
+const LIVE_FEATURES = [
+    { icon: MessageSquare, label: "AI Chat", desc: "Multi-model (Groq, OpenRouter)", status: "live" },
+    { icon: Search, label: "Deep Search", desc: "Web search + structured results", status: "live" },
+    { icon: Layers, label: "Agent Fleet", desc: "18 specialized AI agents", status: "live" },
+    { icon: Code, label: "Self-Coding Engine", desc: "Code generation interface", status: "beta" },
+    { icon: BarChart3, label: "Analytics", desc: "Real-time visitor tracking", status: "live" },
+    { icon: Rocket, label: "Sovereign OS", desc: "3D interactive workspace", status: "beta" },
+];
+
+const COMING_SOON = [
+    { label: "Image Generation", desc: "Flux, DALL-E, Stable Diffusion", eta: "March 2026" },
+    { label: "Video Generation", desc: "Wan 2.2 on sovereign GPU", eta: "March 2026" },
+    { label: "Music Generation", desc: "Suno AI integration", eta: "Q2 2026" },
+    { label: "Voice Synthesis", desc: "ElevenLabs, OpenVoice", eta: "Q2 2026" },
+    { label: "3D Model Generation", desc: "TripoSR, Meshy", eta: "Q2 2026" },
+    { label: "Public API", desc: "REST + WebSocket", eta: "Q2 2026" },
+];
+
 const TIERS = [
     {
         id: "free",
@@ -30,8 +56,8 @@ const TIERS = [
         features: [
             "AI Chat (free models)",
             "Deep Search (3/day)",
-            "All games",
-            "Community access",
+            "Sovereign OS demo",
+            "Analytics dashboard",
         ],
         icon: Sparkles,
         gradient: "from-gray-500 to-gray-700",
@@ -39,15 +65,15 @@ const TIERS = [
     },
     {
         id: "time-access",
-        name: "Time Access",
-        desc: "Pay per minute. Full access to everything.",
+        name: "Early Access",
+        desc: "Buy time to fuel development. Full access to all live features.",
         price: "from €1",
         features: [
-            "ALL AI models unlocked",
-            "Image, Video, Music, Voice, 3D",
-            "Unlimited AI Agents",
-            "Full API access",
+            "All live AI models",
             "Deep Search unlimited",
+            "18 AI Agents",
+            "Self-Coding Engine (beta)",
+            "Priority access to new features",
             "From €1 = 5 minutes",
         ],
         icon: Timer,
@@ -57,17 +83,15 @@ const TIERS = [
     },
     {
         id: "build",
-        name: "Build",
-        desc: "We build your full AI solution. Book a call.",
+        name: "Build Together",
+        desc: "Custom AI solution. Let's talk about your idea.",
         price: "custom",
         features: [
-            "Unlimited access",
-            "All AI models included",
+            "Everything in Early Access",
             "Custom integrations",
-            "Dedicated infrastructure",
-            "Full API access",
-            "Priority support",
-            "White-label available",
+            "Dedicated setup call",
+            "Priority feature requests",
+            "Direct founder access",
         ],
         icon: Crown,
         gradient: "from-red-600 to-red-800",
@@ -125,10 +149,10 @@ export default function PricingPage() {
         >
             {/* Hero */}
             <div className="max-w-7xl mx-auto pt-12 pb-8 text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 border border-red-500/20 mb-6">
-                    <Timer className="w-4 h-4 text-red-400" />
-                    <span className="text-sm text-red-300">
-                        Pay per minute — Full access to everything
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 mb-6">
+                    <Rocket className="w-4 h-4 text-amber-400" />
+                    <span className="text-sm text-amber-300">
+                        Early Access — Help us build the future
                     </span>
                 </div>
 
@@ -139,9 +163,14 @@ export default function PricingPage() {
                     </span>
                 </h1>
 
-                <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-12">
-                    Starting from €1. Access all AI models, agents, and tools for the
+                <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-4">
+                    Starting from €1. Access all live AI features for the
                     duration you choose.
+                </p>
+
+                <p className="text-sm text-gray-500 max-w-xl mx-auto mb-12">
+                    This is a launch phase. Your purchase funds development of new features.
+                    Every euro goes directly into building the platform you want.
                 </p>
             </div>
 
@@ -204,45 +233,67 @@ export default function PricingPage() {
                 <p className="text-center text-gray-500 text-xs mt-4">
                     Secure payment via Stripe • Visa, Mastercard, Apple Pay, Google Pay
                 </p>
+            </div>
 
-                {/* CO₂ Removal Commitment */}
-                <div className="flex items-center justify-center gap-2 mt-5">
-                    <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-emerald-500/10 border border-emerald-500/25">
-                        <Leaf className="w-4 h-4 text-emerald-400" />
-                        <span className="text-xs text-emerald-300 font-medium">
-                            PRIME AI will contribute 1.5% of your purchase to removing CO₂ from the atmosphere.
-                        </span>
+            {/* ═══ WHAT'S LIVE RIGHT NOW ═══ */}
+            <div className="max-w-5xl mx-auto px-4 pb-8">
+                <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.03] p-8">
+                    <div className="flex items-center justify-center gap-2 mb-6">
+                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                        <h3 className="text-xl font-bold text-white">
+                            What's Live Right Now
+                        </h3>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        {LIVE_FEATURES.map((item, i) => {
+                            const Icon = item.icon;
+                            return (
+                                <div
+                                    key={i}
+                                    className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06]"
+                                >
+                                    <Icon className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                                    <div>
+                                        <div className="text-white text-sm font-medium flex items-center gap-2">
+                                            {item.label}
+                                            <span className={`text-[8px] px-1.5 py-0.5 rounded-full uppercase font-bold ${item.status === 'live'
+                                                    ? 'bg-emerald-500/20 text-emerald-400'
+                                                    : 'bg-amber-500/20 text-amber-400'
+                                                }`}>
+                                                {item.status}
+                                            </span>
+                                        </div>
+                                        <div className="text-white/30 text-[11px]">{item.desc}</div>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>
 
-            {/* ═══ WHAT YOU GET ═══ */}
+            {/* ═══ WHAT'S COMING ═══ */}
             <div className="max-w-5xl mx-auto px-4 pb-12">
                 <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] p-8">
-                    <h3 className="text-xl font-bold text-white mb-6 text-center">
-                        What you unlock
+                    <h3 className="text-lg font-bold text-white/60 mb-6 text-center">
+                        🚧 Coming Soon — Your purchase accelerates these features
                     </h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {[
-                            { icon: "◉", label: "Images", desc: "Imagen4, Flux, Seedream" },
-                            { icon: "▶", label: "Videos", desc: "Wan 2.2, Hailuo" },
-                            { icon: "♪", label: "Music", desc: "Suno AI" },
-                            { icon: "🎙️", label: "Voice", desc: "ElevenLabs, OpenVoice" },
-                            { icon: "◇", label: "3D Models", desc: "TripoSR, Meshy" },
-                            { icon: "🤖", label: "AI Agents", desc: "31 agents" },
-                            { icon: "🔍", label: "Deep Search", desc: "Unlimited" },
-                            { icon: "💬", label: "AI Chat", desc: "Gemini 2.5 Pro" },
-                        ].map((item, i) => (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {COMING_SOON.map((item, i) => (
                             <div
                                 key={i}
-                                className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]"
+                                className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.01] border border-white/[0.04] opacity-60"
                             >
-                                <span className="text-lg">{item.icon}</span>
+                                <div className="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center flex-shrink-0">
+                                    <Clock className="w-3 h-3 text-white/30" />
+                                </div>
                                 <div>
-                                    <div className="text-white text-sm font-medium">
+                                    <div className="text-white/50 text-sm font-medium">
                                         {item.label}
                                     </div>
-                                    <div className="text-white/30 text-[11px]">{item.desc}</div>
+                                    <div className="text-white/20 text-[10px]">
+                                        {item.desc} • <span className="text-amber-400/60">{item.eta}</span>
+                                    </div>
                                 </div>
                             </div>
                         ))}
@@ -270,7 +321,7 @@ export default function PricingPage() {
                                 <div className="bg-white/[0.02] backdrop-blur-xl p-6 h-full flex flex-col">
                                     {tier.popular && (
                                         <span className="inline-block px-3 py-1 text-xs font-medium text-red-300 bg-red-500/20 rounded-full mb-4 self-start">
-                                            Recommended
+                                            Early Access
                                         </span>
                                     )}
 
@@ -345,7 +396,7 @@ export default function PricingPage() {
                 </div>
             </div>
 
-            {/* Support */}
+            {/* Support — Solo Builder Transparency */}
             <div className="max-w-3xl mx-auto px-4 py-12">
                 <div className="relative rounded-2xl overflow-hidden border border-blue-500/20 bg-gradient-to-br from-blue-900/10 to-blue-800/5 p-8 md:p-10 text-center">
                     <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
@@ -357,8 +408,13 @@ export default function PricingPage() {
                     <h2 className="text-2xl font-bold text-white mb-3">
                         Believe in PRIME?
                     </h2>
-                    <p className="text-gray-400 text-sm max-w-lg mx-auto mb-3">
-                        I'm a solo entrepreneur building accessible AI tools for everyone.
+                    <p className="text-gray-400 text-sm max-w-lg mx-auto mb-2">
+                        I'm a solo builder creating AI tools for everyone. This is a live launch —
+                        I ship new features every week.
+                    </p>
+                    <p className="text-gray-500 text-xs max-w-lg mx-auto mb-6">
+                        Your early support directly funds GPU compute, API costs, and new feature development.
+                        Early backers will always keep their founding rate.
                     </p>
                     <a
                         href="https://revolut.me/yacinen09"
@@ -372,62 +428,14 @@ export default function PricingPage() {
                 </div>
             </div>
 
-            {/* ═══ CLIMATE COMMITMENT ═══ */}
-            <div className="max-w-3xl mx-auto px-4 py-8">
-                <div className="relative rounded-2xl overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-emerald-900/15 to-emerald-800/5 p-8 md:p-10 text-center">
-                    <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
-                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.06)_0%,_transparent_70%)]" />
-
-                    <div className="relative z-10">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 mb-6">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-                            </span>
-                            <span className="text-emerald-300 text-sm font-medium tracking-wide">
-                                Climate Action
-                            </span>
-                        </div>
-
-                        <div className="flex items-center justify-center gap-3 mb-4">
-                            <Leaf className="w-8 h-8 text-emerald-400" />
-                            <h2 className="text-2xl md:text-3xl font-bold text-white">
-                                Carbon Negative AI
-                            </h2>
-                        </div>
-
-                        <p className="text-emerald-200/80 text-base md:text-lg max-w-xl mx-auto mb-6 leading-relaxed">
-                            PRIME AI contributes <span className="text-emerald-300 font-bold">1.5%</span> of every purchase to removing CO₂ from the atmosphere.
-                        </p>
-
-                        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-emerald-300/60">
-                            <div className="flex items-center gap-1.5">
-                                <Leaf className="w-3.5 h-3.5" />
-                                <span>Carbon removal</span>
-                            </div>
-                            <span className="text-emerald-500/30">•</span>
-                            <div className="flex items-center gap-1.5">
-                                <span>🌍</span>
-                                <span>Every transaction counts</span>
-                            </div>
-                            <span className="text-emerald-500/30">•</span>
-                            <div className="flex items-center gap-1.5">
-                                <span>♻️</span>
-                                <span>Verified offsets</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             {/* CTA */}
             <div className="max-w-4xl mx-auto px-4 pb-20">
                 <div className="bg-gradient-to-r from-red-900/20 to-red-800/10 rounded-2xl p-8 md:p-12 text-center border border-red-500/20">
                     <h2 className="text-3xl font-bold text-white mb-4">
-                        Need a custom solution?
+                        Need a custom AI solution?
                     </h2>
                     <p className="text-gray-300 mb-8 max-w-xl mx-auto">
-                        Contact us for custom pricing.
+                        Let's build together. Book a free 30-minute call to discuss your project.
                     </p>
                     <a
                         href="https://calendly.com/info-primeai/30min"
