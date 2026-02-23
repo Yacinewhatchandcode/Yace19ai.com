@@ -4,7 +4,7 @@ import {
     Code2, Send, Loader, Copy, Check, Trash2, Brain,
     Sparkles, Terminal, FileCode, Eye, EyeOff,
     RefreshCw, Bug, BookOpen, TestTube, Settings,
-    Zap, Cpu, X,
+    Zap, Cpu, X, Maximize2, ExternalLink,
 } from 'lucide-react';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
 
@@ -57,6 +57,42 @@ const SUGGESTIONS = [
     'Build a Kanban board with drag & drop',
 ];
 
+// Sanitize AI-generated HTML to fix common preview issues
+function sanitizePreviewHtml(html: string): string {
+    let fixed = html;
+    // Remove local import statements (./  ../) that can't resolve in iframe
+    fixed = fixed.replace(/import\s+.*?from\s+['"]\.\.?\/[^'"]+['"];?\n?/g, '');
+    // Remove bare export statements
+    fixed = fixed.replace(/export\s+default\s+/g, 'const __exported__ = ');
+    fixed = fixed.replace(/export\s+\{[^}]*\};?\n?/g, '');
+    // Check if any <script> contains JSX (< followed by uppercase letter = React component)
+    fixed = fixed.replace(
+        /<script(\s+type="module")?>([\s\S]*?)<\/script>/g,
+        (_match, typeAttr, content) => {
+            // If content has JSX-like patterns (e.g. <Component or <div className)
+            const hasJSX = /<[A-Z]/.test(content) || /className=/.test(content) || /onClick=\{/.test(content);
+            if (!hasJSX) return `<script${typeAttr || ''}>${content}</script>`;
+            // Has JSX — render a fallback message
+            return `<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var root = document.getElementById('root') || document.body;
+    root.innerHTML = '<div style="font-family:system-ui,-apple-system,sans-serif;max-width:600px;margin:40px auto;padding:24px;background:#f8fafc;border-radius:16px;border:1px solid #e2e8f0">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#06b6d4,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:14px">✓</div><h2 style="margin:0;font-size:18px;color:#1e293b">Code Generated Successfully</h2></div>' +
+        '<p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px 0">The React component has been generated with full TypeScript source code. Click <b>Code</b> to view the implementation.</p>' +
+        '<div style="background:#0f172a;border-radius:12px;padding:16px;color:#94a3b8;font-family:monospace;font-size:12px;line-height:1.8;overflow:auto">' +
+        '<div style="color:#67e8f9">// Component preview requires a React build environment</div>' +
+        '<div><span style="color:#c084fc">import</span> <span style="color:#fbbf24">React</span> <span style="color:#c084fc">from</span> <span style="color:#34d399">\\'react\\'</span>;</div>' +
+        '<div><span style="color:#c084fc">export default function</span> <span style="color:#fbbf24">Component</span>() { ... }</div>' +
+        '</div>' +
+        '<p style="color:#94a3b8;font-size:11px;margin-top:12px">To run locally: copy the TypeScript code → paste into your project → npm run dev</p>' +
+        '</div>';
+});
+</script>`;
+        }
+    );
+    return fixed;
+}
+
 export default function SelfCodingPage() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
@@ -72,6 +108,7 @@ export default function SelfCodingPage() {
     const [showPreview, setShowPreview] = useState(true);
     const [totalGenerated, setTotalGenerated] = useState(0);
     const [mobilePanel, setMobilePanel] = useState<MobilePanel>('chat');
+    const [fullscreen, setFullscreen] = useState(false);
     const chatRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const historyRef = useRef<{ role: string; content: string }[]>([]);
@@ -90,11 +127,21 @@ export default function SelfCodingPage() {
     // When activeCode changes and it's previewable, set the srcdoc
     useEffect(() => {
         if (activeCode?.previewable && showPreview) {
-            setPreviewSrc(activeCode.code);
+            setPreviewSrc(sanitizePreviewHtml(activeCode.code));
         } else {
             setPreviewSrc('');
         }
     }, [activeCode, showPreview]);
+
+    // Open preview in new tab for sharing/mobile viewing
+    const openInNewTab = useCallback(() => {
+        if (!activeCode?.previewable) return;
+        const w = window.open('', '_blank');
+        if (w) {
+            w.document.write(sanitizePreviewHtml(activeCode.code));
+            w.document.close();
+        }
+    }, [activeCode]);
 
     const submit = useCallback(async () => {
         if (!input.trim() || loading) return;
@@ -115,7 +162,7 @@ export default function SelfCodingPage() {
                     'apikey': SUPABASE_ANON_KEY,
                 },
                 body: JSON.stringify({
-                    message: `[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nIMPORTANT: If this is a visual component or page, ALSO provide a complete standalone HTML file (tagged as \`\`\`html) that renders the component using CDN imports (React from esm.sh, Tailwind from cdn.tailwindcss.com). This HTML should be fully self-contained and renderable in an iframe.\n\n${input}`,
+                    message: `[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX. Example: React.createElement('div', {className:'p-4'}, 'Hello')\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js and unpkg.com/react-dom@18/umd/react-dom.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts. Use regular script tags.\n7. ALL code INLINE in the HTML. NO external files or modules.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\n${input}`,
                     lang: 'en',
                     history: historyRef.current.slice(-8),
                 }),
@@ -127,7 +174,7 @@ export default function SelfCodingPage() {
                 const rawOutput = data.message;
 
                 const codeBlocks: CodeBlock[] = [];
-                const codeRegex = /```(\w+)?\n([\s\S]*?)```/g;
+                const codeRegex = /```(\w +) ?\n([\s\S] *?)```/g;
                 let match;
                 while ((match = codeRegex.exec(rawOutput)) !== null) {
                     const lang = match[1] || language;
@@ -135,7 +182,7 @@ export default function SelfCodingPage() {
                     const previewable = lang === 'html' || code.includes('<html') || code.includes('<!DOCTYPE') || code.includes('<!doctype');
                     codeBlocks.push({ language: lang, code, previewable });
                 }
-                const explanation = rawOutput.replace(/```[\s\S]*?```/g, '').trim();
+                const explanation = rawOutput.replace(/```[\s\S]*? ```/g, '').trim();
 
                 const assistantMsg: Message = {
                     role: 'assistant',
@@ -177,7 +224,7 @@ export default function SelfCodingPage() {
         } catch (err: any) {
             setMessages(prev => [...prev, {
                 role: 'assistant',
-                content: `Connection error: ${err.message}. Check network and retry.`,
+                content: `Connection error: ${err.message}.Check network and retry.`,
                 timestamp: Date.now(),
             }]);
         }
@@ -217,7 +264,7 @@ export default function SelfCodingPage() {
                     {activeCode?.previewable && (
                         <button
                             onClick={() => setShowPreview(!showPreview)}
-                            className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[9px] sm:text-[10px] font-mono transition-all cursor-pointer ${showPreview
+                            className={`flex items - center gap - 1 px - 2 py - 1 rounded - lg text - [9px] sm: text - [10px] font - mono transition - all cursor - pointer ${showPreview
                                 ? 'bg-green-500/20 border border-green-500/30 text-green-300'
                                 : 'bg-white/5 border border-white/10 text-gray-400'
                                 }`}
@@ -234,6 +281,25 @@ export default function SelfCodingPage() {
                             {copied ? <Check size={9} className="text-green-400" /> : <Copy size={9} />}
                             <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
                         </button>
+                    )}
+                    {activeCode?.previewable && (
+                        <>
+                            <button
+                                onClick={openInNewTab}
+                                title="Open in new tab"
+                                className="flex items-center gap-1 px-2 py-1 rounded-lg text-[9px] sm:text-[10px] font-mono text-gray-400 hover:text-white bg-white/5 border border-white/10 transition-all cursor-pointer"
+                            >
+                                <ExternalLink size={9} />
+                                <span className="hidden sm:inline">New Tab</span>
+                            </button>
+                            <button
+                                onClick={() => setFullscreen(!fullscreen)}
+                                title="Fullscreen"
+                                className="flex items-center gap-1 px-2 py-1 rounded-lg text-[9px] sm:text-[10px] font-mono text-gray-400 hover:text-white bg-white/5 border border-white/10 transition-all cursor-pointer"
+                            >
+                                <Maximize2 size={9} />
+                            </button>
+                        </>
                     )}
                     {/* Mobile close button */}
                     <button
@@ -283,7 +349,7 @@ export default function SelfCodingPage() {
                         </div>
                         <div className="flex gap-1.5 flex-wrap justify-center">
                             {Object.entries(PROVIDER_ICONS).map(([key, val]) => (
-                                <span key={key} className={`text-[7px] sm:text-[8px] font-mono ${val.color} bg-white/5 border border-white/5 px-1 sm:px-1.5 py-0.5 rounded`}>
+                                <span key={key} className={`text - [7px] sm: text - [8px] font - mono ${val.color} bg - white / 5 border border - white / 5 px - 1 sm: px - 1.5 py - 0.5 rounded`}>
                                     {val.label}
                                 </span>
                             ))}
@@ -388,7 +454,7 @@ export default function SelfCodingPage() {
                         <button
                             key={key}
                             onClick={() => setMode(key)}
-                            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${mode === key
+                            className={`flex items - center gap - 1 sm: gap - 1.5 px - 2 sm: px - 3 py - 1 sm: py - 1.5 rounded - lg text - [10px] sm: text - xs font - mono font - bold whitespace - nowrap transition - all cursor - pointer ${mode === key
                                 ? `${cfg.color} bg-gradient-to-r ${cfg.accent} border`
                                 : 'text-gray-500 bg-white/5 border border-transparent hover:border-white/10'
                                 }`}
@@ -405,7 +471,7 @@ export default function SelfCodingPage() {
                 <div className="md:hidden flex gap-2 mb-2">
                     <button
                         onClick={() => setMobilePanel('chat')}
-                        className={`flex-1 py-1.5 rounded-lg text-[10px] font-mono font-bold text-center transition-all cursor-pointer ${mobilePanel === 'chat'
+                        className={`flex - 1 py - 1.5 rounded - lg text - [10px] font - mono font - bold text - center transition - all cursor - pointer ${mobilePanel === 'chat'
                             ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
                             : 'bg-white/5 text-gray-500 border border-white/10'
                             }`}
@@ -414,10 +480,10 @@ export default function SelfCodingPage() {
                     </button>
                     <button
                         onClick={() => setMobilePanel('code')}
-                        className={`flex-1 py-1.5 rounded-lg text-[10px] font-mono font-bold text-center transition-all cursor-pointer flex items-center justify-center gap-1.5 ${mobilePanel === 'code'
+                        className={`flex - 1 py - 1.5 rounded - lg text - [10px] font - mono font - bold text - center transition - all cursor - pointer flex items - center justify - center gap - 1.5 ${mobilePanel === 'code'
                             ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
                             : 'bg-white/5 text-gray-500 border border-white/10'
-                            }`}
+                            } `}
                     >
                         <Code2 size={10} /> Code
                         {activeCode.previewable && <span className="text-[7px] text-green-400">LIVE</span>}
@@ -428,7 +494,7 @@ export default function SelfCodingPage() {
             {/* Main Content */}
             <div className="flex-1 flex gap-4 min-h-0">
                 {/* LEFT: Chat Panel — full width mobile, half on desktop */}
-                <div className={`flex-1 flex flex-col min-w-0 ${activeCode && mobilePanel === 'code' ? 'hidden md:flex' : 'flex'}`}>
+                <div className={`flex - 1 flex flex - col min - w - 0 ${activeCode && mobilePanel === 'code' ? 'hidden md:flex' : 'flex'} `}>
                     <div ref={chatRef} className="flex-1 overflow-y-auto pr-1 sm:pr-2 space-y-2 sm:space-y-3">
                         {messages.length === 0 && (
                             <div className="flex flex-col items-center justify-center h-full text-center gap-3 sm:gap-4 py-6 sm:py-12">
@@ -462,12 +528,12 @@ export default function SelfCodingPage() {
                                 key={i}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} `}
                             >
-                                <div className={`max-w-[95%] sm:max-w-[90%] rounded-2xl px-3 sm:px-4 py-2 sm:py-3 ${msg.role === 'user'
+                                <div className={`max - w - [95 %] sm: max - w - [90 %] rounded - 2xl px - 3 sm: px - 4 py - 2 sm: py - 3 ${msg.role === 'user'
                                     ? 'bg-cyan-500/10 border border-cyan-500/20 text-cyan-50'
                                     : 'bg-white/5 border border-white/10 text-gray-300'
-                                    }`}>
+                                    } `}>
                                     {msg.role === 'user' ? (
                                         <div>
                                             <div className="flex items-center gap-2 mb-1">
@@ -482,7 +548,7 @@ export default function SelfCodingPage() {
                                                 <Brain size={10} className="text-violet-400" />
                                                 <span className="text-[8px] sm:text-[9px] font-mono text-violet-400">ASiReM</span>
                                                 {msg.provider && (
-                                                    <span className={`text-[7px] sm:text-[8px] font-mono ${PROVIDER_ICONS[msg.provider]?.color || 'text-gray-400'} bg-white/5 border border-white/10 px-1 sm:px-1.5 py-0.5 rounded flex items-center gap-0.5`}>
+                                                    <span className={`text - [7px] sm: text - [8px] font - mono ${PROVIDER_ICONS[msg.provider]?.color || 'text-gray-400'} bg - white / 5 border border - white / 10 px - 1 sm: px - 1.5 py - 0.5 rounded flex items - center gap - 0.5`}>
                                                         <Cpu size={7} />
                                                         {PROVIDER_ICONS[msg.provider]?.label || msg.provider}
                                                     </span>
@@ -506,10 +572,10 @@ export default function SelfCodingPage() {
                                                         <button
                                                             key={j}
                                                             onClick={() => { setActiveCode(cb); if (cb.previewable) setShowPreview(true); if (window.innerWidth < 768) setMobilePanel('code'); }}
-                                                            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg text-[9px] sm:text-[10px] font-mono transition-all cursor-pointer ${activeCode === cb
+                                                            className={`flex items - center gap - 1 sm: gap - 1.5 px - 2 sm: px - 2.5 py - 0.5 sm: py - 1 rounded - lg text - [9px] sm: text - [10px] font - mono transition - all cursor - pointer ${activeCode === cb
                                                                 ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300'
                                                                 : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white'
-                                                                }`}
+                                                                } `}
                                                         >
                                                             {cb.previewable ? <Eye size={9} className="text-green-400" /> : <FileCode size={9} />}
                                                             {cb.language} ({cb.code.split('\n').length}L)
@@ -555,10 +621,10 @@ export default function SelfCodingPage() {
                         <button
                             onClick={submit}
                             disabled={loading || !input.trim()}
-                            className={`px-3 sm:px-4 rounded-xl flex items-center justify-center transition-all ${loading || !input.trim()
+                            className={`px - 3 sm: px - 4 rounded - xl flex items - center justify - center transition - all ${loading || !input.trim()
                                 ? 'bg-gray-800 text-gray-600 cursor-not-allowed'
                                 : 'bg-gradient-to-r from-cyan-500 to-violet-500 text-white hover:shadow-lg hover:shadow-cyan-500/30 cursor-pointer'
-                                }`}
+                                } `}
                         >
                             {loading ? <Loader size={16} className="animate-spin" /> : <Send size={16} />}
                         </button>
@@ -566,7 +632,7 @@ export default function SelfCodingPage() {
                 </div>
 
                 {/* RIGHT: Code Preview — hidden on mobile unless code panel selected */}
-                <div className={`md:w-1/2 md:flex flex-col min-w-0 ${activeCode && mobilePanel === 'code' ? 'flex flex-1' : 'hidden'}`}>
+                <div className={`md: w - 1 / 2 md:flex flex - col min - w - 0 ${activeCode && mobilePanel === 'code' ? 'flex flex-1' : 'hidden'} `}>
                     {codePreviewContent}
                 </div>
             </div>
@@ -577,7 +643,7 @@ export default function SelfCodingPage() {
 // Syntax highlighting
 function highlightSyntax(line: string): React.ReactElement {
     const keywords = /\b(import|export|from|const|let|var|function|return|if|else|for|while|class|interface|type|async|await|try|catch|new|this|extends|implements|default|switch|case|break|continue|throw|yield|delete|typeof|instanceof|in|of|void|null|undefined|true|false)\b/g;
-    const strings = /(["'`])(?:(?=(\\?))\2.)*?\1/g;
+    const strings = /(["'`])(?: (?= (\\?)) \2.)*?\1 / g;
     const comments = /(\/\/.*$|\/\*[\s\S]*?\*\/)/g;
     const types = /\b(string|number|boolean|void|any|null|undefined|React|useState|useEffect|useCallback|useRef|Promise|Map|Set|Array|Record|Partial|Required|Readonly|Pick|Omit)\b/g;
     const numbers = /\b(\d+\.?\d*)\b/g;
