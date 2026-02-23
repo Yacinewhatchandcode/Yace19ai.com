@@ -17,6 +17,7 @@ import SovereignSearchPage from "./pages/SovereignSearchPage";
 import BlogPage from "./pages/BlogPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import PricingPage from "./pages/PricingPage";
+import PricingSuccessPage from "./pages/PricingSuccessPage";
 import SelfCodingPage from "./pages/SelfCodingPage";
 
 function Navigation() {
@@ -146,6 +147,7 @@ function AnimatedRoutes() {
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/pricing/success" element={<PricingSuccessPage />} />
         <Route path="/build" element={<SelfCodingPage />} />
       </Routes>
     </AnimatePresence>
