@@ -36,10 +36,10 @@ const LIVE_FEATURES = [
     { icon: Code, label: "Self-Coding Engine", desc: "Code generation interface", status: "beta" },
     { icon: BarChart3, label: "Analytics", desc: "Real-time visitor tracking", status: "live" },
     { icon: Rocket, label: "Sovereign OS", desc: "3D interactive workspace", status: "beta" },
+    { icon: Sparkles, label: "Image Generation", desc: "OpenRouter + Pollinations", status: "live" },
 ];
 
 const COMING_SOON = [
-    { label: "Image Generation", desc: "Flux, DALL-E, Stable Diffusion", eta: "March 2026" },
     { label: "Video Generation", desc: "Wan 2.2 on sovereign GPU", eta: "March 2026" },
     { label: "Music Generation", desc: "Suno AI integration", eta: "Q2 2026" },
     { label: "Voice Synthesis", desc: "ElevenLabs, OpenVoice", eta: "Q2 2026" },
@@ -257,8 +257,8 @@ export default function PricingPage() {
                                         <div className="text-white text-sm font-medium flex items-center gap-2">
                                             {item.label}
                                             <span className={`text-[8px] px-1.5 py-0.5 rounded-full uppercase font-bold ${item.status === 'live'
-                                                    ? 'bg-emerald-500/20 text-emerald-400'
-                                                    : 'bg-amber-500/20 text-amber-400'
+                                                ? 'bg-emerald-500/20 text-emerald-400'
+                                                : 'bg-amber-500/20 text-amber-400'
                                                 }`}>
                                                 {item.status}
                                             </span>
