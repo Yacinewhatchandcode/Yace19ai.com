@@ -235,7 +235,7 @@ export default function SovereignSearchPage() {
     }[orbState];
 
     return (
-        <div className="flex h-[calc(100vh-5rem)] gap-0 -mx-4 md:-mx-8 -mb-12 overflow-hidden">
+        <div className="flex h-[calc(100vh-3.5rem)] sm:h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] gap-0 -mx-3 sm:-mx-4 md:-mx-8 -mb-6 sm:-mb-12 overflow-hidden">
 
             {/* ══ LEFT SIDEBAR — Agent Fleet ═══════════════════════════════════ */}
             <aside className="hidden lg:flex flex-col w-64 shrink-0 border-r border-white/[0.06] bg-black/30 backdrop-blur-md overflow-y-auto">
@@ -292,22 +292,22 @@ export default function SovereignSearchPage() {
             </aside>
 
             {/* ══ CENTER — Main Command Interface ══════════════════════════════ */}
-            <main className="flex-1 flex flex-col items-center justify-start overflow-y-auto px-6 py-8">
+            <main className="flex-1 flex flex-col items-center justify-start overflow-y-auto px-3 sm:px-6 py-4 sm:py-8">
 
                 {/* Headline */}
                 <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-center mb-10 max-w-2xl"
+                    className="text-center mb-6 sm:mb-10 max-w-2xl"
                 >
-                    <h1 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">
+                    <h1 className="text-xl sm:text-3xl md:text-4xl font-black text-white mb-2 sm:mb-3 tracking-tight">
                         What do you want to{' '}
                         <span className="bg-gradient-to-r from-violet-400 via-cyan-400 to-fuchsia-400 bg-clip-text text-transparent">
                             build today?
                         </span>
                     </h1>
-                    <p className="text-sm text-gray-500 font-mono">
-                        Voice command · Text · Agent fleet · Live execution
+                    <p className="text-[10px] sm:text-sm text-gray-500 font-mono">
+                        Voice · Text · Agent fleet · Live execution
                     </p>
                     <motion.button
                         onClick={() => setLang(l => l === 'en' ? 'fr' : 'en')}
@@ -323,7 +323,7 @@ export default function SovereignSearchPage() {
                 </motion.div>
 
                 {/* ── Voice Orb ─────────────────────────────────────────────── */}
-                <div className="relative mb-8 flex items-center justify-center">
+                <div className="relative mb-4 sm:mb-8 flex items-center justify-center">
                     {/* Outer glow ring */}
                     <motion.div
                         animate={{
@@ -331,7 +331,7 @@ export default function SovereignSearchPage() {
                             opacity: orbState === 'idle' ? 0.3 : [0.4, 0.8, 0.4],
                         }}
                         transition={{ duration: orbState === 'listening' ? 1 : 2.5, repeat: Infinity, ease: 'easeInOut' }}
-                        className="absolute rounded-full blur-[50px] w-48 h-48"
+                        className="absolute rounded-full blur-[50px] w-32 h-32 sm:w-48 sm:h-48"
                         style={{ backgroundColor: stateColor.glow + '55' }}
                     />
                     {/* Orb button */}
@@ -341,19 +341,19 @@ export default function SovereignSearchPage() {
                         whileTap={{ scale: 0.94 }}
                         disabled={orbState === 'processing'}
                         title={orbState === 'listening' ? 'Tap to stop & send' : orbState === 'speaking' ? 'Tap to stop' : 'Tap to speak'}
-                        className={`relative z-10 w-24 h-24 md:w-28 md:h-28 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all duration-500 disabled:opacity-40 ${stateColor.border} ${stateColor.bg}`}
+                        className={`relative z-10 w-16 h-16 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all duration-500 disabled:opacity-40 ${stateColor.border} ${stateColor.bg}`}
                     >
                         <div className="absolute inset-0 rounded-full blur-xl opacity-30" style={{ background: `radial-gradient(circle, ${stateColor.glow}88, transparent)` }} />
-                        {orbState === 'listening' && <Square className="w-8 h-8 z-10 text-red-200 fill-red-400" />}
-                        {orbState === 'processing' && <Loader className="w-8 h-8 z-10 text-yellow-200 animate-spin" />}
-                        {orbState === 'speaking' && <Volume2 className="w-8 h-8 z-10 text-emerald-200 animate-pulse" />}
-                        {orbState === 'error' && <AlertCircle className="w-8 h-8 z-10 text-red-300" />}
-                        {orbState === 'idle' && <Mic className="w-8 h-8 z-10 text-violet-200" />}
+                        {orbState === 'listening' && <Square className="w-5 h-5 sm:w-8 sm:h-8 z-10 text-red-200 fill-red-400" />}
+                        {orbState === 'processing' && <Loader className="w-5 h-5 sm:w-8 sm:h-8 z-10 text-yellow-200 animate-spin" />}
+                        {orbState === 'speaking' && <Volume2 className="w-5 h-5 sm:w-8 sm:h-8 z-10 text-emerald-200 animate-pulse" />}
+                        {orbState === 'error' && <AlertCircle className="w-5 h-5 sm:w-8 sm:h-8 z-10 text-red-300" />}
+                        {orbState === 'idle' && <Mic className="w-5 h-5 sm:w-8 sm:h-8 z-10 text-violet-200" />}
                     </motion.button>
                 </div>
 
                 {/* ── State label ───────────────────────────────────────────── */}
-                <p className="text-[10px] font-mono uppercase tracking-widest text-gray-600 mb-6">
+                <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-gray-600 mb-3 sm:mb-6">
                     {orbState === 'idle' && 'Tap orb to speak · or type below'}
                     {orbState === 'listening' && '⬤ Recording — tap to stop & send'}
                     {orbState === 'processing' && 'Routing to sovereign mesh...'}
@@ -362,7 +362,7 @@ export default function SovereignSearchPage() {
                 </p>
 
                 {/* ── Text input ────────────────────────────────────────────── */}
-                <div className={`w-full max-w-2xl relative mb-6 transition-all duration-300 ${inputFocused ? 'scale-[1.01]' : ''}`}>
+                <div className={`w-full max-w-2xl relative mb-4 sm:mb-6 transition-all duration-300 ${inputFocused ? 'sm:scale-[1.01]' : ''}`}>
                     <div className={`rounded-2xl border transition-all duration-300 ${inputFocused ? 'border-violet-500/60 shadow-[0_0_20px_#7c3aed33]' : 'border-white/10'} bg-black/40 backdrop-blur-xl`}>
                         <textarea
                             ref={textareaRef}
@@ -374,7 +374,7 @@ export default function SovereignSearchPage() {
                             disabled={orbState === 'processing'}
                             placeholder={orbState === 'listening' ? 'Listening...' : 'Ask anything. Deploy agents. Search the web. Generate code.'}
                             rows={2}
-                            className="w-full bg-transparent px-5 pt-4 pb-2 text-white text-sm font-sans placeholder:text-gray-600 outline-none resize-none leading-relaxed"
+                            className="w-full bg-transparent px-3 sm:px-5 pt-3 sm:pt-4 pb-2 text-white text-xs sm:text-sm font-sans placeholder:text-gray-600 outline-none resize-none leading-relaxed"
                         />
                         <div className="flex items-center justify-between px-4 pb-3 pt-1">
                             <div className="flex items-center gap-2">
@@ -397,7 +397,7 @@ export default function SovereignSearchPage() {
                 </div>
 
                 {/* ── Quick Action Pills — like v0/Genspark ─────────────────── */}
-                <div className="flex flex-wrap gap-2 justify-center mb-8 max-w-2xl">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center mb-4 sm:mb-8 max-w-2xl">
                     {QUICK_PROMPTS.map((qp) => {
                         const Icon = qp.icon;
                         return (
@@ -406,7 +406,7 @@ export default function SovereignSearchPage() {
                                 onClick={() => handleQuickPrompt(qp.prompt)}
                                 whileHover={{ scale: 1.04, y: -1 }}
                                 whileTap={{ scale: 0.97 }}
-                                className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 text-gray-400 hover:text-white text-[11px] font-mono tracking-wide transition-all"
+                                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/20 text-gray-400 hover:text-white text-[9px] sm:text-[11px] font-mono tracking-wide transition-all"
                             >
                                 <Icon size={11} />
                                 {qp.label}

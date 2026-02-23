@@ -100,15 +100,15 @@ export default function AnalyticsDashboard() {
     const totalDevices = data.deviceBreakdown.desktop + data.deviceBreakdown.mobile + data.deviceBreakdown.tablet || 1;
 
     return (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pt-8 flex flex-col gap-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pt-4 sm:pt-8 flex flex-col gap-4 sm:gap-6">
             <div className="flex items-center gap-3">
                 <BarChart3 className="text-cyan-400" size={24} />
-                <h1 className="text-2xl font-black text-white font-display">Sovereign Analytics</h1>
+                <h1 className="text-lg sm:text-2xl font-black text-white font-display">Sovereign Analytics</h1>
                 <span className="text-[9px] font-mono text-green-500 bg-green-900/30 border border-green-500/20 px-2 py-0.5 rounded uppercase">Live Data</span>
             </div>
 
             {/* KPI Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <StatCard icon={Eye} label="Total Pageviews" value={data.totalPageviews} color="cyan" />
                 <StatCard icon={Users} label="Unique Visitors" value={data.uniqueVisitors} color="violet" />
                 <StatCard icon={TrendingUp} label="Sessions" value={data.totalSessions} color="emerald" />
@@ -116,7 +116,7 @@ export default function AnalyticsDashboard() {
             </div>
 
             {/* Charts Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6">
                 {/* Top Pages */}
                 <div className="glass-panel border border-white/10 rounded-2xl p-5">
                     <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400 mb-4">Top Pages</h3>

@@ -47,12 +47,12 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
-            className="flex flex-col gap-6 pt-8 md:pt-12"
+            className="flex flex-col gap-4 sm:gap-6 pt-4 sm:pt-8 md:pt-12"
         >
             <VoiceOrbInterface />
 
             {/* HER0 BENTO GRID */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-min">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 auto-rows-min">
 
                 {/* BIG TILE: Playable Arcade */}
                 <div className="md:col-span-2 md:row-span-2">
@@ -92,8 +92,8 @@ export default function HomePage() {
             {/* ─── SERVICES (from Supabase) ─── */}
             {services.length > 0 && (
                 <section className="py-12">
-                    <h2 className="text-2xl font-black text-white font-display mb-8 text-center">Our Services</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <h2 className="text-lg sm:text-2xl font-black text-white font-display mb-4 sm:mb-8 text-center">Our Services</h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                         {services.map((svc, i) => (
                             <motion.a
                                 key={i}
@@ -116,8 +116,8 @@ export default function HomePage() {
             {/* ─── CAPABILITIES (from Supabase) ─── */}
             {capabilities.length > 0 && (
                 <section className="py-8">
-                    <h2 className="text-2xl font-black text-white font-display mb-8 text-center">Core Capabilities</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <h2 className="text-lg sm:text-2xl font-black text-white font-display mb-4 sm:mb-8 text-center">Core Capabilities</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
                         {capabilities.map((cap, i) => (
                             <motion.div
                                 key={i}
