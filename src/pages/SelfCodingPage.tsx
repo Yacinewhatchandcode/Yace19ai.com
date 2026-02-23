@@ -317,7 +317,7 @@ export default function SelfCodingPage() {
                                 </span>
                                 {onlineCount > 0 && (
                                     <span className="text-[10px] font-mono text-cyan-400/60">
-                                        {onlineCount}/3 agents
+                                        {onlineCount}/3 agents{orbActions > 0 ? ` • ${orbActions} actions` : ''}
                                     </span>
                                 )}
                             </div>
