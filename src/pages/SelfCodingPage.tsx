@@ -316,13 +316,21 @@ export default function SelfCodingPage() {
                 {activeCode ? (
                     <>
                         {activeCode.previewable && showPreview && previewSrc && (
-                            <div className="absolute inset-0 bg-white">
+                            <div className={fullscreen ? 'fixed inset-0 z-[200] bg-white' : 'absolute inset-0 bg-white'}>
+                                {fullscreen && (
+                                    <button
+                                        onClick={() => setFullscreen(false)}
+                                        className="fixed top-3 right-3 z-[201] bg-black/80 text-white px-3 py-1.5 rounded-lg text-xs font-mono hover:bg-black transition-colors cursor-pointer flex items-center gap-1.5"
+                                    >
+                                        <X size={12} /> Exit Fullscreen
+                                    </button>
+                                )}
                                 <iframe
                                     ref={iframeRef}
                                     title="Live Preview"
                                     srcDoc={previewSrc}
                                     className="w-full h-full border-0"
-                                    sandbox="allow-scripts allow-same-origin"
+                                    sandbox="allow-scripts"
                                 />
                             </div>
                         )}
@@ -621,10 +629,10 @@ export default function SelfCodingPage() {
                         <button
                             onClick={submit}
                             disabled={loading || !input.trim()}
-                            className={`px - 3 sm: px - 4 rounded - xl flex items - center justify - center transition - all ${loading || !input.trim()
+                            className={`px-3 sm:px-4 rounded-xl flex items-center justify-center transition-all ${loading || !input.trim()
                                 ? 'bg-gray-800 text-gray-600 cursor-not-allowed'
                                 : 'bg-gradient-to-r from-cyan-500 to-violet-500 text-white hover:shadow-lg hover:shadow-cyan-500/30 cursor-pointer'
-                                } `}
+                                }`}
                         >
                             {loading ? <Loader size={16} className="animate-spin" /> : <Send size={16} />}
                         </button>
@@ -632,7 +640,7 @@ export default function SelfCodingPage() {
                 </div>
 
                 {/* RIGHT: Code Preview — hidden on mobile unless code panel selected */}
-                <div className={`md: w - 1 / 2 md:flex flex - col min - w - 0 ${activeCode && mobilePanel === 'code' ? 'flex flex-1' : 'hidden'} `}>
+                <div className={`md:w-1/2 md:flex flex-col min-w-0 ${activeCode && mobilePanel === 'code' ? 'flex flex-1' : 'hidden'}`}>
                     {codePreviewContent}
                 </div>
             </div>
@@ -643,7 +651,7 @@ export default function SelfCodingPage() {
 // Syntax highlighting
 function highlightSyntax(line: string): React.ReactElement {
     const keywords = /\b(import|export|from|const|let|var|function|return|if|else|for|while|class|interface|type|async|await|try|catch|new|this|extends|implements|default|switch|case|break|continue|throw|yield|delete|typeof|instanceof|in|of|void|null|undefined|true|false)\b/g;
-    const strings = /(["'`])(?: (?= (\\?)) \2.)*?\1 / g;
+    const strings = /(["'`])(?:(?=(\\?))\2.)*?\1/g;
     const comments = /(\/\/.*$|\/\*[\s\S]*?\*\/)/g;
     const types = /\b(string|number|boolean|void|any|null|undefined|React|useState|useEffect|useCallback|useRef|Promise|Map|Set|Array|Record|Partial|Required|Readonly|Pick|Omit)\b/g;
     const numbers = /\b(\d+\.?\d*)\b/g;
