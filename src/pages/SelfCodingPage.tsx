@@ -36,9 +36,9 @@ interface Message {
 }
 
 interface AgentStatus {
-    agentZero: { status: string; capabilities?: string[] };
-    bytebot: { status: string };
-    browserUse: { status: string; capabilities?: string[] };
+    orchestrator: { status: string; service?: string; version?: string };
+    bytebot: { status: string; tasks?: number; model?: string };
+    ollama: { status: string; models?: string[] };
 }
 
 const MODE_CONFIG: Record<Mode, { label: string; icon: any; color: string; accent: string; desc: string }> = {
@@ -146,7 +146,7 @@ export default function SelfCodingPage() {
     const historyRef = useRef<{ role: string; content: string }[]>([]);
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
-    // ═══ Fetch Agent Zero pipeline status on mount ═══
+    // ═══ Fetch VPS pipeline status on mount ═══
     useEffect(() => {
         fetch(`${API_BASE}/api/selfcoding`, { mode: 'cors' })
             .then(r => r.json())
@@ -154,9 +154,9 @@ export default function SelfCodingPage() {
                 if (data.agents) setAgentStatus(data.agents);
             })
             .catch(() => setAgentStatus({
-                agentZero: { status: 'offline' },
+                orchestrator: { status: 'offline' },
                 bytebot: { status: 'offline' },
-                browserUse: { status: 'offline' },
+                ollama: { status: 'offline' },
             }));
 
         // Fetch orb-dispatch registry size
@@ -373,11 +373,12 @@ export default function SelfCodingPage() {
 
                         <div className="grid grid-cols-3 gap-2">
                             {[
-                                { key: 'agentZero', label: 'Agent Zero', icon: Brain, desc: 'Code analysis + execution' },
-                                { key: 'bytebot', label: 'ByteBot', icon: Activity, desc: 'Visual verification' },
-                                { key: 'browserUse', label: 'Browser-Use', icon: Shield, desc: 'Codebase scanning' },
+                                { key: 'orchestrator', label: 'Orchestrator', icon: Brain, desc: 'Rust/Actix :3002' },
+                                { key: 'bytebot', label: 'ByteBot', icon: Activity, desc: 'NestJS :9991 + Desktop :9990' },
+                                { key: 'ollama', label: 'Ollama', icon: Cpu, desc: 'Local LLM :11434' },
                             ].map(agent => {
-                                const status = agentStatus?.[agent.key as keyof AgentStatus]?.status || 'unknown';
+                                const agentData = agentStatus?.[agent.key as keyof AgentStatus];
+                                const status = agentData?.status || 'unknown';
                                 const Icon = agent.icon;
                                 return (
                                     <div key={agent.key} className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.06]">
