@@ -60,36 +60,66 @@ const SUGGESTIONS = [
 // Sanitize AI-generated HTML to fix common preview issues
 function sanitizePreviewHtml(html: string): string {
     let fixed = html;
+
     // Remove local import statements (./  ../) that can't resolve in iframe
     fixed = fixed.replace(/import\s+.*?from\s+['"]\.\.?\/[^'"]+['"];?\n?/g, '');
+
     // Remove bare export statements
     fixed = fixed.replace(/export\s+default\s+/g, 'const __exported__ = ');
     fixed = fixed.replace(/export\s+\{[^}]*\};?\n?/g, '');
-    // Check if any <script> contains JSX (< followed by uppercase letter = React component)
-    fixed = fixed.replace(
-        /<script(\s+type="module")?>([\s\S]*?)<\/script>/g,
-        (_match, typeAttr, content) => {
-            // If content has JSX-like patterns (e.g. <Component or <div className)
-            const hasJSX = /<[A-Z]/.test(content) || /className=/.test(content) || /onClick=\{/.test(content);
-            if (!hasJSX) return `<script${typeAttr || ''}>${content}</script>`;
-            // Has JSX — render a fallback message
-            return `<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var root = document.getElementById('root') || document.body;
-    root.innerHTML = '<div style="font-family:system-ui,-apple-system,sans-serif;max-width:600px;margin:40px auto;padding:24px;background:#f8fafc;border-radius:16px;border:1px solid #e2e8f0">' +
-        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#06b6d4,#8b5cf6);display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:14px">✓</div><h2 style="margin:0;font-size:18px;color:#1e293b">Code Generated Successfully</h2></div>' +
-        '<p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 16px 0">The React component has been generated with full TypeScript source code. Click <b>Code</b> to view the implementation.</p>' +
-        '<div style="background:#0f172a;border-radius:12px;padding:16px;color:#94a3b8;font-family:monospace;font-size:12px;line-height:1.8;overflow:auto">' +
-        '<div style="color:#67e8f9">// Component preview requires a React build environment</div>' +
-        '<div><span style="color:#c084fc">import</span> <span style="color:#fbbf24">React</span> <span style="color:#c084fc">from</span> <span style="color:#34d399">\\'react\\'</span>;</div>' +
-        '<div><span style="color:#c084fc">export default function</span> <span style="color:#fbbf24">Component</span>() { ... }</div>' +
-        '</div>' +
-        '<p style="color:#94a3b8;font-size:11px;margin-top:12px">To run locally: copy the TypeScript code → paste into your project → npm run dev</p>' +
-        '</div>';
-});
-</script>`;
+
+    // Replace ESM CDN imports with UMD globals (React/ReactDOM already available via CDN)
+    fixed = fixed.replace(/import\s+React\s*,?\s*\{[^}]*\}\s*from\s+['"]https?:\/\/esm\.sh\/react[^'"]*['"];?\n?/g,
+        'const { useState, useEffect, useCallback, useRef, useMemo, useReducer, createContext, useContext } = React;\n');
+    fixed = fixed.replace(/import\s+\{\s*createRoot\s*\}\s*from\s+['"]https?:\/\/esm\.sh\/react-dom[^'"]*['"];?\n?/g, '');
+    fixed = fixed.replace(/import\s+React\s+from\s+['"]https?:\/\/esm\.sh\/react[^'"]*['"];?\n?/g, '');
+    fixed = fixed.replace(/import\s+ReactDOM\s+from\s+['"]https?:\/\/esm\.sh\/react-dom[^'"]*['"];?\n?/g, '');
+    // Catch any remaining esm.sh imports
+    fixed = fixed.replace(/import\s+.*?from\s+['"]https?:\/\/esm\.sh\/[^'"]+['"];?\n?/g, '');
+
+    // Check if any script contains JSX (< followed by uppercase letter or className=)
+    const hasJSX = /<script[^>]*>([\s\S]*?)<\/script>/g.test(fixed) &&
+        (/<[A-Z]/.test(fixed) || /className=/.test(fixed) || /onClick=\{/.test(fixed));
+
+    if (hasJSX) {
+        // Inject Babel standalone for JSX transpilation (like CodePen)
+        const babelScript = '<script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>';
+
+        // Add Babel before the closing </head> or at the start of body
+        if (fixed.includes('</head>')) {
+            fixed = fixed.replace('</head>', `${babelScript}\n</head>`);
+        } else if (fixed.includes('<body')) {
+            fixed = fixed.replace('<body', `${babelScript}\n<body`);
+        } else {
+            fixed = babelScript + '\n' + fixed;
         }
-    );
+
+        // Also ensure React UMD scripts are present
+        if (!fixed.includes('react.production.min.js') && !fixed.includes('react.development.min.js')) {
+            const reactScripts = '<script src="https://unpkg.com/react@18/umd/react.production.min.js"><\/script>\n' +
+                '<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"><\/script>';
+            if (fixed.includes('</head>')) {
+                fixed = fixed.replace('</head>', `${reactScripts}\n</head>`);
+            } else {
+                fixed = reactScripts + '\n' + fixed;
+            }
+        }
+
+        // Convert script type="module" to type="text/babel" so Babel can process JSX
+        fixed = fixed.replace(/<script\s+type="module">/g, '<script type="text/babel">');
+
+        // Also convert plain <script> containing JSX to type="text/babel"
+        fixed = fixed.replace(/<script>([\s\S]*?)<\/script>/g, (match, content) => {
+            if (/<[A-Z]/.test(content) || /className=/.test(content)) {
+                return `<script type="text/babel">${content}<\/script>`;
+            }
+            return match;
+        });
+
+        // Replace createRoot import pattern with UMD usage
+        fixed = fixed.replace(/createRoot\(/g, 'ReactDOM.createRoot(');
+    }
+
     return fixed;
 }
 
