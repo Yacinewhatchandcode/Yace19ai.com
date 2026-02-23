@@ -16,6 +16,7 @@ import PhilosophyPage from "./pages/PhilosophyPage";
 import SovereignSearchPage from "./pages/SovereignSearchPage";
 import BlogPage from "./pages/BlogPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
+import PricingPage from "./pages/PricingPage";
 import SelfCodingPage from "./pages/SelfCodingPage";
 
 function Navigation() {
@@ -28,6 +29,7 @@ function Navigation() {
     { path: "/sovereign", label: "SOVEREIGN AI", color: "text-emerald-400" },
     { path: "/blog", label: "BLOG", color: "text-amber-400" },
     { path: "/analytics", label: "ANALYTICS", color: "text-fuchsia-400" },
+    { path: "/pricing", label: "PRICING", color: "text-orange-400" },
     { path: "/build", label: "CODE", color: "text-rose-400" },
     { path: "/philosophy", label: "ABOUT US", color: "text-gray-400" },
   ];
@@ -102,8 +104,8 @@ function Navigation() {
                     to={link.path}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-3 px-5 py-3 font-mono text-xs tracking-widest font-bold transition-all ${location.pathname === link.path
-                        ? `${link.color} bg-white/5`
-                        : 'text-gray-400 hover:text-white hover:bg-white/[0.03]'
+                      ? `${link.color} bg-white/5`
+                      : 'text-gray-400 hover:text-white hover:bg-white/[0.03]'
                       }`}
                   >
                     <div className={`w-1.5 h-1.5 rounded-full ${location.pathname === link.path ? 'bg-current' : 'bg-gray-700'}`} />
@@ -143,6 +145,7 @@ function AnimatedRoutes() {
         <Route path="/sovereign" element={<SovereignSearchPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
         <Route path="/build" element={<SelfCodingPage />} />
       </Routes>
     </AnimatePresence>
