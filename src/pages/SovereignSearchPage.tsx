@@ -5,11 +5,28 @@ import {
     Globe, Zap, Bot, Brain, Code2, Cpu, Database, Shield,
     Activity, CheckCircle2, Sparkles, Terminal, Eye, Layers, Languages,
 } from 'lucide-react';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 declare global { interface Window { SpeechRecognition: any; webkitSpeechRecognition: any; } }
 type OrbState = 'idle' | 'listening' | 'processing' | 'speaking' | 'error';
 type VoiceLang = 'en' | 'fr';
+type VoiceGender = 'male' | 'female';
+
+
+
+const VOICE_REGISTRY: Record<VoiceLang, Record<VoiceGender, string[]>> = {
+    en: {
+        female: ['Samantha', 'Karen', 'Moira', 'Tessa', 'Google US English Female', 'Microsoft Zira'],
+        male: ['Daniel', 'Alex', 'Fred', 'Google US English Male', 'Microsoft David'],
+    },
+    fr: {
+        female: ['Amelie', 'Marie', 'Audrey', 'Google français', 'Microsoft Hortense'],
+        male: ['Thomas', 'Nicolas', 'Google français Male'],
+    }
+};
+
+interface ChatMessage { role: 'user' | 'assistant'; content: string; }
 
 // ─── Agent Fleet ────────────────────────────────────────────────────────────
 const AGENTS = [
@@ -32,21 +49,30 @@ const QUICK_PROMPTS = [
     { label: 'Debug Code', icon: Terminal, prompt: 'Debug the current codebase and auto-fix issues' },
 ];
 
-// ─── AI Response Generator ──────────────────────────────────────────────────
-const generateResponse = (input: string): string => {
-    const u = input.toLowerCase();
-    if (u.includes('status') || u.includes('report'))
-        return 'Sovereign OS v2.0 — All nodes green. aSiReM orchestrating 13 active agents. VPS backend live on 31.97.52.22:8082. ByteBot container running. 77 repositories indexed, 125 deployments healthy. GPU cluster on standby.';
-    if (u.includes('scan') || u.includes('codebase'))
-        return 'Deep scan initiated. Detected 19 TypeScript components across Yace19ai.com, 1 Python backend (backend.py — 5,200 lines), and 3 active Vite frontends. No critical errors detected. Module stub coverage: 32/32. Recommend adding OpenAI key for live AI brain activation.';
-    if (u.includes('deploy') || u.includes('fleet'))
-        return 'Fleet deployment acknowledged. Routing command to aSiReM orchestrator. Sentinel activating perimeter scan. Nexus syncing knowledge graph. Codex standing by for generation tasks. Delta warming up CI/CD pipeline. All agents synchronizing on mesh frequency 8082.';
-    if (u.includes('search') || u.includes('web'))
-        return 'Scout agent activated. Routing web search through DuckDuckGo pipeline with semantic filtering. Results will be synthesized by Nexus into structured output and returned to your sovereign context window.';
-    if (u.includes('generate') || u.includes('ui') || u.includes('component'))
-        return 'Codex agent primed. Generating premium React/TypeScript component with Tailwind CSS. Will apply Sovereign design system: dark glassmorphic panels, cyan-violet gradients, Framer Motion animations. Standby for output stream.';
-    return `Command received: "${input}". Routing to agent mesh. aSiReM is analyzing intent and delegating across the fleet. Sovereign response incoming — ETA 2.3 seconds.`;
-};
+// ─── Real AI via Supabase Edge Function ─────────────────────────────────────
+async function callVoiceChat(
+    message: string,
+    lang: string,
+    history: ChatMessage[]
+): Promise<{ text: string; provider: string | null }> {
+    try {
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/voice-chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            },
+            body: JSON.stringify({ message, lang, history: history.slice(-6) }),
+        });
+        const data = await res.json();
+        if (data.success && data.message) {
+            return { text: data.message, provider: data.provider || null };
+        }
+        return { text: data.error || 'Connection error.', provider: null };
+    } catch {
+        return { text: 'Sovereign network temporarily unavailable.', provider: null };
+    }
+}
 
 // ─── Live Log Entry ─────────────────────────────────────────────────────────
 interface LogEntry { id: string; agent: string; msg: string; ts: string; type: 'success' | 'info' | 'processing'; }
@@ -57,23 +83,46 @@ export default function SovereignSearchPage() {
     const [query, setQuery] = useState('');
     const [response, setResponse] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [backendOnline, setBackendOnline] = useState(false);
+    const [backendOnline] = useState(true); // Always true — Edge Function is the backend
     const [activeAgent, setActiveAgent] = useState('asirem');
     const [logs, setLogs] = useState<LogEntry[]>([]);
     const [inputFocused, setInputFocused] = useState(false);
     const [lang, setLang] = useState<VoiceLang>('en');
     const [code, setCode] = useState<string | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [aiProvider, setAiProvider] = useState<string | null>(null);
+
+    // Voice lock refs
+    const lockedVoiceRef = useRef<SpeechSynthesisVoice | null>(null);
+    const voiceGenderRef = useRef<VoiceGender>('female');
+    const historyRef = useRef<ChatMessage[]>([]);
 
     const recognitionRef = useRef<any>(null);
     const finalRef = useRef('');
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const logBottomRef = useRef<HTMLDivElement>(null);
 
-    // ── Backend health check ────────────────────────────────────────────────
+    // ── Lock voice on mount and language change ─────────────────────────────
+    const lockVoice = useCallback(() => {
+        const voices = window.speechSynthesis.getVoices();
+        if (voices.length === 0) return;
+        const gender = voiceGenderRef.current;
+        const candidates = VOICE_REGISTRY[lang][gender];
+        const langPrefix = lang === 'fr' ? 'fr' : 'en';
+        for (const name of candidates) {
+            const found = voices.find(v => v.lang.startsWith(langPrefix) && v.name.includes(name));
+            if (found) { lockedVoiceRef.current = found; return; }
+        }
+        const fallback = voices.find(v => v.lang.startsWith(langPrefix));
+        if (fallback) lockedVoiceRef.current = fallback;
+    }, [lang]);
+
     useEffect(() => {
-        fetch('/api/status').then(r => r.ok && setBackendOnline(true)).catch(() => { });
-    }, []);
+        lockedVoiceRef.current = null;
+        lockVoice();
+        window.speechSynthesis.onvoiceschanged = lockVoice;
+        return () => { window.speechSynthesis.onvoiceschanged = null; };
+    }, [lang, lockVoice]);
 
     // ── Speech Recognition ─────────────────────────────────────────────────
     useEffect(() => {
@@ -124,65 +173,33 @@ export default function SovereignSearchPage() {
         setCode(null);
         setPreviewUrl(null);
         setError(null);
+        setAiProvider(null);
         addLog(activeAgent === 'codex' ? 'Codex' : 'aSiReM', `Processing: "${q.slice(0, 60)}..."`, 'processing');
 
-        let aiText = '';
-        let isCodeQuery = activeAgent === 'codex' || q.toLowerCase().includes('generate') || q.toLowerCase().includes('code') || q.toLowerCase().includes('ui') || q.toLowerCase().includes('component');
+        // Add to conversation history
+        historyRef.current.push({ role: 'user', content: q });
 
-        if (backendOnline) {
-            try {
-                if (isCodeQuery) {
-                    const res = await fetch('/api/codex/generate', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ prompt: q, lang, outputFormat: 'html' }),
-                    });
-                    const data = await res.json();
-                    if (data.success) {
-                        aiText = lang === 'fr'
-                            ? `Génération terminée : ${data.description}`
-                            : `Generation complete: ${data.description}`;
-                        if (data.code) setCode(data.code);
-                        if (data.previewUrl) setPreviewUrl(data.previewUrl);
-                    } else {
-                        aiText = lang === 'fr' ? 'Erreur de génération de code.' : 'Code generation error.';
-                    }
-                    setActiveAgent('codex'); // Ensure UI reflects the agent that responded
-                } else {
-                    const res = await fetch('/api/asirem/speak', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ message: q, lang }),
-                    });
-                    const data = await res.json();
-                    aiText = (data.success && data.message) ? data.message : generateResponse(q);
-                    setActiveAgent('asirem');
-                }
-            } catch { aiText = generateResponse(q); }
-        } else { aiText = generateResponse(q); }
+        // Call real AI via Edge Function
+        const { text: aiText, provider } = await callVoiceChat(q, lang, historyRef.current);
+        setAiProvider(provider);
+
+        // Add response to history
+        historyRef.current.push({ role: 'assistant', content: aiText });
+        if (historyRef.current.length > 20) historyRef.current = historyRef.current.slice(-12);
 
         setResponse(aiText);
         addLog('aSiReM', aiText.slice(0, 90) + '...', 'success');
 
-        // TTS with bilingual voice
+        // TTS with LOCKED voice — never re-search
         setOrbState('speaking');
         window.speechSynthesis.cancel();
         const utter = new SpeechSynthesisUtterance(aiText);
-        utter.rate = 1.05; utter.pitch = 1.0;
+        utter.rate = 1.0; utter.pitch = 1.0;
         utter.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
-        const voices = window.speechSynthesis.getVoices();
-        const langPrefix = lang === 'fr' ? 'fr' : 'en';
-        const preferredNames = lang === 'fr' ? ['Thomas', 'Amelie', 'Marie'] : ['Samantha', 'Karen', 'Alex'];
-        let v = null;
-        for (const name of preferredNames) {
-            v = voices.find(voice => voice.lang.startsWith(langPrefix) && voice.name.includes(name));
-            if (v) break;
-        }
-        if (!v) v = voices.find(voice => voice.lang.startsWith(langPrefix));
-        if (v) utter.voice = v;
+        if (lockedVoiceRef.current) utter.voice = lockedVoiceRef.current;
         utter.onend = () => setOrbState('idle');
         window.speechSynthesis.speak(utter);
-    }, [backendOnline, addLog, lang]);
+    }, [addLog, lang]);
 
     // ── Orb click ──────────────────────────────────────────────────────────
     const handleOrb = () => {
@@ -430,6 +447,11 @@ export default function SovereignSearchPage() {
                                     <span className={`text-xs font-mono font-bold uppercase tracking-widest ${activeAgent === 'codex' ? 'text-emerald-400' : 'text-violet-400'}`}>
                                         {activeAgent === 'codex' ? 'Codex Output' : 'aSiReM Response'}
                                     </span>
+                                    {aiProvider && (
+                                        <span className="text-[8px] font-mono text-cyan-500 bg-cyan-900/30 border border-cyan-500/20 px-1.5 py-0.5 rounded uppercase">
+                                            {aiProvider}
+                                        </span>
+                                    )}
                                 </div>
                                 <CheckCircle2 size={14} className="text-emerald-400" />
                             </div>

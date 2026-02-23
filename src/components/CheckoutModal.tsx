@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CreditCard, Shield, Check, Zap, ArrowRight, Copy, Sparkles } from 'lucide-react';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
 
 interface CheckoutModalProps {
     isOpen: boolean;
@@ -9,19 +10,9 @@ interface CheckoutModalProps {
     projectTitle: string;
 }
 
-// ═══════════════════════════════════════════════════
-// Stripe Publishable Key — Replace with your live key
-// Create one at: https://dashboard.stripe.com/apikeys
-// ═══════════════════════════════════════════════════
 const STRIPE_PK = import.meta.env.VITE_STRIPE_PK || '';
 
-// Payment links for each product (create at stripe.com/payment-links)
-// Format: { projectId: 'https://buy.stripe.com/xxx' }
-const PAYMENT_LINKS: Record<string, string> = {
-    // Add your Stripe Payment Links here, e.g.:
-    // 'eu-ai-act': 'https://buy.stripe.com/test_xxx',
-    // 'ran-sales-copilot': 'https://buy.stripe.com/test_yyy',
-};
+const PAYMENT_LINKS: Record<string, string> = {};
 
 const PRICE = '1.00';
 const CURRENCY = '€';
@@ -43,12 +34,15 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectI
             setStep('processing');
             setTimeout(() => setStep('success'), 2000);
         } else if (STRIPE_PK) {
-            // Use Stripe Checkout (requires backend)
+            // Use Stripe Checkout via Supabase Edge Function
             setStep('processing');
-            fetch('/api/create-checkout', {
+            fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ projectId, email, amount: 100 }) // 100 cents = €1
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                },
+                body: JSON.stringify({ projectId, email, amount: 100 })
             })
                 .then(res => res.json())
                 .then(data => {

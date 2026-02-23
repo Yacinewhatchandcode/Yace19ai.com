@@ -5,6 +5,10 @@
 [build.environment]
   NODE_VERSION = "20"
 
+[dev]
+  command = "vite"
+  targetPort = 3002
+
 # Netlify Edge Functions routes are defined inside the edge-functions using export const config = { path: '/api/something'}
 
 [[redirects]]

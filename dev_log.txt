@@ -1,0 +1,11 @@
+
+> yace19ai-portfolio@0.0.0 dev
+> vite
+
+7:43:09 PM [vite] (client) Re-optimizing dependencies because vite config has changed
+
+  VITE v7.3.1  ready in 2450 ms
+
+  ➜  Local:   http://localhost:3002/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help

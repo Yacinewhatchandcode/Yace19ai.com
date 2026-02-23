@@ -1,0 +1,57 @@
+{
+  "keys": [
+    {
+      "provider": "NVIDIA Build",
+      "key": "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",
+      "status": "active",
+      "notes": "Pre-existing from .env.local",
+      "timestamp": "2026-02-23T06:19:37.799Z"
+    },
+    {
+      "provider": "Google AI Studio",
+      "key": "AUTH_REQUIRED",
+      "status": "pending",
+      "notes": "Google login needed",
+      "timestamp": "2026-02-23T06:19:48.440Z"
+    },
+    {
+      "provider": "OpenRouter",
+      "key": "SESSION_ACTIVE",
+      "status": "ready",
+      "notes": "Authenticated. Navigate to /keys to manage.",
+      "timestamp": "2026-02-23T06:19:54.300Z"
+    },
+    {
+      "provider": "Groq",
+      "key": "AUTH_REQUIRED",
+      "status": "pending",
+      "notes": "Login required at console.groq.com",
+      "timestamp": "2026-02-23T06:20:01.380Z"
+    },
+    {
+      "provider": "GitHub Models",
+      "key": "SESSION_ACTIVE",
+      "status": "ready",
+      "notes": "Navigate to github.com/marketplace/models for model-specific access.",
+      "timestamp": "2026-02-23T06:20:06.645Z"
+    },
+    {
+      "provider": "Cloudflare Workers AI",
+      "key": "ERROR",
+      "status": "error",
+      "notes": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://dash.cloudflare.com/\", waiting until \"networkidle\"\n",
+      "timestamp": "2026-02-23T06:20:37.271Z"
+    },
+    {
+      "provider": "ZhipuAI BigModel",
+      "key": "ERROR",
+      "status": "error",
+      "notes": "page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://open.bigmodel.cn/usercenter/apikeys\", waiting until \"networkidle\"\n",
+      "timestamp": "2026-02-23T06:21:08.089Z"
+    }
+  ],
+  "meta": {
+    "created": "2026-02-23T06:19:37.799Z",
+    "updated": "2026-02-23T06:21:08.682Z"
+  }
+}

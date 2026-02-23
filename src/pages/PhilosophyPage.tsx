@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Philosophy from '../components/Philosophy';
 import AgentStack from '../components/AgentStack';
 import Achievements from '../components/Achievements';
+import LeadCaptureForm from '../components/LeadCaptureForm';
 
 export default function PhilosophyPage() {
     return (
@@ -24,6 +25,9 @@ export default function PhilosophyPage() {
             </div>
 
             <Achievements />
+
+            <LeadCaptureForm />
         </motion.div>
     );
 }
+

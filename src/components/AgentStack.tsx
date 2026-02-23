@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Bot, Scan, ShieldCheck, Zap, Layers } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 interface AgentProduct {
     icon: React.ReactNode;
@@ -9,7 +10,7 @@ interface AgentProduct {
     highlight: string;
 }
 
-const products: AgentProduct[] = [
+const fallbackProducts: AgentProduct[] = [
     {
         icon: <Bot size={32} />,
         title: 'Multi-Agent System',
@@ -31,6 +32,21 @@ const products: AgentProduct[] = [
 ];
 
 const AgentStack: React.FC = () => {
+    const [products] = useState<AgentProduct[]>(fallbackProducts);
+    const [providerCount, setProviderCount] = useState<number | null>(null);
+    const [memoryCount, setMemoryCount] = useState<number | null>(null);
+
+    useEffect(() => {
+        // Pull live stats from Supabase
+        Promise.all([
+            supabase.from('sovereign_api_keys').select('provider', { count: 'exact', head: false }).eq('status', 'active'),
+            supabase.from('agent_memory').select('*', { count: 'exact', head: true }),
+        ]).then(([keysRes, memRes]) => {
+            setProviderCount(keysRes.data?.length || 0);
+            setMemoryCount(memRes.count || 0);
+        });
+    }, []);
+
     return (
         <section className="py-20 px-4">
             <div className="max-w-7xl mx-auto">
@@ -44,6 +60,11 @@ const AgentStack: React.FC = () => {
                     >
                         <Layers size={16} className="text-cyan-400" />
                         <span className="text-sm font-medium text-gray-300">Proprietary Stack</span>
+                        {providerCount !== null && (
+                            <span className="text-[8px] text-green-500 bg-green-900/30 px-1.5 py-0.5 rounded border border-green-500/20 ml-2">
+                                {providerCount} PROVIDERS LIVE
+                            </span>
+                        )}
                     </motion.div>
 
                     <motion.h2
@@ -63,6 +84,11 @@ const AgentStack: React.FC = () => {
                         className="text-gray-400 max-w-2xl mx-auto text-lg"
                     >
                         Three core capabilities powering AI-assisted development
+                        {memoryCount !== null && (
+                            <span className="block text-xs text-cyan-500 mt-2 font-mono">
+                                {memoryCount.toLocaleString()} agent memory entries • Live Supabase data
+                            </span>
+                        )}
                     </motion.p>
                 </div>
 
@@ -78,15 +104,12 @@ const AgentStack: React.FC = () => {
                             whileHover={{ y: -8, transition: { duration: 0.3 } }}
                             className="group relative p-8 rounded-2xl bg-gradient-to-br from-gray-900/80 to-gray-900/40 backdrop-blur-xl border border-white/5 hover:border-cyan-500/30 transition-all duration-500"
                         >
-                            {/* Glow Effect */}
                             <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/0 to-purple-500/0 group-hover:from-cyan-500/5 group-hover:to-purple-500/5 transition-all duration-500" />
 
-                            {/* Icon Container */}
                             <div className="relative mb-6 w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 flex items-center justify-center text-cyan-400 group-hover:text-white group-hover:from-cyan-500/40 group-hover:to-purple-500/40 transition-all duration-500">
                                 {product.icon}
                             </div>
 
-                            {/* Content */}
                             <div className="relative">
                                 <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">
                                     {product.title}
@@ -95,14 +118,12 @@ const AgentStack: React.FC = () => {
                                     {product.description}
                                 </p>
 
-                                {/* Highlight Badge */}
                                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
                                     <Zap size={12} />
                                     {product.highlight}
                                 </span>
                             </div>
 
-                            {/* Corner Decoration */}
                             <div className="absolute top-4 right-4 w-12 h-12 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                         </motion.div>
                     ))}

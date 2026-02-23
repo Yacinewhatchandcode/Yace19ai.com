@@ -13,6 +13,9 @@ import HomePage from "./pages/HomePage";
 import FleetPage from "./pages/FleetPage";
 import PhilosophyPage from "./pages/PhilosophyPage";
 import SovereignSearchPage from "./pages/SovereignSearchPage";
+import BlogPage from "./pages/BlogPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import SelfCodingPage from "./pages/SelfCodingPage";
 
 function Navigation() {
   const location = useLocation();
@@ -20,8 +23,11 @@ function Navigation() {
   const navLinks = [
     { path: "/", label: "HOME", color: "text-cyan-400" },
     { path: "/fleet", label: "OUR WORK", color: "text-violet-400" },
-    { path: "/philosophy", label: "ABOUT US", color: "text-fuchsia-400" },
-    { path: "/sovereign", label: "SOVEREIGN AI", color: "text-emerald-400" }
+    { path: "/sovereign", label: "SOVEREIGN AI", color: "text-emerald-400" },
+    { path: "/blog", label: "BLOG", color: "text-amber-400" },
+    { path: "/analytics", label: "ANALYTICS", color: "text-fuchsia-400" },
+    { path: "/build", label: "CODE", color: "text-rose-400" },
+    { path: "/philosophy", label: "ABOUT US", color: "text-gray-400" },
   ];
 
   return (
@@ -72,6 +78,9 @@ function AnimatedRoutes() {
         <Route path="/fleet" element={<FleetPage />} />
         <Route path="/philosophy" element={<PhilosophyPage />} />
         <Route path="/sovereign" element={<SovereignSearchPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/build" element={<SelfCodingPage />} />
       </Routes>
     </AnimatePresence>
   );

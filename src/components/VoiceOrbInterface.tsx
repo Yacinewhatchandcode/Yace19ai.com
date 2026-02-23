@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, Search, Loader, Globe, Square, Volume2, AlertCircle, Languages } from 'lucide-react';
 
@@ -12,44 +13,31 @@ declare global {
 
 type OrbState = 'idle' | 'listening' | 'processing' | 'speaking' | 'error';
 type VoiceLang = 'en' | 'fr';
+type VoiceGender = 'male' | 'female';
 
-const LANG_CONFIG: Record<VoiceLang, { recognitionLang: string; label: string; flag: string; voiceNames: string[] }> = {
+// ─── Voice Configuration ──────────────────────────────────────────────────────
+// Priority-ordered voice names per language+gender. The FIRST match is locked.
+const VOICE_REGISTRY: Record<VoiceLang, Record<VoiceGender, string[]>> = {
     en: {
-        recognitionLang: 'en-US',
-        label: 'English',
-        flag: '🇬🇧',
-        voiceNames: ['Samantha', 'Google US English', 'Female', 'Alex', 'Karen'],
+        female: ['Samantha', 'Karen', 'Moira', 'Tessa', 'Google US English Female', 'Microsoft Zira'],
+        male: ['Daniel', 'Alex', 'Fred', 'Google US English Male', 'Microsoft David'],
     },
     fr: {
-        recognitionLang: 'fr-FR',
-        label: 'Français',
-        flag: '🇫🇷',
-        voiceNames: ['Thomas', 'Amelie', 'Google français', 'Marie', 'Audrey'],
+        female: ['Amelie', 'Marie', 'Audrey', 'Google français', 'Microsoft Hortense'],
+        male: ['Thomas', 'Nicolas', 'Google français Male'],
     }
 };
 
-// ─── AI Text Generation (fallback when backend unavailable) ───────────────────
-const generateAIResponse = (input: string, lang: VoiceLang): string => {
-    const trimmed = input.trim().toLowerCase();
-
-    if (lang === 'fr') {
-        if (trimmed.includes('souverain') || trimmed.includes('prime'))
-            return `Le Sovereign OS est pleinement opérationnel. La flotte multi-agents AMLAZR fonctionne sur 77 dépôts avec 125 déploiements actifs. L'orchestrateur ASiReM attend votre prochaine directive, Commandant.`;
-        if (trimmed.includes('statut') || trimmed.includes('santé') || trimmed.includes('status'))
-            return `Santé du système nominale. Nœuds backend en ligne. Cluster GPU en veille. 12 modules d'entraînement IA actifs. Tous les agents souverains rapportent vert sur le réseau.`;
-        if (trimmed.includes('qui') || trimmed.includes('quoi'))
-            return `Je suis ASiReM — Intelligence Souveraine Autonome pour la Gestion d'Entreprise en Temps Réel. Je coordonne l'ensemble de l'écosystème Prime AI, y compris vos essaims d'agents, clusters GPU, et pipelines de déploiement automatisés.`;
-        return `Directive reçue: "${input}". Routage vers le Réseau Souverain. L'essaim d'agents analyse votre requête et prépare une réponse optimale. En attente de mise à jour d'exécution.`;
-    }
-
-    if (trimmed.includes('sovereign') || trimmed.includes('prime'))
-        return `Sovereign OS is fully operational. The AMLAZR multi-agent fleet is running across 77 repositories with 125 active deployments. The ASiReM orchestrator is standing by for your next directive, Commander.`;
-    if (trimmed.includes('status') || trimmed.includes('health'))
-        return `System health nominal. Backend nodes online. GPU cluster on standby. 12 AI training modules active. All sovereign agents reporting green across the mesh.`;
-    if (trimmed.includes('who') || trimmed.includes('what are you'))
-        return `I am ASiReM — Autonomous Sovereign Intelligence for Real-time Enterprise Management. I coordinate the entire Prime AI ecosystem including your agent swarms, GPU clusters, and automated deployment pipelines.`;
-    return `Directive received: "${input}". Routing to Sovereign Mesh. The agent swarm is analyzing your query and preparing an optimal response. Standby for execution update.`;
+const LANG_CONFIG: Record<VoiceLang, { recognitionLang: string; label: string; flag: string }> = {
+    en: { recognitionLang: 'en-US', label: 'English', flag: '🇬🇧' },
+    fr: { recognitionLang: 'fr-FR', label: 'Français', flag: '🇫🇷' },
 };
+
+
+interface ChatMessage {
+    role: 'user' | 'assistant';
+    content: string;
+}
 
 // ─── Main Component ────────────────────────────────────────────────────────────
 export default function VoiceOrbInterface() {
@@ -58,27 +46,56 @@ export default function VoiceOrbInterface() {
     const [responseText, setResponseText] = useState<string | null>(null);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
     const [supported, setSupported] = useState(true);
-    const [backendOnline, setBackendOnline] = useState(false);
     const [lang, setLang] = useState<VoiceLang>('en');
+    const [provider, setProvider] = useState<string | null>(null);
 
+    // Voice lock: once a voice is found, it NEVER changes until language changes
+    const lockedVoiceRef = useRef<SpeechSynthesisVoice | null>(null);
+    const voiceGenderRef = useRef<VoiceGender>('female'); // Default gender
     const recognitionRef = useRef<any>(null);
     const synthRef = useRef<SpeechSynthesisUtterance | null>(null);
     const finalTranscriptRef = useRef('');
+    const historyRef = useRef<ChatMessage[]>([]);
 
-    // ─── Check backend availability ─────────────────────────────────────────
+    // ─── Lock voice on mount and language change ────────────────────────────
+    const lockVoice = useCallback(() => {
+        const voices = window.speechSynthesis.getVoices();
+        if (voices.length === 0) return; // Voices not loaded yet
+
+        const gender = voiceGenderRef.current;
+        const candidates = VOICE_REGISTRY[lang][gender];
+        const langPrefix = lang === 'fr' ? 'fr' : 'en';
+
+        // Try priority-ordered named voices
+        for (const name of candidates) {
+            const found = voices.find(v => v.lang.startsWith(langPrefix) && v.name.includes(name));
+            if (found) {
+                lockedVoiceRef.current = found;
+                console.log(`[Voice] Locked: "${found.name}" (${found.lang}) [${gender}]`);
+                return;
+            }
+        }
+
+        // Fallback: any voice in target language
+        const fallback = voices.find(v => v.lang.startsWith(langPrefix));
+        if (fallback) {
+            lockedVoiceRef.current = fallback;
+            console.log(`[Voice] Fallback locked: "${fallback.name}" (${fallback.lang})`);
+        }
+    }, [lang]);
+
     useEffect(() => {
-        fetch('/api/status', { method: 'GET' })
-            .then(r => r.ok ? setBackendOnline(true) : setBackendOnline(false))
-            .catch(() => setBackendOnline(false));
-    }, []);
+        // Voices load asynchronously in some browsers
+        lockedVoiceRef.current = null; // Reset on language change
+        lockVoice();
+        window.speechSynthesis.onvoiceschanged = lockVoice;
+        return () => { window.speechSynthesis.onvoiceschanged = null; };
+    }, [lang, lockVoice]);
 
-    // ─── Initialize speech recognition (re-init on lang change) ─────────────
+    // ─── Initialize speech recognition ──────────────────────────────────────
     useEffect(() => {
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SR) {
-            setSupported(false);
-            return;
-        }
+        if (!SR) { setSupported(false); return; }
 
         const recognition = new SR();
         recognition.continuous = true;
@@ -96,24 +113,21 @@ export default function VoiceOrbInterface() {
                     interim += t;
                 }
             }
-            if (final) {
-                finalTranscriptRef.current += final;
-            }
+            if (final) finalTranscriptRef.current += final;
             setTranscript(finalTranscriptRef.current + interim);
         };
 
         recognition.onerror = (event: any) => {
             const msg = event.error === 'not-allowed'
                 ? lang === 'fr'
-                    ? 'Accès au microphone refusé. Veuillez autoriser le microphone dans les paramètres de votre navigateur.'
-                    : 'Microphone access denied. Please allow microphone in your browser settings.'
-                : `${lang === 'fr' ? 'Erreur de reconnaissance' : 'Recognition error'}: ${event.error}`;
+                    ? 'Accès au microphone refusé. Veuillez autoriser le microphone.'
+                    : 'Microphone access denied. Please allow microphone in browser settings.'
+                : `${lang === 'fr' ? 'Erreur' : 'Error'}: ${event.error}`;
             setErrorMsg(msg);
             setOrbState('error');
         };
 
         recognition.onend = () => {
-            // If we're still in listening state when it ends, submit
             if (orbState === 'listening') {
                 submitQuery(finalTranscriptRef.current || transcript);
             }
@@ -122,23 +136,7 @@ export default function VoiceOrbInterface() {
         recognitionRef.current = recognition;
     }, [lang]); // eslint-disable-line
 
-    // ─── Find appropriate voice for current language ────────────────────────
-    const findVoice = useCallback((targetLang: VoiceLang): SpeechSynthesisVoice | null => {
-        const voices = window.speechSynthesis.getVoices();
-        const config = LANG_CONFIG[targetLang];
-        const langPrefix = targetLang === 'fr' ? 'fr' : 'en';
-
-        // Try to find a preferred named voice
-        for (const name of config.voiceNames) {
-            const found = voices.find(v => v.lang.startsWith(langPrefix) && v.name.includes(name));
-            if (found) return found;
-        }
-
-        // Fallback to any voice in the target language
-        return voices.find(v => v.lang.startsWith(langPrefix)) || null;
-    }, []);
-
-    // ─── Speak text via browser TTS ─────────────────────────────────────────
+    // ─── Speak with LOCKED voice ────────────────────────────────────────────
     const speakText = useCallback((text: string) => {
         window.speechSynthesis.cancel();
 
@@ -146,11 +144,12 @@ export default function VoiceOrbInterface() {
         utter.rate = 1.0;
         utter.pitch = 1.0;
         utter.volume = 1.0;
-
-        const voice = findVoice(lang);
-        if (voice) utter.voice = voice;
-        // Set lang explicitly on utterance
         utter.lang = LANG_CONFIG[lang].recognitionLang;
+
+        // ALWAYS use the locked voice — never search again
+        if (lockedVoiceRef.current) {
+            utter.voice = lockedVoiceRef.current;
+        }
 
         utter.onstart = () => setOrbState('speaking');
         utter.onend = () => setOrbState('idle');
@@ -158,45 +157,62 @@ export default function VoiceOrbInterface() {
 
         synthRef.current = utter;
         window.speechSynthesis.speak(utter);
-    }, [lang, findVoice]);
+    }, [lang]);
 
-    // ─── Submit the query to backend or fallback────────────────────────────
+    // ─── Submit query to Supabase Edge Function ─────────────────────────────
     const submitQuery = useCallback(async (query: string) => {
-        if (!query.trim()) {
-            setOrbState('idle');
-            return;
-        }
+        if (!query.trim()) { setOrbState('idle'); return; }
 
         setOrbState('processing');
         setErrorMsg(null);
+        setProvider(null);
+
+        // Add user message to history
+        historyRef.current.push({ role: 'user', content: query });
 
         let aiText: string;
 
-        if (backendOnline) {
-            try {
-                const res = await fetch('/api/asirem/speak', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: query, lang }),
-                });
-                const data = await res.json();
+        try {
+            const res = await fetch(`${SUPABASE_URL}/functions/v1/voice-chat`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                },
+                body: JSON.stringify({
+                    message: query,
+                    lang,
+                    history: historyRef.current.slice(-6),
+                }),
+            });
 
-                if (data.success && data.message) {
-                    aiText = data.message;
-                } else {
-                    // Backend responded but no real content — use local AI
-                    aiText = generateAIResponse(query, lang);
-                }
-            } catch {
-                aiText = generateAIResponse(query, lang);
+            const data = await res.json();
+
+            if (data.success && data.message) {
+                aiText = data.message;
+                setProvider(data.provider || null);
+            } else {
+                aiText = data.error || (lang === 'fr'
+                    ? 'Erreur de connexion au réseau souverain.'
+                    : 'Connection error to sovereign network.');
             }
-        } else {
-            aiText = generateAIResponse(query, lang);
+        } catch (err: any) {
+            console.error('[Voice] Edge function error:', err);
+            aiText = lang === 'fr'
+                ? 'Le réseau souverain est temporairement indisponible. Veuillez réessayer.'
+                : 'The sovereign network is temporarily unavailable. Please try again.';
+        }
+
+        // Add assistant response to history
+        historyRef.current.push({ role: 'assistant', content: aiText });
+        // Keep history manageable
+        if (historyRef.current.length > 20) {
+            historyRef.current = historyRef.current.slice(-12);
         }
 
         setResponseText(aiText);
         speakText(aiText);
-    }, [backendOnline, speakText, lang]);
+    }, [speakText, lang]);
 
     // ─── Toggle language ────────────────────────────────────────────────────
     const toggleLang = useCallback(() => {
@@ -204,6 +220,7 @@ export default function VoiceOrbInterface() {
         window.speechSynthesis.cancel();
         setOrbState('idle');
         setLang(prev => prev === 'en' ? 'fr' : 'en');
+        // History persists across language switches
     }, [orbState]);
 
     // ─── Orb click handler ─────────────────────────────────────────────────
@@ -217,15 +234,11 @@ export default function VoiceOrbInterface() {
         }
 
         if (orbState === 'listening') {
-            // Stop recording and submit
-            if (recognitionRef.current) {
-                recognitionRef.current.stop();
-            }
+            if (recognitionRef.current) recognitionRef.current.stop();
             const captured = finalTranscriptRef.current || transcript;
             setOrbState('processing');
             submitQuery(captured);
         } else {
-            // Start recording
             finalTranscriptRef.current = '';
             setTranscript('');
             setResponseText(null);
@@ -235,8 +248,7 @@ export default function VoiceOrbInterface() {
             if (recognitionRef.current) {
                 try {
                     recognitionRef.current.start();
-                } catch (e) {
-                    // Already running — stop and restart
+                } catch {
                     recognitionRef.current.stop();
                     setTimeout(() => {
                         finalTranscriptRef.current = '';
@@ -288,7 +300,6 @@ export default function VoiceOrbInterface() {
             aria-label="AMLAZR Voice Intelligence System"
             className="relative w-full overflow-hidden rounded-3xl mb-8 md:mb-12 glass-panel border border-cyan-500/20 shadow-[0_0_40px_#00ffff15] bg-[#02050A]/80 flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] px-4 py-8 md:p-6"
         >
-            {/* SEO - screen reader only */}
             <h2 className="sr-only">AMLAZR Voice Intelligence System</h2>
             <p className="sr-only">
                 {lang === 'fr'
@@ -300,11 +311,9 @@ export default function VoiceOrbInterface() {
             <div className="absolute top-4 left-4 md:top-6 md:left-6 flex items-center gap-2 md:gap-3">
                 <Globe className="text-cyan-400 w-4 h-4 md:w-5 md:h-5 shrink-0" />
                 <span className="hidden sm:inline font-mono text-xs text-cyan-400 tracking-widest font-black uppercase">Neural Voice Search</span>
-                {backendOnline && (
-                    <span className="ml-2 text-[9px] font-mono text-green-500 uppercase tracking-widest border border-green-500/30 px-1.5 py-0.5 rounded">
-                        Backend Live
-                    </span>
-                )}
+                <span className="ml-2 text-[9px] font-mono text-green-500 uppercase tracking-widest border border-green-500/30 px-1.5 py-0.5 rounded">
+                    Live AI
+                </span>
             </div>
 
             {/* Language Toggle + Status */}
@@ -328,7 +337,6 @@ export default function VoiceOrbInterface() {
 
             {/* Orb */}
             <div className="relative mt-16 md:mt-12 mb-8 md:mb-10 flex items-center justify-center">
-                {/* Glow halo */}
                 <motion.div
                     animate={{
                         scale: orbState === 'listening' ? [1, 1.25, 1] : orbState === 'speaking' ? [1, 1.1, 1] : [1, 1.03, 1],
@@ -337,14 +345,11 @@ export default function VoiceOrbInterface() {
                     transition={{ duration: orbState === 'listening' ? 1.2 : 2.5, repeat: Infinity, ease: 'easeInOut' }}
                     className={`absolute w-64 h-64 rounded-full blur-[60px] ${glowColor}`}
                 />
-
-                {/* Button */}
                 <motion.button
                     onClick={handleOrbClick}
                     whileHover={{ scale: 1.06 }}
                     whileTap={{ scale: 0.93 }}
-                    aria-label={orbState === 'listening' ? (lang === 'fr' ? 'Arrêter l\'enregistrement' : 'Stop recording') : (lang === 'fr' ? 'Commencer l\'enregistrement' : 'Start recording')}
-                    title={orbState === 'listening' ? (lang === 'fr' ? 'Tapez pour arrêter et envoyer' : 'Tap to stop & send') : orbState === 'speaking' ? (lang === 'fr' ? 'Tapez pour interrompre' : 'Tap to stop speaking') : (lang === 'fr' ? 'Tapez pour parler' : 'Tap to speak')}
+                    aria-label={orbState === 'listening' ? (lang === 'fr' ? "Arrêter l'enregistrement" : 'Stop recording') : (lang === 'fr' ? "Commencer l'enregistrement" : 'Start recording')}
                     disabled={orbState === 'processing'}
                     className={`relative z-10 w-40 h-40 rounded-full flex items-center justify-center border-2 cursor-pointer shadow-lg transition-colors duration-500 disabled:opacity-40 ${borderColor}`}
                 >
@@ -371,14 +376,14 @@ export default function VoiceOrbInterface() {
             {/* Hint */}
             <p className="text-xs text-gray-600 font-mono mb-6 text-center">
                 {orbState === 'listening'
-                    ? (lang === 'fr' ? 'En écoute — tapez l\'orbe pour arrêter et envoyer' : 'Speaking — tap orb again to stop & send')
+                    ? (lang === 'fr' ? "En écoute — tapez l'orbe pour arrêter et envoyer" : 'Speaking — tap orb again to stop & send')
                     : orbState === 'speaking'
-                        ? (lang === 'fr' ? 'Tapez l\'orbe pour interrompre' : 'Tap orb to interrupt')
+                        ? (lang === 'fr' ? "Tapez l'orbe pour interrompre" : 'Tap orb to interrupt')
                         : orbState === 'processing'
                             ? (lang === 'fr' ? 'Traitement de votre commande...' : 'Processing your command...')
                             : supported
-                                ? (lang === 'fr' ? 'Tapez l\'orbe pour parler. L\'IA répondra à voix haute.' : 'Tap the orb to speak. The AI will answer aloud.')
-                                : (lang === 'fr' ? 'Votre navigateur ne supporte pas la Reconnaissance Vocale. Utilisez la zone de texte.' : 'Your browser doesn\'t support Speech Recognition. Use the text box below.')}
+                                ? (lang === 'fr' ? "Tapez l'orbe pour parler. L'IA répondra à voix haute." : 'Tap the orb to speak. The AI will answer aloud.')
+                                : (lang === 'fr' ? 'Votre navigateur ne supporte pas la Reconnaissance Vocale. Utilisez la zone de texte.' : "Your browser doesn't support Speech Recognition. Use the text box below.")}
             </p>
 
             {/* Input + Output */}
@@ -429,9 +434,9 @@ export default function VoiceOrbInterface() {
                                 <h3 className="text-xs font-mono font-bold tracking-widest text-green-400 uppercase">
                                     {lang === 'fr' ? 'Réponse ASiReM' : 'ASiReM Response'}
                                 </h3>
-                                {backendOnline && (
-                                    <span className="text-[8px] font-mono text-cyan-500 bg-cyan-900/30 border border-cyan-500/20 px-1.5 py-0.5 rounded">
-                                        NVIDIA NIM
+                                {provider && (
+                                    <span className="text-[8px] font-mono text-cyan-500 bg-cyan-900/30 border border-cyan-500/20 px-1.5 py-0.5 rounded uppercase">
+                                        {provider}
                                     </span>
                                 )}
                             </div>
