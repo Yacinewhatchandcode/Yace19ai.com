@@ -178,11 +178,8 @@ export default function SelfCodingPage() {
 
     useEffect(() => {
         if (activeCode?.previewable && showPreview) {
-            const sanitized = sanitizePreviewHtml(activeCode.code);
-            console.log('[SelfCoding] Setting previewSrc, length:', sanitized.length, 'first 100:', sanitized.substring(0, 100));
-            setPreviewSrc(sanitized);
+            setPreviewSrc(sanitizePreviewHtml(activeCode.code));
         } else {
-            console.log('[SelfCoding] Clearing previewSrc, activeCode:', !!activeCode, 'previewable:', activeCode?.previewable, 'showPreview:', showPreview);
             setPreviewSrc('');
         }
     }, [activeCode, showPreview]);
@@ -265,8 +262,6 @@ export default function SelfCodingPage() {
                 setTotalGenerated(prev => prev + codeBlocks.length);
 
                 const previewBlock = codeBlocks.find(cb => cb.previewable);
-                console.log('[SelfCoding] codeBlocks:', codeBlocks.length, codeBlocks.map(cb => ({ lang: cb.language, previewable: cb.previewable, codeLen: cb.code.length })));
-                console.log('[SelfCoding] previewBlock:', previewBlock ? { lang: previewBlock.language, codeLen: previewBlock.code.length } : 'none');
                 if (previewBlock) {
                     setActiveCode(previewBlock);
                     setShowPreview(true);
