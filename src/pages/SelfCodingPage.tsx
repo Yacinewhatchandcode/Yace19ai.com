@@ -110,26 +110,44 @@ const AGENT_TEMPLATES = [
         title: { en: 'Product catalog scraper', fr: 'Scraper de catalogue produit' },
         desc: { en: 'Browse a website and extract specs + photos', fr: 'Parcourt un site et récupère fiches techniques + photos' },
         icon: Globe,
-        prompt: `Build a web scraping dashboard that:
-1. Has an input field for a website URL
-2. Shows a grid of cards with extracted product data: name, image, price, specs
-3. Has a "Start Scraping" button with loading animation
-4. Displays results in a beautiful card layout with images
-5. Includes a CSV export button
-Use dark theme with professional styling.`,
+        prompt: `Build a web scraping dashboard as a complete HTML page. It MUST call this real API:
+
+API: POST ${SUPABASE_URL}/functions/v1/extract-data
+Headers: { "Content-Type": "application/json", "Authorization": "Bearer ${SUPABASE_ANON_KEY}", "apikey": "${SUPABASE_ANON_KEY}" }
+Body: { "url": "<user input URL>", "config": { "category": "products", "max_items": 20 } }
+Response: { "job": { "id", "status" }, "items": [{ "title", "description", "image_url", "price", "specs": {} }] }
+
+Requirements:
+1. URL input field + "Start Extraction" button
+2. Loading spinner while API call is in progress
+3. Display results in a card grid: image on top, title, price, specs below
+4. Each card has a shadow and hover effect
+5. CSV export button that downloads results as CSV
+6. Show total items count and job status
+7. Dark theme, professional styling, responsive grid
+8. Use vanilla JS with fetch(), no React/JSX. All code in a single HTML file.`,
     },
     {
         category: 'scraping' as AgentCategory,
         title: { en: 'Manufacturer data extractor', fr: 'Extracteur de données constructeur' },
         desc: { en: 'Extract technical data and photos from a catalog', fr: 'Récupère données techniques et photos depuis un catalogue' },
         icon: Database,
-        prompt: `Build a manufacturer data extraction tool that:
-1. Has an input for manufacturer website URL and product category
-2. Shows extracted specs in a structured table: model name, dimensions, weight, price, features
-3. Displays product images in a gallery grid
-4. Has filters by category and sorting by specs
-5. Export to JSON/CSV button
-Make it look like a professional data management interface.`,
+        prompt: `Build a manufacturer data extraction tool as a complete HTML page. It MUST call this real API:
+
+API: POST ${SUPABASE_URL}/functions/v1/extract-data
+Headers: { "Content-Type": "application/json", "Authorization": "Bearer ${SUPABASE_ANON_KEY}", "apikey": "${SUPABASE_ANON_KEY}" }
+Body: { "url": "<user URL>", "config": { "category": "<user category>", "max_items": 30 } }
+Response: { "job": { "id", "status" }, "items": [{ "title", "description", "image_url", "price", "specs": {} }] }
+
+Requirements:
+1. Input for manufacturer website URL and a dropdown for product category (Boats, Cars, Electronics, Real Estate, Other)
+2. Structured data table showing: Model, Dimensions, Weight, Price, Features
+3. Image gallery grid with thumbnails
+4. Sorting by column (click header to sort)
+5. Filters by category
+6. Export to JSON and CSV buttons
+7. Dark theme with professional data management UI
+8. Use vanilla JS with fetch(), no React/JSX. All code in a single HTML file.`,
     },
     {
         category: 'analysis' as AgentCategory,
