@@ -137,6 +137,18 @@ function Navigation() {
 
 function AnimatedRoutes() {
   const location = useLocation();
+  const isFullBleed = location.pathname === '/build';
+
+  if (isFullBleed) {
+    return (
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/build" element={<SelfCodingPage />} />
+        </Routes>
+      </AnimatePresence>
+    );
+  }
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
@@ -148,7 +160,6 @@ function AnimatedRoutes() {
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/pricing/success" element={<PricingSuccessPage />} />
-        <Route path="/build" element={<SelfCodingPage />} />
       </Routes>
     </AnimatePresence>
   );
@@ -157,15 +168,35 @@ function AnimatedRoutes() {
 export default function App() {
   return (
     <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+  const isFullBleed = location.pathname === '/build';
+
+  return (
+    <>
       <div className="fixed inset-0 z-0 bg-[#02050A]">
-        <NeuralMeshwork3D />
+        {!isFullBleed && <NeuralMeshwork3D />}
       </div>
-      <div className="relative z-10 min-h-[100dvh] text-white font-sans overflow-x-hidden selection:bg-cyan-500/30 selection:text-white flex flex-col pt-[52px] sm:pt-14 md:pt-[72px]">
-        <Navigation />
-        <div className="flex-1 w-full max-w-[1600px] mx-auto px-3 sm:px-6 md:px-8 pb-6 sm:pb-12">
+
+      {isFullBleed ? (
+        /* Full-bleed: no nav, no wrapper, no padding */
+        <div className="relative z-10 h-[100dvh] text-white font-sans overflow-hidden selection:bg-cyan-500/30 selection:text-white">
           <AnimatedRoutes />
         </div>
-      </div>
-    </Router>
+      ) : (
+        /* Normal pages: nav + content wrapper */
+        <div className="relative z-10 min-h-[100dvh] text-white font-sans overflow-x-hidden selection:bg-cyan-500/30 selection:text-white flex flex-col pt-[52px] sm:pt-14 md:pt-[72px]">
+          <Navigation />
+          <div className="flex-1 w-full max-w-[1600px] mx-auto px-3 sm:px-6 md:px-8 pb-6 sm:pb-12">
+            <AnimatedRoutes />
+          </div>
+        </div>
+      )}
+    </>
   );
 }

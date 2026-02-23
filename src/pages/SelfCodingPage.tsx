@@ -6,8 +6,8 @@ import {
     RefreshCw, Bug, BookOpen, TestTube, Settings,
     Cpu, X, Maximize2, ExternalLink,
     Server, Activity, GitBranch,
-    HelpCircle, ArrowRight,
-    MessageSquare, Wand2,
+    HelpCircle, ArrowRight, Globe, Database, FileText, Image,
+    MessageSquare, Search, BarChart3, Mail, ShoppingCart,
 } from 'lucide-react';
 
 const API_BASE = 'https://amlazr.com';
@@ -61,20 +61,155 @@ const PIPELINE_MODES: Record<PipelineMode, { label: string; desc: string; color:
     full_cycle: { label: 'Full Cycle', desc: 'Scan → Implement → Test → Verify', color: 'text-purple-400' },
 };
 
-const SUGGESTIONS = [
-    { text: 'Build a React dashboard', icon: '📊' },
-    { text: 'Create a REST API with auth', icon: '🔐' },
-    { text: 'Make a 2D platformer game', icon: '🎮' },
-    { text: 'Build a real-time chat', icon: '💬' },
-    { text: 'Create a landing page', icon: '🌐' },
-    { text: 'Build a Kanban board', icon: '📋' },
+type AgentCategory = 'all' | 'scraping' | 'analysis' | 'automation' | 'content';
+
+const UI_TEXT = {
+    en: {
+        heroTitle: 'What do you want to build?',
+        heroSub: 'Pick a template or describe your project.',
+        onboardTitle: 'How It Works',
+        onboardSub: 'Describe what you need. AI builds it. You preview it live.',
+        onboardCta: "Let's build",
+        howLink: 'How does this work?',
+        inputPlaceholder: 'Describe what to build...',
+        categories: { all: 'All', scraping: 'Web Scraping', analysis: 'Analysis', automation: 'Automation', content: 'Content' },
+        steps: [
+            { title: '1. Pick a use case', desc: 'Click a template below or describe your need in plain language.' },
+            { title: '2. AI generates code', desc: 'Multi-provider engine builds a complete app in seconds.' },
+            { title: '3. Live preview + Export', desc: 'See the result live, then copy the code or open in a new tab.' },
+        ],
+    },
+    fr: {
+        heroTitle: 'Que voulez-vous construire ?',
+        heroSub: 'Choisissez un template ou décrivez votre projet.',
+        onboardTitle: 'Comment ça marche',
+        onboardSub: 'Décrivez votre besoin. L\'IA construit. Vous prévisualisez.',
+        onboardCta: 'C\'est parti',
+        howLink: 'Comment ça marche ?',
+        inputPlaceholder: 'Décrivez ce que vous voulez construire...',
+        categories: { all: 'Tous', scraping: 'Web Scraping', analysis: 'Analyse', automation: 'Automatisation', content: 'Contenu' },
+        steps: [
+            { title: '1. Choisir un cas d\'usage', desc: 'Cliquez sur un template ou décrivez votre besoin.' },
+            { title: '2. L\'IA génère le code', desc: 'Le moteur multi-providers construit une app en quelques secondes.' },
+            { title: '3. Preview live + Export', desc: 'Visualisez le résultat puis copiez le code ou ouvrez dans un onglet.' },
+        ],
+    },
+};
+
+const AGENT_CATEGORIES: { id: AgentCategory; icon: any }[] = [
+    { id: 'all', icon: Sparkles },
+    { id: 'scraping', icon: Globe },
+    { id: 'analysis', icon: BarChart3 },
+    { id: 'automation', icon: RefreshCw },
+    { id: 'content', icon: FileText },
 ];
 
-const ONBOARDING_STEPS = [
-    { title: 'Choose a Mode', desc: 'Pick what you want to do — Generate, Refactor, Debug, Explain, or Test.', icon: Wand2 },
-    { title: 'Describe Your Task', desc: 'Type what you want to build, or tap a suggestion below.', icon: MessageSquare },
-    { title: 'Get Code + Preview', desc: 'AI generates code with live preview. Copy it or open in a new tab.', icon: Code2 },
+const AGENT_TEMPLATES = [
+    {
+        category: 'scraping' as AgentCategory,
+        title: { en: 'Product catalog scraper', fr: 'Scraper de catalogue produit' },
+        desc: { en: 'Browse a website and extract specs + photos', fr: 'Parcourt un site et récupère fiches techniques + photos' },
+        icon: Globe,
+        prompt: `Build a web scraping dashboard that:
+1. Has an input field for a website URL
+2. Shows a grid of cards with extracted product data: name, image, price, specs
+3. Has a "Start Scraping" button with loading animation
+4. Displays results in a beautiful card layout with images
+5. Includes a CSV export button
+Use dark theme with professional styling.`,
+    },
+    {
+        category: 'scraping' as AgentCategory,
+        title: { en: 'Manufacturer data extractor', fr: 'Extracteur de données constructeur' },
+        desc: { en: 'Extract technical data and photos from a catalog', fr: 'Récupère données techniques et photos depuis un catalogue' },
+        icon: Database,
+        prompt: `Build a manufacturer data extraction tool that:
+1. Has an input for manufacturer website URL and product category
+2. Shows extracted specs in a structured table: model name, dimensions, weight, price, features
+3. Displays product images in a gallery grid
+4. Has filters by category and sorting by specs
+5. Export to JSON/CSV button
+Make it look like a professional data management interface.`,
+    },
+    {
+        category: 'analysis' as AgentCategory,
+        title: { en: 'Analytics dashboard', fr: 'Tableau de bord analytique' },
+        desc: { en: 'Visualize data with charts, KPIs, and tables', fr: 'Visualise des données avec graphiques et KPIs' },
+        icon: BarChart3,
+        prompt: `Build an analytics dashboard with:
+1. Top row: 4 KPI cards (Total Revenue, Active Users, Conversion Rate, Growth)
+2. A line chart showing monthly trends
+3. A bar chart comparing categories
+4. A data table with sortable columns
+Use dark theme, glassmorphism cards, and smooth animations.`,
+    },
+    {
+        category: 'analysis' as AgentCategory,
+        title: { en: 'Product comparator', fr: 'Comparateur de produits' },
+        desc: { en: 'Compare specs side by side across products', fr: 'Compare les caractéristiques côte à côte' },
+        icon: Search,
+        prompt: `Build a product comparison tool that:
+1. Lets users add 2-4 products to compare
+2. Shows specs side-by-side in a comparison table
+3. Highlights the best value in each category (green)
+4. Has a rating system with stars
+5. Shows product images at the top
+Professional dark theme with clean typography.`,
+    },
+    {
+        category: 'automation' as AgentCategory,
+        title: { en: 'Smart form wizard', fr: 'Formulaire intelligent' },
+        desc: { en: 'Multi-step form with validation and auto-submit', fr: 'Formulaire multi-étapes avec validation' },
+        icon: Mail,
+        prompt: `Build a multi-step form wizard with:
+1. Step 1: Contact info (name, email, phone)
+2. Step 2: Project details (dropdown, textarea, budget slider)
+3. Step 3: File upload area with drag-and-drop
+4. Step 4: Review and confirm
+5. Progress bar at top, Back/Next buttons
+Sleek dark theme with smooth step transitions.`,
+    },
+    {
+        category: 'automation' as AgentCategory,
+        title: { en: 'Order tracking', fr: 'Suivi de commandes' },
+        desc: { en: 'Real-time order management and tracking', fr: 'Gestion et suivi de commandes en temps réel' },
+        icon: ShoppingCart,
+        prompt: `Build an order tracking dashboard with:
+1. Order list with status badges (Pending, Processing, Shipped, Delivered)
+2. Click an order to see details: items, shipping info, timeline
+3. Search and filter by status, date, customer
+4. Stats bar: total orders, revenue, average delivery time
+Professional dark UI with color-coded statuses.`,
+    },
+    {
+        category: 'content' as AgentCategory,
+        title: { en: 'Portfolio gallery', fr: 'Galerie de portfolio' },
+        desc: { en: 'Responsive portfolio with filters and lightbox', fr: 'Portfolio responsive avec filtres et lightbox' },
+        icon: Image,
+        prompt: `Build a portfolio gallery page with:
+1. Hero section with name and tagline
+2. Filter buttons by category (Design, Development, Photography)
+3. Masonry grid layout with hover effects
+4. Click to open lightbox with image details
+5. Contact section at bottom
+Modern dark theme with gradient accents and smooth animations.`,
+    },
+    {
+        category: 'content' as AgentCategory,
+        title: { en: 'Product landing page', fr: 'Landing page produit' },
+        desc: { en: 'Full sales page with hero, features, pricing', fr: 'Page de vente avec hero, features, pricing' },
+        icon: Globe,
+        prompt: `Build a SaaS landing page with:
+1. Hero: headline, subheadline, CTA button, hero image
+2. Features: 3 feature cards with icons and descriptions
+3. Pricing: 3 tier cards (Free, Pro, Enterprise) with feature lists
+4. Testimonials: 3 customer quotes with avatars
+5. CTA section at bottom
+Dark theme with gradient buttons and glass-effect cards.`,
+    },
 ];
+
+const ONBOARDING_ICONS = [Search, Cpu, Eye];
 
 function sanitizePreviewHtml(html: string): string {
     let fixed = html;
@@ -129,6 +264,9 @@ export default function SelfCodingPage() {
     const [orbActions, setOrbActions] = useState<number>(0);
     const [showOnboarding, setShowOnboarding] = useState(true);
     const [showModeDesc, setShowModeDesc] = useState(false);
+    const [agentFilter, setAgentFilter] = useState<AgentCategory>('all');
+    const [uiLang] = useState<'en' | 'fr'>(() => (navigator.language?.startsWith('fr') ? 'fr' : 'en'));
+    const t = UI_TEXT[uiLang];
     const chatRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const historyRef = useRef<{ role: string; content: string }[]>([]);
@@ -499,16 +637,16 @@ export default function SelfCodingPage() {
                                     <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-cyan-500/20 flex items-center justify-center mb-3">
                                         <Brain size={28} className="text-cyan-400" />
                                     </div>
-                                    <h2 className="text-lg font-bold text-white mb-1">How It Works</h2>
+                                    <h2 className="text-lg font-bold text-white mb-1">{t.onboardTitle}</h2>
                                     <p className="text-[13px] text-gray-400 max-w-[280px] mx-auto leading-relaxed">
-                                        Describe what you want to build. AI generates production-ready code with live preview.
+                                        {t.onboardSub}
                                     </p>
                                 </div>
 
                                 {/* Steps */}
                                 <div className="space-y-2.5 max-w-sm mx-auto">
-                                    {ONBOARDING_STEPS.map((step, i) => {
-                                        const Icon = step.icon;
+                                    {t.steps.map((step, i) => {
+                                        const Icon = ONBOARDING_ICONS[i];
                                         return (
                                             <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
                                                 <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 mt-0.5">
@@ -525,38 +663,60 @@ export default function SelfCodingPage() {
 
                                 <button onClick={dismissOnboarding}
                                     className="mx-auto flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-violet-500 text-white text-[13px] font-bold cursor-pointer active:scale-95 transition-all shadow-lg shadow-cyan-500/20">
-                                    Got it, let's build <ArrowRight size={14} />
+                                    {t.onboardCta} <ArrowRight size={14} />
                                 </button>
                             </motion.div>
                         )}
 
-                        {/* ═══ EMPTY STATE (after onboarding dismissed) ═══ */}
+                        {/* ═══ EMPTY STATE — Agent Templates ═══ */}
                         {messages.length === 0 && !showOnboarding && (
-                            <div className="flex flex-col items-center justify-center h-full text-center gap-4 py-8">
-                                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-violet-500/20 border border-cyan-500/20 flex items-center justify-center">
-                                    <Brain size={28} className="text-cyan-400" />
-                                </div>
-                                <div>
-                                    <h3 className="text-lg font-bold text-white mb-1">What do you want to build?</h3>
-                                    <p className="text-[13px] text-gray-500 max-w-xs mx-auto leading-relaxed">
-                                        Tap a suggestion or type a description below.
-                                    </p>
+                            <div className="flex flex-col items-center h-full gap-4 py-6 overflow-y-auto">
+                                <div className="text-center">
+                                    <h3 className="text-lg font-bold text-white mb-1">{t.heroTitle}</h3>
+                                    <p className="text-[13px] text-gray-500 max-w-xs mx-auto">{t.heroSub}</p>
                                 </div>
 
-                                {/* Suggestions — single column on mobile, 2 cols on desktop */}
-                                <div className="w-full max-w-md grid grid-cols-1 sm:grid-cols-2 gap-2 px-2">
-                                    {SUGGESTIONS.map(s => (
-                                        <button key={s.text} onClick={() => setInput(s.text)}
-                                            className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-left transition-all cursor-pointer active:scale-[0.97] hover:bg-white/[0.06] hover:border-cyan-500/20 group">
-                                            <span className="text-[18px] shrink-0">{s.icon}</span>
-                                            <span className="text-[13px] text-gray-300 group-hover:text-white font-medium leading-snug">{s.text}</span>
-                                        </button>
-                                    ))}
+                                {/* Category filter */}
+                                <div className="flex gap-1.5 flex-wrap justify-center px-2">
+                                    {AGENT_CATEGORIES.map(cat => {
+                                        const CatIcon = cat.icon;
+                                        return (
+                                            <button key={cat.id} onClick={() => setAgentFilter(cat.id)}
+                                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all cursor-pointer ${agentFilter === cat.id
+                                                    ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300'
+                                                    : 'bg-white/[0.04] border border-white/[0.08] text-gray-400 hover:text-white hover:border-white/20'
+                                                    }`}>
+                                                <CatIcon size={12} />
+                                                {t.categories[cat.id]}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                {/* Template grid */}
+                                <div className="w-full max-w-lg grid grid-cols-1 sm:grid-cols-2 gap-2 px-2">
+                                    {AGENT_TEMPLATES
+                                        .filter(tpl => agentFilter === 'all' || tpl.category === agentFilter)
+                                        .map(tpl => {
+                                            const TplIcon = tpl.icon;
+                                            return (
+                                                <button key={tpl.title.en} onClick={() => { setInput(tpl.prompt); inputRef.current?.focus(); }}
+                                                    className="flex items-start gap-3 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-left transition-all cursor-pointer active:scale-[0.97] hover:bg-white/[0.06] hover:border-cyan-500/20 group">
+                                                    <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                                                        <TplIcon size={16} className="text-cyan-400 group-hover:text-cyan-300" />
+                                                    </div>
+                                                    <div className="min-w-0">
+                                                        <p className="text-[13px] font-semibold text-gray-200 group-hover:text-white leading-snug">{tpl.title[uiLang]}</p>
+                                                        <p className="text-[11px] text-gray-500 group-hover:text-gray-400 leading-relaxed mt-0.5">{tpl.desc[uiLang]}</p>
+                                                    </div>
+                                                </button>
+                                            );
+                                        })}
                                 </div>
 
                                 <button onClick={() => setShowOnboarding(true)}
-                                    className="text-[11px] text-gray-600 flex items-center gap-1 mt-2 cursor-pointer hover:text-gray-400">
-                                    <HelpCircle size={12} /> How does this work?
+                                    className="text-[11px] text-gray-600 flex items-center gap-1 mt-1 cursor-pointer hover:text-gray-400">
+                                    <HelpCircle size={12} /> {t.howLink}
                                 </button>
                             </div>
                         )}
@@ -656,14 +816,14 @@ export default function SelfCodingPage() {
                                 value={input}
                                 onChange={e => setInput(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                placeholder="Describe what to build..."
+                                placeholder={t.inputPlaceholder}
                                 rows={1}
                                 className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-[14px] text-white placeholder-gray-600 resize-none focus:border-cyan-500/40 focus:outline-none focus:ring-2 focus:ring-cyan-500/10"
                                 style={{ minHeight: '48px', maxHeight: '120px' }}
                                 onInput={(e) => {
-                                    const t = e.target as HTMLTextAreaElement;
-                                    t.style.height = '48px';
-                                    t.style.height = Math.min(t.scrollHeight, 120) + 'px';
+                                    const el = e.target as HTMLTextAreaElement;
+                                    el.style.height = '48px';
+                                    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
                                 }}
                             />
                             <button onClick={submit} disabled={loading || !input.trim()}
