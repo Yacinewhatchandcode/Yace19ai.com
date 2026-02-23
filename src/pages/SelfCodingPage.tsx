@@ -5,10 +5,13 @@ import {
     Sparkles, Terminal, FileCode, Eye, EyeOff,
     RefreshCw, Bug, BookOpen, TestTube, Settings,
     Zap, Cpu, X, Maximize2, ExternalLink,
+    Server, Activity, Shield, Layers, GitBranch,
 } from 'lucide-react';
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
+
+const API_BASE = 'https://amlazr.com';
 
 type Mode = 'generate' | 'refactor' | 'debug' | 'explain' | 'test';
+type PipelineMode = 'analyze' | 'implement' | 'fix' | 'test' | 'full_cycle';
 type MobilePanel = 'chat' | 'code';
 
 interface CodeBlock {
@@ -28,6 +31,14 @@ interface Message {
     cascade?: string[];
     mode?: Mode;
     timestamp: number;
+    source?: string; // 'orb-dispatch' | 'selfcoding-pipeline' | 'voice-chat'
+    pipelineSteps?: any[];
+}
+
+interface AgentStatus {
+    agentZero: { status: string; capabilities?: string[] };
+    bytebot: { status: string };
+    browserUse: { status: string; capabilities?: string[] };
 }
 
 const MODE_CONFIG: Record<Mode, { label: string; icon: any; color: string; accent: string; desc: string }> = {
@@ -36,6 +47,14 @@ const MODE_CONFIG: Record<Mode, { label: string; icon: any; color: string; accen
     debug: { label: 'Debug', icon: Bug, color: 'text-red-400', accent: 'from-red-500/20 to-red-500/5 border-red-500/30', desc: 'Fix bugs' },
     explain: { label: 'Explain', icon: BookOpen, color: 'text-amber-400', accent: 'from-amber-500/20 to-amber-500/5 border-amber-500/30', desc: 'Explain code' },
     test: { label: 'Test', icon: TestTube, color: 'text-emerald-400', accent: 'from-emerald-500/20 to-emerald-500/5 border-emerald-500/30', desc: 'Generate tests' },
+};
+
+const PIPELINE_MODES: Record<PipelineMode, { label: string; desc: string; color: string }> = {
+    analyze: { label: 'Analyze', desc: 'Scan codebase → plan changes', color: 'text-blue-400' },
+    implement: { label: 'Implement', desc: 'Execute code modifications', color: 'text-green-400' },
+    fix: { label: 'Fix', desc: 'Debug & fix with recursive retry', color: 'text-red-400' },
+    test: { label: 'Test', desc: 'Run tests + visual verification', color: 'text-amber-400' },
+    full_cycle: { label: 'Full Cycle', desc: 'Scan → Implement → Test → Verify', color: 'text-purple-400' },
 };
 
 const PROVIDER_ICONS: Record<string, { label: string; color: string }> = {
@@ -60,32 +79,21 @@ const SUGGESTIONS = [
 // Sanitize AI-generated HTML to fix common preview issues
 function sanitizePreviewHtml(html: string): string {
     let fixed = html;
-
-    // Remove local import statements (./  ../) that can't resolve in iframe
     fixed = fixed.replace(/import\s+.*?from\s+['"]\.\.?\/[^'"]+['"];?\n?/g, '');
-
-    // Remove bare export statements
     fixed = fixed.replace(/export\s+default\s+/g, 'const __exported__ = ');
     fixed = fixed.replace(/export\s+\{[^}]*\};?\n?/g, '');
-
-    // Replace ESM CDN imports with UMD globals (React/ReactDOM already available via CDN)
     fixed = fixed.replace(/import\s+React\s*,?\s*\{[^}]*\}\s*from\s+['"]https?:\/\/esm\.sh\/react[^'"]*['"];?\n?/g,
         'const { useState, useEffect, useCallback, useRef, useMemo, useReducer, createContext, useContext } = React;\n');
     fixed = fixed.replace(/import\s+\{\s*createRoot\s*\}\s*from\s+['"]https?:\/\/esm\.sh\/react-dom[^'"]*['"];?\n?/g, '');
     fixed = fixed.replace(/import\s+React\s+from\s+['"]https?:\/\/esm\.sh\/react[^'"]*['"];?\n?/g, '');
     fixed = fixed.replace(/import\s+ReactDOM\s+from\s+['"]https?:\/\/esm\.sh\/react-dom[^'"]*['"];?\n?/g, '');
-    // Catch any remaining esm.sh imports
     fixed = fixed.replace(/import\s+.*?from\s+['"]https?:\/\/esm\.sh\/[^'"]+['"];?\n?/g, '');
 
-    // Check if any script contains JSX (< followed by uppercase letter or className=)
     const hasJSX = /<script[^>]*>([\s\S]*?)<\/script>/g.test(fixed) &&
         (/<[A-Z]/.test(fixed) || /className=/.test(fixed) || /onClick=\{/.test(fixed));
 
     if (hasJSX) {
-        // Inject Babel standalone for JSX transpilation (like CodePen)
         const babelScript = '<script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script>';
-
-        // Add Babel before the closing </head> or at the start of body
         if (fixed.includes('</head>')) {
             fixed = fixed.replace('</head>', `${babelScript}\n</head>`);
         } else if (fixed.includes('<body')) {
@@ -93,8 +101,6 @@ function sanitizePreviewHtml(html: string): string {
         } else {
             fixed = babelScript + '\n' + fixed;
         }
-
-        // Also ensure React UMD scripts are present
         if (!fixed.includes('react.production.min.js') && !fixed.includes('react.development.min.js')) {
             const reactScripts = '<script src="https://unpkg.com/react@18/umd/react.production.min.js"><\/script>\n' +
                 '<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"><\/script>';
@@ -104,22 +110,15 @@ function sanitizePreviewHtml(html: string): string {
                 fixed = reactScripts + '\n' + fixed;
             }
         }
-
-        // Convert script type="module" to type="text/babel" so Babel can process JSX
         fixed = fixed.replace(/<script\s+type="module">/g, '<script type="text/babel">');
-
-        // Also convert plain <script> containing JSX to type="text/babel"
         fixed = fixed.replace(/<script>([\s\S]*?)<\/script>/g, (match, content) => {
             if (/<[A-Z]/.test(content) || /className=/.test(content)) {
                 return `<script type="text/babel">${content}<\/script>`;
             }
             return match;
         });
-
-        // Replace createRoot import pattern with UMD usage
         fixed = fixed.replace(/createRoot\(/g, 'ReactDOM.createRoot(');
     }
-
     return fixed;
 }
 
@@ -139,10 +138,33 @@ export default function SelfCodingPage() {
     const [totalGenerated, setTotalGenerated] = useState(0);
     const [mobilePanel, setMobilePanel] = useState<MobilePanel>('chat');
     const [fullscreen, setFullscreen] = useState(false);
+    const [agentStatus, setAgentStatus] = useState<AgentStatus | null>(null);
+    const [showAgentPanel, setShowAgentPanel] = useState(false);
+    const [orbActions, setOrbActions] = useState<number>(0);
     const chatRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLTextAreaElement>(null);
     const historyRef = useRef<{ role: string; content: string }[]>([]);
     const iframeRef = useRef<HTMLIFrameElement>(null);
+
+    // ═══ Fetch Agent Zero pipeline status on mount ═══
+    useEffect(() => {
+        fetch(`${API_BASE}/api/selfcoding`, { mode: 'cors' })
+            .then(r => r.json())
+            .then(data => {
+                if (data.agents) setAgentStatus(data.agents);
+            })
+            .catch(() => setAgentStatus({
+                agentZero: { status: 'offline' },
+                bytebot: { status: 'offline' },
+                browserUse: { status: 'offline' },
+            }));
+
+        // Fetch orb-dispatch registry size
+        fetch(`${API_BASE}/api/orb-dispatch`, { mode: 'cors' })
+            .then(r => r.json())
+            .then(data => { if (data.total) setOrbActions(data.total); })
+            .catch(() => { });
+    }, []);
 
     useEffect(() => {
         if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -154,7 +176,6 @@ export default function SelfCodingPage() {
         setTimeout(() => setCopied(false), 2000);
     }, []);
 
-    // When activeCode changes and it's previewable, set the srcdoc
     useEffect(() => {
         if (activeCode?.previewable && showPreview) {
             setPreviewSrc(sanitizePreviewHtml(activeCode.code));
@@ -163,7 +184,6 @@ export default function SelfCodingPage() {
         }
     }, [activeCode, showPreview]);
 
-    // Open preview in new tab for sharing/mobile viewing
     const openInNewTab = useCallback(() => {
         if (!activeCode?.previewable) return;
         const w = window.open('', '_blank');
@@ -173,6 +193,7 @@ export default function SelfCodingPage() {
         }
     }, [activeCode]);
 
+    // ═══ Main submit — routes through Orb Dispatch (full power) ═══
     const submit = useCallback(async () => {
         if (!input.trim() || loading) return;
 
@@ -180,31 +201,33 @@ export default function SelfCodingPage() {
         setMessages(prev => [...prev, userMsg]);
         setInput('');
         setLoading(true);
-
         historyRef.current.push({ role: 'user', content: input });
 
+        const t0 = Date.now();
+
         try {
-            const res = await fetch(`${SUPABASE_URL}/functions/v1/voice-chat`, {
+            // ── Route through Orb Dispatch (intent classification → 40+ actions) ──
+            const res = await fetch(`${API_BASE}/api/orb-dispatch`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                    'apikey': SUPABASE_ANON_KEY,
-                },
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
                 body: JSON.stringify({
-                    message: `[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX. Example: React.createElement('div', {className:'p-4'}, 'Hello')\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js and unpkg.com/react-dom@18/umd/react-dom.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts. Use regular script tags.\n7. ALL code INLINE in the HTML. NO external files or modules.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\n${input}`,
+                    message: `[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX.\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts.\n7. ALL code INLINE in the HTML.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\n${input}`,
+                    conversationHistory: historyRef.current.slice(-8),
                     lang: 'en',
-                    history: historyRef.current.slice(-8),
+                    context: { url: '/build', title: 'Self-Coding Engine' },
                 }),
             });
 
             const data = await res.json();
+            const latency = Date.now() - t0;
 
-            if (data.success && data.message) {
-                const rawOutput = data.message;
+            if (data.response) {
+                const rawOutput = data.response;
 
+                // Extract code blocks
                 const codeBlocks: CodeBlock[] = [];
-                const codeRegex = /```(\w +) ?\n([\s\S] *?)```/g;
+                const codeRegex = /```(\w+)?\n([\s\S]*?)```/g;
                 let match;
                 while ((match = codeRegex.exec(rawOutput)) !== null) {
                     const lang = match[1] || language;
@@ -212,19 +235,26 @@ export default function SelfCodingPage() {
                     const previewable = lang === 'html' || code.includes('<html') || code.includes('<!DOCTYPE') || code.includes('<!doctype');
                     codeBlocks.push({ language: lang, code, previewable });
                 }
-                const explanation = rawOutput.replace(/```[\s\S]*? ```/g, '').trim();
+                const explanation = rawOutput.replace(/```[\s\S]*?```/g, '').trim();
+
+                // Determine provider from activeModules
+                let provider = 'openrouter';
+                const modules = data.activeModules || [];
+                if (modules.some((m: string) => m.toLowerCase().includes('groq'))) provider = 'groq';
+                else if (modules.some((m: string) => m.toLowerCase().includes('gemini'))) provider = 'google';
 
                 const assistantMsg: Message = {
                     role: 'assistant',
                     content: rawOutput,
                     codeBlocks,
                     explanation,
-                    provider: data.provider,
-                    model: data.model || data.provider,
-                    latencyMs: data.latency_ms,
-                    cascade: data.cascade,
+                    provider,
+                    model: modules.join(' → ') || 'Multi-Provider',
+                    latencyMs: latency,
+                    cascade: modules,
                     mode,
                     timestamp: Date.now(),
+                    source: 'orb-dispatch',
                 };
 
                 setMessages(prev => [...prev, assistantMsg]);
@@ -240,9 +270,20 @@ export default function SelfCodingPage() {
                     setShowPreview(false);
                 }
 
-                // On mobile, auto-switch to code panel when code is generated
                 if (codeBlocks.length > 0 && window.innerWidth < 768) {
                     setMobilePanel('code');
+                }
+
+                // If Orb triggered an action (like self_build, flow_code), show it
+                if (data.action && data.action.success) {
+                    const actionMsg: Message = {
+                        role: 'assistant',
+                        content: `⚡ **Pipeline Action**: \`${data.action.id}\` executed successfully.\n\n${JSON.stringify(data.action.data, null, 2).slice(0, 500)}`,
+                        timestamp: Date.now(),
+                        source: 'selfcoding-pipeline',
+                        pipelineSteps: data.action.data?.steps,
+                    };
+                    setMessages(prev => [...prev, actionMsg]);
                 }
             } else {
                 setMessages(prev => [...prev, {
@@ -254,13 +295,56 @@ export default function SelfCodingPage() {
         } catch (err: any) {
             setMessages(prev => [...prev, {
                 role: 'assistant',
-                content: `Connection error: ${err.message}.Check network and retry.`,
+                content: `Connection error: ${err.message}. Check network and retry.`,
                 timestamp: Date.now(),
             }]);
         }
 
         setLoading(false);
     }, [input, mode, language, framework, context, loading]);
+
+    // ═══ Pipeline execution (Agent Zero full_cycle) ═══
+    const runPipeline = useCallback(async (pipelineMode: PipelineMode) => {
+        if (!input.trim() || loading) return;
+
+        const userMsg: Message = { role: 'user', content: `[PIPELINE: ${pipelineMode}] ${input}`, timestamp: Date.now() };
+        setMessages(prev => [...prev, userMsg]);
+        setLoading(true);
+
+        try {
+            const res = await fetch(`${API_BASE}/api/selfcoding`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors',
+                body: JSON.stringify({
+                    goal: input,
+                    mode: pipelineMode,
+                    language,
+                    autoCommit: false,
+                }),
+            });
+
+            const data = await res.json();
+
+            const assistantMsg: Message = {
+                role: 'assistant',
+                content: `**Pipeline Result** (${pipelineMode})\n\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\``,
+                timestamp: Date.now(),
+                source: 'selfcoding-pipeline',
+                pipelineSteps: data.result?.steps,
+            };
+
+            setMessages(prev => [...prev, assistantMsg]);
+        } catch (err: any) {
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: `Pipeline error: ${err.message}`,
+                timestamp: Date.now(),
+            }]);
+        }
+
+        setLoading(false);
+    }, [input, language, loading]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); }
@@ -273,6 +357,77 @@ export default function SelfCodingPage() {
         setMobilePanel('chat');
         setPreviewSrc('');
     };
+
+    // ═══ Agent Status Panel ═══
+    const agentPanel = (
+        <AnimatePresence>
+            {showAgentPanel && (
+                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mb-2">
+                    <div className="p-3 glass-panel border border-white/10 rounded-xl space-y-3">
+                        <div className="flex items-center justify-between">
+                            <span className="text-xs font-mono text-white/60 uppercase flex items-center gap-2">
+                                <Server size={12} /> Sovereign Infrastructure
+                            </span>
+                            <span className="text-[9px] font-mono text-gray-600">amlazr.com</span>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-2">
+                            {[
+                                { key: 'agentZero', label: 'Agent Zero', icon: Brain, desc: 'Code analysis + execution' },
+                                { key: 'bytebot', label: 'ByteBot', icon: Activity, desc: 'Visual verification' },
+                                { key: 'browserUse', label: 'Browser-Use', icon: Shield, desc: 'Codebase scanning' },
+                            ].map(agent => {
+                                const status = agentStatus?.[agent.key as keyof AgentStatus]?.status || 'unknown';
+                                const Icon = agent.icon;
+                                return (
+                                    <div key={agent.key} className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.06]">
+                                        <div className="flex items-center gap-1.5 mb-1">
+                                            <div className={`w-1.5 h-1.5 rounded-full ${status === 'healthy' || status === 'online' ? 'bg-green-400' : 'bg-red-500'}`} />
+                                            <Icon size={10} className="text-white/40" />
+                                            <span className="text-[9px] font-mono text-white/60">{agent.label}</span>
+                                        </div>
+                                        <span className={`text-[8px] font-mono ${status === 'healthy' || status === 'online' ? 'text-green-400' : 'text-red-400'}`}>{status}</span>
+                                        <p className="text-[7px] text-white/20 mt-0.5">{agent.desc}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Pipeline Modes */}
+                        <div>
+                            <span className="text-[9px] font-mono text-white/40 uppercase mb-1.5 block flex items-center gap-1">
+                                <GitBranch size={10} /> Pipeline Modes
+                            </span>
+                            <div className="flex gap-1.5 flex-wrap">
+                                {(Object.entries(PIPELINE_MODES) as [PipelineMode, typeof PIPELINE_MODES[PipelineMode]][]).map(([key, cfg]) => (
+                                    <button
+                                        key={key}
+                                        onClick={() => runPipeline(key)}
+                                        disabled={loading || !input.trim()}
+                                        className={`text-[8px] font-mono px-2 py-1 rounded-lg border transition-all cursor-pointer ${loading || !input.trim()
+                                            ? 'opacity-30 cursor-not-allowed border-white/5 text-gray-600'
+                                            : `${cfg.color} border-white/10 bg-white/[0.02] hover:bg-white/[0.06]`
+                                            }`}
+                                        title={cfg.desc}
+                                    >
+                                        {cfg.label}
+                                    </button>
+                                ))}
+                            </div>
+                            <p className="text-[7px] text-white/20 mt-1">Requires VPS agents online. Uses circuit breakers + recursive retry.</p>
+                        </div>
+
+                        {/* Orb Dispatch Stats */}
+                        <div className="flex items-center gap-3 text-[8px] font-mono text-white/30">
+                            <span className="flex items-center gap-1"><Layers size={9} /> {orbActions} actions in registry</span>
+                            <span className="flex items-center gap-1"><Zap size={9} /> Circuit breakers active</span>
+                            <span className="flex items-center gap-1"><Shield size={9} /> Approval gates</span>
+                        </div>
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
 
     const codePreviewContent = (
         <div className="flex-1 flex flex-col glass-panel border border-white/10 rounded-2xl overflow-hidden">
@@ -294,7 +449,7 @@ export default function SelfCodingPage() {
                     {activeCode?.previewable && (
                         <button
                             onClick={() => setShowPreview(!showPreview)}
-                            className={`flex items - center gap - 1 px - 2 py - 1 rounded - lg text - [9px] sm: text - [10px] font - mono transition - all cursor - pointer ${showPreview
+                            className={`flex items-center gap-1 px-2 py-1 rounded-lg text-[9px] sm:text-[10px] font-mono transition-all cursor-pointer ${showPreview
                                 ? 'bg-green-500/20 border border-green-500/30 text-green-300'
                                 : 'bg-white/5 border border-white/10 text-gray-400'
                                 }`}
@@ -331,7 +486,6 @@ export default function SelfCodingPage() {
                             </button>
                         </>
                     )}
-                    {/* Mobile close button */}
                     <button
                         onClick={() => setMobilePanel('chat')}
                         className="md:hidden flex items-center justify-center w-7 h-7 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-white cursor-pointer"
@@ -382,12 +536,12 @@ export default function SelfCodingPage() {
                         <div>
                             <p className="text-xs sm:text-sm text-gray-500 font-mono mb-1">Code & Live Preview</p>
                             <p className="text-[9px] sm:text-[10px] text-gray-700 max-w-xs">
-                                Describe what to build → Code generates → Preview renders live
+                                Describe what to build → Orb Dispatch classifies intent → Code generates → Preview renders live
                             </p>
                         </div>
                         <div className="flex gap-1.5 flex-wrap justify-center">
                             {Object.entries(PROVIDER_ICONS).map(([key, val]) => (
-                                <span key={key} className={`text - [7px] sm: text - [8px] font - mono ${val.color} bg - white / 5 border border - white / 5 px - 1 sm: px - 1.5 py - 0.5 rounded`}>
+                                <span key={key} className={`text-[7px] sm:text-[8px] font-mono ${val.color} bg-white/5 border border-white/5 px-1 sm:px-1.5 py-0.5 rounded`}>
                                     {val.label}
                                 </span>
                             ))}
@@ -403,8 +557,8 @@ export default function SelfCodingPage() {
                         {activeCode.code.length} chars • {activeCode.code.split('\n').length} lines
                         {activeCode.previewable && <span className="text-green-500 ml-1 sm:ml-2">● LIVE</span>}
                     </span>
-                    <span className="text-[8px] sm:text-[9px] font-mono text-cyan-600 hidden sm:inline">Sovereign Edge Function • 7-Provider Cascade</span>
-                    <span className="text-[8px] font-mono text-cyan-600 sm:hidden">7-Provider</span>
+                    <span className="text-[8px] sm:text-[9px] font-mono text-cyan-600 hidden sm:inline">Orb Dispatch • {orbActions} Actions • Multi-Provider Cascade</span>
+                    <span className="text-[8px] font-mono text-cyan-600 sm:hidden">{orbActions} Actions</span>
                 </div>
             )}
         </div>
@@ -428,12 +582,12 @@ export default function SelfCodingPage() {
                         <h1 className="text-sm sm:text-xl font-black text-white font-display flex items-center gap-1.5 sm:gap-2">
                             <span className="truncate">Self-Coding Engine</span>
                             <span className="text-[7px] sm:text-[8px] font-mono text-green-500 bg-green-900/30 border border-green-500/20 px-1 sm:px-1.5 py-0.5 rounded flex items-center gap-0.5 shrink-0">
-                                <Zap size={7} /> <span className="hidden sm:inline">7 PROVIDERS</span> LIVE
+                                <Zap size={7} /> <span className="hidden sm:inline">{orbActions} ACTIONS</span> LIVE
                             </span>
                         </h1>
                         <p className="text-[8px] sm:text-[10px] font-mono text-gray-500 truncate">
-                            <span className="hidden sm:inline">ASiReM • Groq · Gemini · NVIDIA · GPT-4o · OpenRouter · Cloudflare · ZhipuAI</span>
-                            <span className="sm:hidden">ASiReM • 7 AI Providers</span>
+                            <span className="hidden sm:inline">Orb Dispatch • {orbActions} Actions • Groq · Gemini · OpenRouter · Agent Zero Pipeline</span>
+                            <span className="sm:hidden">Orb Dispatch • {orbActions} Actions</span>
                         </p>
                     </div>
                 </div>
@@ -443,6 +597,13 @@ export default function SelfCodingPage() {
                             {totalGenerated} blocks
                         </span>
                     )}
+                    <button
+                        onClick={() => setShowAgentPanel(!showAgentPanel)}
+                        className={`p-1.5 sm:p-2 rounded-lg border transition-colors cursor-pointer ${showAgentPanel ? 'bg-cyan-500/10 border-cyan-500/30 text-cyan-400' : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'}`}
+                        title="Agent Zero Pipeline"
+                    >
+                        <Server size={14} />
+                    </button>
                     <button onClick={() => setShowSettings(!showSettings)} className="p-1.5 sm:p-2 rounded-lg bg-white/5 border border-white/10 text-gray-400 hover:text-white transition-colors cursor-pointer">
                         <Settings size={14} />
                     </button>
@@ -451,6 +612,9 @@ export default function SelfCodingPage() {
                     </button>
                 </div>
             </div>
+
+            {/* Agent Panel (collapsible) */}
+            {agentPanel}
 
             {/* Settings Bar */}
             <AnimatePresence>
@@ -474,7 +638,7 @@ export default function SelfCodingPage() {
                                 <textarea
                                     value={context}
                                     onChange={e => setContext(e.target.value)}
-                                    placeholder="Paste existing code..."
+                                    placeholder="Paste existing code or describe existing codebase..."
                                     rows={2}
                                     className="w-full bg-white/5 border border-white/10 rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs text-white font-mono placeholder-gray-600 resize-none"
                                 />
@@ -492,7 +656,7 @@ export default function SelfCodingPage() {
                         <button
                             key={key}
                             onClick={() => setMode(key)}
-                            className={`flex items - center gap - 1 sm: gap - 1.5 px - 2 sm: px - 3 py - 1 sm: py - 1.5 rounded - lg text - [10px] sm: text - xs font - mono font - bold whitespace - nowrap transition - all cursor - pointer ${mode === key
+                            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-mono font-bold whitespace-nowrap transition-all cursor-pointer ${mode === key
                                 ? `${cfg.color} bg-gradient-to-r ${cfg.accent} border`
                                 : 'text-gray-500 bg-white/5 border border-transparent hover:border-white/10'
                                 }`}
@@ -509,7 +673,7 @@ export default function SelfCodingPage() {
                 <div className="md:hidden flex gap-2 mb-2">
                     <button
                         onClick={() => setMobilePanel('chat')}
-                        className={`flex - 1 py - 1.5 rounded - lg text - [10px] font - mono font - bold text - center transition - all cursor - pointer ${mobilePanel === 'chat'
+                        className={`flex-1 py-1.5 rounded-lg text-[10px] font-mono font-bold text-center transition-all cursor-pointer ${mobilePanel === 'chat'
                             ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
                             : 'bg-white/5 text-gray-500 border border-white/10'
                             }`}
@@ -518,10 +682,10 @@ export default function SelfCodingPage() {
                     </button>
                     <button
                         onClick={() => setMobilePanel('code')}
-                        className={`flex - 1 py - 1.5 rounded - lg text - [10px] font - mono font - bold text - center transition - all cursor - pointer flex items - center justify - center gap - 1.5 ${mobilePanel === 'code'
+                        className={`flex-1 py-1.5 rounded-lg text-[10px] font-mono font-bold text-center transition-all cursor-pointer flex items-center justify-center gap-1.5 ${mobilePanel === 'code'
                             ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
                             : 'bg-white/5 text-gray-500 border border-white/10'
-                            } `}
+                            }`}
                     >
                         <Code2 size={10} /> Code
                         {activeCode.previewable && <span className="text-[7px] text-green-400">LIVE</span>}
@@ -531,8 +695,8 @@ export default function SelfCodingPage() {
 
             {/* Main Content */}
             <div className="flex-1 flex gap-4 min-h-0">
-                {/* LEFT: Chat Panel — full width mobile, half on desktop */}
-                <div className={`flex - 1 flex flex - col min - w - 0 ${activeCode && mobilePanel === 'code' ? 'hidden md:flex' : 'flex'} `}>
+                {/* LEFT: Chat Panel */}
+                <div className={`flex-1 flex flex-col min-w-0 ${activeCode && mobilePanel === 'code' ? 'hidden md:flex' : 'flex'}`}>
                     <div ref={chatRef} className="flex-1 overflow-y-auto pr-1 sm:pr-2 space-y-2 sm:space-y-3">
                         {messages.length === 0 && (
                             <div className="flex flex-col items-center justify-center h-full text-center gap-3 sm:gap-4 py-6 sm:py-12">
@@ -548,7 +712,7 @@ export default function SelfCodingPage() {
                                 <div>
                                     <h3 className="text-base sm:text-lg font-bold text-white mb-1">What do you want to build?</h3>
                                     <p className="text-[10px] sm:text-xs text-gray-500 max-w-sm px-2">
-                                        Describe any component, function, API, or game. ASiReM generates production-ready code via 7 AI providers — with live preview.
+                                        Powered by Orb Dispatch ({orbActions} actions). Describe any component, API, or game — code generates with live preview.
                                     </p>
                                 </div>
                                 <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-center max-w-lg px-2">
@@ -566,27 +730,38 @@ export default function SelfCodingPage() {
                                 key={i}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} `}
+                                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                             >
-                                <div className={`max - w - [95 %] sm: max - w - [90 %] rounded - 2xl px - 3 sm: px - 4 py - 2 sm: py - 3 ${msg.role === 'user'
+                                <div className={`max-w-[95%] sm:max-w-[90%] rounded-2xl px-3 sm:px-4 py-2 sm:py-3 ${msg.role === 'user'
                                     ? 'bg-cyan-500/10 border border-cyan-500/20 text-cyan-50'
-                                    : 'bg-white/5 border border-white/10 text-gray-300'
-                                    } `}>
+                                    : msg.source === 'selfcoding-pipeline'
+                                        ? 'bg-purple-500/10 border border-purple-500/20 text-purple-50'
+                                        : 'bg-white/5 border border-white/10 text-gray-300'
+                                    }`}>
                                     {msg.role === 'user' ? (
                                         <div>
                                             <div className="flex items-center gap-2 mb-1">
-                                                <span className="text-[8px] sm:text-[9px] font-mono text-cyan-500 uppercase bg-cyan-900/30 px-1.5 py-0.5 rounded">{msg.mode}</span>
+                                                <span className="text-[8px] sm:text-[9px] font-mono text-cyan-500 uppercase bg-cyan-900/30 px-1.5 py-0.5 rounded">{msg.mode || 'prompt'}</span>
                                             </div>
                                             <p className="text-xs sm:text-sm">{msg.content}</p>
                                         </div>
                                     ) : (
                                         <div>
-                                            {/* Provider badge */}
+                                            {/* Source badge */}
                                             <div className="flex items-center gap-1.5 sm:gap-2 mb-2 flex-wrap">
-                                                <Brain size={10} className="text-violet-400" />
-                                                <span className="text-[8px] sm:text-[9px] font-mono text-violet-400">ASiReM</span>
+                                                {msg.source === 'selfcoding-pipeline' ? (
+                                                    <>
+                                                        <Server size={10} className="text-purple-400" />
+                                                        <span className="text-[8px] sm:text-[9px] font-mono text-purple-400">Agent Zero Pipeline</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Brain size={10} className="text-violet-400" />
+                                                        <span className="text-[8px] sm:text-[9px] font-mono text-violet-400">Orb Dispatch</span>
+                                                    </>
+                                                )}
                                                 {msg.provider && (
-                                                    <span className={`text - [7px] sm: text - [8px] font - mono ${PROVIDER_ICONS[msg.provider]?.color || 'text-gray-400'} bg - white / 5 border border - white / 10 px - 1 sm: px - 1.5 py - 0.5 rounded flex items - center gap - 0.5`}>
+                                                    <span className={`text-[7px] sm:text-[8px] font-mono ${PROVIDER_ICONS[msg.provider]?.color || 'text-gray-400'} bg-white/5 border border-white/10 px-1 sm:px-1.5 py-0.5 rounded flex items-center gap-0.5`}>
                                                         <Cpu size={7} />
                                                         {PROVIDER_ICONS[msg.provider]?.label || msg.provider}
                                                     </span>
@@ -597,6 +772,19 @@ export default function SelfCodingPage() {
                                                     </span>
                                                 )}
                                             </div>
+
+                                            {/* Pipeline steps */}
+                                            {msg.pipelineSteps && (
+                                                <div className="mb-2 space-y-1">
+                                                    {msg.pipelineSteps.map((step: any, j: number) => (
+                                                        <div key={j} className="flex items-center gap-2 text-[8px] font-mono">
+                                                            <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[7px] ${step.result === 'done' || step.result === 'pass' || step.result === 'success' ? 'bg-green-500/20 text-green-400' : 'bg-amber-500/20 text-amber-400'}`}>{step.step}</span>
+                                                            <span className="text-white/60">{step.name}</span>
+                                                            <span className={`${step.result === 'done' || step.result === 'pass' || step.result === 'success' ? 'text-green-400' : 'text-amber-400'}`}>{step.result}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
 
                                             {/* Explanation */}
                                             {msg.explanation && (
@@ -610,10 +798,10 @@ export default function SelfCodingPage() {
                                                         <button
                                                             key={j}
                                                             onClick={() => { setActiveCode(cb); if (cb.previewable) setShowPreview(true); if (window.innerWidth < 768) setMobilePanel('code'); }}
-                                                            className={`flex items - center gap - 1 sm: gap - 1.5 px - 2 sm: px - 2.5 py - 0.5 sm: py - 1 rounded - lg text - [9px] sm: text - [10px] font - mono transition - all cursor - pointer ${activeCode === cb
+                                                            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg text-[9px] sm:text-[10px] font-mono transition-all cursor-pointer ${activeCode === cb
                                                                 ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300'
                                                                 : 'bg-white/5 border border-white/10 text-gray-400 hover:text-white'
-                                                                } `}
+                                                                }`}
                                                         >
                                                             {cb.previewable ? <Eye size={9} className="text-green-400" /> : <FileCode size={9} />}
                                                             {cb.language} ({cb.code.split('\n').length}L)
@@ -637,8 +825,8 @@ export default function SelfCodingPage() {
                                 <div className="bg-white/5 border border-white/10 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-3">
                                     <Loader size={12} className="text-cyan-400 animate-spin" />
                                     <div>
-                                        <span className="text-[10px] sm:text-xs text-gray-400 font-mono block">Generating code...</span>
-                                        <span className="text-[8px] sm:text-[9px] text-gray-600 font-mono">Cascading 7 providers</span>
+                                        <span className="text-[10px] sm:text-xs text-gray-400 font-mono block">Processing via Orb Dispatch...</span>
+                                        <span className="text-[8px] sm:text-[9px] text-gray-600 font-mono">Intent classification → Multi-provider cascade → Action execution</span>
                                     </div>
                                 </div>
                             </motion.div>
@@ -669,7 +857,7 @@ export default function SelfCodingPage() {
                     </div>
                 </div>
 
-                {/* RIGHT: Code Preview — hidden on mobile unless code panel selected */}
+                {/* RIGHT: Code Preview */}
                 <div className={`md:w-1/2 md:flex flex-col min-w-0 ${activeCode && mobilePanel === 'code' ? 'flex flex-1' : 'hidden'}`}>
                     {codePreviewContent}
                 </div>
@@ -681,7 +869,7 @@ export default function SelfCodingPage() {
 // Syntax highlighting
 function highlightSyntax(line: string): React.ReactElement {
     const keywords = /\b(import|export|from|const|let|var|function|return|if|else|for|while|class|interface|type|async|await|try|catch|new|this|extends|implements|default|switch|case|break|continue|throw|yield|delete|typeof|instanceof|in|of|void|null|undefined|true|false)\b/g;
-    const strings = /(["'`])(?:\\.|[^\\])*?\1/g;
+    const strings = /(['"`])(?:\\.|[^\\])*?\1/g;
     const comments = /(\/\/.*$|\/\*[\s\S]*?\*\/)/g;
     const types = /\b(string|number|boolean|void|any|null|undefined|React|useState|useEffect|useCallback|useRef|Promise|Map|Set|Array|Record|Partial|Required|Readonly|Pick|Omit)\b/g;
     const numbers = /\b(\d+\.?\d*)\b/g;
