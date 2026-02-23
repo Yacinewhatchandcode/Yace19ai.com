@@ -19,6 +19,7 @@ import AnalyticsPage from "./pages/AnalyticsPage";
 import PricingPage from "./pages/PricingPage";
 import PricingSuccessPage from "./pages/PricingSuccessPage";
 import SelfCodingPage from "./pages/SelfCodingPage";
+import ThemesPage from "./pages/ThemesPage";
 
 function Navigation() {
   const location = useLocation();
@@ -26,9 +27,9 @@ function Navigation() {
 
   const navLinks = [
     { path: "/", label: "HOME", color: "text-cyan-400" },
+    { path: "/solutions", label: "SOLUTIONS", color: "text-teal-400" },
     { path: "/fleet", label: "OUR WORK", color: "text-violet-400" },
     { path: "/sovereign", label: "SOVEREIGN AI", color: "text-emerald-400" },
-    { path: "/blog", label: "BLOG", color: "text-amber-400" },
     { path: "/analytics", label: "ANALYTICS", color: "text-fuchsia-400" },
     { path: "/pricing", label: "PRICING", color: "text-orange-400" },
     { path: "/build", label: "CODE", color: "text-rose-400" },
@@ -160,6 +161,7 @@ function AnimatedRoutes() {
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/pricing/success" element={<PricingSuccessPage />} />
+        <Route path="/solutions" element={<ThemesPage />} />
       </Routes>
     </AnimatePresence>
   );
