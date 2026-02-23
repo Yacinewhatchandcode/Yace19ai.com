@@ -8,6 +8,7 @@ import {
     Sparkles,
     Clock,
     Timer,
+    Leaf,
 } from "lucide-react";
 
 const API_BASE = "https://prime-ai.fr";
@@ -154,10 +155,10 @@ export default function PricingPage() {
                 <div className="flex items-center justify-center gap-2 mb-6">
                     <span
                         className={`w-2 h-2 rounded-full ${capacity.status === "open"
-                                ? "bg-green-400 animate-pulse"
-                                : capacity.status === "limited"
-                                    ? "bg-yellow-400 animate-pulse"
-                                    : "bg-red-500"
+                            ? "bg-green-400 animate-pulse"
+                            : capacity.status === "limited"
+                                ? "bg-yellow-400 animate-pulse"
+                                : "bg-red-500"
                             }`}
                     />
                     <span className="text-xs text-gray-500">
@@ -203,6 +204,16 @@ export default function PricingPage() {
                 <p className="text-center text-gray-500 text-xs mt-4">
                     Secure payment via Stripe • Visa, Mastercard, Apple Pay, Google Pay
                 </p>
+
+                {/* CO₂ Removal Commitment */}
+                <div className="flex items-center justify-center gap-2 mt-5">
+                    <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-emerald-500/10 border border-emerald-500/25">
+                        <Leaf className="w-4 h-4 text-emerald-400" />
+                        <span className="text-xs text-emerald-300 font-medium">
+                            PRIME AI will contribute 1.5% of your purchase to removing CO₂ from the atmosphere.
+                        </span>
+                    </div>
+                </div>
             </div>
 
             {/* ═══ WHAT YOU GET ═══ */}
@@ -248,8 +259,8 @@ export default function PricingPage() {
                             <div
                                 key={tier.id}
                                 className={`relative rounded-2xl overflow-hidden transition-transform ${tier.popular
-                                        ? "ring-2 ring-red-500 md:scale-105 z-10"
-                                        : "ring-1 ring-white/[0.06]"
+                                    ? "ring-2 ring-red-500 md:scale-105 z-10"
+                                    : "ring-1 ring-white/[0.06]"
                                     }`}
                             >
                                 {tier.popular && (
@@ -358,6 +369,54 @@ export default function PricingPage() {
                         Support via Revolut
                         <ArrowRight className="w-4 h-4" />
                     </a>
+                </div>
+            </div>
+
+            {/* ═══ CLIMATE COMMITMENT ═══ */}
+            <div className="max-w-3xl mx-auto px-4 py-8">
+                <div className="relative rounded-2xl overflow-hidden border border-emerald-500/20 bg-gradient-to-br from-emerald-900/15 to-emerald-800/5 p-8 md:p-10 text-center">
+                    <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.06)_0%,_transparent_70%)]" />
+
+                    <div className="relative z-10">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 mb-6">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                            </span>
+                            <span className="text-emerald-300 text-sm font-medium tracking-wide">
+                                Climate Action
+                            </span>
+                        </div>
+
+                        <div className="flex items-center justify-center gap-3 mb-4">
+                            <Leaf className="w-8 h-8 text-emerald-400" />
+                            <h2 className="text-2xl md:text-3xl font-bold text-white">
+                                Carbon Negative AI
+                            </h2>
+                        </div>
+
+                        <p className="text-emerald-200/80 text-base md:text-lg max-w-xl mx-auto mb-6 leading-relaxed">
+                            PRIME AI contributes <span className="text-emerald-300 font-bold">1.5%</span> of every purchase to removing CO₂ from the atmosphere.
+                        </p>
+
+                        <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-emerald-300/60">
+                            <div className="flex items-center gap-1.5">
+                                <Leaf className="w-3.5 h-3.5" />
+                                <span>Carbon removal</span>
+                            </div>
+                            <span className="text-emerald-500/30">•</span>
+                            <div className="flex items-center gap-1.5">
+                                <span>🌍</span>
+                                <span>Every transaction counts</span>
+                            </div>
+                            <span className="text-emerald-500/30">•</span>
+                            <div className="flex items-center gap-1.5">
+                                <span>♻️</span>
+                                <span>Verified offsets</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

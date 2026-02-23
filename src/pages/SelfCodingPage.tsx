@@ -651,7 +651,7 @@ export default function SelfCodingPage() {
 // Syntax highlighting
 function highlightSyntax(line: string): React.ReactElement {
     const keywords = /\b(import|export|from|const|let|var|function|return|if|else|for|while|class|interface|type|async|await|try|catch|new|this|extends|implements|default|switch|case|break|continue|throw|yield|delete|typeof|instanceof|in|of|void|null|undefined|true|false)\b/g;
-    const strings = /(["'`])(?:(?=(\\?))\2.)*?\1/g;
+    const strings = /(["'`])(?:\\.|[^\\])*?\1/g;
     const comments = /(\/\/.*$|\/\*[\s\S]*?\*\/)/g;
     const types = /\b(string|number|boolean|void|any|null|undefined|React|useState|useEffect|useCallback|useRef|Promise|Map|Set|Array|Record|Partial|Required|Readonly|Pick|Omit)\b/g;
     const numbers = /\b(\d+\.?\d*)\b/g;
