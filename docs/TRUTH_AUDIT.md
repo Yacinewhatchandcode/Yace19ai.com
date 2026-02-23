@@ -20,7 +20,7 @@
 
 | # | Feature | Status | Limitation |
 |---|---------|--------|-----------|
-| 8 | **Self-Coding Engine** | 🟡 BETA | UI exists on /build, but Agent Zero/ByteBot on VPS may be offline — graceful fallback to simulated mode |
+| 8 | **Self-Coding Engine** | 🟡 BETA | Rewired to Orb Dispatch (40+ actions, intent classification). Agent Zero Pipeline panel shows VPS agent status. VPS agents may be offline — graceful fallback. |
 | 9 | **Sovereign OS** | 🟡 BETA | 3D interactive demo works (WASD movement, node execution), but it's a tech demo not a full OS |
 
 ## 🔴 NOT YET BUILT (Removed from pricing, listed as "Coming Soon")
@@ -67,6 +67,25 @@
 
 ---
 
+## SELF-CODING ENGINE UPGRADE
+
+### Before
+- Called generic Supabase `voice-chat` edge function
+- No intent classification
+- No pipeline modes
+- No infrastructure visibility
+
+### After
+- Routes through **Orb Dispatch** (`amlazr.com/api/orb-dispatch`) — 40+ action registry
+- Intent classification → Multi-provider cascade → Action execution
+- **Agent Zero Pipeline** panel shows VPS agent health (Agent Zero, ByteBot, Browser-Use)
+- **Pipeline modes**: analyze, implement, fix, test, full_cycle
+- Circuit breaker + approval gate status indicators
+- Source badges distinguish Orb Dispatch vs Agent Zero Pipeline responses
+- Pipeline step visualization
+
+---
+
 ## 30-DAY LAUNCH STRATEGY
 
 **Message:** "Buy Time" = Early access pricing. You're funding the build.
@@ -87,3 +106,5 @@
 4. `89b04a22` — Image Generation moved to LIVE (prime-ai.fr)
 5. `a4ab4bfc` — CORS headers on analytics API
 6. `92426a9` — Analytics page rewrite (wired to realtime API)
+7. `40ad031` — Self-Coding Engine → Orb Dispatch + Agent Zero Pipeline (yace19ai.com)
+8. `b0a185d3` — CORS: selfcoding + orb-dispatch APIs (prime-ai.fr)
