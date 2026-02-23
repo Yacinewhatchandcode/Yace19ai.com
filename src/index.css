@@ -69,3 +69,31 @@ html {
     -webkit-mask-image: none;
   }
 }
+
+/* Safe area for notched phones */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Glass panel effect */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Prevent body scroll on mobile when in fullscreen */
+body.fullscreen-active {
+  overflow: hidden;
+}
+
+/* Touch feedback */
+@media (hover: none) {
+  button:active {
+    opacity: 0.8;
+  }
+}
