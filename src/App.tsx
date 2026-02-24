@@ -33,14 +33,14 @@ function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { path: "/", label: "HOME", color: "text-cyan-400" },
-    { path: "/solutions", label: "SOLUTIONS", color: "text-teal-400" },
-    { path: "/voice", label: "VOICE", color: "text-violet-400" },
-    { path: "/fleet", label: "OUR WORK", color: "text-blue-400" },
-    { path: "/sovereign", label: "SOVEREIGN AI", color: "text-emerald-400" },
-    { path: "/pricing", label: "PRICING", color: "text-orange-400" },
-    { path: "/build", label: "CODE", color: "text-rose-400" },
-    { path: "/philosophy", label: "ABOUT US", color: "text-gray-400" },
+    { path: "/", label: "ACCUEIL", color: "text-cyan-400" },
+    { path: "/solutions", label: "NOS SERVICES", color: "text-teal-400" },
+    { path: "/voice", label: "ASSISTANT VOCAL", color: "text-violet-400" },
+    { path: "/fleet", label: "RÉALISATIONS", color: "text-blue-400" },
+    { path: "/sovereign", label: "INFRASTRUCTURE", color: "text-emerald-400" },
+    { path: "/pricing", label: "TARIFS", color: "text-orange-400" },
+    { path: "/build", label: "SUR-MESURE", color: "text-rose-400" },
+    { path: "/philosophy", label: "NOTRE APPROCHE", color: "text-gray-400" },
   ];
 
   return (
@@ -80,8 +80,8 @@ function Navigation() {
             className="hidden sm:flex px-3 sm:px-4 py-1.5 sm:py-2 md:px-5 rounded border border-purple-500/30 bg-purple-500/10 text-purple-400 font-mono text-[10px] sm:text-xs font-bold tracking-widest uppercase hover:bg-purple-500/20 hover:border-purple-500/50 transition-all items-center gap-2 group"
           >
             <Rocket size={12} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
-            <span className="hidden lg:inline">START PROJECT</span>
-            <span className="lg:hidden">START</span>
+            <span className="hidden lg:inline">NOUS CONTACTER</span>
+            <span className="lg:hidden">CONTACT</span>
           </a>
 
           {/* Hamburger button — mobile only */}
@@ -132,7 +132,7 @@ function Navigation() {
                   className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl border border-purple-500/30 bg-purple-500/10 text-purple-400 font-mono text-xs font-bold tracking-widest uppercase hover:bg-purple-500/20 transition-all"
                 >
                   <Rocket size={14} />
-                  START PROJECT
+                  NOUS CONTACTER
                 </a>
               </div>
             </div>

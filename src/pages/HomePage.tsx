@@ -1,24 +1,22 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Terminal, Monitor, Github, HelpCircle, ChevronDown } from "lucide-react";
+import { ArrowRight, Globe2, ShieldCheck, Clock, CheckCircle, HelpCircle, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 
 import VoiceOrbInterface from '../components/VoiceOrbInterface';
 import ReinforcementSandbox from '../components/ReinforcementSandbox';
 import CommandTerminal from '../components/CommandTerminal';
-import AziReMCatalog from '../components/AziReMCatalog';
 import DeploymentProtocols from '../components/DeploymentProtocols';
+import AziReMCatalog from '../components/AziReMCatalog';
 
 interface FAQ { question_en: string; answer_en: string; category: string }
 interface Service { icon: string; title_en: string; description_en: string; href: string }
-interface Capability { icon: string; title_en: string; description_en: string }
 
 export default function HomePage() {
-    const [stats, setStats] = useState({ repos: '...', pageviews: '...', agents: '...' });
+    const [stats, setStats] = useState({ repos: '...', pageviews: '...', agents: '...', total_deployments: 0 });
     const [faqs, setFaqs] = useState<FAQ[]>([]);
     const [services, setServices] = useState<Service[]>([]);
-    const [capabilities, setCapabilities] = useState<Capability[]>([]);
     const [openFaq, setOpenFaq] = useState<number | null>(null);
 
     useEffect(() => {
@@ -27,18 +25,18 @@ export default function HomePage() {
             supabase.from('analytics_pageviews').select('*', { count: 'exact', head: true }),
             supabase.from('sovereign_api_keys').select('provider').eq('status', 'active'),
             supabase.from('prime_leads_unified').select('*', { count: 'exact', head: true }),
-        ]).then(([pvRes, keysRes, leadsRes]) => {
+            supabase.from('deployments').select('*', { count: 'exact', head: true }),
+        ]).then(([pvRes, keysRes, leadsRes, deploymentsRes]) => {
             setStats({
                 repos: String(pvRes.count || 0),
                 pageviews: String(keysRes.data?.length || 0),
                 agents: String(leadsRes.count || 0),
+                total_deployments: deploymentsRes.count || 0,
             });
         });
 
-        // Load dynamic content
         supabase.from('faqs').select('question_en, answer_en, category').order('sort_order').then(({ data }) => setFaqs(data || []));
         supabase.from('services').select('icon, title_en, description_en, href').order('sort_order').then(({ data }) => setServices(data || []));
-        supabase.from('capabilities').select('icon, title_en, description_en').order('sort_order').then(({ data }) => setCapabilities(data || []));
     }, []);
 
     return (
@@ -53,23 +51,22 @@ export default function HomePage() {
 
             {/* HER0 BENTO GRID */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 auto-rows-min">
-
                 {/* BIG TILE: Playable Arcade */}
                 <div className="md:col-span-2 md:row-span-2">
                     <ReinforcementSandbox />
                 </div>
 
-                {/* SMALL TILE TOP RIGHT: Live Terminal */}
-                <div className="h-64 md:h-auto md:row-span-1 rounded-3xl overflow-hidden glass-panel border border-cyan-500/20 shadow-[0_0_30px_#00ffff11]">
-                    <CommandTerminal />
+                {/* SMALL TILE TOP RIGHT: AI Agent Catalog */}
+                <div className="h-64 md:h-auto md:row-span-1 border border-white/5 rounded-3xl overflow-hidden glass-panel">
+                    <AziReMCatalog />
                 </div>
 
                 {/* SMALL TILE BOTTOM RIGHT: Live Stats from Supabase */}
                 <div className="flex flex-col gap-4">
                     {[
-                        { label: 'TOTAL PAGEVIEWS', value: stats.repos, icon: Github, color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/30' },
-                        { label: 'ACTIVE API KEYS', value: stats.pageviews, icon: Monitor, color: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/30' },
-                        { label: 'CAPTURED LEADS', value: stats.agents, icon: Terminal, color: 'text-fuchsia-400', bg: 'bg-fuchsia-500/10', border: 'border-fuchsia-500/30' }
+                        { label: 'TOTAL PAGEVIEWS', value: stats.repos, icon: ArrowRight, color: 'text-cyan-400', bg: 'bg-cyan-500/10', border: 'border-cyan-500/30' },
+                        { label: 'ACTIVE API KEYS', value: stats.pageviews, icon: ArrowRight, color: 'text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/30' },
+                        { label: 'CAPTURED LEADS', value: stats.agents, icon: ArrowRight, color: 'text-fuchsia-400', bg: 'bg-fuchsia-500/10', border: 'border-fuchsia-500/30' }
                     ].map((stat, i) => (
                         <Link to="/analytics" key={i} className={`flex items-center justify-between p-4 rounded-2xl border ${stat.border} ${stat.bg} hover:bg-opacity-20 transition-all group`}>
                             <div className="flex items-center gap-4">
@@ -113,43 +110,63 @@ export default function HomePage() {
                 </section>
             )}
 
-            {/* ─── CAPABILITIES (from Supabase) ─── */}
-            {capabilities.length > 0 && (
-                <section className="py-8">
-                    <h2 className="text-lg sm:text-2xl font-black text-white font-display mb-4 sm:mb-8 text-center">Core Capabilities</h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-                        {capabilities.map((cap, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: i * 0.05 }}
-                                className="glass-panel border border-white/10 rounded-xl p-4 text-center hover:border-violet-500/40 transition-all"
-                            >
-                                <div className="text-2xl mb-2">{cap.icon}</div>
-                                <h4 className="text-xs font-bold text-white mb-1">{cap.title_en}</h4>
-                                <p className="text-[10px] text-gray-500">{cap.description_en}</p>
-                            </motion.div>
-                        ))}
+            {/* ─── METRICS SECTION ─── */}
+            <section className="py-8">
+                <h2 className="text-lg sm:text-2xl font-black text-white font-display mb-4 sm:mb-8 text-center">L'Excellence Prime</h2>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-20 px-4">
+                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl">
+                        <div className="flex justify-center mb-3 text-cyan-400"><Clock size={24} /></div>
+                        <div className="text-3xl font-black text-white mb-1">5M+</div>
+                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Heures Économisées</div>
                     </div>
-                </section>
-            )}
+                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl">
+                        <div className="flex justify-center mb-3 text-emerald-400"><CheckCircle size={24} /></div>
+                        <div className="text-3xl font-black text-white mb-1">{stats?.total_deployments?.toLocaleString() || '12K+'}</div>
+                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Projets Finalisés</div>
+                    </div>
+                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl">
+                        <div className="flex justify-center mb-3 text-blue-400"><ShieldCheck size={24} /></div>
+                        <div className="text-3xl font-black text-white mb-1">100%</div>
+                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Sécurité Souveraine</div>
+                    </div>
+                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl">
+                        <div className="flex justify-center mb-3 text-purple-400"><Globe2 size={24} /></div>
+                        <div className="text-3xl font-black text-white mb-1">24/7</div>
+                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Réseau Opérationnel</div>
+                    </div>
+                </div>
+            </section>
+
+            {/* COMMAND TERMINAL SECTION */}
+            <section className="py-24 relative overflow-hidden">
+                <div className="max-w-7xl mx-auto px-4 relative z-10">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">Télémétrie Agentique</h2>
+                        <p className="text-gray-400 text-sm max-w-2xl mx-auto">Surveillez les opérations et l'exécution asynchrone des réseaux neuronaux en temps réel.</p>
+                    </div>
+                    <CommandTerminal />
+                </div>
+            </section>
+
+            {/* DEPLOYMENT PROTOCOLS SECTION */}
+            <section className="py-24 relative overflow-hidden bg-[#0A0A0A]">
+                <div className="max-w-7xl mx-auto px-4 relative z-10">
+                    <div className="text-center mb-16">
+                        <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">Déploiement Souverain</h2>
+                        <p className="text-gray-400 text-sm max-w-2xl mx-auto">Déploiement en nœuds multi-zones, isolation de vos données et performance hors-ligne. Infrastructure privatisée disponible 24/7.</p>
+                    </div>
+                    <DeploymentProtocols />
+                </div>
+            </section>
 
             <div className="h-12"></div>
-
-            <AziReMCatalog />
-
-            <div className="h-12"></div>
-
-            <DeploymentProtocols />
 
             {/* ─── FAQ (from Supabase) ─── */}
             {faqs.length > 0 && (
                 <section className="py-16 max-w-3xl mx-auto w-full">
                     <div className="flex items-center gap-3 mb-8 justify-center">
                         <HelpCircle className="text-amber-400" size={24} />
-                        <h2 className="text-2xl font-black text-white font-display">Frequently Asked Questions</h2>
+                        <h2 className="text-2xl font-black text-white font-display">Questions Fréquentes</h2>
                     </div>
                     <div className="flex flex-col gap-3">
                         {faqs.map((faq, i) => (
