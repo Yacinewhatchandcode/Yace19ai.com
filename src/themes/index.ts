@@ -7,6 +7,10 @@ import type { ThemeConfig } from "./types";
 import legalTheme from "./configs/legal";
 import restaurantTheme from "./configs/restaurant";
 import medicalTheme from "./configs/medical";
+import biotechTheme from "./configs/biotech";
+import itEngineeringTheme from "./configs/it-engineering";
+import creativityTheme from "./configs/creativity";
+import educationTheme from "./configs/education";
 
 // ── All registered themes ──────────────────────────────────────
 export const ALL_THEMES: ThemeConfig[] = [
@@ -14,10 +18,11 @@ export const ALL_THEMES: ThemeConfig[] = [
     legalTheme,
     medicalTheme,
     restaurantTheme,
-    // Phase 1 placeholders (to be built):
-    // realEstateTheme,
-    // ecommerceTheme,
-    // accountingTheme,
+    // New Highly Tailored Platforms
+    biotechTheme,
+    itEngineeringTheme,
+    creativityTheme,
+    educationTheme,
 ];
 
 // ── Lookup by ID ───────────────────────────────────────────────
