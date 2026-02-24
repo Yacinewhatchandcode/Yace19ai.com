@@ -8,6 +8,13 @@ export default defineConfig({
   server: {
     port: 3002,
     strictPort: true,
+    proxy: {
+      "/api/voicebox": {
+        target: "http://31.97.52.22:17493",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/voicebox/, ""),
+      },
+    },
   },
   build: {
     rollupOptions: {

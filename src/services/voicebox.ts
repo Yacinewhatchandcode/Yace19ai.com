@@ -3,7 +3,9 @@
 // Local-first voice synthesis via Voicebox API
 // ═══════════════════════════════════════════════════════════════
 
-const VOICEBOX_BASE = "http://127.0.0.1:17493";
+// In production (Netlify), or local dev (Vite), we proxy /api/voicebox 
+// to avoid Mixed Content (HTTPS -> HTTP) and CORS blocks.
+const VOICEBOX_BASE = "/api/voicebox";
 
 // ── Types ──────────────────────────────────────────────────────
 export interface VoiceProfile {
