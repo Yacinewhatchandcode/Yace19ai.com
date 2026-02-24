@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "name": "PrimeAI Semantic Knowledge Graph",
   "version": "1.0.0",
-  "timestamp": "2026-02-24T18:09:01.770410+00:00",
+  "timestamp": "2026-02-24T17:57:03.223642+00:00",
   "entities": [
     {
       "id": "node_voice_orb",
@@ -89,7 +89,7 @@
     }
   ],
   "source_checksums": {
-    "https://prime-ai.fr": "042f4c213e874cdee551be3bc68282c25b0dd3ca8a6e132a3b1751a2e0aacc87",
+    "https://prime-ai.fr": "5b245435d0d4c9e0b912d9d2890e3b4f9458dfc00583d9b1e3580749fe168282",
     "https://sovereign-arcade.vercel.app": "b212f2a35375ad7be3b4a9102ce4ec11a12a06d334dd30594ceadd04a890ebdf",
     "src/components/VoiceOrbInterface.tsx": "04dc008667556a26c98451565b38c14b2d7883e540de9ba0538e04cfe379faac",
     "src/components/BytebotDesktop.tsx": "33b0f65ce59362ab8ebc233047c4e4356b6c306f0cbc3439619b00f9595bc485",
