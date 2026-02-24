@@ -110,29 +110,32 @@ export default function HomePage() {
                 </section>
             )}
 
-            {/* ─── METRICS SECTION ─── */}
+            {/* ─── TECHNICAL CORE METRICS SECTION ─── */}
             <section className="py-8">
-                <h2 className="text-lg sm:text-2xl font-black text-white font-display mb-4 sm:mb-8 text-center">L'Excellence Prime</h2>
+                <div className="text-center mb-4 sm:mb-8">
+                    <span className="text-[10px] font-black text-cyan-500 tracking-[0.3em] uppercase mb-4 block">R&D & Engineering</span>
+                    <h2 className="text-lg sm:text-2xl font-black text-white font-display">Agentic Infrastructure</h2>
+                </div>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-20 px-4">
-                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl">
+                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl hover:bg-white/[0.02] transition-colors">
                         <div className="flex justify-center mb-3 text-cyan-400"><Clock size={24} /></div>
-                        <div className="text-3xl font-black text-white mb-1">5M+</div>
-                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Heures Économisées</div>
+                        <div className="text-3xl font-black text-white mb-1">V2</div>
+                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Architecture LangGraph</div>
                     </div>
-                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl">
+                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl hover:bg-white/[0.02] transition-colors">
                         <div className="flex justify-center mb-3 text-emerald-400"><CheckCircle size={24} /></div>
-                        <div className="text-3xl font-black text-white mb-1">{stats?.total_deployments?.toLocaleString() || '12K+'}</div>
-                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Projets Finalisés</div>
+                        <div className="text-3xl font-black text-white mb-1">{stats?.total_deployments?.toLocaleString() || '43+'}</div>
+                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Modèles LLM Intégrés</div>
                     </div>
-                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl">
+                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl hover:bg-white/[0.02] transition-colors">
                         <div className="flex justify-center mb-3 text-blue-400"><ShieldCheck size={24} /></div>
-                        <div className="text-3xl font-black text-white mb-1">100%</div>
-                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Sécurité Souveraine</div>
+                        <div className="text-3xl font-black text-white mb-1">3-Tier</div>
+                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Sovereign Fabric</div>
                     </div>
-                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl">
+                    <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-center backdrop-blur-xl hover:bg-white/[0.02] transition-colors">
                         <div className="flex justify-center mb-3 text-purple-400"><Globe2 size={24} /></div>
-                        <div className="text-3xl font-black text-white mb-1">24/7</div>
-                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Réseau Opérationnel</div>
+                        <div className="text-3xl font-black text-white mb-1">&lt;50ms</div>
+                        <div className="text-[10px] font-bold text-gray-500 tracking-[0.2em] uppercase">Latence d'Orchestration</div>
                     </div>
                 </div>
             </section>
