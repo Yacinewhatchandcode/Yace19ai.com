@@ -297,22 +297,22 @@ export default function VoiceOrbInterface() {
 
     return (
         <section
-            aria-label="AMLAZR Voice Intelligence System"
+            aria-label="PRIME.AI Assistant"
             className="relative w-full overflow-hidden rounded-3xl mb-8 md:mb-12 glass-panel border border-cyan-500/20 shadow-[0_0_40px_#00ffff15] bg-[#02050A]/80 flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] px-4 py-8 md:p-6"
         >
-            <h2 className="sr-only">AMLAZR Voice Intelligence System</h2>
+            <h2 className="sr-only">PRIME.AI Assistant — Ask anything, get instant answers</h2>
             <p className="sr-only">
                 {lang === 'fr'
-                    ? 'Parlez naturellement pour interagir avec le réseau IA Souverain. Les commandes vocales sont transcrites et répondues en temps réel.'
-                    : 'Speak naturally to interact with the Sovereign AI network. Voice commands are transcribed and answered aloud in real-time.'}
+                    ? 'Parlez naturellement pour interagir avec notre IA. Les commandes vocales sont transcrites et répondues en temps réel.'
+                    : 'Speak naturally to interact with our AI. Voice commands are transcribed and answered aloud in real-time.'}
             </p>
 
             {/* Header */}
             <div className="absolute top-4 left-4 md:top-6 md:left-6 flex items-center gap-2 md:gap-3">
                 <Globe className="text-cyan-400 w-4 h-4 md:w-5 md:h-5 shrink-0" />
-                <span className="hidden sm:inline font-mono text-xs text-cyan-400 tracking-widest font-black uppercase">Neural Voice Search</span>
+                <span className="hidden sm:inline font-mono text-xs text-cyan-400 tracking-widest font-black uppercase">AI Assistant</span>
                 <span className="ml-2 text-[9px] font-mono text-green-500 uppercase tracking-widest border border-green-500/30 px-1.5 py-0.5 rounded">
-                    Live AI
+                    Live
                 </span>
             </div>
 
@@ -374,16 +374,22 @@ export default function VoiceOrbInterface() {
             </div>
 
             {/* Hint */}
-            <p className="text-xs text-gray-600 font-mono mb-6 text-center">
+            <p className="text-xs text-gray-600 font-mono mb-4 text-center max-w-md">
                 {orbState === 'listening'
-                    ? (lang === 'fr' ? "En écoute — tapez l'orbe pour arrêter et envoyer" : 'Speaking — tap orb again to stop & send')
+                    ? (lang === 'fr' ? "En écoute — tapez pour arrêter et envoyer" : 'Listening — tap again to stop & send')
                     : orbState === 'speaking'
-                        ? (lang === 'fr' ? "Tapez l'orbe pour interrompre" : 'Tap orb to interrupt')
+                        ? (lang === 'fr' ? "Tapez pour interrompre" : 'Tap to interrupt')
                         : orbState === 'processing'
                             ? (lang === 'fr' ? 'Traitement de votre commande...' : 'Processing your command...')
                             : supported
-                                ? (lang === 'fr' ? "Tapez l'orbe pour parler. L'IA répondra à voix haute." : 'Tap the orb to speak. The AI will answer aloud.')
+                                ? (lang === 'fr' ? "Tapez le cercle ou tapez votre question. L'IA répondra instantanément à voix haute." : 'Tap the circle or type your question. Our AI will answer instantly — by voice and text.')
                                 : (lang === 'fr' ? 'Votre navigateur ne supporte pas la Reconnaissance Vocale. Utilisez la zone de texte.' : "Your browser doesn't support Speech Recognition. Use the text box below.")}
+            </p>
+
+            {/* Trust cue */}
+            <p className="text-[10px] text-gray-700 font-mono mb-6 text-center flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500/60" />
+                {lang === 'fr' ? 'Connexion sécurisée · Aucune donnée vocale stockée' : 'Secure connection · No voice data stored'}
             </p>
 
             {/* Input + Output */}
@@ -432,7 +438,7 @@ export default function VoiceOrbInterface() {
                             <div className="flex items-center gap-3 mb-3">
                                 <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                                 <h3 className="text-xs font-mono font-bold tracking-widest text-green-400 uppercase">
-                                    {lang === 'fr' ? 'Réponse ASiReM' : 'ASiReM Response'}
+                                    {lang === 'fr' ? 'Réponse PRIME.AI' : 'PRIME.AI Response'}
                                 </h3>
                                 {provider && (
                                     <span className="text-[8px] font-mono text-cyan-500 bg-cyan-900/30 border border-cyan-500/20 px-1.5 py-0.5 rounded uppercase">

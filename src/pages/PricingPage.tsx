@@ -156,21 +156,26 @@ export default function PricingPage() {
                     </span>
                 </div>
 
-                <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                    Buy{" "}
+                <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+                    Your AI{" "}
                     <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-                        Time
+                        Workspace
                     </span>
                 </h1>
 
-                <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-4">
-                    Starting from €1. Access all live AI features for the
-                    duration you choose.
+                <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-4">
+                    PRIME.AI is an all-in-one AI platform: chat, search, code generation,
+                    image creation, and 18 specialized agents — all in one place.
+                </p>
+
+                <p className="text-base text-gray-400 max-w-xl mx-auto mb-4">
+                    Pay only for the time you use. Starting from €1.
+                    Access every feature for the duration you choose.
                 </p>
 
                 <p className="text-sm text-gray-500 max-w-xl mx-auto mb-12">
                     This is a launch phase. Your purchase funds development of new features.
-                    Every euro goes directly into building the platform you want.
+                    Every euro goes directly into building the platform.
                 </p>
             </div>
 
@@ -301,6 +306,42 @@ export default function PricingPage() {
                 </div>
             </div>
 
+            {/* ═══ QUICK COMPARISON TABLE ═══ */}
+            <div className="max-w-5xl mx-auto px-4 pb-12">
+                <h3 className="text-xl font-bold text-white text-center mb-6">What You Get</h3>
+                <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
+                    <table className="w-full text-sm text-left">
+                        <thead>
+                            <tr className="bg-white/[0.03] border-b border-white/[0.06]">
+                                <th className="px-6 py-3 text-gray-400 font-medium">Feature</th>
+                                <th className="px-4 py-3 text-center text-gray-400 font-medium">Free</th>
+                                <th className="px-4 py-3 text-center text-red-400 font-medium">Early Access</th>
+                                <th className="px-4 py-3 text-center text-gray-400 font-medium">Custom</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {[
+                                { feature: 'AI Chat (multi-model)', free: 'Limited', paid: 'Unlimited', custom: '✓' },
+                                { feature: 'Deep Search', free: '3/day', paid: 'Unlimited', custom: '✓' },
+                                { feature: '18 AI Agents', free: '—', paid: '✓', custom: '✓' },
+                                { feature: 'Image Generation', free: '—', paid: '✓', custom: '✓' },
+                                { feature: 'Code Generation (beta)', free: '—', paid: '✓', custom: '✓' },
+                                { feature: 'Custom Integrations', free: '—', paid: '—', custom: '✓' },
+                                { feature: 'Dedicated Setup Call', free: '—', paid: '—', custom: '✓' },
+                                { feature: 'Founder Direct Access', free: '—', paid: '—', custom: '✓' },
+                            ].map((row, i) => (
+                                <tr key={i} className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors">
+                                    <td className="px-6 py-3 text-gray-300">{row.feature}</td>
+                                    <td className="px-4 py-3 text-center text-gray-500">{row.free}</td>
+                                    <td className="px-4 py-3 text-center text-white font-medium">{row.paid}</td>
+                                    <td className="px-4 py-3 text-center text-gray-400">{row.custom}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             {/* ═══ 3 TIERS ═══ */}
             <div className="max-w-7xl mx-auto px-4 pb-16">
                 <div className="grid md:grid-cols-3 gap-6">
@@ -409,12 +450,12 @@ export default function PricingPage() {
                         Believe in PRIME?
                     </h2>
                     <p className="text-gray-400 text-sm max-w-lg mx-auto mb-2">
-                        I'm a solo builder creating AI tools for everyone. This is a live launch —
-                        I ship new features every week.
+                        Built by <strong className="text-white">Yacine Benhamou</strong>, AI Engineer & Founder of PRIME.AI.
+                        I ship new features every week as a solo builder.
                     </p>
                     <p className="text-gray-500 text-xs max-w-lg mx-auto mb-6">
-                        Your early support directly funds GPU compute, API costs, and new feature development.
-                        Early backers will always keep their founding rate.
+                        Your support directly funds GPU compute, API costs, and new feature development.
+                        Early backers keep their founding rate forever.
                     </p>
                     <a
                         href="https://revolut.me/yacinen09"
@@ -425,6 +466,11 @@ export default function PricingPage() {
                         Support via Revolut
                         <ArrowRight className="w-4 h-4" />
                     </a>
+                    <div className="mt-4 flex flex-wrap justify-center gap-4 text-[11px] text-gray-600">
+                        <span>✓ Instant confirmation via email</span>
+                        <span>✓ Full refund within 14 days if unsatisfied</span>
+                        <span>✓ Direct contact: info@primeai.fr</span>
+                    </div>
                 </div>
             </div>
 
@@ -434,8 +480,12 @@ export default function PricingPage() {
                     <h2 className="text-3xl font-bold text-white mb-4">
                         Need a custom AI solution?
                     </h2>
-                    <p className="text-gray-300 mb-8 max-w-xl mx-auto">
-                        Let's build together. Book a free 30-minute call to discuss your project.
+                    <p className="text-gray-300 mb-4 max-w-xl mx-auto">
+                        Book a free 30-minute strategy call with <strong>Yacine Benhamou</strong>,
+                        AI Engineer & Founder of PRIME.AI.
+                    </p>
+                    <p className="text-gray-500 text-sm mb-8 max-w-md mx-auto">
+                        We'll discuss your project, explore how AI can help, and outline a concrete plan — no commitment required.
                     </p>
                     <a
                         href="https://calendly.com/info-primeai/30min"
@@ -443,9 +493,14 @@ export default function PricingPage() {
                         rel="noreferrer"
                         className="inline-flex items-center gap-2 px-8 py-4 bg-white text-gray-900 font-medium rounded-xl hover:bg-gray-100 transition-colors"
                     >
-                        Book a Call
+                        Book a Free Call
                         <ArrowRight className="w-4 h-4" />
                     </a>
+                    <div className="mt-4 flex flex-wrap justify-center gap-4 text-[11px] text-gray-600">
+                        <span>🔒 100% confidential</span>
+                        <span>⚡ Custom proposal within 48h</span>
+                        <span>🤝 No obligation</span>
+                    </div>
                 </div>
             </div>
         </motion.div>
