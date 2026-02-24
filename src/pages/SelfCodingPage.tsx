@@ -6,10 +6,11 @@ import {
     RefreshCw, Bug, BookOpen, TestTube, Settings,
     Cpu, X, Maximize2, ExternalLink,
     Server, Activity, GitBranch,
-    HelpCircle, ArrowRight, Globe, Database, FileText, Image,
-    MessageSquare, Search, BarChart3, Mail, ShoppingCart,
+    HelpCircle, ArrowRight,
+    MessageSquare, Search,
 } from 'lucide-react';
 
+import { ALL_THEMES } from '../themes';
 const API_BASE = 'https://amlazr.com';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mxssdqqttwwcgxpkbgam.supabase.co';
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14c3NkcXF0dHd3Y2d4cGtiZ2FtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4MzA2MDIsImV4cCI6MjA3MDQwNjYwMn0.WFADLRaPThKICQWkdNT2ayYLTNtSquZ04WVWps5UN08';
@@ -61,8 +62,6 @@ const PIPELINE_MODES: Record<PipelineMode, { label: string; desc: string; color:
     full_cycle: { label: 'Full Cycle', desc: 'Scan → Implement → Test → Verify', color: 'text-purple-400' },
 };
 
-type AgentCategory = 'all' | 'scraping' | 'analysis' | 'automation' | 'content';
-
 const UI_TEXT = {
     en: {
         heroTitle: 'What do you want to build?',
@@ -95,137 +94,6 @@ const UI_TEXT = {
         ],
     },
 };
-
-const AGENT_CATEGORIES: { id: AgentCategory; icon: any }[] = [
-    { id: 'all', icon: Sparkles },
-    { id: 'scraping', icon: Globe },
-    { id: 'analysis', icon: BarChart3 },
-    { id: 'automation', icon: RefreshCw },
-    { id: 'content', icon: FileText },
-];
-
-const AGENT_TEMPLATES = [
-    {
-        category: 'scraping' as AgentCategory,
-        title: { en: 'Product catalog scraper', fr: 'Scraper de catalogue produit' },
-        desc: { en: 'Browse a website and extract specs + photos', fr: 'Parcourt un site et récupère fiches techniques + photos' },
-        icon: Globe,
-        prompt: `Build a web scraping dashboard as a complete HTML page. It MUST call this real API:
-
-API: POST ${SUPABASE_URL}/functions/v1/extract-data
-Headers: { "Content-Type": "application/json", "Authorization": "Bearer ${SUPABASE_ANON_KEY}", "apikey": "${SUPABASE_ANON_KEY}" }
-Body: { "url": "<user input URL>", "config": { "category": "products", "max_items": 20 } }
-Response: { "job": { "id", "status" }, "items": [{ "title", "description", "image_url", "price", "specs": {} }] }
-
-Requirements:
-1. URL input field + "Start Extraction" button
-2. Loading spinner while API call is in progress
-3. Display results in a card grid: image on top, title, price, specs below
-4. Each card has a shadow and hover effect
-5. CSV export button that downloads results as CSV
-6. Show total items count and job status
-7. Dark theme, professional styling, responsive grid
-8. Use vanilla JS with fetch(), no React/JSX. All code in a single HTML file.`,
-    },
-    {
-        category: 'scraping' as AgentCategory,
-        title: { en: 'Manufacturer data extractor', fr: 'Extracteur de données constructeur' },
-        desc: { en: 'Extract technical data and photos from a catalog', fr: 'Récupère données techniques et photos depuis un catalogue' },
-        icon: Database,
-        prompt: `Build a manufacturer data extraction tool as a complete HTML page. It MUST call this real API:
-
-API: POST ${SUPABASE_URL}/functions/v1/extract-data
-Headers: { "Content-Type": "application/json", "Authorization": "Bearer ${SUPABASE_ANON_KEY}", "apikey": "${SUPABASE_ANON_KEY}" }
-Body: { "url": "<user URL>", "config": { "category": "<user category>", "max_items": 30 } }
-Response: { "job": { "id", "status" }, "items": [{ "title", "description", "image_url", "price", "specs": {} }] }
-
-Requirements:
-1. Input for manufacturer website URL and a dropdown for product category (Boats, Cars, Electronics, Real Estate, Other)
-2. Structured data table showing: Model, Dimensions, Weight, Price, Features
-3. Image gallery grid with thumbnails
-4. Sorting by column (click header to sort)
-5. Filters by category
-6. Export to JSON and CSV buttons
-7. Dark theme with professional data management UI
-8. Use vanilla JS with fetch(), no React/JSX. All code in a single HTML file.`,
-    },
-    {
-        category: 'analysis' as AgentCategory,
-        title: { en: 'Analytics dashboard', fr: 'Tableau de bord analytique' },
-        desc: { en: 'Visualize data with charts, KPIs, and tables', fr: 'Visualise des données avec graphiques et KPIs' },
-        icon: BarChart3,
-        prompt: `Build an analytics dashboard with:
-1. Top row: 4 KPI cards (Total Revenue, Active Users, Conversion Rate, Growth)
-2. A line chart showing monthly trends
-3. A bar chart comparing categories
-4. A data table with sortable columns
-Use dark theme, glassmorphism cards, and smooth animations.`,
-    },
-    {
-        category: 'analysis' as AgentCategory,
-        title: { en: 'Product comparator', fr: 'Comparateur de produits' },
-        desc: { en: 'Compare specs side by side across products', fr: 'Compare les caractéristiques côte à côte' },
-        icon: Search,
-        prompt: `Build a product comparison tool that:
-1. Lets users add 2-4 products to compare
-2. Shows specs side-by-side in a comparison table
-3. Highlights the best value in each category (green)
-4. Has a rating system with stars
-5. Shows product images at the top
-Professional dark theme with clean typography.`,
-    },
-    {
-        category: 'automation' as AgentCategory,
-        title: { en: 'Smart form wizard', fr: 'Formulaire intelligent' },
-        desc: { en: 'Multi-step form with validation and auto-submit', fr: 'Formulaire multi-étapes avec validation' },
-        icon: Mail,
-        prompt: `Build a multi-step form wizard with:
-1. Step 1: Contact info (name, email, phone)
-2. Step 2: Project details (dropdown, textarea, budget slider)
-3. Step 3: File upload area with drag-and-drop
-4. Step 4: Review and confirm
-5. Progress bar at top, Back/Next buttons
-Sleek dark theme with smooth step transitions.`,
-    },
-    {
-        category: 'automation' as AgentCategory,
-        title: { en: 'Order tracking', fr: 'Suivi de commandes' },
-        desc: { en: 'Real-time order management and tracking', fr: 'Gestion et suivi de commandes en temps réel' },
-        icon: ShoppingCart,
-        prompt: `Build an order tracking dashboard with:
-1. Order list with status badges (Pending, Processing, Shipped, Delivered)
-2. Click an order to see details: items, shipping info, timeline
-3. Search and filter by status, date, customer
-4. Stats bar: total orders, revenue, average delivery time
-Professional dark UI with color-coded statuses.`,
-    },
-    {
-        category: 'content' as AgentCategory,
-        title: { en: 'Portfolio gallery', fr: 'Galerie de portfolio' },
-        desc: { en: 'Responsive portfolio with filters and lightbox', fr: 'Portfolio responsive avec filtres et lightbox' },
-        icon: Image,
-        prompt: `Build a portfolio gallery page with:
-1. Hero section with name and tagline
-2. Filter buttons by category (Design, Development, Photography)
-3. Masonry grid layout with hover effects
-4. Click to open lightbox with image details
-5. Contact section at bottom
-Modern dark theme with gradient accents and smooth animations.`,
-    },
-    {
-        category: 'content' as AgentCategory,
-        title: { en: 'Product landing page', fr: 'Landing page produit' },
-        desc: { en: 'Full sales page with hero, features, pricing', fr: 'Page de vente avec hero, features, pricing' },
-        icon: Globe,
-        prompt: `Build a SaaS landing page with:
-1. Hero: headline, subheadline, CTA button, hero image
-2. Features: 3 feature cards with icons and descriptions
-3. Pricing: 3 tier cards (Free, Pro, Enterprise) with feature lists
-4. Testimonials: 3 customer quotes with avatars
-5. CTA section at bottom
-Dark theme with gradient buttons and glass-effect cards.`,
-    },
-];
 
 const ONBOARDING_ICONS = [Search, Cpu, Eye];
 
@@ -266,6 +134,8 @@ export default function SelfCodingPage() {
     const [input, setInput] = useState('');
     const [context, setContext] = useState('');
     const [mode, setMode] = useState<Mode>('generate');
+    const [selectedThemeId, setSelectedThemeId] = useState<string>('it-engineering');
+    const [activeAgentId, setActiveAgentId] = useState<string | null>(null);
     const [language, setLanguage] = useState('typescript');
     const [framework, setFramework] = useState('react');
     const [loading, setLoading] = useState(false);
@@ -282,7 +152,6 @@ export default function SelfCodingPage() {
     const [orbActions, setOrbActions] = useState<number>(0);
     const [showOnboarding, setShowOnboarding] = useState(true);
     const [showModeDesc, setShowModeDesc] = useState(false);
-    const [agentFilter, setAgentFilter] = useState<AgentCategory>('all');
     const [uiLang] = useState<'en' | 'fr'>(() => (navigator.language?.startsWith('fr') ? 'fr' : 'en'));
     const t = UI_TEXT[uiLang];
     const chatRef = useRef<HTMLDivElement>(null);
@@ -347,7 +216,11 @@ export default function SelfCodingPage() {
 
         const t0 = Date.now();
         try {
-            const promptBody = `[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX.\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts.\n7. ALL code INLINE in the HTML.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\n${input}`;
+            const activeTheme = ALL_THEMES.find(t => t.id === selectedThemeId);
+            const activeAgent = activeTheme?.agents.find(a => a.id === activeAgentId);
+            const systemContext = `[WORKSPACE: ${activeTheme?.name}]\nTheme Prompt: ${activeTheme?.systemPrompt}\n${activeAgent ? `[ACTIVE AGENT: ${activeAgent.name} - ${activeAgent.role}]\nAgent Rules: ${activeAgent.systemPrompt}\n` : ''}`;
+
+            const promptBody = `${systemContext}\n[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX.\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts.\n7. ALL code INLINE in the HTML.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\nUser Request: ${input}`;
 
             // ── Primary: Supabase Voice-Chat Edge Function ──
             const res = await fetch(`${SUPABASE_URL}/functions/v1/voice-chat`, {
@@ -416,15 +289,19 @@ export default function SelfCodingPage() {
         setLoading(false);
     }, [input, mode, language, framework, context, loading, showOnboarding]);
 
-    // Pipeline execution
     const runPipeline = useCallback(async (pipelineMode: PipelineMode) => {
         if (!input.trim() || loading) return;
         setMessages(prev => [...prev, { role: 'user', content: `[PIPELINE: ${pipelineMode}] ${input}`, timestamp: Date.now() }]);
         setLoading(true);
         try {
+            const activeTheme = ALL_THEMES.find(t => t.id === selectedThemeId);
+            const activeAgent = activeTheme?.agents.find(a => a.id === activeAgentId);
             const res = await fetch(`${API_BASE}/api/selfcoding`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' }, mode: 'cors',
-                body: JSON.stringify({ goal: input, mode: pipelineMode, language, autoCommit: false }),
+                body: JSON.stringify({
+                    goal: input, mode: pipelineMode, language, autoCommit: false,
+                    theme: activeTheme?.id, agent: activeAgent?.id
+                }),
             });
             const data = await res.json();
             setMessages(prev => [...prev, {
@@ -435,7 +312,7 @@ export default function SelfCodingPage() {
             setMessages(prev => [...prev, { role: 'assistant', content: `Pipeline error: ${err.message}`, timestamp: Date.now() }]);
         }
         setLoading(false);
-    }, [input, language, loading]);
+    }, [input, language, loading, selectedThemeId, activeAgentId]);
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); }
@@ -686,52 +563,113 @@ export default function SelfCodingPage() {
                             </motion.div>
                         )}
 
-                        {/* ═══ EMPTY STATE — Agent Templates ═══ */}
+                        {/* ═══ EMPTY STATE — Workspaces ═══ */}
                         {messages.length === 0 && !showOnboarding && (
-                            <div className="flex flex-col items-center h-full gap-4 py-6 overflow-y-auto">
+                            <div className="flex flex-col items-center h-full gap-5 py-6 overflow-y-auto px-2">
                                 <div className="text-center">
-                                    <h3 className="text-lg font-bold text-white mb-1">{t.heroTitle}</h3>
-                                    <p className="text-[13px] text-gray-500 max-w-xs mx-auto">{t.heroSub}</p>
+                                    <h3 className="text-lg font-bold text-white mb-1">Select an Autonomous Workspace</h3>
+                                    <p className="text-[13px] text-gray-500 max-w-xs mx-auto">Pick your industry theme to load specialized agents.</p>
                                 </div>
 
-                                {/* Category filter */}
-                                <div className="flex gap-1.5 flex-wrap justify-center px-2">
-                                    {AGENT_CATEGORIES.map(cat => {
-                                        const CatIcon = cat.icon;
+                                {/* Theme selector */}
+                                <div className="flex gap-2 flex-wrap justify-center max-w-2xl">
+                                    {ALL_THEMES.map(theme => {
+                                        const isActive = selectedThemeId === theme.id;
                                         return (
-                                            <button key={cat.id} onClick={() => setAgentFilter(cat.id)}
-                                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all cursor-pointer ${agentFilter === cat.id
-                                                    ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-300'
-                                                    : 'bg-white/[0.04] border border-white/[0.08] text-gray-400 hover:text-white hover:border-white/20'
+                                            <button key={theme.id} onClick={() => { setSelectedThemeId(theme.id); setActiveAgentId(null); }}
+                                                className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[12px] font-medium transition-all cursor-pointer ${isActive
+                                                    ? 'bg-white/10 border border-white/20 text-white shadow-lg'
+                                                    : 'bg-white/[0.03] border border-white/[0.06] text-gray-400 hover:text-white hover:bg-white/[0.06] hover:border-white/10'
                                                     }`}>
-                                                <CatIcon size={12} />
-                                                {t.categories[cat.id]}
+                                                <span>{theme.emoji}</span>
+                                                {uiLang === 'fr' ? theme.nameFr : theme.name}
                                             </button>
                                         );
                                     })}
                                 </div>
 
-                                {/* Template grid */}
-                                <div className="w-full max-w-lg grid grid-cols-1 sm:grid-cols-2 gap-2 px-2">
-                                    {AGENT_TEMPLATES
-                                        .filter(tpl => agentFilter === 'all' || tpl.category === agentFilter)
-                                        .map(tpl => {
-                                            const TplIcon = tpl.icon;
-                                            return (
-                                                <button key={tpl.title.en} onClick={() => { setInput(tpl.prompt); inputRef.current?.focus(); }}
-                                                    className="flex items-start gap-3 px-4 py-3 rounded-xl bg-white/[0.03] border border-white/[0.08] text-left transition-all cursor-pointer active:scale-[0.97] hover:bg-white/[0.06] hover:border-cyan-500/20 group">
-                                                    <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                                                        <TplIcon size={16} className="text-cyan-400 group-hover:text-cyan-300" />
-                                                    </div>
-                                                    <div className="min-w-0">
-                                                        <p className="text-[13px] font-semibold text-gray-200 group-hover:text-white leading-snug">{tpl.title[uiLang]}</p>
-                                                        <p className="text-[11px] text-gray-500 group-hover:text-gray-400 leading-relaxed mt-0.5">{tpl.desc[uiLang]}</p>
-                                                    </div>
-                                                </button>
-                                            );
-                                        })}
-                                </div>
+                                {/* Active Theme Workspace Details */}
+                                {(() => {
+                                    const activeTheme = ALL_THEMES.find(t => t.id === selectedThemeId);
+                                    if (!activeTheme) return null;
 
+                                    return (
+                                        <div className="w-full max-w-2xl mt-2 animate-in fade-in zoom-in-95 duration-200">
+                                            <div className="p-5 rounded-2xl border border-white/10 bg-white/[0.02] relative overflow-hidden">
+                                                {/* Theme accent glow */}
+                                                <div className="absolute top-0 right-0 w-64 h-64 opacity-20 blur-3xl rounded-full bg-gradient-to-br pointer-events-none" style={{ backgroundImage: `linear-gradient(to bottom right, ${activeTheme.colorPrimary}, ${activeTheme.colorAccent})` }} />
+
+                                                <div className="relative z-10 space-y-4">
+                                                    <div>
+                                                        <h4 className="text-sm font-bold text-white mb-1 flex items-center gap-2">
+                                                            {activeTheme.icon} {uiLang === 'fr' ? activeTheme.nameFr : activeTheme.name} Workspace
+                                                        </h4>
+                                                        <p className="text-[12px] text-gray-400">{uiLang === 'fr' ? activeTheme.descriptionFr : activeTheme.description}</p>
+                                                    </div>
+
+                                                    {/* Agents */}
+                                                    <div>
+                                                        <p className="text-[10px] font-mono text-gray-500 uppercase mb-2">Active Agents</p>
+                                                        <div className="flex gap-2 flex-wrap">
+                                                            {activeTheme.agents.map(agent => (
+                                                                <button key={agent.id} onClick={() => setActiveAgentId(agent.id)}
+                                                                    className={`flex items-center gap-2 px-3 py-2 rounded-xl text-[12px] transition-all cursor-pointer border ${activeAgentId === agent.id
+                                                                        ? 'bg-white/10 text-white shadow-md'
+                                                                        : 'bg-black/20 border-white/10 text-gray-400 hover:text-white hover:bg-white/5'
+                                                                        }`}
+                                                                    style={activeAgentId === agent.id ? { borderColor: activeTheme.colorPrimary, boxShadow: `0 4px 14px 0 ${activeTheme.colorPrimary}33` } : {}}>
+                                                                    <span>{agent.icon}</span>
+                                                                    <div className="flex flex-col items-start leading-tight">
+                                                                        <span className="font-semibold">{uiLang === 'fr' ? agent.nameFr : agent.name}</span>
+                                                                        <span className="text-[9px] text-gray-500">{agent.role}</span>
+                                                                    </div>
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                        {activeAgentId && (
+                                                            <div className="mt-3 p-3 rounded-xl bg-black/40 border border-white/5 text-[11px] text-gray-300 italic">
+                                                                "{activeTheme.agents.find(a => a.id === activeAgentId)?.systemPrompt}"
+                                                            </div>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Quick Actions */}
+                                                    <div>
+                                                        <p className="text-[10px] font-mono text-gray-500 uppercase mb-2">Automated Workflows</p>
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                                            {[...activeTheme.quickActions, ...activeTheme.contentTemplates].map(action => {
+                                                                const isContentTemplate = 'name' in action;
+                                                                const act = action as any;
+                                                                const titleText = uiLang === 'fr'
+                                                                    ? (isContentTemplate ? act.nameFr : act.labelFr)
+                                                                    : (isContentTemplate ? act.name : act.label);
+
+                                                                return (
+                                                                    <button key={act.id} onClick={() => {
+                                                                        setInput(act.promptTemplate);
+                                                                        inputRef.current?.focus();
+                                                                    }}
+                                                                        className="flex items-center gap-2.5 p-3 rounded-xl bg-black/20 border border-white/5 text-left transition-all cursor-pointer hover:bg-white/5 hover:border-white/20 group">
+                                                                        <div className="w-8 h-8 rounded-lg outline outline-1 outline-white/10 bg-white/5 flex items-center justify-center shrink-0 transition-colors"
+                                                                            style={{ backgroundColor: `${activeTheme.colorPrimary}1a` }}>
+                                                                            <span className="text-base">{act.icon}</span>
+                                                                        </div>
+                                                                        <div className="min-w-0">
+                                                                            <p className="text-[12px] font-semibold text-gray-200 group-hover:text-white truncate">
+                                                                                {titleText}
+                                                                            </p>
+                                                                            <p className="text-[10px] text-gray-500 truncate mt-0.5 capitalize">{act.category} workflow</p>
+                                                                        </div>
+                                                                    </button>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                                 <button onClick={() => setShowOnboarding(true)}
                                     className="text-[11px] text-gray-600 flex items-center gap-1 mt-1 cursor-pointer hover:text-gray-400">
                                     <HelpCircle size={12} /> {t.howLink}
@@ -947,8 +885,8 @@ export default function SelfCodingPage() {
                         )}
                     </div>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
 
