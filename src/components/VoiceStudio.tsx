@@ -215,10 +215,7 @@ export default function VoiceStudio({
                         <p className="text-white/40 text-sm mb-4">
                             Start the Voicebox server to enable voice synthesis.
                         </p>
-                        <code className="block bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 text-cyan-400 text-xs text-left">
-                            cd voicebox && source .venv/bin/activate<br />
-                            python -m uvicorn backend.main:app --port 17493
-                        </code>
+
                         <button
                             onClick={checkHealth}
                             className="mt-4 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-white/60 text-sm hover:bg-white/[0.08] transition-colors flex items-center gap-2 mx-auto"

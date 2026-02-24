@@ -95,35 +95,7 @@ export default function VoicePage() {
                 </div>
             </motion.div>
 
-            {/* API Section */}
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7 }}
-                className="max-w-2xl mx-auto mt-16"
-            >
-                <div className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
-                    <h3 className="text-white font-bold mb-4">🔌 Developer API</h3>
-                    <p className="text-white/40 text-sm mb-4">
-                        Integrate voice synthesis into your apps. The Voicebox API runs locally on port 17493.
-                    </p>
-                    <pre className="bg-[#0a0f1a] rounded-xl p-4 text-xs overflow-x-auto">
-                        <code className="text-cyan-400">
-                            {`// Generate speech from your app
-const res = await fetch("http://localhost:17493/generate", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    profile_id: "your-profile-id",
-    text: "Hello from Prime AI!",
-    language: "en"
-  })
-});
-const { id, duration, audio_path } = await res.json();`}
-                        </code>
-                    </pre>
-                </div>
-            </motion.div>
+
         </div>
     );
 }
