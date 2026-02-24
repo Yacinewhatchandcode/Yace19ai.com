@@ -21,6 +21,12 @@ import PricingSuccessPage from "./pages/PricingSuccessPage";
 import SelfCodingPage from "./pages/SelfCodingPage";
 import ThemesPage from "./pages/ThemesPage";
 import VoicePage from "./pages/VoicePage";
+import StatusPage from "./pages/StatusPage";
+import CRMPage from "./pages/CRMPage";
+import AgentMemoryPage from "./pages/AgentMemoryPage";
+import KnowledgeGraphPage from "./pages/KnowledgeGraphPage";
+import CostTrackerPage from "./pages/CostTrackerPage";
+import DataExtractorPage from "./pages/DataExtractorPage";
 
 function Navigation() {
   const location = useLocation();
@@ -164,6 +170,12 @@ function AnimatedRoutes() {
         <Route path="/pricing/success" element={<PricingSuccessPage />} />
         <Route path="/solutions" element={<ThemesPage />} />
         <Route path="/voice" element={<VoicePage />} />
+        <Route path="/status" element={<StatusPage />} />
+        <Route path="/crm" element={<CRMPage />} />
+        <Route path="/agents" element={<AgentMemoryPage />} />
+        <Route path="/graph" element={<KnowledgeGraphPage />} />
+        <Route path="/costs" element={<CostTrackerPage />} />
+        <Route path="/extractor" element={<DataExtractorPage />} />
       </Routes>
     </AnimatePresence>
   );
