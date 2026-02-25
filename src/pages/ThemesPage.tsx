@@ -74,7 +74,7 @@ function ThemeCard({ theme, isActive, onSelect }: { theme: ThemeConfig; isActive
 }
 
 // ── Coming Soon Card ───────────────────────────────────────────
-function ComingSoonCard({ theme }: { theme: (typeof COMING_SOON_THEMES)[0] }) {
+function ComingSoonCard({ theme }: { theme: Partial<ThemeConfig> & { phase?: number; icon?: string } }) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -83,16 +83,16 @@ function ComingSoonCard({ theme }: { theme: (typeof COMING_SOON_THEMES)[0] }) {
         >
             <div className="flex items-center gap-4 mb-3">
                 <div className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center text-xl">
-                    {theme.icon}
+                    {theme?.icon || ""}
                 </div>
                 <div>
-                    <h3 className="text-white/60 font-semibold text-sm">{theme.name}</h3>
-                    <p className="text-white/30 text-xs">{theme.nameFr}</p>
+                    <h3 className="text-white/60 font-semibold text-sm">{theme?.name || ""}</h3>
+                    <p className="text-white/30 text-xs">{theme?.nameFr || ""}</p>
                 </div>
             </div>
             <div className="flex items-center gap-2 text-white/20 text-xs">
                 <Clock className="w-3 h-3" />
-                Phase {theme.phase} — Coming Soon
+                Phase {theme?.phase || "?"} — Coming Soon
             </div>
         </motion.div>
     );
@@ -232,10 +232,11 @@ export default function ThemesPage() {
     }, [searchQuery]);
 
     const filteredComingSoon = useMemo(() => {
-        if (!searchQuery.trim()) return COMING_SOON_THEMES;
+        if (!COMING_SOON_THEMES || COMING_SOON_THEMES.length === 0) return [];
+        if (!searchQuery.trim()) return COMING_SOON_THEMES as unknown as Partial<ThemeConfig>[];
         const q = searchQuery.toLowerCase();
-        return COMING_SOON_THEMES.filter(
-            (t) => t.name.toLowerCase().includes(q) || t.nameFr.toLowerCase().includes(q)
+        return (COMING_SOON_THEMES as unknown as Partial<ThemeConfig>[]).filter(
+            (t) => (t.name?.toLowerCase().includes(q) || t.nameFr?.toLowerCase().includes(q))
         );
     }, [searchQuery]);
 

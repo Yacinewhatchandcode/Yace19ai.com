@@ -11,6 +11,22 @@ import biotechTheme from "./configs/biotech";
 import itEngineeringTheme from "./configs/it-engineering";
 import creativityTheme from "./configs/creativity";
 import educationTheme from "./configs/education";
+import realEstateTheme from "./configs/real-estate";
+import ecommerceTheme from "./configs/ecommerce";
+import accountingTheme from "./configs/accounting";
+import fitnessTheme from "./configs/fitness";
+import beautyTheme from "./configs/beauty";
+import constructionTheme from "./configs/construction";
+import marketingAgencyTheme from "./configs/marketing-agency";
+import bakeryTheme from "./configs/bakery";
+import photographyTheme from "./configs/photography";
+import cleaningTheme from "./configs/cleaning";
+import petServicesTheme from "./configs/pet-services";
+import travelTheme from "./configs/travel";
+import automobileTheme from "./configs/automobile";
+import insuranceTheme from "./configs/insurance";
+import nonprofitTheme from "./configs/nonprofit";
+import freelancerTheme from "./configs/freelancer";
 
 // ── All registered themes ──────────────────────────────────────
 export const ALL_THEMES: ThemeConfig[] = [
@@ -18,11 +34,30 @@ export const ALL_THEMES: ThemeConfig[] = [
     legalTheme,
     medicalTheme,
     restaurantTheme,
+    realEstateTheme,
+    ecommerceTheme,
+    accountingTheme,
     // New Highly Tailored Platforms
     biotechTheme,
     itEngineeringTheme,
     creativityTheme,
     educationTheme,
+    // Phase 2: Growth
+    fitnessTheme,
+    beautyTheme,
+    constructionTheme,
+    marketingAgencyTheme,
+    // Phase 3: Expansion
+    bakeryTheme,
+    photographyTheme,
+    cleaningTheme,
+    petServicesTheme,
+    travelTheme,
+    // Phase 4: Niche
+    automobileTheme,
+    insuranceTheme,
+    nonprofitTheme,
+    freelancerTheme,
 ];
 
 // ── Lookup by ID ───────────────────────────────────────────────
@@ -85,24 +120,6 @@ export const THEME_PHASES = [
 ];
 
 // ── Coming soon themes (not yet configured) ────────────────────
-export const COMING_SOON_THEMES = [
-    { id: "real-estate", name: "Real Estate", nameFr: "Immobilier", icon: "🏠", phase: 1 },
-    { id: "ecommerce", name: "E-Commerce & Retail", nameFr: "E-Commerce & Retail", icon: "🛒", phase: 1 },
-    { id: "accounting", name: "Accounting & Finance", nameFr: "Comptabilité & Finance", icon: "📊", phase: 1 },
-    { id: "fitness", name: "Fitness & Coaching", nameFr: "Fitness & Coaching", icon: "💪", phase: 2 },
-    { id: "beauty", name: "Beauty & Salon", nameFr: "Beauté & Salon", icon: "💇", phase: 2 },
-    { id: "construction", name: "Construction", nameFr: "Construction", icon: "🔨", phase: 2 },
-    { id: "education", name: "Education & Tutoring", nameFr: "Éducation & Tutorat", icon: "📚", phase: 2 },
-    { id: "marketing-agency", name: "Marketing Agency", nameFr: "Agence Marketing", icon: "📢", phase: 2 },
-    { id: "bakery", name: "Bakery & Patisserie", nameFr: "Boulangerie & Pâtisserie", icon: "🥐", phase: 3 },
-    { id: "photography", name: "Photography", nameFr: "Photographie", icon: "📸", phase: 3 },
-    { id: "cleaning", name: "Cleaning Service", nameFr: "Service de Nettoyage", icon: "🧹", phase: 3 },
-    { id: "pet-services", name: "Pet Services", nameFr: "Services Animaliers", icon: "🐾", phase: 3 },
-    { id: "travel", name: "Travel & Tourism", nameFr: "Voyage & Tourisme", icon: "✈️", phase: 3 },
-    { id: "automobile", name: "Automobile & Garage", nameFr: "Automobile & Garage", icon: "🚗", phase: 4 },
-    { id: "insurance", name: "Insurance & Broker", nameFr: "Assurance & Courtage", icon: "🛡️", phase: 4 },
-    { id: "nonprofit", name: "Nonprofit & NGO", nameFr: "Association & ONG", icon: "🌍", phase: 4 },
-    { id: "freelancer", name: "Freelancer & Consultant", nameFr: "Freelance & Consultant", icon: "💼", phase: 4 },
-];
+export const COMING_SOON_THEMES = [];
 
 export { type ThemeConfig } from "./types";
