@@ -222,8 +222,8 @@ export default function SelfCodingPage() {
 
             const promptBody = `${systemContext}\n[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX.\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts.\n7. ALL code INLINE in the HTML.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\nUser Request: ${input}`;
 
-            // ── Primary: Supabase Voice-Chat Edge Function ──
-            const res = await fetch(`${SUPABASE_URL}/functions/v1/voice-chat`, {
+            // ── Primary: MCP Self-Code Edge Function (multi-provider + Agent Zero) ──
+            let res = await fetch(`${SUPABASE_URL}/functions/v1/mcp-selfcode`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -232,10 +232,28 @@ export default function SelfCodingPage() {
                 },
                 body: JSON.stringify({
                     message: promptBody,
+                    mode,
                     lang: 'en',
                     history: historyRef.current.slice(-8),
                 }),
             });
+
+            // Fallback: voice-chat if mcp-selfcode fails
+            if (!res.ok) {
+                res = await fetch(`${SUPABASE_URL}/functions/v1/voice-chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'apikey': SUPABASE_ANON_KEY,
+                    },
+                    body: JSON.stringify({
+                        message: promptBody,
+                        lang: 'en',
+                        history: historyRef.current.slice(-8),
+                    }),
+                });
+            }
 
             const data = await res.json();
             const latency = Date.now() - t0;
