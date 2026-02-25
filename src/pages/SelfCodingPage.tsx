@@ -12,8 +12,8 @@ import {
 
 import { ALL_THEMES } from '../themes';
 const API_BASE = 'https://amlazr.com';
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://mxssdqqttwwcgxpkbgam.supabase.co';
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14c3NkcXF0dHd3Y2d4cGtiZ2FtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ4MzA2MDIsImV4cCI6MjA3MDQwNjYwMn0.WFADLRaPThKICQWkdNT2ayYLTNtSquZ04WVWps5UN08';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 type Mode = 'generate' | 'refactor' | 'debug' | 'explain' | 'test';
 type PipelineMode = 'analyze' | 'implement' | 'fix' | 'test' | 'full_cycle';
@@ -397,7 +397,7 @@ export default function SelfCodingPage() {
                                 <span className="text-[11px] font-mono text-white/50 uppercase tracking-wider flex items-center gap-2">
                                     <Server size={12} /> VPS Infrastructure
                                 </span>
-                                <span className="text-[10px] font-mono text-gray-600">31.97.52.22</span>
+                                <span className="text-[10px] font-mono text-gray-600">Sovereign Node</span>
                             </div>
                             <div className="grid grid-cols-3 gap-2">
                                 {[

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Monitor, Maximize2, Minimize2, ExternalLink, WifiOff } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
-const BYTEBOT_VNC_URL = 'http://31.97.52.22:9990/vnc.html';
+const BYTEBOT_VNC_URL = '/api/bytebot/vnc.html';
 
 interface BytebotDesktopProps {
     defaultExpanded?: boolean;
@@ -78,7 +78,7 @@ export const BytebotDesktop: React.FC<BytebotDesktopProps> = ({
                     <div className="flex flex-col items-center justify-center h-full text-center gap-3 p-4">
                         <WifiOff className="text-red-500" size={32} />
                         <p className="text-xs text-gray-500 font-mono">VPS node offline — waiting for reconnection</p>
-                        <p className="text-[10px] text-gray-600">31.97.52.22:9990</p>
+                        <p className="text-[10px] text-gray-600">Sovereign Node</p>
                     </div>
                 ) : (
                     <iframe src={vncUrl} className="w-full h-full border-0" title="Bytebot VNC Desktop" allow="fullscreen" />
@@ -89,7 +89,7 @@ export const BytebotDesktop: React.FC<BytebotDesktopProps> = ({
                 <span className="text-[9px] text-white/30 uppercase font-bold tracking-widest">
                     Encrypted VNC · Sovereign VPS
                 </span>
-                <span className="text-[9px] font-mono text-white/20">31.97.52.22:9990</span>
+                <span className="text-[9px] font-mono text-white/20">Sovereign VPS</span>
             </div>
         </div>
     );
