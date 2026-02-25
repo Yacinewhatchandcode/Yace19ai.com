@@ -413,13 +413,14 @@ export default function SelfCodingPage() {
                         <div className="px-4 py-3 bg-white/[0.02] space-y-3">
                             <div className="flex items-center justify-between">
                                 <span className="text-[11px] font-mono text-white/50 uppercase tracking-wider flex items-center gap-2">
-                                    <Server size={12} /> VPS Infrastructure
+                                    <Server size={12} /> Asriel Ecosystem — Sovereign Fleet
                                 </span>
-                                <span className="text-[10px] font-mono text-gray-600">Sovereign Node</span>
+                                <span className="text-[10px] font-mono text-cyan-500/60">MCP Self-Code v2</span>
                             </div>
-                            <div className="grid grid-cols-3 gap-2">
+                            <div className="grid grid-cols-4 gap-2">
                                 {[
-                                    { key: 'orchestrator' as const, label: 'Orchestrator', icon: Brain, port: ':3002' },
+                                    { key: 'orchestrator' as const, label: 'Agent Zero', icon: Brain, port: ':50080' },
+                                    { key: 'bytebot' as const, label: 'ZeroClaw', icon: Activity, port: ':3030' },
                                     { key: 'bytebot' as const, label: 'ByteBot', icon: Activity, port: ':9991' },
                                     { key: 'ollama' as const, label: 'Ollama LLM', icon: Cpu, port: ':11434' },
                                 ].map(agent => {
