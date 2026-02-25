@@ -233,6 +233,7 @@ export default function SelfCodingPage() {
                 body: JSON.stringify({
                     message: promptBody,
                     mode,
+                    sector: selectedThemeId?.includes('legal') ? 'legal' : selectedThemeId?.includes('medical') ? 'medical' : selectedThemeId?.includes('restaurant') ? 'restaurant' : selectedThemeId?.includes('real-estate') ? 'real-estate' : selectedThemeId?.includes('ecommerce') ? 'ecommerce' : selectedThemeId?.includes('accounting') ? 'accounting' : 'it-engineering',
                     lang: 'en',
                     history: historyRef.current.slice(-8),
                 }),
