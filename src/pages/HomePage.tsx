@@ -9,6 +9,7 @@ import ReinforcementSandbox from '../components/ReinforcementSandbox';
 import CommandTerminal from '../components/CommandTerminal';
 import DeploymentProtocols from '../components/DeploymentProtocols';
 import AziReMCatalog from '../components/AziReMCatalog';
+import ROISection from '../components/ROISection';
 
 interface FAQ { question_en: string; answer_en: string; category: string }
 interface Service { icon: string; title_en: string; description_en: string; href: string }
@@ -139,6 +140,9 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
+
+            {/* ─── ROI BUSINESS SECTION ─── */}
+            <ROISection />
 
             {/* COMMAND TERMINAL SECTION */}
             <section className="py-24 relative overflow-hidden">
