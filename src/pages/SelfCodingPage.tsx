@@ -231,7 +231,11 @@ export default function SelfCodingPage() {
                     'apikey': SUPABASE_ANON_KEY,
                 },
                 body: JSON.stringify({
-                    message: promptBody,
+                    message: input, // Pure user input for intent detection (Agent Zero / ByteBot mappings)
+                    messages: [
+                        ...historyRef.current.slice(-8, -1), // Previous history
+                        { role: 'user', content: promptBody } // Current input WITH context for LLM generation
+                    ],
                     mode,
                     sector: selectedThemeId?.includes('legal') ? 'legal' : selectedThemeId?.includes('medical') ? 'medical' : selectedThemeId?.includes('restaurant') ? 'restaurant' : selectedThemeId?.includes('real-estate') ? 'real-estate' : selectedThemeId?.includes('ecommerce') ? 'ecommerce' : selectedThemeId?.includes('accounting') ? 'accounting' : 'it-engineering',
                     lang: 'en',
@@ -272,6 +276,30 @@ export default function SelfCodingPage() {
                     const code = match[2].trim();
                     const previewable = lang === 'html' || code.includes('<html') || code.includes('<!DOCTYPE') || code.includes('<!doctype');
                     codeBlocks.push({ language: lang, code, previewable });
+                }
+                
+                // --- MCP File System Write Integration ---
+                if (data.rpc_tool && data.rpc_tool.type === 'write_file') {
+                    try {
+                        const blob = new Blob([data.rpc_tool.content], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        // Extract filename from path or default to generated_code
+                        const filename = data.rpc_tool.path.split('/').pop() || 'generated_code.txt';
+                        a.download = filename;
+                        a.click();
+                        URL.revokeObjectURL(url);
+                        
+                        // Let the user know the MCP auto-save was triggered
+                        setMessages(prev => [...prev, {
+                            role: 'assistant',
+                            content: `⚡ **MCP Local Filesystem**: Auto-downloaded \`${filename}\` based on the agent's intent.`,
+                            timestamp: Date.now(),
+                        }]);
+                    } catch (err) {
+                        console.error("MCP Auto-save failed:", err);
+                    }
                 }
                 const explanation = rawOutput.replace(/```[\s\S]*?```/g, '').trim();
 
