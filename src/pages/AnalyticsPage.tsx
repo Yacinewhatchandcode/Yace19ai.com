@@ -68,11 +68,17 @@ export default function AnalyticsDashboard() {
     const [error, setError] = useState<string | null>(null);
     const [period, setPeriod] = useState<'24h' | '7d' | '30d'>('7d');
     const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+    const [domain, setDomain] = useState(() => localStorage.getItem('amlazr_analytics_domain') || '');
+    const [apiKey, setApiKey] = useState(() => localStorage.getItem('amlazr_analytics_apikey') || '');
+
 
     const fetchData = useCallback(async () => {
         try {
-            const params = new URLSearchParams({ period, domain: 'yace19ai.com' });
-            const res = await fetch(`${API_BASE}?${params}`);
+            const params = new URLSearchParams({ period });
+            if (domain) params.append('domain', domain);
+            const headers: Record<string, string> = {};
+            if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+            const res = await fetch(`${API_BASE}?${params}`, { headers });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const json = await res.json();
             if (json.success) {
@@ -87,7 +93,7 @@ export default function AnalyticsDashboard() {
             setLoading(false);
             setLastUpdate(new Date());
         }
-    }, [period]);
+    }, [period, domain, apiKey]);
 
     useEffect(() => {
         fetchData();
@@ -128,7 +134,31 @@ export default function AnalyticsDashboard() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3">
+                    {/* Domain & Auth */}
+                    <div className="flex bg-white/5 rounded-lg border border-white/10 overflow-hidden">
+                        <input
+                            type="text"
+                            placeholder="Domain (Empty for All)"
+                            value={domain}
+                            onChange={(e) => {
+                                setDomain(e.target.value);
+                                localStorage.setItem('amlazr_analytics_domain', e.target.value);
+                            }}
+                            className="bg-transparent text-[10px] sm:text-xs text-white px-3 py-1.5 outline-none border-r border-white/10 w-[140px] placeholder:text-white/20"
+                        />
+                        <input
+                            type="password"
+                            placeholder="Auth Token"
+                            value={apiKey}
+                            onChange={(e) => {
+                                setApiKey(e.target.value);
+                                localStorage.setItem('amlazr_analytics_apikey', e.target.value);
+                            }}
+                            className="bg-transparent text-[10px] sm:text-xs text-white px-3 py-1.5 outline-none w-[100px]"
+                        />
+                    </div>
+
                     {/* Period selector */}
                     <div className="flex bg-white/5 rounded-lg border border-white/10 overflow-hidden">
                         {(['24h', '7d', '30d'] as const).map(p => (
@@ -147,7 +177,7 @@ export default function AnalyticsDashboard() {
                     <button onClick={fetchData} className="text-white/20 hover:text-white/60 transition-colors">
                         <RefreshCw size={14} />
                     </button>
-                    <span className="text-[9px] font-mono text-white/15">
+                    <span className="text-[9px] font-mono text-white/15 min-w-[50px] text-right">
                         {lastUpdate.toLocaleTimeString()}
                     </span>
                 </div>
@@ -155,22 +185,35 @@ export default function AnalyticsDashboard() {
 
             {/* Real-time Hero */}
             <div className="bg-gradient-to-br from-indigo-500/10 to-emerald-500/5 border border-indigo-500/15 rounded-2xl p-5 sm:p-6">
-                <div className="flex items-center gap-5">
-                    <motion.div
-                        key={data.realtime.active_visitors}
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className="text-5xl sm:text-7xl font-black bg-gradient-to-r from-indigo-300 to-emerald-300 bg-clip-text text-transparent"
-                    >
-                        {data.realtime.active_visitors}
-                    </motion.div>
-                    <div>
-                        <p className="text-white/50 text-sm font-medium flex items-center gap-2">
-                            <Activity size={14} className="text-emerald-400" />
-                            Active Now
-                        </p>
-                        <p className="text-white/20 text-xs">real-time visitors on yace19ai.com</p>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-10">
+                    <div className="flex items-center gap-5">
+                        <motion.div
+                            key={data.realtime.active_visitors}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="text-5xl sm:text-7xl font-black bg-gradient-to-r from-indigo-300 to-emerald-300 bg-clip-text text-transparent"
+                        >
+                            {data.realtime.active_visitors}
+                        </motion.div>
+                        <div>
+                            <p className="text-white/50 text-sm font-medium flex items-center gap-2">
+                                <Activity size={14} className="text-emerald-400" />
+                                Active Now
+                            </p>
+                            <p className="text-white/20 text-xs">{domain ? `real-time visitors on ${domain}` : 'right now across all domains'}</p>
+                        </div>
                     </div>
+
+                    {!domain && data.realtime.by_domain && Object.keys(data.realtime.by_domain).length > 0 && (
+                        <div className="flex flex-wrap gap-4 sm:ml-8 sm:border-l border-white/10 sm:pl-8">
+                            {Object.entries(data.realtime.by_domain).map(([dom, count]) => (
+                                <div key={dom} className="flex flex-col items-center bg-white/5 px-4 py-2 rounded-xl border border-white/10">
+                                    <span className="text-white/40 text-[10px] font-mono tracking-widest uppercase mb-1">{dom}</span>
+                                    <span className="text-white font-black text-xl">{count}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -205,11 +248,35 @@ export default function AnalyticsDashboard() {
                 </div>
             )}
 
-            {/* Grid: Pages + Countries + Devices + Browsers */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Top Pages */}
+            {/* Grid: Active Pages + Countries + Devices + Browsers */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Active Pages Grouped */}
+                <div className="glass-panel border border-white/10 rounded-2xl p-5 row-span-2">
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-[#ff4b4b] mb-4 flex items-center gap-2">
+                        🔥 Active Pages
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                        {data.realtime.active_pages && Object.keys(data.realtime.active_pages).length > 0 ? (
+                            Object.entries(data.realtime.active_pages).map(([dom, pages]) => (
+                                <div key={dom} className="flex flex-col gap-2">
+                                    <h4 className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40 border-b border-white/10 pb-1">{dom}</h4>
+                                    {pages.map((p, i) => (
+                                        <div key={i} className="flex items-center justify-between text-sm py-1">
+                                            <span className="text-emerald-400/80 font-mono text-xs truncate max-w-[200px]">{p.path}</span>
+                                            <span className="bg-emerald-400/10 text-emerald-400 px-2 py-0.5 rounded text-xs font-bold">{p.count}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-white/20 text-xs">No active pages</p>
+                        )}
+                    </div>
+                </div>
+
+                {/* Top Pages Overview */}
                 <div className="glass-panel border border-white/10 rounded-2xl p-5">
-                    <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400 mb-4">Top Pages</h3>
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400 mb-4">Historical Top Pages ({period})</h3>
                     <div className="flex flex-col gap-2">
                         {data.top_pages.slice(0, 8).map((p, i) => (
                             <div key={i} className="flex items-center justify-between text-sm">
@@ -294,12 +361,12 @@ export default function AnalyticsDashboard() {
             </div>
 
             {/* Live Visitor Feed */}
-            <div className="glass-panel border border-white/10 rounded-2xl p-5">
+            <div className="glass-panel border border-white/10 rounded-2xl p-5 mb-8">
                 <h3 className="text-xs font-mono font-bold uppercase tracking-widest text-emerald-400 mb-4 flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     Live Visitor Feed
                 </h3>
-                <div className="flex flex-col gap-2 max-h-60 overflow-y-auto">
+                <div className="flex flex-col gap-2 max-h-96 overflow-y-auto pr-2">
                     <AnimatePresence mode="popLayout">
                         {data.realtime.active_detail.length > 0 ? (
                             data.realtime.active_detail.map((v, i) => (
@@ -309,14 +376,20 @@ export default function AnalyticsDashboard() {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20 }}
                                     transition={{ delay: i * 0.05 }}
-                                    className="flex items-center justify-between text-xs font-mono py-2 px-3 bg-white/[0.02] hover:bg-white/[0.04] rounded-lg border border-white/[0.04] transition-all"
+                                    className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono py-3 px-4 bg-white/[0.02] hover:bg-white/[0.04] rounded-lg border border-white/[0.04] transition-all gap-2"
                                 >
-                                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                                        <span className="text-white/80 truncate max-w-[200px]">{v.path}</span>
-                                        {v.country && <span className="text-white/30">{COUNTRY_FLAGS[v.country] || v.country}</span>}
-                                        {v.device && <span className="text-white/20">{v.device === 'mobile' ? '📱' : '🖥️'}</span>}
+                                    <div className="flex flex-col gap-1 flex-1 min-w-0">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-widest">{v.domain}</span>
+                                            <span className="text-white/80 truncate max-w-[200px]">{v.path}</span>
+                                        </div>
+                                        <div className="flex items-center gap-3 text-white/30 text-[10px]">
+                                            {v.country && <span>{COUNTRY_FLAGS[v.country] || '🌍'} {v.country}</span>}
+                                            {v.device && <span>{v.device === 'mobile' ? '📱 Mobile' : '🖥️ Desktop'}</span>}
+                                            {v.browser && <span>{v.browser}</span>}
+                                        </div>
                                     </div>
-                                    <span className="text-white/15 text-[10px]">{timeAgo(v.last_seen)}</span>
+                                    <span className="text-white/20 text-[10px] whitespace-nowrap self-start sm:self-center bg-white/5 px-2 py-1 rounded">{timeAgo(v.last_seen)}</span>
                                 </motion.div>
                             ))
                         ) : (
