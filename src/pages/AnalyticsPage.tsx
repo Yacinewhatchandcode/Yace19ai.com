@@ -62,6 +62,15 @@ const OS_ICONS: Record<string, string> = {
 const API_BASE = 'https://amlazr.com/api/analytics/realtime';
 const REFRESH_INTERVAL = 10000; // 10s
 
+function getLogicalEcosystem(domain: string): string {
+    if (!domain) return 'UNKNOWN';
+    if (domain.includes('prime-ai') || domain.includes('primeai')) return 'PRIME_AI_ECOSYSTEM';
+    if (domain.includes('yace19ai') || domain.includes('yacine')) return 'YACE19_ECOSYSTEM';
+    if (domain.includes('amlazr') || domain.includes('lmsr') || domain.includes('somthserious')) return 'AMLAZR_ECOSYSTEM';
+    return domain.toUpperCase();
+}
+
+
 export default function AnalyticsDashboard() {
     const [data, setData] = useState<AnalyticsApiResponse | null>(null);
     const [loading, setLoading] = useState(true);
@@ -206,9 +215,15 @@ export default function AnalyticsDashboard() {
 
                     {!domain && data.realtime.by_domain && Object.keys(data.realtime.by_domain).length > 0 && (
                         <div className="flex flex-wrap gap-4 sm:ml-8 sm:border-l border-white/10 sm:pl-8">
-                            {Object.entries(data.realtime.by_domain).map(([dom, count]) => (
-                                <div key={dom} className="flex flex-col items-center bg-white/5 px-4 py-2 rounded-xl border border-white/10">
-                                    <span className="text-white/40 text-[10px] font-mono tracking-widest uppercase mb-1">{dom}</span>
+                            {Object.entries(
+                                Object.entries(data.realtime.by_domain).reduce((acc, [dom, count]) => {
+                                    const eco = getLogicalEcosystem(dom);
+                                    acc[eco] = (acc[eco] || 0) + count;
+                                    return acc;
+                                }, {} as Record<string, number>)
+                            ).map(([eco, count]) => (
+                                <div key={eco} className="flex flex-col items-center bg-white/5 px-4 py-2 rounded-xl border border-white/10">
+                                    <span className="text-white/40 text-[10px] font-mono tracking-widest uppercase mb-1">{eco.replace('_ECOSYSTEM', '')}</span>
                                     <span className="text-white font-black text-xl">{count}</span>
                                 </div>
                             ))}
@@ -257,13 +272,25 @@ export default function AnalyticsDashboard() {
                     </h3>
                     <div className="flex flex-col gap-4">
                         {data.realtime.active_pages && Object.keys(data.realtime.active_pages).length > 0 ? (
-                            Object.entries(data.realtime.active_pages).map(([dom, pages]) => (
-                                <div key={dom} className="flex flex-col gap-2">
-                                    <h4 className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40 border-b border-white/10 pb-1">{dom}</h4>
+                            Object.entries(
+                                Object.entries(data.realtime.active_pages).reduce((acc, [dom, pages]) => {
+                                    const eco = getLogicalEcosystem(dom);
+                                    if (!acc[eco]) acc[eco] = [];
+                                    acc[eco].push(...pages.map(p => ({ ...p, originalDom: dom })));
+                                    return acc;
+                                }, {} as Record<string, Array<{ path: string; count: number; originalDom: string }>>)
+                            ).map(([eco, pages]) => (
+                                <div key={eco} className="flex flex-col gap-2">
+                                    <h4 className="text-[10px] font-mono font-bold uppercase tracking-widest text-white/40 border-b border-white/10 pb-1">
+                                        {eco.replace('_ECOSYSTEM', ' ECOSYSTEM')}
+                                    </h4>
                                     {pages.map((p, i) => (
-                                        <div key={i} className="flex items-center justify-between text-sm py-1">
-                                            <span className="text-emerald-400/80 font-mono text-xs truncate max-w-[200px]">{p.path}</span>
-                                            <span className="bg-emerald-400/10 text-emerald-400 px-2 py-0.5 rounded text-xs font-bold">{p.count}</span>
+                                        <div key={i} className="flex items-center justify-between text-sm py-1 group">
+                                            <div className="flex flex-col min-w-0">
+                                                <span className="text-emerald-400/80 font-mono text-xs truncate max-w-[200px]">{p.path}</span>
+                                                {p.originalDom !== eco && <span className="text-[9px] text-white/20 truncate">{p.originalDom}</span>}
+                                            </div>
+                                            <span className="bg-emerald-400/10 text-emerald-400 px-2 py-0.5 rounded text-xs font-bold shrink-0">{p.count}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -380,10 +407,13 @@ export default function AnalyticsDashboard() {
                                 >
                                     <div className="flex flex-col gap-1 flex-1 min-w-0">
                                         <div className="flex items-center gap-2">
-                                            <span className="text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-widest">{v.domain}</span>
+                                            <span className="text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-widest">
+                                                {getLogicalEcosystem(v.domain).replace('_ECOSYSTEM', '')}
+                                            </span>
                                             <span className="text-white/80 truncate max-w-[200px]">{v.path}</span>
                                         </div>
                                         <div className="flex items-center gap-3 text-white/30 text-[10px]">
+                                            <span className="truncate max-w-[120px]" title={v.domain}>{v.domain}</span>
                                             {v.country && <span>{COUNTRY_FLAGS[v.country] || '🌍'} {v.country}</span>}
                                             {v.device && <span>{v.device === 'mobile' ? '📱 Mobile' : '🖥️ Desktop'}</span>}
                                             {v.browser && <span>{v.browser}</span>}
