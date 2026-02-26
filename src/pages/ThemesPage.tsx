@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ArrowRight, Sparkles, Clock, Check, Lock, Zap } from "lucide-react";
 import { ALL_THEMES, COMING_SOON_THEMES, searchThemes } from "../themes";
@@ -222,6 +223,7 @@ function ThemePreview({ theme, onClose, onSetup }: { theme: ThemeConfig; onClose
 // MAIN PAGE
 // ═══════════════════════════════════════════════════════════════
 export default function ThemesPage() {
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedTheme, setSelectedTheme] = useState<ThemeConfig | null>(null);
     const [activeThemeId, setActiveThemeId] = useState<string | null>(null);
@@ -345,8 +347,7 @@ export default function ThemesPage() {
                         onClose={() => setSelectedTheme(null)}
                         onSetup={() => {
                             setActiveThemeId(selectedTheme.id);
-                            // Navigate to setup wizard — to be implemented
-                            window.location.hash = `/themes/${selectedTheme.id}/setup`;
+                            navigate(`/build?theme=${selectedTheme.id}`);
                             setSelectedTheme(null);
                         }}
                     />

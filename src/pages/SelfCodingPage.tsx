@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Code2, Send, Loader, Copy, Check, Trash2, Brain,
@@ -130,11 +131,14 @@ function sanitizePreviewHtml(html: string): string {
 }
 
 export default function SelfCodingPage() {
+    const location = useLocation();
+    const queryThemeId = new URLSearchParams(location.search).get('theme');
+
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
     const [context, setContext] = useState('');
     const [mode, setMode] = useState<Mode>('generate');
-    const [selectedThemeId, setSelectedThemeId] = useState<string>('it-engineering');
+    const [selectedThemeId, setSelectedThemeId] = useState<string>(queryThemeId || 'it-engineering');
     const [activeAgentId, setActiveAgentId] = useState<string | null>(null);
     const [language, setLanguage] = useState('typescript');
     const [framework, setFramework] = useState('react');
@@ -277,7 +281,7 @@ export default function SelfCodingPage() {
                     const previewable = lang === 'html' || code.includes('<html') || code.includes('<!DOCTYPE') || code.includes('<!doctype');
                     codeBlocks.push({ language: lang, code, previewable });
                 }
-                
+
                 // --- MCP File System Write Integration ---
                 if (data.rpc_tool && data.rpc_tool.type === 'write_file') {
                     try {
@@ -290,7 +294,7 @@ export default function SelfCodingPage() {
                         a.download = filename;
                         a.click();
                         URL.revokeObjectURL(url);
-                        
+
                         // Let the user know the MCP auto-save was triggered
                         setMessages(prev => [...prev, {
                             role: 'assistant',
