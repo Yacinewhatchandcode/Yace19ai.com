@@ -30,6 +30,18 @@
   force = true
 
 [[redirects]]
+  from = "/api/sim/*"
+  to = "http://31.97.52.22:3014/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/sim-socket/*"
+  to = "http://31.97.52.22:3012/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

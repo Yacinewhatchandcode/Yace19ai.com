@@ -25,6 +25,16 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/bytebot/, ""),
       },
+      "/api/sim": {
+        target: "http://31.97.52.22:3014/api",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/sim/, ""),
+      },
+      "/api/sim-socket": {
+        target: "http://31.97.52.22:3012",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/sim-socket/, ""),
+      },
     },
   },
   build: {
