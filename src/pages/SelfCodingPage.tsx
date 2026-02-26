@@ -402,6 +402,64 @@ export default function SelfCodingPage() {
         setLoading(false);
     }, [input, mode, language, framework, context, loading, showOnboarding]);
 
+    // Direct-fire submit — bypasses stale input state, used by quick-action buttons
+    const submitWithPrompt = useCallback(async (prompt: string) => {
+        if (!prompt.trim() || loading) return;
+        if (showOnboarding) dismissOnboarding();
+        const userMsg: Message = { role: 'user', content: prompt, mode, timestamp: Date.now() };
+        setMessages(prev => [...prev, userMsg]);
+        setInput('');
+        setLoading(true);
+        historyRef.current.push({ role: 'user', content: prompt });
+        const t0 = Date.now();
+        try {
+            const activeTheme = ALL_THEMES.find(t => t.id === selectedThemeId);
+            const activeAgent = activeTheme?.agents.find(a => a.id === activeAgentId);
+            const systemContext = `[WORKSPACE: ${activeTheme?.name}]\nTheme Prompt: ${activeTheme?.systemPrompt}\n${activeAgent ? `[ACTIVE AGENT: ${activeAgent.name} - ${activeAgent.role}]\nAgent Rules: ${activeAgent.systemPrompt}\n` : ''}`;
+            const promptBody = `${systemContext}\n[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX.\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts.\n7. ALL code INLINE in the HTML.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\nUser Request: ${prompt}`;
+            const res = await fetch(`${API_BASE}/api/mcp-selfcode`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: prompt,
+                    messages: [...historyRef.current.slice(-8, -1), { role: 'user', content: promptBody }],
+                    mode, sector: selectedThemeId, lang: 'en', history: historyRef.current.slice(-8),
+                }),
+            });
+            const data = await res.json();
+            const latency = Date.now() - t0;
+            const rawOutput = data.message || data.response || data.choices?.[0]?.message?.content;
+            if (rawOutput) {
+                const codeBlocks: CodeBlock[] = [];
+                const codeRegex = /```(\w+)?\n([\s\S]*?)```/g;
+                let match;
+                while ((match = codeRegex.exec(rawOutput)) !== null) {
+                    const lang = match[1] || language;
+                    const code = match[2].trim();
+                    const previewable = lang === 'html' || code.includes('<html') || code.includes('<!DOCTYPE');
+                    codeBlocks.push({ language: lang, code, previewable });
+                }
+                const provider = data.provider || 'AI';
+                const assistantMsg: Message = {
+                    role: 'assistant', content: rawOutput, codeBlocks, provider,
+                    latencyMs: latency, mode, timestamp: Date.now(), source: 'amlazr-mcp',
+                };
+                setMessages(prev => [...prev, assistantMsg]);
+                historyRef.current.push({ role: 'assistant', content: rawOutput });
+                setTotalGenerated(prev => prev + codeBlocks.length);
+                const previewBlock = codeBlocks.find(cb => cb.previewable);
+                if (previewBlock) { setActiveCode(previewBlock); setShowPreview(true); }
+                else if (codeBlocks.length > 0) { setActiveCode(codeBlocks[0]); setShowPreview(false); }
+                if (codeBlocks.length > 0 && window.innerWidth < 768) setMobilePanel('code');
+            } else {
+                setMessages(prev => [...prev, { role: 'assistant', content: data.error || 'Generation failed.', timestamp: Date.now() }]);
+            }
+        } catch (err: any) {
+            setMessages(prev => [...prev, { role: 'assistant', content: `Error: ${err.message}`, timestamp: Date.now() }]);
+        }
+        setLoading(false);
+    }, [loading, mode, language, framework, context, selectedThemeId, activeAgentId, showOnboarding]);
+
     const runPipeline = useCallback(async (pipelineMode: PipelineMode) => {
         if (!input.trim() || loading) return;
         setMessages(prev => [...prev, { role: 'user', content: `[PIPELINE: ${pipelineMode}] ${input}`, timestamp: Date.now() }]);
@@ -759,10 +817,7 @@ export default function SelfCodingPage() {
                                                                     : (isContentTemplate ? act.name : act.label);
 
                                                                 return (
-                                                                    <button key={act.id} onClick={() => {
-                                                                        setInput(act.promptTemplate);
-                                                                        inputRef.current?.focus();
-                                                                    }}
+                                                                    <button key={act.id} onClick={() => submitWithPrompt(act.promptTemplate)}
                                                                         className="flex items-center gap-2.5 p-3 rounded-xl bg-black/20 border border-white/5 text-left transition-all cursor-pointer hover:bg-white/5 hover:border-white/20 group">
                                                                         <div className="w-8 h-8 rounded-lg outline outline-1 outline-white/10 bg-white/5 flex items-center justify-center shrink-0 transition-colors"
                                                                             style={{ backgroundColor: `${activeTheme.colorPrimary}1a` }}>

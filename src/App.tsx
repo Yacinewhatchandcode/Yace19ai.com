@@ -27,6 +27,7 @@ import AgentMemoryPage from "./pages/AgentMemoryPage";
 import KnowledgeGraphPage from "./pages/KnowledgeGraphPage";
 import CostTrackerPage from "./pages/CostTrackerPage";
 import DataExtractorPage from "./pages/DataExtractorPage";
+import WorkflowPage from "./pages/WorkflowPage";
 
 function Navigation() {
   const location = useLocation();
@@ -41,6 +42,7 @@ function Navigation() {
     { path: "/pricing", label: "TARIFS", color: "text-orange-400" },
     { path: "/build", label: "SUR-MESURE", color: "text-rose-400" },
     { path: "/philosophy", label: "NOTRE APPROCHE", color: "text-gray-400" },
+    { path: "/workflow", label: "WORKFLOWS", color: "text-violet-400" },
   ];
 
   return (
@@ -145,13 +147,14 @@ function Navigation() {
 
 function AnimatedRoutes() {
   const location = useLocation();
-  const isFullBleed = location.pathname === '/build';
+  const isFullBleed = location.pathname === '/build' || location.pathname === '/workflow';
 
   if (isFullBleed) {
     return (
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/build" element={<SelfCodingPage />} />
+          <Route path="/workflow" element={<WorkflowPage />} />
         </Routes>
       </AnimatePresence>
     );
@@ -191,7 +194,7 @@ export default function App() {
 
 function AppContent() {
   const location = useLocation();
-  const isFullBleed = location.pathname === '/build';
+  const isFullBleed = location.pathname === '/build' || location.pathname === '/workflow';
 
   return (
     <>
