@@ -15,6 +15,16 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/voicebox/, ""),
       },
+      "/api/cognee": {
+        target: "http://31.97.52.22:8140",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/cognee/, ""),
+      },
+      "/api/bytebot": {
+        target: "http://31.97.52.22:9991",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/bytebot/, ""),
+      },
     },
   },
   build: {

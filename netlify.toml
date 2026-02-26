@@ -18,6 +18,18 @@
   force = true
 
 [[redirects]]
+  from = "/api/cognee/*"
+  to = "http://31.97.52.22:8140/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/bytebot/*"
+  to = "http://31.97.52.22:9991/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

@@ -124,7 +124,6 @@ async function freeSearch(q: string): Promise<string> {
   } catch { return ''; }
 }
 
-// ══ AGENT BRIDGES ══════════════════════════════════════════
 async function agentZero(task: string) {
   if (!AGENTS.agentZero) return null;
   try {
@@ -132,7 +131,7 @@ async function agentZero(task: string) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-API-KEY': '-KBmHQws5MghVgZ_' // Sovereign token for Agent Zero
+        'X-API-KEY': 'Feaj5Dzd7YjBMW7c' // Sovereign token for Agent Zero
       },
       body: JSON.stringify({ message: task }), // Correct payload for Agent Zero
       signal: AbortSignal.timeout(35000)
