@@ -292,7 +292,10 @@ export default function ThemesPage() {
                                 key={theme.id}
                                 theme={theme}
                                 isActive={activeThemeId === theme.id}
-                                onSelect={() => setSelectedTheme(theme)}
+                                onSelect={() => {
+                                    setActiveThemeId(theme.id);
+                                    navigate(`/build?theme=${theme.id}`);
+                                }}
                             />
                         ))}
                     </div>
@@ -339,7 +342,7 @@ export default function ThemesPage() {
                 </div>
             </motion.div>
 
-            {/* Theme Preview Modal */}
+            {/* Theme Preview Modal — Detail view, secondary entry point */}
             <AnimatePresence>
                 {selectedTheme && (
                     <ThemePreview

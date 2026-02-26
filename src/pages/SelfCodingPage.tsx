@@ -155,8 +155,9 @@ export default function SelfCodingPage() {
     const [agentStatus, setAgentStatus] = useState<AgentStatus | null>(null);
     const [showAgentPanel, setShowAgentPanel] = useState(false);
     const [orbActions, setOrbActions] = useState<number>(0);
-    const [showOnboarding, setShowOnboarding] = useState(true);
+    const [showOnboarding, setShowOnboarding] = useState(!queryThemeId);
     const [showModeDesc, setShowModeDesc] = useState(false);
+    const [themeAutoLaunched, setThemeAutoLaunched] = useState(false);
     const [uiLang] = useState<'en' | 'fr'>(() => (navigator.language?.startsWith('fr') ? 'fr' : 'en'));
     const t = UI_TEXT[uiLang];
     const chatRef = useRef<HTMLDivElement>(null);
@@ -164,11 +165,32 @@ export default function SelfCodingPage() {
     const historyRef = useRef<{ role: string; content: string }[]>([]);
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
-    // Check if user has seen onboarding
+    // ── Auto-launch themed session when arriving from /themes ──
     useEffect(() => {
+        if (!queryThemeId || themeAutoLaunched) return;
+        const theme = ALL_THEMES.find(t => t.id === queryThemeId);
+        if (!theme) return;
+
+        setThemeAutoLaunched(true);
+        setShowOnboarding(false);
+
+        // Inject a contextual welcome message immediately
+        const welcomeMsg: Message = {
+            role: 'assistant',
+            content: `${theme.emoji} **${uiLang === 'fr' ? theme.nameFr : theme.name} AI Workspace activated.**\n\n${uiLang === 'fr' ? theme.descriptionFr : theme.description}\n\n**${theme.agents.length} specialized agents** are loaded and ready. Select a quick action below or describe what you need.`,
+            timestamp: Date.now(),
+            source: 'selfcoding-pipeline',
+        };
+        setMessages([welcomeMsg]);
+        historyRef.current = [{ role: 'assistant', content: welcomeMsg.content }];
+    }, [queryThemeId, themeAutoLaunched, uiLang]);
+
+    // Check if user has seen onboarding (only if no theme preloaded)
+    useEffect(() => {
+        if (queryThemeId) return; // skip for themed sessions
         const seen = localStorage.getItem('selfcoding_onboarded');
         if (seen) setShowOnboarding(false);
-    }, []);
+    }, [queryThemeId]);
 
     // Fetch VPS pipeline status
     useEffect(() => {
@@ -443,7 +465,7 @@ export default function SelfCodingPage() {
                         </div>
                         <div className="min-w-0">
                             <h1 className="text-base font-black text-white tracking-tight truncate">
-                                Self-Coding Engine
+                                {(() => { const th = ALL_THEMES.find(t => t.id === selectedThemeId); return th ? `${th.emoji} ${uiLang === 'fr' ? th.nameFr : th.name}` : 'Self-Coding Engine'; })()}
                             </h1>
                             <div className="flex items-center gap-2 mt-0.5">
                                 <span className="text-[10px] font-mono text-green-400 bg-green-500/10 border border-green-500/20 px-1.5 py-0.5 rounded-full flex items-center gap-1">

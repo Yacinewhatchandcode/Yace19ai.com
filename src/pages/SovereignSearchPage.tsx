@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Mic, Square, Loader, Volume2, AlertCircle,
     Globe, Zap, Bot, Brain, Code2, Cpu, Database, Shield,
-    Activity, CheckCircle2, Sparkles, Terminal, Eye, Layers, Languages,
+    Activity, CheckCircle2, Sparkles, Eye, Layers, Languages,
     RefreshCw, Search, ChevronRight, RotateCcw, Gauge,
 } from 'lucide-react';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
@@ -171,7 +171,6 @@ export default function SovereignSearchPage() {
     const [logs, setLogs] = useState<LogEntry[]>([]);
     const [inputFocused, setInputFocused] = useState(false);
     const [lang, setLang] = useState<VoiceLang>('en');
-    const [aiProvider, setAiProvider] = useState<string | null>(null);
     const [activeNodeId, setActiveNodeId] = useState<string | null>(null);
     const [isDeepSearching, setIsDeepSearching] = useState(false);
     const [activeLayer, setActiveLayer] = useState<AgenticLayer | null>(null);
@@ -264,7 +263,6 @@ export default function SovereignSearchPage() {
         }
 
         setError(null);
-        setAiProvider(null);
         addLog('aSiReM', `[L${depth}] Processing: "${q.slice(0, 60)}..."`, 'processing', 5);
 
         historyRef.current.push({ role: 'user', content: q });
@@ -274,7 +272,6 @@ export default function SovereignSearchPage() {
             : q;
 
         const { text: aiText, provider } = await callVoiceChat(contextualQuery, lang, historyRef.current);
-        setAiProvider(provider);
 
         historyRef.current.push({ role: 'assistant', content: aiText });
         if (historyRef.current.length > 20) historyRef.current = historyRef.current.slice(-12);
