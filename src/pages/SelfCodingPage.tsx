@@ -13,8 +13,6 @@ import {
 
 import { ALL_THEMES } from '../themes';
 const API_BASE = 'https://amlazr.com';
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 type Mode = 'generate' | 'refactor' | 'debug' | 'explain' | 'test';
 type PipelineMode = 'analyze' | 'implement' | 'fix' | 'test' | 'full_cycle';
@@ -226,13 +224,11 @@ export default function SelfCodingPage() {
 
             const promptBody = `${systemContext}\n[SELFCODING MODE: ${mode}] [LANG: ${language}] [FRAMEWORK: ${framework}]${context ? ` [CONTEXT: ${context}]` : ''}\n\nCRITICAL PREVIEW RULES — you MUST follow these EXACTLY:\n1. ALSO provide a complete standalone HTML file tagged as \`\`\`html\n2. The HTML MUST use ONLY vanilla JavaScript — absolutely NO JSX syntax\n3. Use React.createElement() calls instead of JSX.\n4. Import React via CDN using unpkg.com/react@18/umd/react.production.min.js\n5. Include Tailwind CSS via cdn.tailwindcss.com\n6. NO import/export statements. NO type="module" scripts.\n7. ALL code INLINE in the HTML.\n8. Render with: ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App))\n\nUser Request: ${input}`;
 
-            // ── Primary: MCP Self-Code Edge Function (multi-provider + Agent Zero) ──
-            let res = await fetch(`${SUPABASE_URL}/functions/v1/mcp-selfcode`, {
+            // ── Primary: MCP Self-Code Next.js API (multi-provider + Agent Zero) ──
+            let res = await fetch(`${API_BASE}/api/mcp-selfcode`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                    'apikey': SUPABASE_ANON_KEY,
                 },
                 body: JSON.stringify({
                     message: input, // Pure user input for intent detection (Agent Zero / ByteBot mappings)
@@ -247,19 +243,20 @@ export default function SelfCodingPage() {
                 }),
             });
 
-            // Fallback: voice-chat if mcp-selfcode fails
+            // Fallback: local Kilo gateway fallback if mcp-selfcode fails (e.g. timeout)
             if (!res.ok) {
-                res = await fetch(`${SUPABASE_URL}/functions/v1/voice-chat`, {
+                res = await fetch(`${API_BASE}/api/kilo-gateway`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'apikey': SUPABASE_ANON_KEY,
                     },
                     body: JSON.stringify({
-                        message: promptBody,
-                        lang: 'en',
-                        history: historyRef.current.slice(-8),
+                        model: "kilo/auto",
+                        messages: [
+                            { role: 'system', content: promptBody },
+                            ...historyRef.current.slice(-8).map(m => ({ role: (m.role === "system" || m.role === "admin" || m.role === "developer") ? "system" : m.role === "assistant" ? "assistant" : "user", content: m.content }))
+                        ],
+                        stream: false
                     }),
                 });
             }
@@ -267,8 +264,8 @@ export default function SelfCodingPage() {
             const data = await res.json();
             const latency = Date.now() - t0;
 
-            // Handle both response formats: Supabase ({message}) and orb-dispatch ({response})
-            const rawOutput = data.message || data.response;
+            // Handle both response formats: Kilo gateway ({choices}) and mcp-selfcode ({message})
+            const rawOutput = data.message || data.response || data.choices?.[0]?.message?.content;
 
             if (rawOutput) {
                 // Extract code blocks
@@ -308,13 +305,13 @@ export default function SelfCodingPage() {
                 const explanation = rawOutput.replace(/```[\s\S]*?```/g, '').trim();
 
                 // Provider info
-                const provider = data.provider || 'groq';
+                const provider = data.provider || data._gateway || data.model || 'Next.js Backend API';
                 const model = data.model || 'Multi-Provider';
 
                 const assistantMsg: Message = {
                     role: 'assistant', content: rawOutput, codeBlocks, explanation, provider,
                     model, latencyMs: latency,
-                    cascade: data.cascade || [provider], mode, timestamp: Date.now(), source: 'voice-chat',
+                    cascade: data.cascade || [provider], mode, timestamp: Date.now(), source: 'amlazr-mcp',
                 };
                 setMessages(prev => [...prev, assistantMsg]);
                 historyRef.current.push({ role: 'assistant', content: rawOutput });
