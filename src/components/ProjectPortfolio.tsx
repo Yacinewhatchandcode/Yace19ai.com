@@ -97,7 +97,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
                         </a>
                     )}
                     <button onClick={() => setIsCheckoutOpen(true)} style={{ padding: '0.75rem' }} className="flex-1 flex items-center justify-center gap-2 text-white rounded-lg border font-bold transition-all shadow-lg text-sm cursor-pointer bg-gradient-to-r from-blue-600 to-blue-800 border-blue-500 shadow-blue-900/40 hover:border-blue-400 hover:scale-[1.02]">
-                        Deploy & Integrate €149 ↗
+                        Acquire €1 ↗
                     </button>
                     <CheckoutModal isOpen={isCheckoutOpen} onClose={() => setIsCheckoutOpen(false)} projectId={project.id} projectTitle={project.title} />
                 </div>
