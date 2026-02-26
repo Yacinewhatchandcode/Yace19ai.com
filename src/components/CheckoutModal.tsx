@@ -14,7 +14,7 @@ const STRIPE_PK = import.meta.env.VITE_STRIPE_PK || '';
 
 const PAYMENT_LINKS: Record<string, string> = {};
 
-const PRICE = '1.00';
+const PRICE = '149.00';
 const CURRENCY = '€';
 
 const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectId, projectTitle }) => {
@@ -42,7 +42,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectI
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
                 },
-                body: JSON.stringify({ projectId, email, amount: 100 })
+                body: JSON.stringify({ projectId, email, amount: 14900 })
             })
                 .then(res => res.json())
                 .then(data => {
@@ -51,21 +51,21 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectI
                 })
                 .catch(() => {
                     // Fallback to email
-                    window.open(`mailto:yacine@prime-ai.fr?subject=Purchase: ${projectTitle}&body=I'd like to acquire ${projectTitle} (€1). My email: ${email}`, '_blank');
+                    window.open(`mailto:yacine@prime-ai.fr?subject=Deployment Setup: ${projectTitle}&body=I'd like to book deployment for ${projectTitle} (€149). My email: ${email}`, '_blank');
                     setStep('success');
                 });
         } else {
             // No Stripe — use direct payment via email/PayPal
             setStep('processing');
             setTimeout(() => {
-                window.open(`mailto:yacine@prime-ai.fr?subject=Acquire: ${projectTitle}&body=Hi Yacine,%0A%0AI'd like to acquire "${projectTitle}" for €1.%0A%0AMy email: ${email}%0A%0AThank you!`, '_blank');
+                window.open(`mailto:yacine@prime-ai.fr?subject=Deploy & Integrate: ${projectTitle}&body=Hi Yacine,%0A%0AI'd like to book integration and deployment for "${projectTitle}" for €149.%0A%0AMy email: ${email}%0A%0AThank you!`, '_blank');
                 setStep('success');
             }, 1200);
         }
     };
 
     const copyPaymentInfo = () => {
-        navigator.clipboard.writeText(`IBAN: FR76 XXXX XXXX XXXX XXXX XXXX XXX\nAmount: €1.00\nRef: ${projectId.toUpperCase()}\nEmail: yacine@prime-ai.fr`);
+        navigator.clipboard.writeText(`IBAN: FR76 XXXX XXXX XXXX XXXX XXXX XXX\nAmount: €149.00\nRef: ${projectId.toUpperCase()}\nEmail: yacine@prime-ai.fr`);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
@@ -123,7 +123,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectI
                                         <Zap size={22} className="text-indigo-400" />
                                     </div>
                                     <div>
-                                        <h3 className="text-lg font-bold text-white">Acquire & Deploy</h3>
+                                        <h3 className="text-lg font-bold text-white">Deploy & Integrate</h3>
                                         <p className="text-sm text-gray-400">{projectTitle}</p>
                                     </div>
                                 </div>
@@ -136,11 +136,11 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectI
                                     </div>
                                     <div className="space-y-2">
                                         {[
-                                            'Full source code access',
-                                            'Documentation & setup guide',
-                                            'Deployment ready (Docker/Cloud)',
-                                            '30-day email support',
-                                            'Commercial license included'
+                                            'Complete System Deployment',
+                                            'Custom configuration to your needs',
+                                            '1-on-1 Onboarding Call',
+                                            'Dedicated Engineering Support',
+                                            'Performance & Security Audit'
                                         ].map(f => (
                                             <div key={f} className="flex items-center gap-2 text-sm text-gray-300">
                                                 <Check size={14} className="text-emerald-400 shrink-0" />
@@ -174,7 +174,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectI
                                         }`}
                                 >
                                     <CreditCard size={18} />
-                                    {hasStripe ? `Pay ${CURRENCY}${PRICE}` : `Acquire for ${CURRENCY}${PRICE}`}
+                                    {hasStripe ? `Pay ${CURRENCY}${PRICE}` : `Book integration ${CURRENCY}${PRICE}`}
                                     <ArrowRight size={16} />
                                 </button>
 

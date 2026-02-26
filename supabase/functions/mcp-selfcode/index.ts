@@ -1,5 +1,15 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// ═══════════════════════════════════════════════════════════════
+// ASRIEL ECOSYSTEM — Sovereign Self-Coding Orchestrator v6
+//
+// Master Prompt Architecture:
+//   Pillar 1: Zero-latency direct answer (never redirect, always DO)
+//   Pillar 2: Contextual multi-agent routing by intent (Agent Zero, ByteBot)
+//   Pillar 3: Sector-adaptive content (6 industry themes)
+//
+// ═══════════════════════════════════════════════════════════════
+
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -16,6 +26,7 @@ const KEYS = {
 
 console.log('[Asriel v6] Boot:', { groq: !!KEYS.groq, openai: !!KEYS.openai, openrouter: !!KEYS.openrouter, perplexity: !!KEYS.perplexity, vps: VPS });
 
+// ══ MASTER SYSTEM PROMPT ════════════════════════════════════════
 const MASTER_PROMPT = `You are the Asriel Sovereign Orchestrator — a cutting-edge 2026 AI coding engine.
 
 CORE LAWS:
@@ -36,6 +47,7 @@ AI SEARCH OPTIMIZATION (Cutting Edge 2026):
 - Provide citations and sources when using web search context
 - Every code block is immediately executable — zero setup required`;
 
+// ══ SECTOR PROMPTS ═══════════════════════════════════════════
 const SECTOR_PROMPTS: Record<string, string> = {
   'legal': 'SECTOR: Legal/Law Firm. Use formal language. RGPD/GDPR compliance is mandatory. Generate client intake forms, case management UIs, document review tools. Color palette: navy, gold, cream.',
   'medical': 'SECTOR: Healthcare/Medical. HIPAA-aware design. Patient-first UX. Generate appointment systems, patient portals, medical record viewers. Color palette: teal, white, soft blue.',
@@ -46,14 +58,16 @@ const SECTOR_PROMPTS: Record<string, string> = {
   'it-engineering': 'SECTOR: IT/Engineering. Generate developer tools, API dashboards, monitoring UIs, CI/CD panels. Dark mode default. Color palette: cyan, dark gray, green accents.',
 };
 
+// ══ MODE PROMPTS ════════════════════════════════════════════
 const MODE_PROMPTS: Record<string, string> = {
   generate: 'MODE: Generate. Create production-ready code from scratch. Include HTML preview.',
   refactor: 'MODE: Refactor. Improve existing code quality, readability, performance. Show before/after.',
   debug: 'MODE: Debug. Find bugs, explain root causes with line numbers, provide corrected code.',
-  explain: "MODE: Explain. Break down code step by step. Use analogies. Teach, do not just describe.",
+  explain: "MODE: Explain. Break down code step by step. Use analogies. Teach, don't just describe.",
   test: 'MODE: Test. Generate comprehensive unit tests covering happy paths, edge cases, error states.',
 };
 
+// ══ PROVIDERS ══════════════════════════════════════════════
 interface P { url: string; key: string; model: string; label: string; format: string; extra?: Record<string, string>; }
 const PROVIDERS: Record<string, P> = {
   groq: { url: 'https://api.groq.com/openai/v1/chat/completions', key: KEYS.groq, model: 'llama-3.3-70b-versatile', label: 'Groq (Llama 70B)', format: 'openai' },
@@ -70,103 +84,33 @@ const AGENTS = {
   byteBot: VPS ? `http://${VPS}:9991` : '',
 };
 
-async function callProvider(name: string, messages: any[], sys: string, recursion = 0): Promise<any | null> {
+// ══ PROVIDER CALL ═══════════════════════════════════════════
+async function callProvider(name: string, messages: any[], sys: string): Promise<any | null> {
   const p = PROVIDERS[name];
   if (!p?.url || (p.format !== 'ollama' && !p.key)) return null;
-  if (recursion > 3) {
-    console.log(`[${name}] Max recursion reached`);
-    return null;
-  }
-
   const t0 = Date.now();
   try {
     const h: Record<string, string> = { 'Content-Type': 'application/json' };
     let body: any;
-
-    const canUseTools = p.format === 'openai';
-    const tools = [
-      { type: "function", function: { name: "agent_zero_execute", description: "Execute a shell command, docker, deployment or python script on the VPS.", parameters: { type: "object", properties: { task: { type: "string" } }, required: ["task"] } } },
-      { type: "function", function: { name: "bytebot_execute", description: "Execute a UI/browser RPA automation task on the VPS.", parameters: { type: "object", properties: { task: { type: "string" } }, required: ["task"] } } },
-      { type: "function", function: { name: "web_search", description: "Search the web for up-to-date information.", parameters: { type: "object", properties: { query: { type: "string" } }, required: ["query"] } } },
-      { type: "function", function: { name: "write_file", description: "Write a file to the local user laptop filesystem. ALWAYS specify path and content.", parameters: { type: "object", properties: { path: { type: "string" }, content: { type: "string" } }, required: ["path", "content"] } } }
-    ];
-
     if (p.format === 'ollama') {
       body = { model: p.model, messages: [{ role: 'system', content: sys }, ...messages], stream: false, options: { temperature: 0.7 } };
     } else {
       h['Authorization'] = `Bearer ${p.key}`;
       if (p.extra) Object.assign(h, p.extra);
       body = { model: p.model, messages: [{ role: 'system', content: sys }, ...messages], max_tokens: 4096, temperature: 0.7 };
-      if (canUseTools) body.tools = tools;
     }
-
-    console.log(`[${name}.step${recursion}] → ${p.model}`);
-    const res = await fetch(p.url, { method: 'POST', headers: h, body: JSON.stringify(body), signal: AbortSignal.timeout(60000) });
+    console.log(`[${name}] → ${p.model}`);
+    const res = await fetch(p.url, { method: 'POST', headers: h, body: JSON.stringify(body), signal: AbortSignal.timeout(50000) });
     if (!res.ok) { console.log(`[${name}] ${res.status}`); return null; }
     const d = await res.json();
-
-    const choice = p.format === 'ollama' ? d.message : d.choices?.[0]?.message;
-    if (!choice) return null;
-
-    // Handle tool calls (Function Calling loop)
-    if (canUseTools && choice.tool_calls && choice.tool_calls.length > 0) {
-      console.log(`[${name}] Tool call(s) detected (${choice.tool_calls.length})`);
-      let newMessages = [...messages, choice];
-
-      let specialToolCommand = null;
-
-      for (const tc of choice.tool_calls) {
-        let toolResult = "";
-        try {
-          const args = JSON.parse(tc.function.arguments);
-          console.log(`[${name}] Executing Tool: ${tc.function.name}`);
-
-          if (tc.function.name === 'agent_zero_execute') {
-            toolResult = await agentZero(args.task) || "Agent Zero failed";
-          } else if (tc.function.name === 'bytebot_execute') {
-            toolResult = await byteBot(args.task) || "ByteBot failed";
-          } else if (tc.function.name === 'web_search') {
-            toolResult = await freeSearch(args.query) || "No results found";
-          } else if (tc.function.name === 'write_file') {
-            toolResult = `Sent request to local client MCP to write to ${args.path}`;
-            specialToolCommand = { type: 'write_file', ...args };
-          } else {
-            toolResult = "Unknown tool";
-          }
-        } catch (e) {
-          toolResult = "Error executing tool: " + e;
-        }
-
-        newMessages.push({
-          role: "tool",
-          name: tc.function.name,
-          tool_call_id: tc.id,
-          content: typeof toolResult === 'string' ? toolResult : JSON.stringify(toolResult)
-        });
-      }
-
-      if (specialToolCommand) {
-        // Return directly so the frontend can intercept and run the local MCP write 
-        return {
-          content: `✅ Writing file to \`${specialToolCommand.path}\` via Local MCP...\n\n\`\`\`${specialToolCommand.path.split('.').pop()}\n${specialToolCommand.content}\n\`\`\``,
-          model: p.model,
-          provider: p.label,
-          latency: Date.now() - t0,
-          rpc_tool: specialToolCommand
-        };
-      }
-
-      return callProvider(name, newMessages, sys, recursion + 1);
-    }
-
-    const c = choice.content;
+    const c = p.format === 'ollama' ? d.message?.content : d.choices?.[0]?.message?.content;
     if (!c) return null;
-
     console.log(`[${name}] ✓ ${c.length}ch ${Date.now() - t0}ms`);
     return { content: c, model: p.model, provider: p.label, latency: Date.now() - t0 };
   } catch (e) { console.log(`[${name}] ✗ ${e}`); return null; }
 }
 
+// ══ WEB SEARCH ═════════════════════════════════════════════
 async function freeSearch(q: string): Promise<string> {
   try {
     const r = await fetch(`https://html.duckduckgo.com/html/?q=${encodeURIComponent(q)}`, {
@@ -180,13 +124,17 @@ async function freeSearch(q: string): Promise<string> {
   } catch { return ''; }
 }
 
+// ══ AGENT BRIDGES ══════════════════════════════════════════
 async function agentZero(task: string) {
   if (!AGENTS.agentZero) return null;
   try {
-    const r = await fetch(`${AGENTS.agentZero}/api/message`, {
+    const r = await fetch(`${AGENTS.agentZero}/api_message`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: task }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': '-KBmHQws5MghVgZ_' // Sovereign token for Agent Zero
+      },
+      body: JSON.stringify({ message: task }), // Correct payload for Agent Zero
       signal: AbortSignal.timeout(35000)
     });
     return r.ok ? await r.text() : null;
@@ -199,15 +147,17 @@ async function byteBot(task: string) {
     const r = await fetch(`${AGENTS.byteBot}/api/execute`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ task }),
+      body: JSON.stringify({ task }), // Correct payload for ByteBot execute
       signal: AbortSignal.timeout(35000)
     });
     return r.ok ? await r.text() : null;
   } catch (e) { console.error('ByteBot Error:', e); return null; }
 }
 
+// ══ CASCADE ════════════════════════════════════════════════
 async function cascade(msgs: any[], sys: string, pref?: string) {
-  const order = ['openrouter', 'groq', 'openai', 'perplexity', 'ollama-mistral', 'ollama-qwen', 'ollama-deepseek'];
+  // Ordered by preferred resolution
+  const order = ['groq', 'openai', 'openrouter', 'perplexity', 'ollama-mistral', 'ollama-qwen', 'ollama-deepseek'];
   if (pref && pref in PROVIDERS) order.unshift(pref);
 
   const tried: string[] = [];
@@ -217,17 +167,21 @@ async function cascade(msgs: any[], sys: string, pref?: string) {
     const r = await callProvider(n, msgs, sys);
     if (r?.content) return { ...r, cascade: tried };
   }
-  return { content: 'Tous les providers sont épuisés. Vérifiez les clés API ou l\'état du VPS Sovereign.', model: 'none', provider: 'none', latency: 0, cascade: tried, rpc_tool: null };
+  return {
+    content: "Tous les providers sont épuisés. Vérifiez les clés API ou l'état du VPS Sovereign.", model: 'none', provider: 'none', latency: 0, cascade: tried
+  };
 }
 
+// ══ INTENT DETECTION ═════════════════════════════════════════
 function detectIntent(msg: string): 'code' | 'search' | 'deploy' | 'rpa' {
   const m = msg.toLowerCase();
-  if (/deploy|git push|docker|restart|ssh|server|run command|vps|install|update|system/i.test(m)) return 'deploy';
-  if (/screenshot|click|browser|scrape|navigate|automation|web page|rpa/i.test(m)) return 'rpa';
+  if (/deploy|git push|docker|restart|ssh|server|run command|vps/i.test(m)) return 'deploy'; // Routes to Agent Zero
+  if (/screenshot|click|browser|scrape|navigate|automation|web page|rpa/i.test(m)) return 'rpa'; // Routes to ByteBot
   if (/search|find|latest|2024|2025|2026|news|current|trending|documentation/i.test(m)) return 'search';
   return 'code';
 }
 
+// ══ MAIN ═══════════════════════════════════════════════════
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: CORS });
 
@@ -260,9 +214,11 @@ Deno.serve(async (req: Request) => {
       return new Response(JSON.stringify({ source: 'duckduckgo', message: r }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
     }
 
+    // Build chat
     const chatMsgs = messages || [...(history || []), { role: 'user', content: message }];
     const intent = detectIntent(message || '');
 
+    // Intent-based routing with immediate return for pure actions
     if (intent === 'deploy' && AGENTS.agentZero) {
       console.log('Routing to Agent Zero:', message);
       const r = await agentZero(message);
@@ -273,7 +229,6 @@ Deno.serve(async (req: Request) => {
         }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
       }
     }
-
     if (intent === 'rpa' && AGENTS.byteBot) {
       console.log('Routing to ByteBot:', message);
       const r = await byteBot(message);
@@ -285,9 +240,11 @@ Deno.serve(async (req: Request) => {
       }
     }
 
+    // Web search augmentation
     let searchCtx = '';
     if (intent === 'search') searchCtx = await freeSearch((message || '').slice(0, 200));
 
+    // Build system prompt: Master + Sector + Mode + Search
     const sectorKey = sector || 'it-engineering';
     const sectorPrompt = SECTOR_PROMPTS[sectorKey] || SECTOR_PROMPTS['it-engineering'];
     const modePrompt = MODE_PROMPTS[mode || 'generate'] || MODE_PROMPTS.generate;
@@ -305,9 +262,8 @@ Deno.serve(async (req: Request) => {
       mode: mode || 'generate',
       sector: sectorKey,
       intent,
-      ecosystem: 'asriel-v7',
+      ecosystem: 'asriel-v6',
       web_search_used: intent === 'search',
-      rpc_tool: result.rpc_tool,
     }), { headers: { ...CORS, 'Content-Type': 'application/json' } });
   } catch (err) {
     return new Response(JSON.stringify({ error: err instanceof Error ? err.message : 'Unknown' }), {
