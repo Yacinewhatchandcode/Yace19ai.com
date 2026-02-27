@@ -5,7 +5,15 @@
             "destination": "https://srv1307385.hstgr.cloud/api/:path*"
         },
         {
-            "source": "/((?!sovereign/|_next/|assets/|.*\\..*).*)",
+            "source": "/assets/:path*",
+            "destination": "/assets/:path*"
+        },
+        {
+            "source": "/((?!$).+)",
+            "destination": "https://prime-ai.fr/$1"
+        },
+        {
+            "source": "/",
             "destination": "/index.html"
         }
     ]
