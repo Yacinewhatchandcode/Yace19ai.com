@@ -19,25 +19,25 @@
 
 [[redirects]]
   from = "/api/cognee/*"
-  to = "http://31.97.52.22:8140/:splat"
+  to = "http://72.62.24.13:8140/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/api/bytebot/*"
-  to = "http://31.97.52.22:9991/:splat"
+  to = "http://72.62.24.13:9991/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/api/sim/*"
-  to = "http://31.97.52.22:3014/api/:splat"
+  to = "http://72.62.24.13:3014/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
   from = "/api/sim-socket/*"
-  to = "http://31.97.52.22:3012/:splat"
+  to = "http://72.62.24.13:3012/:splat"
   status = 200
   force = true
 

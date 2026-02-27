@@ -11,27 +11,27 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       "/api/voicebox": {
-        target: "http://31.97.52.22:17493",
+        target: "http://72.62.24.13:17493",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/voicebox/, ""),
       },
       "/api/cognee": {
-        target: "http://31.97.52.22:8140",
+        target: "http://72.62.24.13:8140",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/cognee/, ""),
       },
       "/api/bytebot": {
-        target: "http://31.97.52.22:9991",
+        target: "http://72.62.24.13:9991",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/bytebot/, ""),
       },
       "/api/sim": {
-        target: "http://31.97.52.22:3014/api",
+        target: "http://72.62.24.13:3014/api",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/sim/, ""),
       },
       "/api/sim-socket": {
-        target: "http://31.97.52.22:3012",
+        target: "http://72.62.24.13:3012",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api\/sim-socket/, ""),
       },
