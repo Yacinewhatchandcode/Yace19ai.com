@@ -800,17 +800,18 @@
         }
         animate();
     </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) {
+                    registration.unregister().then(() => console.log('Legacy ServiceWorker unregistered'));
+                }
+            });
+        }
+        localStorage.clear();
+        sessionStorage.clear();
+        console.log('Legacy Caches Cleared.');
+    </script>
 </body>
 
-</html><script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for(let registration of registrations) {
-        registration.unregister().then(() => console.log('Legacy ServiceWorker unregistered'));
-      }
-    });
-  }
-  localStorage.clear();
-  sessionStorage.clear();
-  console.log('Legacy Caches Cleared.');
-</script>
+</html>
