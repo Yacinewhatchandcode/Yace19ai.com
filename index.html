@@ -1,86 +1,805 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YBE | V-JEPA Cognitive World</title>
+    <!-- Three.js & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
-  <!-- Favicons -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link rel="icon" type="image/webp" href="/favicon.webp" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
-  <link rel="manifest" href="/site.webmanifest" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@300;400;700;900&display=swap');
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+        :root {
+            --core: #00e5ff;
+            --accent: #a855f7;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bg: #000;
+        }
 
-  <!-- Prime AI Analytics -->
-  <script defer src="https://prime-ai.fr/t.js" data-domain="yace19ai.com"></script>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+        }
 
-  <!-- Primary SEO Meta Tags -->
-  <title>Yacine Benhamou | Lead AI Builder | Agentic AI Strategy &amp; Multi-System Orchestration</title>
-  <meta name="title"
-    content="Yacine Benhamou | Lead AI Builder | Agentic AI Strategy &amp; Multi-System Orchestration" />
-  <meta name="description"
-    content="Lead AI Builder specializing in Agentic AI Strategy, Core Development &amp; Multi-System Orchestration. Building autonomous multi-agent systems with Prime-AI. GITEX 2025 AI for Developers." />
-  <meta name="keywords"
-    content="AI Builder, Agentic AI, Multi-Agent Systems, AI Orchestration, Prime-AI, MLOps, AI Strategy, GITEX 2025, Autonomous Systems" />
-  <meta name="author" content="Yacine Benhamou" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://yace19ai.com" />
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://yace19ai.com/" />
-  <meta property="og:title" content="Yacine Benhamou | Lead AI Builder | Agentic AI Strategy" />
-  <meta property="og:description"
-    content="Lead AI Builder specializing in Agentic AI Strategy, Core Development &amp; Multi-System Orchestration. Founder of Prime-AI." />
-  <meta property="og:image" content="https://yace19ai.com/og-image.png" />
-  <meta property="og:site_name" content="Yace19.ai" />
+        /* Cinematic Vignette */
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.8) 100%);
+            pointer-events: none;
+            z-index: 2;
+        }
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:url" content="https://yace19ai.com/" />
-  <meta name="twitter:title" content="Yacine Benhamou | Lead AI Builder" />
-  <meta name="twitter:description"
-    content="Lead AI Builder | Agentic AI Strategy, Core Development &amp; Multi-System Orchestration. Founder of Prime-AI." />
-  <meta name="twitter:image" content="https://yace19ai.com/twitter-card.png" />
+        /* Cybernetic HUD Overlay */
+        #hud {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
 
-  <!-- Theme &amp; PWA -->
-  <meta name="theme-color" content="#0891b2" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        .scanline {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.1) 2px, rgba(0, 0, 0, 0.1) 4px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
 
-  <!-- Preconnect for Performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        .top-left {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            pointer-events: auto;
+        }
 
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Yacine Benhamou",
-      "url": "https://yace19ai.com",
-      "image": "https://yace19ai.com/founder.jpg",
-      "jobTitle": "Lead AI Builder | Agentic AI Strategy, Core Development & Multi-System Orchestration",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Prime-AI"
-      },
-      "knowsAbout": ["Agentic AI", "Multi-Agent Systems", "AI Orchestration", "MLOps", "AI Strategy", "Autonomous Systems"],
-      "alumniOf": "GITEX Global 2025",
-      "sameAs": [
-        "https://github.com/Yacinewhatchandcode",
-        "https://twitter.com/yace19ai",
-        "https://linkedin.com/in/yacine-benhamou-b26386124"
-      ]
-    }
-  </script>
+        .logo-block {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            color: var(--core);
+            font-weight: 900;
+            font-size: 24px;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.2) inset;
+        }
+
+        .title-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-title {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #fff, var(--core));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sub-title {
+            font-family: 'JetBrains Mono';
+            font-size: 10px;
+            color: #888;
+            letter-spacing: 0.2em;
+            margin-top: 4px;
+        }
+
+        .top-right {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            pointer-events: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+        }
+
+        .btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono';
+            font-size: 11px;
+            cursor: pointer;
+            letter-spacing: 0.1em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn.active {
+            background: rgba(0, 229, 255, 0.15);
+            color: var(--core);
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.3) inset;
+        }
+
+        /* Premium Hyper-Realistic Datapad */
+        #datapad {
+            position: absolute;
+            top: 50%;
+            right: 40px;
+            transform: translateY(-50%) translateX(100px);
+            width: 440px;
+            background: rgba(5, 7, 12, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 35px;
+            border-radius: 16px;
+            backdrop-filter: blur(40px) saturate(150%);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+
+        #datapad::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            border-radius: 16px 0 0 16px;
+            background: linear-gradient(to bottom, var(--core), transparent);
+        }
+
+        #datapad.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .dp-header {
+            font-family: 'JetBrains Mono';
+            font-size: 10px;
+            color: var(--core);
+            letter-spacing: 0.15em;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dp-status {
+            padding: 4px 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 4px;
+            color: var(--success);
+        }
+
+        .dp-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+        }
+
+        .dp-content {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .dp-content strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .tag-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tech-tag {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: 'JetBrains Mono';
+            color: #aaa;
+            transition: all 0.2s;
+        }
+
+        .tech-tag:hover {
+            border-color: var(--core);
+            color: var(--core);
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        /* Crosshair */
+        .crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+            opacity: 0.3;
+        }
+
+        .c-line {
+            position: absolute;
+            background: var(--core);
+        }
+
+        .c-v {
+            width: 1px;
+            height: 100%;
+            left: 19px;
+            top: 0;
+        }
+
+        .c-h {
+            width: 100%;
+            height: 1px;
+            top: 19px;
+            left: 0;
+        }
+
+        .crosshair.hovered {
+            transform: translate(-50%, -50%) scale(1.4) rotate(45deg);
+            opacity: 1;
+        }
+
+        .crosshair.hovered .c-line {
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        #target-label {
+            position: absolute;
+            top: calc(50% + 40px);
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'JetBrains Mono';
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--success);
+            letter-spacing: 0.2em;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            text-transform: uppercase;
+        }
+
+        /* Loader */
+        #loader {
+            position: absolute;
+            inset: 0;
+            background: #000;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--core);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 30px;
+        }
+
+        .loader-txt {
+            font-family: 'JetBrains Mono';
+            font-size: 12px;
+            color: #fff;
+            letter-spacing: 0.3em;
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            from {
+                opacity: 0.5;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
+
+    <div id="loader">
+        <div class="loader-spinner"></div>
+        <div class="loader-txt">INITIALIZING V-JEPA DATA LAKE...</div>
+    </div>
+
+    <div id="canvas-container"></div>
+    <div class="vignette"></div>
+
+    <div id="hud">
+        <div class="scanline"></div>
+
+        <div class="top-left">
+            <div class="logo-block">Y</div>
+            <div class="title-block">
+                <div class="main-title">Yacine Benhamou</div>
+                <div class="sub-title">AI LEAD DEVELOPER • V-JEPA ARCHITECT</div>
+            </div>
+        </div>
+
+        <div class="top-right">
+            <div class="btn-group">
+                <button class="btn active" id="btn-world" onclick="setMode('world')">WORLD MODEL</button>
+                <button class="btn" id="btn-lake" onclick="setMode('lake')">DATA LAKE</button>
+            </div>
+        </div>
+
+        <div class="crosshair" id="xhair">
+            <div class="c-line c-v"></div>
+            <div class="c-line c-h"></div>
+        </div>
+        <div id="target-label"></div>
+
+        <div id="datapad">
+            <div class="dp-header">
+                <span id="dp-id">SYS.JEPA.CORE</span>
+                <span class="dp-status">SECURE CONNECTION</span>
+            </div>
+            <div class="dp-title" id="dp-title">Data Entity</div>
+            <div class="dp-content" id="dp-content"></div>
+            <div class="tag-container" id="dp-tags"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- HIGH-RES ASSETS (NASA & 4K WebGL Sources) ---
+        const TEX = {
+            earth: 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg',
+            bump: 'https://unpkg.com/three-globe/example/img/earth-topology.png',
+            water: 'https://unpkg.com/three-globe/example/img/earth-water.png',
+            clouds: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_clouds_1024.png',
+            mars: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/mars_1k_color.jpg',
+            moon: 'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon_1024.jpg',
+            stars: 'https://unpkg.com/three-globe/example/img/night-sky.png'
+        };
+
+        // --- CUTTING-EDGE CV DATA ---
+        const CV_DATA = {
+            core: {
+                title: "YBE V-JEPA Engine",
+                type: "AI LEAD DEVELOPER",
+                content: `
+      <strong>Senior Engineer in Biotechnology, Computer Programming, and AI.</strong><br><br>
+      Specialized in creating autonomous AI agents and deploying state-of-the-art predictive architectures (V-JEPA, World Models) into unified Data Lakes.<br><br>
+      <strong>Contact:</strong> yacine.benhamou@gmail.com<br>
+      <strong>Tel:</strong> +33651650239
+    `,
+                tags: ["System Architecture", "AI Orchestration", "Predictive Modeling", "Biotechnology"],
+                color: 0x00e5ff, radius: 45
+            },
+            nodes: [
+                {
+                    id: "PRIME", title: "Prime-AI (Founder)", type: "AI INNOVATION HUB",
+                    content: "<strong>Jan 2025 - Present</strong><br><br>Democratizing applied AI through modular and industrializable multi-agent solutions. Providing strategic AI consulting to translate pure innovation into structural business supremacy.",
+                    tags: ["Local LLMs", "Multi-Agent Frameworks", "MLOps", "Strategic Consulting"],
+                    texture: 'earth', radius: 24, orbit: 160, speed: 0.2
+                },
+                {
+                    id: "MOBILIZE", title: "Mobilize (Renault Group)", type: "AI DEV LEAD",
+                    content: "<strong>Aug 2024 - Dec 2025</strong><br><br>Developed custom AI systems for deep automation. Led internal tool migrations towards scalable centralized pipelines, driving a +15% boost in velocity.",
+                    tags: ["Python", "Automated Pipelines", "Agile AI", "Global Deployment"],
+                    texture: 'mars', radius: 18, orbit: 240, speed: 0.15
+                },
+                {
+                    id: "AGENTS", title: "Multi-Agent Swarms", type: "CORE EXPERTISE",
+                    content: "Mastery over Hierarchical Agents, State-based routing, Consensus Protocols, and Recursive Reasoning. Orchestrating fleets to achieve autonomous world modeling.",
+                    tags: ["LangChain", "CrewAI", "AutoGen", "Agent Zero", "LangGraph"],
+                    texture: 'moon', radius: 20, orbit: 320, speed: 0.1
+                },
+                {
+                    id: "DA_LAKE", title: "Cloud & Sovereign Config", type: "INFRASTRUCTURE",
+                    content: "Building fault-tolerant environments. Migrating from public cloud dependencies to Sovereign Data Lakes bridging Vast.ai GPU tunnels with local orchestration hubs.",
+                    tags: ["Vast.ai H200", "Docker", "Terraform", "CI/CD", "NVIDIA Cloud"],
+                    texture: 'gas', color: 0xa855f7, radius: 28, orbit: 420, speed: 0.08
+                }
+            ]
+        };
+
+        // --- SCENE SETUP ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+        scene.fog = new THREE.FogExp2(0x000000, 0.001);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 20000);
+        camera.position.set(0, 300, 900);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        // Cinematic color management
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxDistance = 2500;
+        controls.minDistance = 80;
+
+        // POST-PROCESSING (2026 Realistic Bloom)
+        const renderScene = new THREE.RenderPass(scene, camera);
+        const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0.1;
+        bloomPass.strength = 1.2; // intense cinematic glow
+        bloomPass.radius = 0.8;
+
+        const composer = new THREE.EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+
+        // LIGHTING Realism
+        const ambient = new THREE.AmbientLight(0xffffff, 0.05); // Very dark ambient for high contrast
+        scene.add(ambient);
+
+        // The core acts as the sun
+        const coreLight = new THREE.PointLight(0x00e5ff, 5, 1500);
+        scene.add(coreLight);
+
+        // Edge rim lighting for dramatic depth
+        const rimLight = new THREE.DirectionalLight(0xa855f7, 2);
+        rimLight.position.set(-500, 200, -500);
+        scene.add(rimLight);
+
+        const rimLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+        rimLight2.position.set(500, -200, 500);
+        scene.add(rimLight2);
+
+        // ASSETS LOADER
+        const manager = new THREE.LoadingManager();
+        manager.onLoad = () => {
+            gsap.to('#loader', { opacity: 0, duration: 1, onComplete: () => document.getElementById('loader').style.display = 'none' });
+        };
+        const textureLoader = new THREE.TextureLoader(manager);
+        textureLoader.setCrossOrigin('anonymous');
+
+        const textures = {
+            earth: textureLoader.load(TEX.earth),
+            bump: textureLoader.load(TEX.bump),
+            water: textureLoader.load(TEX.water),
+            clouds: textureLoader.load(TEX.clouds),
+            mars: textureLoader.load(TEX.mars),
+            moon: textureLoader.load(TEX.moon),
+            stars: textureLoader.load(TEX.stars)
+        };
+
+        // --- ENVIRONMENT ---
+        const envGeo = new THREE.SphereGeometry(4000, 64, 64);
+        const envMat = new THREE.MeshBasicMaterial({ map: textures.stars, side: THREE.BackSide, color: 0x333333 });
+        scene.add(new THREE.Mesh(envGeo, envMat));
+
+        // JEPA Data Lake Nebula (Volumetric-like point cloud)
+        const nebulaGeo = new THREE.BufferGeometry();
+        const nebulaPts = 30000;
+        const nPos = new Float32Array(nebulaPts * 3);
+        const nCol = new Float32Array(nebulaPts * 3);
+        for (let i = 0; i < nebulaPts; i++) {
+            const r = 300 + Math.pow(Math.random(), 2) * 2000; // concentrate near center
+            const th = Math.random() * Math.PI * 2;
+            const y = (Math.random() - 0.5) * 300 * Math.exp(-r / 800);
+            nPos[i * 3] = r * Math.cos(th);
+            nPos[i * 3 + 1] = y + (Math.random() - 0.5) * 50;
+            nPos[i * 3 + 2] = r * Math.sin(th);
+
+            const mix = Math.random();
+            const c = new THREE.Color();
+            if (mix < 0.4) c.setHex(0x00e5ff); // Cyan
+            else if (mix < 0.7) c.setHex(0xa855f7); // Violet
+            else c.setHex(0x0a101d); // Dark void space
+            nCol[i * 3] = c.r; nCol[i * 3 + 1] = c.g; nCol[i * 3 + 2] = c.b;
+        }
+        nebulaGeo.setAttribute('position', new THREE.BufferAttribute(nPos, 3));
+        nebulaGeo.setAttribute('color', new THREE.BufferAttribute(nCol, 3));
+        const nebulaMat = new THREE.PointsMaterial({ size: 3, vertexColors: true, transparent: true, opacity: 0.15, blending: THREE.AdditiveBlending, depthWrite: false });
+        const nebula = new THREE.Points(nebulaGeo, nebulaMat);
+        scene.add(nebula);
+
+
+        // --- ENTITIES / PLANETS ---
+        const interactables = [];
+        const planets = [];
+
+        // 1. CORE: The V-JEPA Engine
+        const coreGroup = new THREE.Group();
+        const coreGeo = new THREE.IcosahedronGeometry(CV_DATA.core.radius, 4); // tessellated
+        // Real highly-reflective dark glass material
+        const coreMat = new THREE.MeshPhysicalMaterial({
+            color: 0x010204,
+            transmission: 0.9,
+            opacity: 1,
+            metalness: 0,
+            roughness: 0.1,
+            ior: 1.52,
+            thickness: 2.0,
+            envMapIntensity: 1,
+            clearcoat: 1,
+            clearcoatRoughness: 0.1
+        });
+        const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+        coreGroup.add(coreMesh);
+
+        // Glowing inner singularity
+        const singularity = new THREE.Mesh(
+            new THREE.IcosahedronGeometry(CV_DATA.core.radius * 0.7, 2),
+            new THREE.MeshBasicMaterial({ color: CV_DATA.core.color, wireframe: true, transparent: true, opacity: 0.8 })
+        );
+        coreGroup.add(singularity);
+        scene.add(coreGroup);
+
+        const coreHitbox = new THREE.Mesh(new THREE.SphereGeometry(CV_DATA.core.radius * 1.5, 16, 16), new THREE.MeshBasicMaterial({ visible: false }));
+        coreHitbox.userData = { id: 'core', data: CV_DATA.core, target: coreGroup };
+        scene.add(coreHitbox); interactables.push(coreHitbox);
+
+        // 2. Generating Orbiting Bodies
+        CV_DATA.nodes.forEach(node => {
+            const g = new THREE.Group();
+            let mesh, mat;
+
+            const geo = new THREE.SphereGeometry(node.radius, 64, 64);
+
+            if (node.texture === 'earth') {
+                mat = new THREE.MeshStandardMaterial({
+                    map: textures.earth,
+                    bumpMap: textures.bump,
+                    bumpScale: 2,
+                    roughnessMap: textures.water,
+                    metalness: 0.1,
+                    roughness: 0.6
+                });
+                mesh = new THREE.Mesh(geo, mat);
+
+                // Earth Clouds
+                const cloudMat = new THREE.MeshLambertMaterial({
+                    map: textures.clouds, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false
+                });
+                const clouds = new THREE.Mesh(new THREE.SphereGeometry(node.radius * 1.02, 64, 64), cloudMat);
+                g.userData.clouds = clouds;
+                g.add(clouds);
+
+            } else if (node.texture === 'mars') {
+                mat = new THREE.MeshStandardMaterial({ map: textures.mars, roughness: 0.9, metalness: 0.2, bumpMap: textures.mars, bumpScale: 1.5 });
+                mesh = new THREE.Mesh(geo, mat);
+            } else if (node.texture === 'moon') {
+                mat = new THREE.MeshStandardMaterial({ map: textures.moon, roughness: 1.0, metalness: 0.1, bumpMap: textures.moon, bumpScale: 1.2 });
+                mesh = new THREE.Mesh(geo, mat);
+            } else {
+                // Gas giant / abstract
+                mat = new THREE.MeshPhysicalMaterial({ color: node.color, clearcoat: 1, transmission: 0.5, roughness: 0.2 });
+                mesh = new THREE.Mesh(geo, mat);
+                const ring = new THREE.Mesh(new THREE.RingGeometry(node.radius * 1.5, node.radius * 2.2, 64), new THREE.MeshBasicMaterial({ color: node.color, side: THREE.DoubleSide, transparent: true, opacity: 0.2 }));
+                ring.rotation.x = Math.PI / 2.5;
+                g.add(ring);
+            }
+
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            g.add(mesh);
+            g.userData = { ...g.userData, data: node, mesh: mesh };
+
+            // Orbit Ring
+            const path = new THREE.LineLoop(
+                new THREE.BufferGeometry().setFromPoints(
+                    new Array(128).fill(0).map((_, i) => {
+                        const a = (i / 128) * Math.PI * 2;
+                        return new THREE.Vector3(Math.cos(a) * node.orbit, 0, Math.sin(a) * node.orbit);
+                    })
+                ),
+                new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.05 })
+            );
+            scene.add(path);
+
+            scene.add(g);
+            planets.push(g);
+
+            const hitbox = new THREE.Mesh(new THREE.SphereGeometry(node.radius * 2.5, 16, 16), new THREE.MeshBasicMaterial({ visible: false }));
+            hitbox.userData = { id: node.id, data: node, target: g };
+            scene.add(hitbox); interactables.push(hitbox);
+        });
+
+
+        // INTERACTION
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2(-999, -999);
+        const xhair = document.getElementById('xhair');
+        const targetLabel = document.getElementById('target-label');
+        const datapad = document.getElementById('datapad');
+        let hovered = null;
+        let currentMode = 'world'; // 'world' or 'lake'
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.addEventListener('click', () => {
+            if (hovered) {
+                const data = hovered.userData.data;
+                const target = hovered.userData.target;
+
+                // Zoom
+                const dir = target.position.clone().normalize();
+                if (dir.length() < 1) dir.set(0, 0, 1); // if core
+                const offset = data.radius * 4;
+                const camPos = target.position.clone().add(dir.multiplyScalar(offset));
+                camPos.y += data.radius * 1.5;
+
+                gsap.to(camera.position, { x: camPos.x, y: camPos.y, z: camPos.z, duration: 2, ease: "power3.inOut" });
+                gsap.to(controls.target, { x: target.position.x, y: target.position.y, z: target.position.z, duration: 1.5, ease: "power2.out" });
+
+                // UI Update
+                document.getElementById('dp-id').innerText = "SYS." + data.id.toUpperCase();
+                document.getElementById('dp-title').innerHTML = data.title;
+                document.getElementById('dp-content').innerHTML = data.content;
+
+                const tagsContainer = document.getElementById('dp-tags');
+                tagsContainer.innerHTML = '';
+                data.tags.forEach(t => {
+                    const sp = document.createElement('span');
+                    sp.className = 'tech-tag';
+                    sp.innerText = t;
+                    tagsContainer.appendChild(sp);
+                });
+
+                datapad.classList.add('show');
+            } else {
+                datapad.classList.remove('show');
+            }
+        });
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.getElementById('btn-world').classList.toggle('active', mode === 'world');
+            document.getElementById('btn-lake').classList.toggle('active', mode === 'lake');
+
+            if (mode === 'lake') {
+                // Abstract data lake mode
+                gsap.to(camera.position, { x: 0, y: 800, z: 200, duration: 2.5, ease: "power2.inOut" });
+                gsap.to(nebula.material, { opacity: 0.6, size: 5, duration: 2 });
+                bloomPass.strength = 1.8;
+            } else {
+                gsap.to(camera.position, { x: 0, y: 300, z: 900, duration: 2.5, ease: "power2.inOut" });
+                gsap.to(nebula.material, { opacity: 0.15, size: 3, duration: 2 });
+                bloomPass.strength = 1.2;
+            }
+        }
+
+        // ANIMATION LOOP
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const t = clock.getElapsedTime();
+
+            nebula.rotation.y = t * 0.01;
+            coreGroup.rotation.y = t * 0.1;
+            singularity.rotation.z = -t * 0.2;
+            coreGroup.position.y = Math.sin(t) * 10;
+            interactables[0].position.copy(coreGroup.position);
+
+            planets.forEach((p, i) => {
+                const data = p.userData.data;
+
+                // Orbit
+                const angle = t * data.speed + i;
+                p.position.x = Math.cos(angle) * data.orbit;
+                p.position.z = Math.sin(angle) * data.orbit;
+                p.position.y = Math.sin(t * 0.5 + i) * 20; // vertical drift
+
+                // Rotation
+                p.userData.mesh.rotation.y += 0.005;
+                if (p.userData.clouds) {
+                    p.userData.clouds.rotation.y += 0.007; // faster clouds
+                    p.userData.clouds.rotation.x = Math.sin(t * 0.1) * 0.1;
+                }
+
+                interactables[i + 1].position.copy(p.position);
+            });
+
+            // Crosshair Logic
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(interactables);
+            if (intersects.length > 0) {
+                if (hovered !== intersects[0].object) {
+                    hovered = intersects[0].object;
+                    xhair.classList.add('hovered');
+                    document.body.style.cursor = 'none';
+                    targetLabel.innerText = "SCANNING: " + hovered.userData.data.title;
+                    targetLabel.style.opacity = 1;
+                }
+            } else {
+                if (hovered) {
+                    hovered = null;
+                    xhair.classList.remove('hovered');
+                    document.body.style.cursor = 'default';
+                    targetLabel.style.opacity = 0;
+                }
+            }
+
+            controls.update();
+            composer.render();
+        }
+        animate();
+    </script>
 </body>
 
 </html>
