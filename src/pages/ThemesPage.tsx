@@ -109,7 +109,7 @@ function ThemePreview({ theme, onClose, onSetup }: { theme: ThemeConfig; onClose
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-4 bg-black/70 backdrop-blur-sm"
             onClick={onClose}
         >
             <motion.div
@@ -117,29 +117,29 @@ function ThemePreview({ theme, onClose, onSetup }: { theme: ThemeConfig; onClose
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 40 }}
                 onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-3xl border border-white/[0.08] bg-[#0a0f1a] shadow-2xl"
+                className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl border border-white/[0.08] bg-[#0a0f1a] shadow-2xl"
             >
                 {/* Header */}
                 <div
-                    className="p-8 relative overflow-hidden"
+                    className="p-6 sm:p-8 relative overflow-hidden"
                     style={{ background: `linear-gradient(135deg, ${theme.colorPrimary}30, ${theme.colorAccent}10)` }}
                 >
-                    <div className="absolute top-0 right-0 text-[120px] opacity-10 leading-none">{theme.emoji}</div>
+                    <div className="absolute top-0 right-0 text-[80px] sm:text-[120px] opacity-10 leading-none">{theme.emoji}</div>
                     <div className="relative z-10">
-                        <div className="text-5xl mb-4">{theme.emoji}</div>
-                        <h2 className="text-3xl font-black text-white mb-2">{theme.name}</h2>
-                        <p className="text-white/50 text-lg">{theme.tagline}</p>
+                        <div className="text-4xl sm:text-5xl mb-3 sm:mb-4">{theme.emoji}</div>
+                        <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">{theme.name}</h2>
+                        <p className="text-white/50 text-base sm:text-lg">{theme.tagline}</p>
                     </div>
                 </div>
 
-                <div className="p-8 space-y-8">
+                <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
                     {/* Quick Actions Preview */}
                     <div>
-                        <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                        <h3 className="text-white font-bold text-base sm:text-lg mb-3 sm:mb-4 flex items-center gap-2">
                             <Zap className="w-5 h-5 text-amber-400" />
                             Quick Actions
                         </h3>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             {theme.quickActions.map((action) => (
                                 <div
                                     key={action.id}
@@ -196,19 +196,19 @@ function ThemePreview({ theme, onClose, onSetup }: { theme: ThemeConfig; onClose
                     </div>
 
                     {/* CTA */}
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                         <button
                             onClick={onSetup}
-                            className="flex-1 py-4 rounded-xl text-white font-bold text-lg flex items-center justify-center gap-3 transition-all hover:brightness-110"
+                            className="flex-1 py-3 sm:py-4 rounded-xl text-white font-bold text-base sm:text-lg flex items-center justify-center gap-2 sm:gap-3 transition-all hover:brightness-110"
                             style={{ background: `linear-gradient(135deg, ${theme.colorPrimary}, ${theme.colorAccent})` }}
                         >
-                            <Zap className="w-5 h-5" />
+                            <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
                             Configure My {theme.name.split(" ")[0]}
-                            <ArrowRight className="w-5 h-5" />
+                            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                         </button>
                         <button
                             onClick={onClose}
-                            className="px-6 py-4 rounded-xl border border-white/[0.08] text-white/40 hover:text-white/60 transition-colors"
+                            className="px-6 py-3 sm:py-4 rounded-xl border border-white/[0.08] text-white/40 hover:text-white/60 transition-colors text-base"
                         >
                             Close
                         </button>

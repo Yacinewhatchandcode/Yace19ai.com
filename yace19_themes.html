@@ -1,708 +1,1107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>YAce19.AI — Galaxy · DNA</title>
-<script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
-  *{margin:0;padding:0;box-sizing:border-box;}
-  :root{
-    --void:#020408;
-    --cyan:#00e5ff;
-    --violet:#a855f7;
-    --emerald:#10b981;
-    --amber:#f59e0b;
-    --rose:#f43f5e;
-  }
-  html,body{width:100%;height:100%;overflow:hidden;background:var(--void);font-family:'Inter',system-ui,sans-serif;color:#fff;}
-  canvas{display:block;position:fixed;inset:0;z-index:0;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>YAce19.AI — Galaxy · DNA</title>
+  <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
 
-  /* ── Top Bar ─────────────────────────── */
-  #bar{
-    position:fixed;top:0;left:0;right:0;height:52px;z-index:200;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:0 20px;
-    background:rgba(2,4,8,0.82);
-    backdrop-filter:blur(24px);
-    border-bottom:1px solid rgba(255,255,255,0.05);
-  }
-  .logo{display:flex;align-items:center;gap:10px;}
-  .logo-mark{
-    width:32px;height:32px;border-radius:8px;
-    background:linear-gradient(135deg,#06b6d4,#a855f7);
-    display:flex;align-items:center;justify-content:center;
-    font-weight:900;font-size:13px;letter-spacing:0.05em;color:#fff;
-    box-shadow:0 0 18px rgba(6,182,212,0.4);
-    animation:pulse-ring 3s ease infinite;
-  }
-  @keyframes pulse-ring{0%,100%{box-shadow:0 0 18px rgba(6,182,212,0.4);}50%{box-shadow:0 0 32px rgba(168,85,247,0.6);}}
-  .logo-text{font-size:14px;font-weight:800;letter-spacing:0.18em;color:#fff;}
-  .logo-sub{font-size:8px;font-weight:600;letter-spacing:0.3em;color:rgba(255,255,255,0.3);font-family:'JetBrains Mono',monospace;}
-  .theme-switcher{display:flex;gap:6px;align-items:center;}
-  .theme-btn{
-    padding:6px 16px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);
-    background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.5);
-    font-size:11px;font-weight:700;letter-spacing:0.08em;cursor:pointer;
-    transition:all 0.3s;font-family:'JetBrains Mono',monospace;
-  }
-  .theme-btn.active.galaxy{background:rgba(6,182,212,0.15);border-color:rgba(6,182,212,0.5);color:var(--cyan);}
-  .theme-btn.active.dna{background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.5);color:var(--violet);}
-  .theme-btn:hover{background:rgba(255,255,255,0.08);color:#fff;}
-  .bar-right{display:flex;align-items:center;gap:10px;}
-  .status-dot{width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px var(--emerald);animation:blink 2s ease infinite;}
-  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
-  .status-text{font-size:10px;font-family:'JetBrains Mono';color:rgba(255,255,255,0.35);letter-spacing:0.1em;}
-  .rotate-btn{
-    padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.08);
-    background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.4);
-    font-size:10px;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'JetBrains Mono';
-  }
-  .rotate-btn.on{background:rgba(6,182,212,0.12);border-color:rgba(6,182,212,0.3);color:var(--cyan);}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* ── Node Card ─────────────────────────── */
-  #card{
-    position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
-    width:380px;max-width:calc(100vw - 32px);
-    background:rgba(2,4,8,0.92);border:1px solid rgba(255,255,255,0.08);
-    border-radius:16px;padding:18px 20px;z-index:200;
-    backdrop-filter:blur(32px);
-    opacity:0;pointer-events:none;
-    transition:opacity 0.3s,transform 0.3s;
-    transform:translateX(-50%) translateY(10px);
-  }
-  #card.visible{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0);}
-  #card .c-label{font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.02em;}
-  #card .c-path{font-family:'JetBrains Mono';font-size:11px;color:var(--cyan);margin-bottom:10px;}
-  #card .c-desc{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.65;}
-  #card .c-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
-  #card .c-tag{
-    padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;
-    font-family:'JetBrains Mono';letter-spacing:0.08em;
-    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-    color:rgba(255,255,255,0.4);
-  }
-  #card .c-tag.gated{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.25);color:#f87171;}
-  #card .c-tag.sovereign{background:rgba(6,182,212,0.1);border-color:rgba(6,182,212,0.25);color:var(--cyan);}
-  #card .c-tag.public{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);color:var(--emerald);}
-  #card .c-close{
-    position:absolute;top:12px;right:14px;width:24px;height:24px;border-radius:50%;
-    background:rgba(255,255,255,0.06);border:none;color:rgba(255,255,255,0.4);
-    cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;
-    transition:all 0.2s;
-  }
-  #card .c-close:hover{background:rgba(255,255,255,0.12);color:#fff;}
-  #card .c-visit{
-    display:inline-flex;align-items:center;gap:6px;margin-top:14px;
-    padding:7px 14px;border-radius:8px;
-    background:linear-gradient(135deg,rgba(6,182,212,0.2),rgba(168,85,247,0.2));
-    border:1px solid rgba(6,182,212,0.3);color:var(--cyan);
-    font-size:11px;font-weight:700;font-family:'JetBrains Mono';letter-spacing:0.06em;
-    text-decoration:none;cursor:pointer;transition:all 0.2s;
-  }
-  #card .c-visit:hover{background:linear-gradient(135deg,rgba(6,182,212,0.35),rgba(168,85,247,0.3));}
+    :root {
+      --void: #020408;
+      --cyan: #00e5ff;
+      --violet: #a855f7;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+    }
 
-  /* ── Bottom HUD ─────────────────────────── */
-  #hud{
-    position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
-    display:flex;align-items:center;gap:20px;
-    background:rgba(2,4,8,0.88);border:1px solid rgba(255,255,255,0.06);
-    border-radius:24px;padding:8px 20px;z-index:200;
-    backdrop-filter:blur(20px);
-    font-size:10px;font-family:'JetBrains Mono';
-  }
-  .hud-item{display:flex;align-items:center;gap:6px;}
-  .hud-dot{width:6px;height:6px;border-radius:50%;}
-  .hud-val{font-weight:700;color:#fff;}
-  .hud-lbl{color:rgba(255,255,255,0.3);}
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--void);
+      font-family: 'Inter', system-ui, sans-serif;
+      color: #fff;
+    }
 
-  /* ── Legend Panel ─────────────────────────── */
-  #legend{
-    position:fixed;top:68px;right:16px;z-index:200;
-    background:rgba(2,4,8,0.9);border:1px solid rgba(255,255,255,0.06);
-    border-radius:12px;padding:14px 16px;min-width:180px;
-    backdrop-filter:blur(20px);
-  }
-  #legend .leg-title{font-size:9px;font-weight:700;letter-spacing:0.18em;color:rgba(255,255,255,0.25);text-transform:uppercase;margin-bottom:10px;font-family:'JetBrains Mono';}
-  .leg-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-  .leg-swatch{width:9px;height:9px;border-radius:50%;}
-  .leg-name{font-size:11px;color:rgba(255,255,255,0.6);}
+    canvas {
+      display: block;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
 
-  /* ── Theme label ─────────────────────────── */
-  #theme-label{
-    position:fixed;top:68px;left:50%;transform:translateX(-50%);
-    font-size:9px;letter-spacing:0.3em;color:rgba(255,255,255,0.15);
-    text-transform:uppercase;font-family:'JetBrains Mono';pointer-events:none;z-index:100;
-  }
+    /* ── Top Bar ─────────────────────────── */
+    #bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 52px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background: rgba(2, 4, 8, 0.82);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
 
-  /* ── Crosshair ─────────────────────────── */
-  #crosshair{
-    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:18px;height:18px;pointer-events:none;z-index:50;opacity:0.25;
-  }
-  #crosshair::before,#crosshair::after{content:'';position:absolute;background:rgba(0,229,255,0.6);}
-  #crosshair::before{width:1px;height:100%;left:50%;transform:translateX(-50%);}
-  #crosshair::after{height:1px;width:100%;top:50%;transform:translateY(-50%);}
-</style>
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #06b6d4, #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(6, 182, 212, 0.4);
+      animation: pulse-ring 3s ease infinite;
+    }
+
+    @keyframes pulse-ring {
+
+      0%,
+      100% {
+        box-shadow: 0 0 18px rgba(6, 182, 212, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 0 32px rgba(168, 85, 247, 0.6);
+      }
+    }
+
+    .logo-text {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: #fff;
+    }
+
+    .logo-sub {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      color: rgba(255, 255, 255, 0.3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .theme-switcher {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .theme-btn {
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .theme-btn.active.galaxy {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: rgba(6, 182, 212, 0.5);
+      color: var(--cyan);
+    }
+
+    .theme-btn.active.dna {
+      background: rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.5);
+      color: var(--violet);
+    }
+
+    .theme-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .bar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+      animation: blink 2s ease infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    .status-text {
+      font-size: 10px;
+      font-family: 'JetBrains Mono';
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.1em;
+    }
+
+    .rotate-btn {
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'JetBrains Mono';
+    }
+
+    .rotate-btn.on {
+      background: rgba(6, 182, 212, 0.12);
+      border-color: rgba(6, 182, 212, 0.3);
+      color: var(--cyan);
+    }
+
+    /* ── Node Card ─────────────────────────── */
+    #card {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 380px;
+      max-width: calc(100vw - 32px);
+      background: rgba(2, 4, 8, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 18px 20px;
+      z-index: 200;
+      backdrop-filter: blur(32px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      transform: translateX(-50%) translateY(10px);
+    }
+
+    #card.visible {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    #card .c-label {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
+    }
+
+    #card .c-path {
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+
+    #card .c-desc {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.65;
+    }
+
+    #card .c-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 12px;
+    }
+
+    #card .c-tag {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono';
+      letter-spacing: 0.08em;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    #card .c-tag.gated {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.25);
+      color: #f87171;
+    }
+
+    #card .c-tag.sovereign {
+      background: rgba(6, 182, 212, 0.1);
+      border-color: rgba(6, 182, 212, 0.25);
+      color: var(--cyan);
+    }
+
+    #card .c-tag.public {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.25);
+      color: var(--emerald);
+    }
+
+    #card .c-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    #card .c-close:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    #card .c-visit {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(168, 85, 247, 0.2));
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono';
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    #card .c-visit:hover {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.35), rgba(168, 85, 247, 0.3));
+    }
+
+    /* ── Bottom HUD ─────────────────────────── */
+    #hud {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: rgba(2, 4, 8, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 24px;
+      padding: 8px 20px;
+      z-index: 200;
+      backdrop-filter: blur(20px);
+      font-size: 10px;
+      font-family: 'JetBrains Mono';
+    }
+
+    .hud-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hud-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .hud-val {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .hud-lbl {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ── Legend Panel ─────────────────────────── */
+    #legend {
+      position: fixed;
+      top: 68px;
+      right: 16px;
+      z-index: 200;
+      background: rgba(2, 4, 8, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 14px 16px;
+      min-width: 180px;
+      backdrop-filter: blur(20px);
+    }
+
+    #legend .leg-title {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: rgba(255, 255, 255, 0.25);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-family: 'JetBrains Mono';
+    }
+
+    .leg-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .leg-swatch {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .leg-name {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* ── Theme label ─────────────────────────── */
+    #theme-label {
+      position: fixed;
+      top: 68px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      color: rgba(255, 255, 255, 0.15);
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono';
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* ── Crosshair ─────────────────────────── */
+    #crosshair {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      pointer-events: none;
+      z-index: 50;
+      opacity: 0.25;
+    }
+
+    #crosshair::before,
+    #crosshair::after {
+      content: '';
+      position: absolute;
+      background: rgba(0, 229, 255, 0.6);
+    }
+
+    #crosshair::before {
+      width: 1px;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #crosshair::after {
+      height: 1px;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* ── Mobile Responsiveness ─────────────────── */
+    @media (max-width: 768px) {
+      #bar {
+        padding: 10px;
+        height: auto;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .logo {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 2px;
+      }
+
+      .theme-switcher {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .bar-right {
+        display: none;
+        /* Hide status/orbit button to save space */
+      }
+
+      #legend {
+        display: none;
+        /* Auto-hide legend on small screens */
+      }
+
+      #hud {
+        flex-wrap: wrap;
+        width: 92%;
+        gap: 10px;
+        bottom: 12px;
+        padding: 6px 12px;
+        justify-content: center;
+        border-radius: 16px;
+      }
+
+      .hud-item {
+        font-size: 9px;
+      }
+
+      #card {
+        bottom: 72px;
+        width: 92%;
+        padding: 14px;
+      }
+
+      #theme-label {
+        top: 104px;
+        font-size: 8px;
+        text-align: center;
+        width: 90%;
+        line-height: 1.4;
+        white-space: pre-wrap;
+      }
+
+      .theme-btn {
+        padding: 5px 12px;
+        font-size: 10px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<canvas id="c"></canvas>
+  <canvas id="c"></canvas>
 
-<!-- Top bar -->
-<div id="bar">
-  <div class="logo">
-    <div class="logo-mark">Y</div>
-    <div>
-      <div class="logo-text">YACe19<span style="color:var(--cyan);">.AI</span></div>
-      <div class="logo-sub">SOVEREIGN INTELLIGENCE OS</div>
+  <!-- Top bar -->
+  <div id="bar">
+    <div class="logo">
+      <div class="logo-mark">Y</div>
+      <div>
+        <div class="logo-text">YACe19<span style="color:var(--cyan);">.AI</span></div>
+        <div class="logo-sub">SOVEREIGN INTELLIGENCE OS</div>
+      </div>
+    </div>
+
+    <div class="theme-switcher">
+      <button class="theme-btn active galaxy" id="btn-galaxy" onclick="setTheme('galaxy')">🌌 GALAXY</button>
+      <button class="theme-btn dna" id="btn-dna" onclick="setTheme('dna')">🧬 DNA</button>
+    </div>
+
+    <div class="bar-right">
+      <div class="status-dot"></div>
+      <div class="status-text">18 SYSTEMS ONLINE</div>
+      <button class="rotate-btn" id="rotate-btn" onclick="toggleRotate()">◎ AUTO-ORBIT</button>
     </div>
   </div>
 
-  <div class="theme-switcher">
-    <button class="theme-btn active galaxy" id="btn-galaxy" onclick="setTheme('galaxy')">🌌 GALAXY</button>
-    <button class="theme-btn dna" id="btn-dna" onclick="setTheme('dna')">🧬 DNA</button>
+  <!-- Theme label -->
+  <div id="theme-label">MILKY WAY — GALAXY VIEW — CLICK A SYSTEM TO EXPLORE</div>
+
+  <!-- Legend -->
+  <div id="legend">
+    <div class="leg-title">System Clusters</div>
+    <div class="leg-row">
+      <div class="leg-swatch" style="background:#10b981"></div>
+      <div class="leg-name">Public / Marketing</div>
+    </div>
+    <div class="leg-row">
+      <div class="leg-swatch" style="background:#06b6d4"></div>
+      <div class="leg-name">Intelligence Tools</div>
+    </div>
+    <div class="leg-row">
+      <div class="leg-swatch" style="background:#a855f7"></div>
+      <div class="leg-name">Sovereign Layer</div>
+    </div>
+    <div class="leg-row">
+      <div class="leg-swatch" style="background:#f59e0b"></div>
+      <div class="leg-name">Business Ops</div>
+    </div>
+    <div class="leg-row">
+      <div class="leg-swatch" style="background:#ef4444"></div>
+      <div class="leg-name">Gated / Auth-Only</div>
+    </div>
+    <div class="leg-row">
+      <div class="leg-swatch" style="background:#f97316"></div>
+      <div class="leg-name">Creative Suite</div>
+    </div>
   </div>
 
-  <div class="bar-right">
-    <div class="status-dot"></div>
-    <div class="status-text">18 SYSTEMS ONLINE</div>
-    <button class="rotate-btn" id="rotate-btn" onclick="toggleRotate()">◎ AUTO-ORBIT</button>
+  <!-- Node card -->
+  <div id="card">
+    <button class="c-close" onclick="closeCard()">✕</button>
+    <div class="c-path" id="c-path"></div>
+    <div class="c-label" id="c-label"></div>
+    <div class="c-desc" id="c-desc"></div>
+    <div class="c-tags" id="c-tags"></div>
+    <a class="c-visit" id="c-visit">⟶ OPEN SYSTEM</a>
   </div>
-</div>
 
-<!-- Theme label -->
-<div id="theme-label">MILKY WAY — GALAXY VIEW — CLICK A SYSTEM TO EXPLORE</div>
+  <!-- Crosshair -->
+  <div id="crosshair"></div>
 
-<!-- Legend -->
-<div id="legend">
-  <div class="leg-title">System Clusters</div>
-  <div class="leg-row"><div class="leg-swatch" style="background:#10b981"></div><div class="leg-name">Public / Marketing</div></div>
-  <div class="leg-row"><div class="leg-swatch" style="background:#06b6d4"></div><div class="leg-name">Intelligence Tools</div></div>
-  <div class="leg-row"><div class="leg-swatch" style="background:#a855f7"></div><div class="leg-name">Sovereign Layer</div></div>
-  <div class="leg-row"><div class="leg-swatch" style="background:#f59e0b"></div><div class="leg-name">Business Ops</div></div>
-  <div class="leg-row"><div class="leg-swatch" style="background:#ef4444"></div><div class="leg-name">Gated / Auth-Only</div></div>
-  <div class="leg-row"><div class="leg-swatch" style="background:#f97316"></div><div class="leg-name">Creative Suite</div></div>
-</div>
-
-<!-- Node card -->
-<div id="card">
-  <button class="c-close" onclick="closeCard()">✕</button>
-  <div class="c-path" id="c-path"></div>
-  <div class="c-label" id="c-label"></div>
-  <div class="c-desc" id="c-desc"></div>
-  <div class="c-tags" id="c-tags"></div>
-  <a class="c-visit" id="c-visit">⟶ OPEN SYSTEM</a>
-</div>
-
-<!-- Crosshair -->
-<div id="crosshair"></div>
-
-<!-- Bottom HUD -->
-<div id="hud">
-  <div class="hud-item">
-    <div class="hud-dot" style="background:#06b6d4"></div>
-    <span class="hud-val">18</span><span class="hud-lbl">systems</span>
+  <!-- Bottom HUD -->
+  <div id="hud">
+    <div class="hud-item">
+      <div class="hud-dot" style="background:#06b6d4"></div>
+      <span class="hud-val">18</span><span class="hud-lbl">systems</span>
+    </div>
+    <div class="hud-item">
+      <div class="hud-dot" style="background:#a855f7"></div>
+      <span class="hud-val">6</span><span class="hud-lbl">clusters</span>
+    </div>
+    <div class="hud-item">
+      <div class="hud-dot" style="background:#10b981"></div>
+      <span class="hud-val" id="hud-theme">GALAXY</span><span class="hud-lbl">theme</span>
+    </div>
+    <div class="hud-item">
+      <div class="hud-dot" style="background:#f59e0b"></div>
+      <span id="hud-fps" class="hud-val">60</span><span class="hud-lbl">fps</span>
+    </div>
   </div>
-  <div class="hud-item">
-    <div class="hud-dot" style="background:#a855f7"></div>
-    <span class="hud-val">6</span><span class="hud-lbl">clusters</span>
-  </div>
-  <div class="hud-item">
-    <div class="hud-dot" style="background:#10b981"></div>
-    <span class="hud-val" id="hud-theme">GALAXY</span><span class="hud-lbl">theme</span>
-  </div>
-  <div class="hud-item">
-    <div class="hud-dot" style="background:#f59e0b"></div>
-    <span id="hud-fps" class="hud-val">60</span><span class="hud-lbl">fps</span>
-  </div>
-</div>
 
-<script>
-/* ═══════════════════════════════════════════════════════════════
-   YACE19.AI — DUAL THEME: GALAXY + DNA
-   18 real systems from yace19ai.com routing manifest
-   ═══════════════════════════════════════════════════════════════ */
+  <script>
+    /* ═══════════════════════════════════════════════════════════════
+       YACE19.AI — DUAL THEME: GALAXY + DNA
+       18 real systems from yace19ai.com routing manifest
+       ═══════════════════════════════════════════════════════════════ */
 
-const THREE = window.THREE;
+    const THREE = window.THREE;
 
-// ── SYSTEMS DATA ──────────────────────────────────────────────
-const SYSTEMS = [
-  {id:'home',    path:'/',            label:'Accueil',           desc:'Landing page souveraine. Positionnement IA Prime-AI. Modèle Pay-Per-Minute. Marché français.',  cluster:'public',    tags:['PUBLIC','LANDING'],      color:'#10b981', size:2.2, url:'/'},
-  {id:'pricing', path:'/pricing',     label:'Tarifs',            desc:'Plans Gratuit / Accès Anticipé / Custom. Roadmap: Video Gen Mars 2026, API Q2 2026.',           cluster:'public',    tags:['PUBLIC','STRIPE'],       color:'#10b981', size:1.6, url:'/pricing'},
-  {id:'fleet',   path:'/fleet',       label:'Réalisations',      desc:'Showcase des projets et réalisations client produits par le swarm d\'agents.',                  cluster:'public',    tags:['PUBLIC','PORTFOLIO'],    color:'#10b981', size:1.4, url:'/fleet'},
-  {id:'pharos',  path:'/philosophy',  label:'Notre Approche',    desc:'Philosophie souveraine: autonomie totale, zéro cloud contrainte, agents persistants.',          cluster:'public',    tags:['PUBLIC','DOCTRINE'],     color:'#10b981', size:1.2, url:'/philosophy'},
-  {id:'sovereign',path:'/sovereign',  label:'Infrastructure',    desc:'Vue complète de la stack: VPS Hostinger + H200 Vast.ai + GPU tunnel + Agent Zero + Cognee.',    cluster:'sovereign', tags:['SOVEREIGN','INFRA'],     color:'#a855f7', size:2.0, url:'/sovereign'},
-  {id:'search',  path:'/sovereign',   label:'Sovereign Search',  desc:'Moteur de recherche profond. Swarm Chandra + Gemini OCR. DeepSearch multi-source autonome.',    cluster:'intel',     tags:['AI','GATED','SEARCH'],   color:'#06b6d4', size:1.8, url:'/sovereign'},
-  {id:'build',   path:'/build',       label:'Self-Coding Engine',desc:'Moteur de code autonome. Auth-gated. Génération + test + déploiement en boucle fermée.',        cluster:'gated',     tags:['AUTH-GATED','CODE'],     color:'#ef4444', size:2.0, url:'/build'},
-  {id:'voice',   path:'/voice',       label:'Assistant Vocal',   desc:'Voice-to-Agent pipeline: Kokoro TTS + Voicebox clone + Pipecat S2S. Temps réel.',              cluster:'intel',     tags:['AI','REAL-TIME','VOICE'],color:'#06b6d4', size:1.6, url:'/voice'},
-  {id:'workflow', path:'/workflow',   label:'Workflows',         desc:'Visual workflow builder + n8n composer. LangChain orchestration. ZeroClaw MCP bridge.',         cluster:'ops',       tags:['AUTOMATION','N8N'],      color:'#f59e0b', size:1.7, url:'/workflow'},
-  {id:'analytics',path:'/analytics',  label:'Analytics',         desc:'Dashboard entreprise. Tracking LLM cost, latence, token usage. Auth-gated.',                  cluster:'gated',     tags:['AUTH-GATED','METRICS'],  color:'#ef4444', size:1.5, url:'/analytics'},
-  {id:'themes',  path:'/solutions',   label:'Nos Services',      desc:'Catalogue de solutions IA sectorielles: immobilier, e-commerce, legal, comptabilité.',          cluster:'public',    tags:['PUBLIC','SECTORS'],      color:'#10b981', size:1.5, url:'/solutions'},
-  {id:'crm',     path:'/crm',         label:'CRM Pipeline',      desc:'CRM IA-native. Scoring leads, nurturing automatisé, Slack/email notifications. Auth-gated.',   cluster:'ops',       tags:['AUTH-GATED','CRM'],      color:'#f59e0b', size:1.4, url:'/crm'},
-  {id:'agents',  path:'/agents',      label:'Agent Memory',      desc:'Visualiseur de mémoire HIVE. 299 nœuds Cognee. Sémantique + cadrage + liaison. Auth-gated.',   cluster:'sovereign', tags:['SOVEREIGN','COGNEE'],    color:'#a855f7', size:1.6, url:'/agents'},
-  {id:'graph',   path:'/graph',       label:'Knowledge Graph',   desc:'3D LangGraph + Cognee Knowledge Graph. Semantic wiring + memory fusion. 299 nodes.',          cluster:'sovereign', tags:['SOVEREIGN','3D-GRAPH'],  color:'#a855f7', size:1.8, url:'/graph'},
-  {id:'costs',   path:'/costs',       label:'Cost Tracker',      desc:'Suivi des coûts LLM en temps réel. Token budget management. Auth-gated.',                     cluster:'ops',       tags:['AUTH-GATED','FINOPS'],   color:'#f59e0b', size:1.3, url:'/costs'},
-  {id:'extractor',path:'/extractor',  label:'Data Extractor',    desc:'Extracteur de données structurées via Gemini Vision. OCR + parsing. Auth-gated.',             cluster:'intel',     tags:['AI','OCR','GATED'],      color:'#06b6d4', size:1.4, url:'/extractor'},
-  {id:'status',  path:'/status',      label:'Infra Status',      desc:'Monitoring temps réel: VPS, GPU tunnel, ByteBot, n8n, Cognee. Auth-gated.',                   cluster:'ops',       tags:['AUTH-GATED','OPS'],      color:'#f59e0b', size:1.3, url:'/status'},
-  {id:'creative',path:'/fleet',       label:'Creative Suite',    desc:'Génération image + vidéo Wan 2.2 sur H200 GPU souverain. Modèle 14B paramètres FP8.',          cluster:'creative',  tags:['AI','GPU','VIDEO'],      color:'#f97316', size:1.7, url:'/fleet'},
-];
+    // ── SYSTEMS DATA ──────────────────────────────────────────────
+    const SYSTEMS = [
+      { id: 'home', path: '/', label: 'Accueil', desc: 'Landing page souveraine. Positionnement IA Prime-AI. Modèle Pay-Per-Minute. Marché français.', cluster: 'public', tags: ['PUBLIC', 'LANDING'], color: '#10b981', size: 2.2, url: '/' },
+      { id: 'pricing', path: '/pricing', label: 'Tarifs', desc: 'Plans Gratuit / Accès Anticipé / Custom. Roadmap: Video Gen Mars 2026, API Q2 2026.', cluster: 'public', tags: ['PUBLIC', 'STRIPE'], color: '#10b981', size: 1.6, url: '/pricing' },
+      { id: 'fleet', path: '/fleet', label: 'Réalisations', desc: 'Showcase des projets et réalisations client produits par le swarm d\'agents.', cluster: 'public', tags: ['PUBLIC', 'PORTFOLIO'], color: '#10b981', size: 1.4, url: '/fleet' },
+      { id: 'pharos', path: '/philosophy', label: 'Notre Approche', desc: 'Philosophie souveraine: autonomie totale, zéro cloud contrainte, agents persistants.', cluster: 'public', tags: ['PUBLIC', 'DOCTRINE'], color: '#10b981', size: 1.2, url: '/philosophy' },
+      { id: 'sovereign', path: '/sovereign', label: 'Infrastructure', desc: 'Vue complète de la stack: VPS Hostinger + H200 Vast.ai + GPU tunnel + Agent Zero + Cognee.', cluster: 'sovereign', tags: ['SOVEREIGN', 'INFRA'], color: '#a855f7', size: 2.0, url: '/sovereign' },
+      { id: 'search', path: '/sovereign', label: 'Sovereign Search', desc: 'Moteur de recherche profond. Swarm Chandra + Gemini OCR. DeepSearch multi-source autonome.', cluster: 'intel', tags: ['AI', 'GATED', 'SEARCH'], color: '#06b6d4', size: 1.8, url: '/sovereign' },
+      { id: 'build', path: '/build', label: 'Self-Coding Engine', desc: 'Moteur de code autonome. Auth-gated. Génération + test + déploiement en boucle fermée.', cluster: 'gated', tags: ['AUTH-GATED', 'CODE'], color: '#ef4444', size: 2.0, url: '/build' },
+      { id: 'voice', path: '/voice', label: 'Assistant Vocal', desc: 'Voice-to-Agent pipeline: Kokoro TTS + Voicebox clone + Pipecat S2S. Temps réel.', cluster: 'intel', tags: ['AI', 'REAL-TIME', 'VOICE'], color: '#06b6d4', size: 1.6, url: '/voice' },
+      { id: 'workflow', path: '/workflow', label: 'Workflows', desc: 'Visual workflow builder + n8n composer. LangChain orchestration. ZeroClaw MCP bridge.', cluster: 'ops', tags: ['AUTOMATION', 'N8N'], color: '#f59e0b', size: 1.7, url: '/workflow' },
+      { id: 'analytics', path: '/analytics', label: 'Analytics', desc: 'Dashboard entreprise. Tracking LLM cost, latence, token usage. Auth-gated.', cluster: 'gated', tags: ['AUTH-GATED', 'METRICS'], color: '#ef4444', size: 1.5, url: '/analytics' },
+      { id: 'themes', path: '/solutions', label: 'Nos Services', desc: 'Catalogue de solutions IA sectorielles: immobilier, e-commerce, legal, comptabilité.', cluster: 'public', tags: ['PUBLIC', 'SECTORS'], color: '#10b981', size: 1.5, url: '/solutions' },
+      { id: 'crm', path: '/crm', label: 'CRM Pipeline', desc: 'CRM IA-native. Scoring leads, nurturing automatisé, Slack/email notifications. Auth-gated.', cluster: 'ops', tags: ['AUTH-GATED', 'CRM'], color: '#f59e0b', size: 1.4, url: '/crm' },
+      { id: 'agents', path: '/agents', label: 'Agent Memory', desc: 'Visualiseur de mémoire HIVE. 299 nœuds Cognee. Sémantique + cadrage + liaison. Auth-gated.', cluster: 'sovereign', tags: ['SOVEREIGN', 'COGNEE'], color: '#a855f7', size: 1.6, url: '/agents' },
+      { id: 'graph', path: '/graph', label: 'Knowledge Graph', desc: '3D LangGraph + Cognee Knowledge Graph. Semantic wiring + memory fusion. 299 nodes.', cluster: 'sovereign', tags: ['SOVEREIGN', '3D-GRAPH'], color: '#a855f7', size: 1.8, url: '/graph' },
+      { id: 'costs', path: '/costs', label: 'Cost Tracker', desc: 'Suivi des coûts LLM en temps réel. Token budget management. Auth-gated.', cluster: 'ops', tags: ['AUTH-GATED', 'FINOPS'], color: '#f59e0b', size: 1.3, url: '/costs' },
+      { id: 'extractor', path: '/extractor', label: 'Data Extractor', desc: 'Extracteur de données structurées via Gemini Vision. OCR + parsing. Auth-gated.', cluster: 'intel', tags: ['AI', 'OCR', 'GATED'], color: '#06b6d4', size: 1.4, url: '/extractor' },
+      { id: 'status', path: '/status', label: 'Infra Status', desc: 'Monitoring temps réel: VPS, GPU tunnel, ByteBot, n8n, Cognee. Auth-gated.', cluster: 'ops', tags: ['AUTH-GATED', 'OPS'], color: '#f59e0b', size: 1.3, url: '/status' },
+      { id: 'creative', path: '/fleet', label: 'Creative Suite', desc: 'Génération image + vidéo Wan 2.2 sur H200 GPU souverain. Modèle 14B paramètres FP8.', cluster: 'creative', tags: ['AI', 'GPU', 'VIDEO'], color: '#f97316', size: 1.7, url: '/fleet' },
+    ];
 
-const CLUSTER_COLORS = {
-  public:'#10b981', intel:'#06b6d4', sovereign:'#a855f7',
-  ops:'#f59e0b', gated:'#ef4444', creative:'#f97316'
-};
+    const CLUSTER_COLORS = {
+      public: '#10b981', intel: '#06b6d4', sovereign: '#a855f7',
+      ops: '#f59e0b', gated: '#ef4444', creative: '#f97316'
+    };
 
-// ── THREE SETUP ───────────────────────────────────────────────
-const canvas = document.getElementById('c');
-const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.setSize(innerWidth, innerHeight);
-renderer.setClearColor(0x020408,1);
+    // ── THREE SETUP ───────────────────────────────────────────────
+    const canvas = document.getElementById('c');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setClearColor(0x020408, 1);
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(55, innerWidth/innerHeight, 0.1, 5000);
-camera.position.set(0, 60, 280);
-camera.lookAt(0,0,0);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 5000);
+    camera.position.set(0, 60, 280);
+    camera.lookAt(0, 0, 0);
 
-// ── STATE ─────────────────────────────────────────────────────
-let currentTheme = 'galaxy';
-let autoRotate = false;
-let rotateAngle = 0;
-let fps = 60; let fpsLast = performance.now(); let fpsFrames = 0;
-let hoveredObj = null;
-let selectedSystem = null;
+    // ── STATE ─────────────────────────────────────────────────────
+    let currentTheme = 'galaxy';
+    let autoRotate = false;
+    let rotateAngle = 0;
+    let fps = 60; let fpsLast = performance.now(); let fpsFrames = 0;
+    let hoveredObj = null;
+    let selectedSystem = null;
 
-// ── SCENE OBJECTS ─────────────────────────────────────────────
-const galaxyGroup = new THREE.Group();
-const dnaGroup = new THREE.Group();
-scene.add(galaxyGroup);
-scene.add(dnaGroup);
-dnaGroup.visible = false;
+    // ── SCENE OBJECTS ─────────────────────────────────────────────
+    const galaxyGroup = new THREE.Group();
+    const dnaGroup = new THREE.Group();
+    scene.add(galaxyGroup);
+    scene.add(dnaGroup);
+    dnaGroup.visible = false;
 
-// Raycaster
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2(-9999,-9999);
+    // Raycaster
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2(-9999, -9999);
 
-// Map: mesh → system
-const meshToSystem = new Map();
+    // Map: mesh → system
+    const meshToSystem = new Map();
 
-/* ═══════════════════════════════ STARFIELD ═══════════════════ */
-function buildStarfield(){
-  const geo = new THREE.BufferGeometry();
-  const N = 8000;
-  const pos = new Float32Array(N*3);
-  const col = new Float32Array(N*3);
-  for(let i=0;i<N;i++){
-    const r = 800+Math.random()*1200;
-    const theta = Math.random()*Math.PI*2;
-    const phi = Math.acos(2*Math.random()-1);
-    pos[i*3]   = r*Math.sin(phi)*Math.cos(theta);
-    pos[i*3+1] = r*Math.sin(phi)*Math.sin(theta);
-    pos[i*3+2] = r*Math.cos(phi);
-    const t = Math.random();
-    col[i*3]   = 0.6+t*0.4;
-    col[i*3+1] = 0.7+t*0.3;
-    col[i*3+2] = 1.0;
-  }
-  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
-  geo.setAttribute('color',new THREE.BufferAttribute(col,3));
-  const mat = new THREE.PointsMaterial({size:0.7,vertexColors:true,sizeAttenuation:true});
-  return new THREE.Points(geo,mat);
-}
-const stars = buildStarfield();
-scene.add(stars);
+    /* ═══════════════════════════════ STARFIELD ═══════════════════ */
+    function buildStarfield() {
+      const geo = new THREE.BufferGeometry();
+      const N = 8000;
+      const pos = new Float32Array(N * 3);
+      const col = new Float32Array(N * 3);
+      for (let i = 0; i < N; i++) {
+        const r = 800 + Math.random() * 1200;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(2 * Math.random() - 1);
+        pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+        pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+        pos[i * 3 + 2] = r * Math.cos(phi);
+        const t = Math.random();
+        col[i * 3] = 0.6 + t * 0.4;
+        col[i * 3 + 1] = 0.7 + t * 0.3;
+        col[i * 3 + 2] = 1.0;
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+      const mat = new THREE.PointsMaterial({ size: 0.7, vertexColors: true, sizeAttenuation: true });
+      return new THREE.Points(geo, mat);
+    }
+    const stars = buildStarfield();
+    scene.add(stars);
 
-/* ═══════════════════════════════ GALAXY THEME ════════════════ */
-function buildGalaxy(){
-  galaxyGroup.clear();
-  meshToSystem.clear();
+    /* ═══════════════════════════════ GALAXY THEME ════════════════ */
+    function buildGalaxy() {
+      galaxyGroup.clear();
+      meshToSystem.clear();
 
-  // Galactic core glow
-  const coreGeo = new THREE.SphereGeometry(8,32,32);
-  const coreMat = new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.06});
-  galaxyGroup.add(new THREE.Mesh(coreGeo,coreMat));
+      // Galactic core glow
+      const coreGeo = new THREE.SphereGeometry(8, 32, 32);
+      const coreMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.06 });
+      galaxyGroup.add(new THREE.Mesh(coreGeo, coreMat));
 
-  // Galaxy disk dust (visual only)
-  const diskGeo = new THREE.BufferGeometry();
-  const dN = 4000; const dPos = new Float32Array(dN*3); const dCol = new Float32Array(dN*3);
-  for(let i=0;i<dN;i++){
-    const a = Math.random()*Math.PI*2;
-    const rInner = 15; const rOuter = 180;
-    const r = rInner + Math.pow(Math.random(),0.5)*(rOuter-rInner);
-    const spiral = a + r*0.018;
-    const arm = Math.floor(Math.random()*3);
-    const armOffset = arm*(Math.PI*2/3);
-    dPos[i*3]  = r*Math.cos(spiral+armOffset)+(Math.random()-0.5)*14;
-    dPos[i*3+1]= (Math.random()-0.5)*6*Math.exp(-r/80);
-    dPos[i*3+2]= r*Math.sin(spiral+armOffset)+(Math.random()-0.5)*14;
-    const t = r/rOuter;
-    dCol[i*3]  = 0.2+t*0.3;
-    dCol[i*3+1]= 0.3+t*0.4;
-    dCol[i*3+2]= 0.6+t*0.4;
-  }
-  diskGeo.setAttribute('position',new THREE.BufferAttribute(dPos,3));
-  diskGeo.setAttribute('color',new THREE.BufferAttribute(dCol,3));
-  const diskMat = new THREE.PointsMaterial({size:0.5,vertexColors:true,transparent:true,opacity:0.35});
-  galaxyGroup.add(new THREE.Points(diskGeo,diskMat));
+      // Galaxy disk dust (visual only)
+      const diskGeo = new THREE.BufferGeometry();
+      const dN = 4000; const dPos = new Float32Array(dN * 3); const dCol = new Float32Array(dN * 3);
+      for (let i = 0; i < dN; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const rInner = 15; const rOuter = 180;
+        const r = rInner + Math.pow(Math.random(), 0.5) * (rOuter - rInner);
+        const spiral = a + r * 0.018;
+        const arm = Math.floor(Math.random() * 3);
+        const armOffset = arm * (Math.PI * 2 / 3);
+        dPos[i * 3] = r * Math.cos(spiral + armOffset) + (Math.random() - 0.5) * 14;
+        dPos[i * 3 + 1] = (Math.random() - 0.5) * 6 * Math.exp(-r / 80);
+        dPos[i * 3 + 2] = r * Math.sin(spiral + armOffset) + (Math.random() - 0.5) * 14;
+        const t = r / rOuter;
+        dCol[i * 3] = 0.2 + t * 0.3;
+        dCol[i * 3 + 1] = 0.3 + t * 0.4;
+        dCol[i * 3 + 2] = 0.6 + t * 0.4;
+      }
+      diskGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
+      diskGeo.setAttribute('color', new THREE.BufferAttribute(dCol, 3));
+      const diskMat = new THREE.PointsMaterial({ size: 0.5, vertexColors: true, transparent: true, opacity: 0.35 });
+      galaxyGroup.add(new THREE.Points(diskGeo, diskMat));
 
-  // Place systems as "solar systems" along spiral arms
-  SYSTEMS.forEach((sys,i)=>{
-    const armCount = 3;
-    const arm = i % armCount;
-    const armOffset = arm*(Math.PI*2/armCount);
-    const t = (i/SYSTEMS.length);
-    const r = 30 + t*140;
-    const angle = t*Math.PI*4 + armOffset;
-    const x = r*Math.cos(angle)+(Math.random()-0.5)*10;
-    const y = (Math.random()-0.5)*15*Math.exp(-t*3);
-    const z = r*Math.sin(angle)+(Math.random()-0.5)*10;
+      // Place systems as "solar systems" along spiral arms
+      SYSTEMS.forEach((sys, i) => {
+        const armCount = 3;
+        const arm = i % armCount;
+        const armOffset = arm * (Math.PI * 2 / armCount);
+        const t = (i / SYSTEMS.length);
+        const r = 30 + t * 140;
+        const angle = t * Math.PI * 4 + armOffset;
+        const x = r * Math.cos(angle) + (Math.random() - 0.5) * 10;
+        const y = (Math.random() - 0.5) * 15 * Math.exp(-t * 3);
+        const z = r * Math.sin(angle) + (Math.random() - 0.5) * 10;
 
-    // Star (sphere)
-    const radius = sys.size*0.9;
-    const geo = new THREE.SphereGeometry(radius,24,24);
-    const col = new THREE.Color(sys.color);
-    const mat = new THREE.MeshBasicMaterial({color:col});
-    const mesh = new THREE.Mesh(geo,mat);
-    mesh.position.set(x,y,z);
-    mesh.userData = {system:sys, baseScale:1, baseY:y};
-    meshToSystem.set(mesh.uuid, sys);
-    galaxyGroup.add(mesh);
+        // Star (sphere)
+        const radius = sys.size * 0.9;
+        const geo = new THREE.SphereGeometry(radius, 24, 24);
+        const col = new THREE.Color(sys.color);
+        const mat = new THREE.MeshBasicMaterial({ color: col });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(x, y, z);
+        mesh.userData = { system: sys, baseScale: 1, baseY: y };
+        meshToSystem.set(mesh.uuid, sys);
+        galaxyGroup.add(mesh);
 
-    // Glow halo
-    const glowGeo = new THREE.SphereGeometry(radius*2.4,16,16);
-    const glowMat = new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.08,side:THREE.BackSide});
-    const glow = new THREE.Mesh(glowGeo,glowMat);
-    glow.position.copy(mesh.position);
-    galaxyGroup.add(glow);
+        // Glow halo
+        const glowGeo = new THREE.SphereGeometry(radius * 2.4, 16, 16);
+        const glowMat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.08, side: THREE.BackSide });
+        const glow = new THREE.Mesh(glowGeo, glowMat);
+        glow.position.copy(mesh.position);
+        galaxyGroup.add(glow);
 
-    // Orbit ring (tiny moons)
-    if(i%3===0){
-      const ring = new THREE.RingGeometry(radius*1.8, radius*2.0, 32);
-      const ringMat = new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.12,side:THREE.DoubleSide});
-      const ringMesh = new THREE.Mesh(ring, ringMat);
-      ringMesh.position.copy(mesh.position);
-      ringMesh.rotation.x = Math.PI/2*(0.7+Math.random()*0.6);
-      ringMesh.rotation.z = Math.random()*Math.PI;
-      galaxyGroup.add(ringMesh);
+        // Orbit ring (tiny moons)
+        if (i % 3 === 0) {
+          const ring = new THREE.RingGeometry(radius * 1.8, radius * 2.0, 32);
+          const ringMat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.12, side: THREE.DoubleSide });
+          const ringMesh = new THREE.Mesh(ring, ringMat);
+          ringMesh.position.copy(mesh.position);
+          ringMesh.rotation.x = Math.PI / 2 * (0.7 + Math.random() * 0.6);
+          ringMesh.rotation.z = Math.random() * Math.PI;
+          galaxyGroup.add(ringMesh);
+        }
+
+        // Sprite label
+        const sprite = makeLabel(sys.label, sys.color);
+        sprite.position.set(x, y + radius + 3.5, z);
+        sprite.userData = { isLabel: true };
+        galaxyGroup.add(sprite);
+
+        // Store mesh ref on sys
+        sys._mesh_galaxy = mesh;
+        sys._pos_galaxy = new THREE.Vector3(x, y, z);
+      });
+
+      // Interstellar connection lines (thematic)
+      const linesMat = new THREE.LineBasicMaterial({ color: 0x1a2a3a, transparent: true, opacity: 0.25 });
+      for (let i = 0; i < SYSTEMS.length - 1; i++) {
+        const a = SYSTEMS[i]._pos_galaxy;
+        const b = SYSTEMS[(i + 3) % SYSTEMS.length]._pos_galaxy;
+        if (a && b && a.distanceTo(b) < 120) {
+          const geo = new THREE.BufferGeometry().setFromPoints([a, b]);
+          galaxyGroup.add(new THREE.Line(geo, linesMat));
+        }
+      }
     }
 
-    // Sprite label
-    const sprite = makeLabel(sys.label, sys.color);
-    sprite.position.set(x, y+radius+3.5, z);
-    sprite.userData = {isLabel:true};
-    galaxyGroup.add(sprite);
+    /* ═══════════════════════════════ DNA THEME ═══════════════════ */
+    function buildDNA() {
+      dnaGroup.clear();
 
-    // Store mesh ref on sys
-    sys._mesh_galaxy = mesh;
-    sys._pos_galaxy = new THREE.Vector3(x,y,z);
-  });
+      const N = SYSTEMS.length;
+      const helixRadius = 28;
+      const helixHeight = 200;
+      const helixTurns = 4;
 
-  // Interstellar connection lines (thematic)
-  const linesMat = new THREE.LineBasicMaterial({color:0x1a2a3a,transparent:true,opacity:0.25});
-  for(let i=0;i<SYSTEMS.length-1;i++){
-    const a = SYSTEMS[i]._pos_galaxy;
-    const b = SYSTEMS[(i+3)%SYSTEMS.length]._pos_galaxy;
-    if(a&&b&&a.distanceTo(b)<120){
-      const geo = new THREE.BufferGeometry().setFromPoints([a,b]);
-      galaxyGroup.add(new THREE.Line(geo,linesMat));
+      // Two backbones
+      const strandPts1 = [];
+      const strandPts2 = [];
+      for (let t = 0; t <= 200; t++) {
+        const frac = t / 200;
+        const angle = frac * Math.PI * 2 * helixTurns;
+        const y = (frac - 0.5) * helixHeight;
+        strandPts1.push(new THREE.Vector3(helixRadius * Math.cos(angle), y, helixRadius * Math.sin(angle)));
+        strandPts2.push(new THREE.Vector3(helixRadius * Math.cos(angle + Math.PI), y, helixRadius * Math.sin(angle + Math.PI)));
+      }
+      const curve1 = new THREE.CatmullRomCurve3(strandPts1);
+      const curve2 = new THREE.CatmullRomCurve3(strandPts2);
+
+      const tubeGeo1 = new THREE.TubeGeometry(curve1, 200, 0.35, 8, false);
+      const tubeMat1 = new THREE.MeshBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.35 });
+      dnaGroup.add(new THREE.Mesh(tubeGeo1, tubeMat1));
+
+      const tubeGeo2 = new THREE.TubeGeometry(curve2, 200, 0.35, 8, false);
+      const tubeMat2 = new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.35 });
+      dnaGroup.add(new THREE.Mesh(tubeGeo2, tubeMat2));
+
+      // Place each system as a nucleotide pair
+      SYSTEMS.forEach((sys, i) => {
+        const frac = (i / (N - 1));
+        const angle = frac * Math.PI * 2 * helixTurns;
+        const y = (frac - 0.5) * helixHeight;
+
+        const xA = helixRadius * Math.cos(angle);
+        const zA = helixRadius * Math.sin(angle);
+        const xB = helixRadius * Math.cos(angle + Math.PI);
+        const zB = helixRadius * Math.sin(angle + Math.PI);
+
+        const col = new THREE.Color(sys.color);
+
+        // Nucleotide sphere on strand A
+        const sGeo = new THREE.SphereGeometry(sys.size * 0.65, 20, 20);
+        const sMat = new THREE.MeshBasicMaterial({ color: col });
+        const sMesh = new THREE.Mesh(sGeo, sMat);
+        sMesh.position.set(xA, y, zA);
+        sMesh.userData = { system: sys, baseScale: 1, baseY: y };
+        meshToSystem.set(sMesh.uuid, sys);
+        dnaGroup.add(sMesh);
+
+        // Glow
+        const gGeo = new THREE.SphereGeometry(sys.size * 1.5, 12, 12);
+        const gMat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.07, side: THREE.BackSide });
+        dnaGroup.add(new THREE.Mesh(gGeo, gMat)).position?.set(xA, y, zA);
+        dnaGroup.children[dnaGroup.children.length - 1].position.set(xA, y, zA);
+
+        // Complementary sphere on strand B
+        const s2Geo = new THREE.SphereGeometry(sys.size * 0.45, 16, 16);
+        const s2Mat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.5 });
+        const s2Mesh = new THREE.Mesh(s2Geo, s2Mat);
+        s2Mesh.position.set(xB, y, zB);
+        dnaGroup.add(s2Mesh);
+
+        // Base pair connector (rung)
+        const rungPts = [new THREE.Vector3(xA, y, zA), new THREE.Vector3(xB, y, zB)];
+        const rGeo = new THREE.BufferGeometry().setFromPoints(rungPts);
+        const rMat = new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.22 });
+        dnaGroup.add(new THREE.Line(rGeo, rMat));
+
+        // Label
+        const sprite = makeLabel(sys.label, sys.color);
+        sprite.position.set(xA, y + sys.size * 0.7 + 2.5, zA);
+        sprite.userData = { isLabel: true };
+        dnaGroup.add(sprite);
+
+        sys._mesh_dna = sMesh;
+        sys._pos_dna = new THREE.Vector3(xA, y, zA);
+      });
     }
-  }
-}
 
-/* ═══════════════════════════════ DNA THEME ═══════════════════ */
-function buildDNA(){
-  dnaGroup.clear();
-
-  const N = SYSTEMS.length;
-  const helixRadius = 28;
-  const helixHeight = 200;
-  const helixTurns = 4;
-
-  // Two backbones
-  const strandPts1 = [];
-  const strandPts2 = [];
-  for(let t=0;t<=200;t++){
-    const frac = t/200;
-    const angle = frac*Math.PI*2*helixTurns;
-    const y = (frac-0.5)*helixHeight;
-    strandPts1.push(new THREE.Vector3(helixRadius*Math.cos(angle), y, helixRadius*Math.sin(angle)));
-    strandPts2.push(new THREE.Vector3(helixRadius*Math.cos(angle+Math.PI), y, helixRadius*Math.sin(angle+Math.PI)));
-  }
-  const curve1 = new THREE.CatmullRomCurve3(strandPts1);
-  const curve2 = new THREE.CatmullRomCurve3(strandPts2);
-
-  const tubeGeo1 = new THREE.TubeGeometry(curve1,200,0.35,8,false);
-  const tubeMat1 = new THREE.MeshBasicMaterial({color:0x06b6d4,transparent:true,opacity:0.35});
-  dnaGroup.add(new THREE.Mesh(tubeGeo1,tubeMat1));
-
-  const tubeGeo2 = new THREE.TubeGeometry(curve2,200,0.35,8,false);
-  const tubeMat2 = new THREE.MeshBasicMaterial({color:0xa855f7,transparent:true,opacity:0.35});
-  dnaGroup.add(new THREE.Mesh(tubeGeo2,tubeMat2));
-
-  // Place each system as a nucleotide pair
-  SYSTEMS.forEach((sys,i)=>{
-    const frac = (i/(N-1));
-    const angle = frac*Math.PI*2*helixTurns;
-    const y = (frac-0.5)*helixHeight;
-
-    const xA = helixRadius*Math.cos(angle);
-    const zA = helixRadius*Math.sin(angle);
-    const xB = helixRadius*Math.cos(angle+Math.PI);
-    const zB = helixRadius*Math.sin(angle+Math.PI);
-
-    const col = new THREE.Color(sys.color);
-
-    // Nucleotide sphere on strand A
-    const sGeo = new THREE.SphereGeometry(sys.size*0.65,20,20);
-    const sMat = new THREE.MeshBasicMaterial({color:col});
-    const sMesh = new THREE.Mesh(sGeo,sMat);
-    sMesh.position.set(xA,y,zA);
-    sMesh.userData = {system:sys, baseScale:1, baseY:y};
-    meshToSystem.set(sMesh.uuid, sys);
-    dnaGroup.add(sMesh);
-
-    // Glow
-    const gGeo = new THREE.SphereGeometry(sys.size*1.5,12,12);
-    const gMat = new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.07,side:THREE.BackSide});
-    dnaGroup.add(new THREE.Mesh(gGeo,gMat)).position?.set(xA,y,zA);
-    dnaGroup.children[dnaGroup.children.length-1].position.set(xA,y,zA);
-
-    // Complementary sphere on strand B
-    const s2Geo = new THREE.SphereGeometry(sys.size*0.45,16,16);
-    const s2Mat = new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.5});
-    const s2Mesh = new THREE.Mesh(s2Geo,s2Mat);
-    s2Mesh.position.set(xB,y,zB);
-    dnaGroup.add(s2Mesh);
-
-    // Base pair connector (rung)
-    const rungPts = [new THREE.Vector3(xA,y,zA), new THREE.Vector3(xB,y,zB)];
-    const rGeo = new THREE.BufferGeometry().setFromPoints(rungPts);
-    const rMat = new THREE.LineBasicMaterial({color:col,transparent:true,opacity:0.22});
-    dnaGroup.add(new THREE.Line(rGeo,rMat));
-
-    // Label
-    const sprite = makeLabel(sys.label, sys.color);
-    sprite.position.set(xA, y+sys.size*0.7+2.5, zA);
-    sprite.userData = {isLabel:true};
-    dnaGroup.add(sprite);
-
-    sys._mesh_dna = sMesh;
-    sys._pos_dna = new THREE.Vector3(xA,y,zA);
-  });
-}
-
-/* ═══════════════════════════════ SPRITE LABELS ═══════════════ */
-function makeLabel(text, color){
-  const canvas2 = document.createElement('canvas');
-  canvas2.width = 256; canvas2.height = 48;
-  const ctx = canvas2.getContext('2d');
-  ctx.clearRect(0,0,256,48);
-  ctx.font = '700 13px Inter,system-ui,sans-serif';
-  ctx.textAlign = 'center';
-  ctx.fillStyle = color;
-  ctx.globalAlpha = 0.85;
-  ctx.fillText(text, 128, 30);
-  const tex = new THREE.CanvasTexture(canvas2);
-  const mat = new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false});
-  const sp = new THREE.Sprite(mat);
-  sp.scale.set(16,3,1);
-  return sp;
-}
-
-/* ═══════════════════════════════ INTERACTION ════════════════ */
-function getIntersects(){
-  raycaster.setFromCamera(mouse, camera);
-  const group = currentTheme==='galaxy' ? galaxyGroup : dnaGroup;
-  const meshes = [];
-  group.traverse(obj=>{
-    if(obj.isMesh && obj.userData.system) meshes.push(obj);
-  });
-  return raycaster.intersectObjects(meshes, false);
-}
-
-window.addEventListener('mousemove', e=>{
-  mouse.x = (e.clientX/innerWidth)*2-1;
-  mouse.y = -(e.clientY/innerHeight)*2+1;
-});
-
-window.addEventListener('click', e=>{
-  const hits = getIntersects();
-  if(hits.length>0){
-    const sys = hits[0].object.userData.system;
-    showCard(sys);
-  }
-});
-
-/* ═══════════════════════════════ CARD ═══════════════════════ */
-function showCard(sys){
-  selectedSystem = sys;
-  document.getElementById('c-path').textContent = sys.path;
-  document.getElementById('c-label').textContent = sys.label;
-  document.getElementById('c-desc').textContent = sys.desc;
-  const tagsEl = document.getElementById('c-tags');
-  tagsEl.innerHTML = sys.tags.map(t=>{
-    const cls = t.includes('GATED')||t.includes('AUTH') ? 'gated' : t==='SOVEREIGN'||t==='COGNEE' ? 'sovereign' : t==='PUBLIC' ? 'public' : '';
-    return `<span class="c-tag ${cls}">${t}</span>`;
-  }).join('');
-  const visitEl = document.getElementById('c-visit');
-  visitEl.textContent = `⟶ OPEN ${sys.label.toUpperCase()}`;
-  visitEl.onclick = ()=>{window.open('https://yace19ai.com'+sys.url,'_blank');};
-  document.getElementById('card').classList.add('visible');
-  // Fly camera to planet
-  flyTo(currentTheme==='galaxy' ? sys._pos_galaxy : sys._pos_dna);
-}
-
-function closeCard(){
-  document.getElementById('card').classList.remove('visible');
-  selectedSystem = null;
-}
-
-function flyTo(pos){
-  if(!pos) return;
-  const target = pos.clone();
-  const dist = 45;
-  const dir = target.clone().normalize();
-  const camTarget = target.clone().add(dir.multiplyScalar(-dist)).add(new THREE.Vector3(0,15,0));
-  // Simple lerp animation
-  const start = camera.position.clone();
-  const startLook = new THREE.Vector3(0,0,0);
-  const duration = 1200;
-  const startTime = performance.now();
-  function animate(){
-    const t = Math.min((performance.now()-startTime)/duration,1);
-    const ease = 1-Math.pow(1-t,3);
-    camera.position.lerpVectors(start, camTarget, ease);
-    camera.lookAt(target.lerp(startLook,1-ease));
-    if(t<1) requestAnimationFrame(animate);
-  }
-  animate();
-}
-
-/* ═══════════════════════════════ THEME SWITCH ════════════════ */
-function setTheme(theme){
-  currentTheme = theme;
-  galaxyGroup.visible = theme==='galaxy';
-  dnaGroup.visible = theme==='dna';
-  document.getElementById('btn-galaxy').className = 'theme-btn ' + (theme==='galaxy'?'active galaxy':'galaxy');
-  document.getElementById('btn-dna').className = 'theme-btn ' + (theme==='dna'?'active dna':'dna');
-  document.getElementById('hud-theme').textContent = theme.toUpperCase();
-  document.getElementById('theme-label').textContent = theme==='galaxy'
-    ? 'MILKY WAY — GALAXY VIEW — CLICK A SYSTEM TO EXPLORE'
-    : 'DNA HELIX — EACH NUCLEOTIDE IS A LIVING PAGE — CLICK TO ENTER';
-  closeCard();
-
-  // Reset camera
-  if(theme==='galaxy'){
-    camera.position.set(0,60,280);
-    camera.lookAt(0,0,0);
-  } else {
-    camera.position.set(80,0,80);
-    camera.lookAt(0,0,0);
-  }
-}
-
-/* ═══════════════════════════════ AUTO-ROTATE ════════════════ */
-function toggleRotate(){
-  autoRotate = !autoRotate;
-  const btn = document.getElementById('rotate-btn');
-  btn.className = 'rotate-btn' + (autoRotate?' on':'');
-  btn.textContent = autoRotate ? '◉ ORBITING' : '◎ AUTO-ORBIT';
-}
-
-/* ═══════════════════════════════ ORBIT CONTROL (simple) ═════ */
-let isDragging=false, prevX=0, prevY=0, sphericalTheta=0, sphericalPhi=Math.PI/3, sphericalR=280;
-canvas.addEventListener('mousedown',e=>{isDragging=true;prevX=e.clientX;prevY=e.clientY;});
-window.addEventListener('mouseup',()=>isDragging=false);
-window.addEventListener('mousemove',e=>{
-  if(!isDragging)return;
-  const dx=(e.clientX-prevX)*0.005;
-  const dy=(e.clientY-prevY)*0.005;
-  sphericalTheta-=dx;
-  sphericalPhi=Math.max(0.1,Math.min(Math.PI-0.1,sphericalPhi+dy));
-  prevX=e.clientX;prevY=e.clientY;
-});
-canvas.addEventListener('wheel',e=>{
-  sphericalR=Math.max(40,Math.min(600,sphericalR+e.deltaY*0.4));
-  e.preventDefault();
-},{passive:false});
-
-/* ═══════════════════════════════ RESIZE ═════════════════════ */
-window.addEventListener('resize',()=>{
-  camera.aspect=innerWidth/innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth,innerHeight);
-});
-
-/* ═══════════════════════════════ RENDER LOOP ════════════════ */
-const clock = new THREE.Clock();
-
-function render(){
-  requestAnimationFrame(render);
-  const t = clock.getElapsedTime();
-
-  // FPS counter
-  fpsFrames++;
-  const now = performance.now();
-  if(now-fpsLast>800){
-    fps = Math.round(fpsFrames*1000/(now-fpsLast));
-    document.getElementById('hud-fps').textContent = fps;
-    fpsFrames=0;fpsLast=now;
-  }
-
-  // Auto-rotate
-  if(autoRotate){
-    rotateAngle += 0.003;
-    const group = currentTheme==='galaxy'?galaxyGroup:dnaGroup;
-    group.rotation.y = rotateAngle;
-    stars.rotation.y = rotateAngle*0.05;
-  } else if(!isDragging){
-    // Manual orbit camera
-    const cx = sphericalR*Math.sin(sphericalPhi)*Math.sin(sphericalTheta);
-    const cy = sphericalR*Math.cos(sphericalPhi);
-    const cz = sphericalR*Math.sin(sphericalPhi)*Math.cos(sphericalTheta);
-    camera.position.set(cx,cy,cz);
-    camera.lookAt(0,0,0);
-  }
-
-  // DNA helix own rotation (gentle)
-  if(currentTheme==='dna' && !autoRotate){
-    dnaGroup.rotation.y = t*0.06;
-  }
-
-  // Star slow drift
-  stars.rotation.y = t*0.005;
-  stars.rotation.x = t*0.002;
-
-  // Hover detection
-  const hits = getIntersects();
-  const group = currentTheme==='galaxy'?galaxyGroup:dnaGroup;
-  group.traverse(obj=>{
-    if(obj.isMesh && obj.userData.system){
-      const isHover = hits.length>0 && hits[0].object===obj;
-      const base = obj.userData.baseScale||1;
-      const pulse = 1 + 0.06*Math.sin(t*2+obj.id);
-      obj.scale.setScalar(isHover ? base*1.35 : base*pulse);
-      document.body.style.cursor = isHover ? 'pointer' : 'default';
+    /* ═══════════════════════════════ SPRITE LABELS ═══════════════ */
+    function makeLabel(text, color) {
+      const canvas2 = document.createElement('canvas');
+      canvas2.width = 256; canvas2.height = 48;
+      const ctx = canvas2.getContext('2d');
+      ctx.clearRect(0, 0, 256, 48);
+      ctx.font = '700 13px Inter,system-ui,sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = color;
+      ctx.globalAlpha = 0.85;
+      ctx.fillText(text, 128, 30);
+      const tex = new THREE.CanvasTexture(canvas2);
+      const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+      const sp = new THREE.Sprite(mat);
+      sp.scale.set(16, 3, 1);
+      return sp;
     }
-  });
 
-  renderer.render(scene,camera);
-}
+    /* ═══════════════════════════════ INTERACTION ════════════════ */
+    function getIntersects() {
+      raycaster.setFromCamera(mouse, camera);
+      const group = currentTheme === 'galaxy' ? galaxyGroup : dnaGroup;
+      const meshes = [];
+      group.traverse(obj => {
+        if (obj.isMesh && obj.userData.system) meshes.push(obj);
+      });
+      return raycaster.intersectObjects(meshes, false);
+    }
 
-/* ═══════════════════════════════ INIT ═══════════════════════ */
-buildGalaxy();
-buildDNA();
-render();
+    window.addEventListener('mousemove', e => {
+      mouse.x = (e.clientX / innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / innerHeight) * 2 + 1;
+    });
 
-/* keyboard shortcut */
-window.addEventListener('keydown',e=>{
-  if(e.key==='g'||e.key==='G') setTheme('galaxy');
-  if(e.key==='d'||e.key==='D') setTheme('dna');
-  if(e.key==='r'||e.key==='R') toggleRotate();
-  if(e.key==='Escape') closeCard();
-});
-</script>
+    window.addEventListener('click', e => {
+      const hits = getIntersects();
+      if (hits.length > 0) {
+        const sys = hits[0].object.userData.system;
+        showCard(sys);
+      }
+    });
+
+    /* ═══════════════════════════════ CARD ═══════════════════════ */
+    function showCard(sys) {
+      selectedSystem = sys;
+      document.getElementById('c-path').textContent = sys.path;
+      document.getElementById('c-label').textContent = sys.label;
+      document.getElementById('c-desc').textContent = sys.desc;
+      const tagsEl = document.getElementById('c-tags');
+      tagsEl.innerHTML = sys.tags.map(t => {
+        const cls = t.includes('GATED') || t.includes('AUTH') ? 'gated' : t === 'SOVEREIGN' || t === 'COGNEE' ? 'sovereign' : t === 'PUBLIC' ? 'public' : '';
+        return `<span class="c-tag ${cls}">${t}</span>`;
+      }).join('');
+      const visitEl = document.getElementById('c-visit');
+      visitEl.textContent = `⟶ OPEN ${sys.label.toUpperCase()}`;
+      visitEl.onclick = () => { window.open('https://yace19ai.com' + sys.url, '_blank'); };
+      document.getElementById('card').classList.add('visible');
+      // Fly camera to planet
+      flyTo(currentTheme === 'galaxy' ? sys._pos_galaxy : sys._pos_dna);
+    }
+
+    function closeCard() {
+      document.getElementById('card').classList.remove('visible');
+      selectedSystem = null;
+    }
+
+    function flyTo(pos) {
+      if (!pos) return;
+      const target = pos.clone();
+      const dist = 45;
+      const dir = target.clone().normalize();
+      const camTarget = target.clone().add(dir.multiplyScalar(-dist)).add(new THREE.Vector3(0, 15, 0));
+      // Simple lerp animation
+      const start = camera.position.clone();
+      const startLook = new THREE.Vector3(0, 0, 0);
+      const duration = 1200;
+      const startTime = performance.now();
+      function animate() {
+        const t = Math.min((performance.now() - startTime) / duration, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        camera.position.lerpVectors(start, camTarget, ease);
+        camera.lookAt(target.lerp(startLook, 1 - ease));
+        if (t < 1) requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    /* ═══════════════════════════════ THEME SWITCH ════════════════ */
+    function setTheme(theme) {
+      currentTheme = theme;
+      galaxyGroup.visible = theme === 'galaxy';
+      dnaGroup.visible = theme === 'dna';
+      document.getElementById('btn-galaxy').className = 'theme-btn ' + (theme === 'galaxy' ? 'active galaxy' : 'galaxy');
+      document.getElementById('btn-dna').className = 'theme-btn ' + (theme === 'dna' ? 'active dna' : 'dna');
+      document.getElementById('hud-theme').textContent = theme.toUpperCase();
+      document.getElementById('theme-label').textContent = theme === 'galaxy'
+        ? 'MILKY WAY — GALAXY VIEW — CLICK A SYSTEM TO EXPLORE'
+        : 'DNA HELIX — EACH NUCLEOTIDE IS A LIVING PAGE — CLICK TO ENTER';
+      closeCard();
+
+      // Reset camera
+      if (theme === 'galaxy') {
+        camera.position.set(0, 60, 280);
+        camera.lookAt(0, 0, 0);
+      } else {
+        camera.position.set(80, 0, 80);
+        camera.lookAt(0, 0, 0);
+      }
+    }
+
+    /* ═══════════════════════════════ AUTO-ROTATE ════════════════ */
+    function toggleRotate() {
+      autoRotate = !autoRotate;
+      const btn = document.getElementById('rotate-btn');
+      btn.className = 'rotate-btn' + (autoRotate ? ' on' : '');
+      btn.textContent = autoRotate ? '◉ ORBITING' : '◎ AUTO-ORBIT';
+    }
+
+    /* ═══════════════════════════════ ORBIT CONTROL (simple) ═════ */
+    let isDragging = false, prevX = 0, prevY = 0, sphericalTheta = 0, sphericalPhi = Math.PI / 3, sphericalR = 280;
+    canvas.addEventListener('mousedown', e => { isDragging = true; prevX = e.clientX; prevY = e.clientY; });
+    window.addEventListener('mouseup', () => isDragging = false);
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const dx = (e.clientX - prevX) * 0.005;
+      const dy = (e.clientY - prevY) * 0.005;
+      sphericalTheta -= dx;
+      sphericalPhi = Math.max(0.1, Math.min(Math.PI - 0.1, sphericalPhi + dy));
+      prevX = e.clientX; prevY = e.clientY;
+    });
+    canvas.addEventListener('wheel', e => {
+      sphericalR = Math.max(40, Math.min(600, sphericalR + e.deltaY * 0.4));
+      e.preventDefault();
+    }, { passive: false });
+
+    /* ═══════════════════════════════ RESIZE ═════════════════════ */
+    window.addEventListener('resize', () => {
+      camera.aspect = innerWidth / innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+
+    /* ═══════════════════════════════ RENDER LOOP ════════════════ */
+    const clock = new THREE.Clock();
+
+    function render() {
+      requestAnimationFrame(render);
+      const t = clock.getElapsedTime();
+
+      // FPS counter
+      fpsFrames++;
+      const now = performance.now();
+      if (now - fpsLast > 800) {
+        fps = Math.round(fpsFrames * 1000 / (now - fpsLast));
+        document.getElementById('hud-fps').textContent = fps;
+        fpsFrames = 0; fpsLast = now;
+      }
+
+      // Auto-rotate
+      if (autoRotate) {
+        rotateAngle += 0.003;
+        const group = currentTheme === 'galaxy' ? galaxyGroup : dnaGroup;
+        group.rotation.y = rotateAngle;
+        stars.rotation.y = rotateAngle * 0.05;
+      } else if (!isDragging) {
+        // Manual orbit camera
+        const cx = sphericalR * Math.sin(sphericalPhi) * Math.sin(sphericalTheta);
+        const cy = sphericalR * Math.cos(sphericalPhi);
+        const cz = sphericalR * Math.sin(sphericalPhi) * Math.cos(sphericalTheta);
+        camera.position.set(cx, cy, cz);
+        camera.lookAt(0, 0, 0);
+      }
+
+      // DNA helix own rotation (gentle)
+      if (currentTheme === 'dna' && !autoRotate) {
+        dnaGroup.rotation.y = t * 0.06;
+      }
+
+      // Star slow drift
+      stars.rotation.y = t * 0.005;
+      stars.rotation.x = t * 0.002;
+
+      // Hover detection
+      const hits = getIntersects();
+      const group = currentTheme === 'galaxy' ? galaxyGroup : dnaGroup;
+      group.traverse(obj => {
+        if (obj.isMesh && obj.userData.system) {
+          const isHover = hits.length > 0 && hits[0].object === obj;
+          const base = obj.userData.baseScale || 1;
+          const pulse = 1 + 0.06 * Math.sin(t * 2 + obj.id);
+          obj.scale.setScalar(isHover ? base * 1.35 : base * pulse);
+          document.body.style.cursor = isHover ? 'pointer' : 'default';
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+
+    /* ═══════════════════════════════ INIT ═══════════════════════ */
+    buildGalaxy();
+    buildDNA();
+    render();
+
+    /* keyboard shortcut */
+    window.addEventListener('keydown', e => {
+      if (e.key === 'g' || e.key === 'G') setTheme('galaxy');
+      if (e.key === 'd' || e.key === 'D') setTheme('dna');
+      if (e.key === 'r' || e.key === 'R') toggleRotate();
+      if (e.key === 'Escape') closeCard();
+    });
+  </script>
 </body>
+
 </html>
