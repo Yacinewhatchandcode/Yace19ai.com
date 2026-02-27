@@ -9,8 +9,8 @@
             "destination": "/assets/:path*"
         },
         {
-            "source": "/((?!$).+)",
-            "destination": "https://prime-ai.fr/$1"
+            "source": "/:path+",
+            "destination": "https://prime-ai.fr/:path+"
         },
         {
             "source": "/",
