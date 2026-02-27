@@ -28,6 +28,7 @@ import KnowledgeGraphPage from "./pages/KnowledgeGraphPage";
 import CostTrackerPage from "./pages/CostTrackerPage";
 import DataExtractorPage from "./pages/DataExtractorPage";
 import WorkflowPage from "./pages/WorkflowPage";
+import AuthGuard from "./components/AuthGuard";
 
 function Navigation() {
   const location = useLocation();
@@ -153,7 +154,7 @@ function AnimatedRoutes() {
     return (
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
-          <Route path="/build" element={<SelfCodingPage />} />
+          <Route path="/build" element={<AuthGuard pageName="Build — Self-Coding Engine"><SelfCodingPage /></AuthGuard>} />
           <Route path="/workflow" element={<WorkflowPage />} />
         </Routes>
       </AnimatePresence>
@@ -167,18 +168,18 @@ function AnimatedRoutes() {
         <Route path="/fleet" element={<FleetPage />} />
         <Route path="/philosophy" element={<PhilosophyPage />} />
         <Route path="/sovereign" element={<SovereignSearchPage />} />
-        <Route path="/blog" element={<BlogPage />} />
-        <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/blog" element={<AuthGuard pageName="Blog — Internal Preview"><BlogPage /></AuthGuard>} />
+        <Route path="/analytics" element={<AuthGuard pageName="Analytics Dashboard"><AnalyticsPage /></AuthGuard>} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/pricing/success" element={<PricingSuccessPage />} />
         <Route path="/solutions" element={<ThemesPage />} />
         <Route path="/voice" element={<VoicePage />} />
-        <Route path="/status" element={<StatusPage />} />
-        <Route path="/crm" element={<CRMPage />} />
-        <Route path="/agents" element={<AgentMemoryPage />} />
-        <Route path="/graph" element={<KnowledgeGraphPage />} />
-        <Route path="/costs" element={<CostTrackerPage />} />
-        <Route path="/extractor" element={<DataExtractorPage />} />
+        <Route path="/status" element={<AuthGuard pageName="Infrastructure Status"><StatusPage /></AuthGuard>} />
+        <Route path="/crm" element={<AuthGuard pageName="CRM Pipeline"><CRMPage /></AuthGuard>} />
+        <Route path="/agents" element={<AuthGuard pageName="Agent Memory Viewer"><AgentMemoryPage /></AuthGuard>} />
+        <Route path="/graph" element={<AuthGuard pageName="Knowledge Graph"><KnowledgeGraphPage /></AuthGuard>} />
+        <Route path="/costs" element={<AuthGuard pageName="Cost Tracker"><CostTrackerPage /></AuthGuard>} />
+        <Route path="/extractor" element={<AuthGuard pageName="Data Extractor"><DataExtractorPage /></AuthGuard>} />
       </Routes>
     </AnimatePresence>
   );

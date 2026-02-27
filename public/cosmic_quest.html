@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>YAce19.AI — Cosmic Quest</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Inter:wght@400;700;900&display=swap');
+
+        :root {
+            --cyan: #00e5ff;
+            --violet: #a855f7;
+            --emerald: #10b981;
+            --rose: #f43f5e;
+            --gold: #f59e0b;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Inter', sans-serif;
+            color: #fff;
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Game HUD */
+        #hud {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .scanline {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 100;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            text-transform: uppercase;
+            font-family: 'JetBrains Mono';
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--cyan), var(--violet));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            font-family: 'Inter';
+            font-weight: 900;
+        }
+
+        .objective-panel {
+            background: rgba(0, 10, 20, 0.8);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 15px 25px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            width: 320px;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .obj-title {
+            font-size: 10px;
+            color: var(--cyan);
+            letter-spacing: 0.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .obj-title span.pulse {
+            animation: blink 2s infinite;
+            color: var(--emerald);
+        }
+
+        .obj-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .obj-item {
+            font-size: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .obj-item::before {
+            content: '';
+            display: inline-block;
+            min-width: 8px;
+            height: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .obj-item.done {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: line-through;
+        }
+
+        .obj-item.done::before {
+            background: var(--cyan);
+            border-color: var(--cyan);
+            box-shadow: 0 0 8px var(--cyan);
+        }
+
+        .obj-item.active {
+            color: #fff;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .obj-item.active::before {
+            border-color: var(--cyan);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        /* Crosshair */
+        .crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            pointer-events: none;
+            opacity: 0.3;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .crosshair .c-line {
+            position: absolute;
+            background: var(--cyan);
+        }
+
+        .crosshair .c-top {
+            width: 2px;
+            height: 12px;
+            left: 19px;
+            top: 0;
+        }
+
+        .crosshair .c-bottom {
+            width: 2px;
+            height: 12px;
+            left: 19px;
+            bottom: 0;
+        }
+
+        .crosshair .c-left {
+            width: 12px;
+            height: 2px;
+            top: 19px;
+            left: 0;
+        }
+
+        .crosshair .c-right {
+            width: 12px;
+            height: 2px;
+            top: 19px;
+            right: 0;
+        }
+
+        .crosshair.hovering {
+            transform: translate(-50%, -50%) scale(1.6) rotate(45deg);
+            opacity: 1;
+            filter: drop-shadow(0 0 8px var(--cyan));
+        }
+
+        .crosshair.hovering .c-line {
+            background: var(--emerald);
+        }
+
+        /* Info Card / Datapad */
+        #datapad {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(50px);
+            opacity: 0;
+            pointer-events: none;
+            background: rgba(2, 4, 8, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid var(--cyan);
+            border-radius: 16px;
+            padding: 30px;
+            width: 500px;
+            backdrop-filter: blur(24px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #datapad.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .dp-header {
+            font-family: 'JetBrains Mono';
+            font-size: 11px;
+            color: var(--cyan);
+            letter-spacing: 0.2em;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .dp-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 12px;
+            letter-spacing: -0.03em;
+            background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.7));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dp-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .dp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            background: rgba(0, 229, 255, 0.1);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            font-family: 'JetBrains Mono';
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .dp-btn:hover {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Notification Pop */
+        #notif {
+            position: absolute;
+            top: 120px;
+            right: 20px;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid var(--emerald);
+            color: var(--emerald);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono';
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #notif.show {
+            transform: translateX(0);
+        }
+
+        /* Cinematic Bars */
+        .cinematic-bar {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 0;
+            background: #000;
+            z-index: 90;
+            transition: height 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .bar-top {
+            top: 0;
+        }
+
+        .bar-bottom {
+            bottom: 0;
+        }
+
+        body.cinematic .bar-top,
+        body.cinematic .bar-bottom {
+            height: 12%;
+        }
+
+        #loader {
+            position: absolute;
+            inset: 0;
+            background: #000;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: 'JetBrains Mono';
+        }
+
+        .loader-text {
+            color: var(--cyan);
+            font-size: 14px;
+            letter-spacing: 0.2em;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        .loader-bar-bg {
+            width: 300px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .loader-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--cyan);
+            transition: width 0.2s;
+            box-shadow: 0 0 10px var(--cyan);
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'JetBrains Mono';
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="loader">
+        <div class="loader-text">INITIALIZING DEEP SPACE PROTOCOLS...</div>
+        <div class="loader-bar-bg">
+            <div class="loader-bar-fill" id="l-fill"></div>
+        </div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div id="hud">
+        <div class="scanline"></div>
+
+        <div class="top-bar">
+            <div class="logo">
+                <div class="logo-mark">Y</div>
+                <div>
+                    <div style="font-size:12px">YACE19<span style="color:var(--cyan)">.AI</span></div>
+                    <div style="font-size:7px; color:rgba(255,255,255,0.4); letter-spacing:0.3em; margin-top:2px;">
+                        COSMIC OS</div>
+                </div>
+            </div>
+
+            <div class="objective-panel" id="obj-panel">
+                <div class="obj-title">MISSION DIRECTIVES <span class="pulse">REC</span></div>
+                <ul class="obj-list">
+                    <li class="obj-item active" id="obj-1">Locate Terra (Public Sector)</li>
+                    <li class="obj-item" id="obj-2">Locate Ares (Sovereign Infra)</li>
+                    <li class="obj-item" id="obj-3">Locate Neural Core (Swarm Logic)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="notif">OBJECTIVE COMPLETE</div>
+
+        <div class="crosshair" id="xhair">
+            <div class="c-line c-top"></div>
+            <div class="c-line c-bottom"></div>
+            <div class="c-line c-left"></div>
+            <div class="c-line c-right"></div>
+        </div>
+
+        <div id="datapad">
+            <div class="dp-header">
+                <span id="dp-id">SYS.TERRA.01</span>
+                <span id="dp-status" style="color:var(--emerald)">ONLINE</span>
+            </div>
+            <div class="dp-title" id="dp-title">Earth: The Public Hub</div>
+            <div class="dp-desc" id="dp-desc">The entry point for all organic entities. Hosts the pricing, services, and
+                client portfolio. Access level: PUBLIC.</div>
+            <a href="#" class="dp-btn" id="dp-btn" target="_blank">INITIATE DESCENT ⟶</a>
+        </div>
+
+        <div class="cinematic-bar bar-top"></div>
+        <div class="cinematic-bar bar-bottom"></div>
+
+        <div class="hint">DRAG TO ORBIT • SCROLL TO ZOOM • CLICK TO WARP</div>
+    </div>
+
+    <script>
+        // --- ASSET URLS (Reliable High-Res Textures from CORS-friendly CDNs) ---
+        const TEX = {
+            earthColor: 'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg',
+            earthWater: 'https://unpkg.com/three-globe/example/img/earth-water.png',
+            // Using generic noise for clouds if external fails, but unpkg is reliable:
+            earthClouds: 'https://unpkg.com/three-globe/example/img/earth-water.png', // fallback
+            marsColor: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Mars-2002.jpg/1024px-Mars-2002.jpg',
+            starfield: 'https://unpkg.com/three-globe/example/img/night-sky.png'
+        };
+
+        const ROUTES = {
+            earth: { title: 'Terra (Home)', desc: 'The entry point for all organic entities. Public sector routing, positioning, and global AI catalog. Access: PUBLIC.', url: 'https://yace19ai.com/', id: 'SYS.TERRA', idx: 1, color: '#00e5ff' },
+            mars: { title: 'Ares (Sovereign Array)', desc: 'The Sovereign Fleet Infrastructure. Hostinger VPS Nodes, Vast.ai GPU Tunnels, and ByteBot endpoints. Access: HIGH CLEARANCE.', url: 'https://yace19ai.com/sovereign', id: 'SYS.ARES', idx: 2, color: '#f43f5e' },
+            core: { title: 'Prime Neural Meshwork', desc: 'The Hive Mind. 299 Cognee knowledge nodes, LangGraph flows, and Vector Memory. Swarm logic rendering in real-time. Access: RESTRICTED.', url: 'https://yace19ai.com/agents', id: 'SYS.NEURAL', idx: 3, color: '#a855f7' }
+        };
+
+        // --- INIT THREE.JS ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000205);
+        scene.fog = new THREE.FogExp2(0x000205, 0.0003);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 10, 20000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.1;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxDistance = 6000;
+        controls.minDistance = 60;
+        controls.enablePan = false;
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0xffffff, 0.02));
+        const sunLight = new THREE.DirectionalLight(0xffffff, 2.0);
+        sunLight.position.set(-500, 200, 500);
+        scene.add(sunLight);
+
+        // Add some subtle rim lights
+        const rimLight = new THREE.DirectionalLight(0x00aaff, 0.5);
+        rimLight.position.set(500, 0, -500);
+        scene.add(rimLight);
+
+        const rimLight2 = new THREE.DirectionalLight(0xff00aa, 0.3);
+        rimLight2.position.set(0, -500, 0);
+        scene.add(rimLight2);
+
+        const textureLoader = new THREE.TextureLoader();
+        textureLoader.setCrossOrigin('anonymous');
+        const interactables = [];
+
+        // Fallback loader if textures take > 5s
+        let started = false;
+        setTimeout(() => { if (!started) forceStart(); }, 5000);
+
+        let loadedCount = 0;
+        const totalAssets = 4; // earth, water, mars, stars
+
+        function onAssetLoaded() {
+            if (started) return;
+            loadedCount++;
+            document.getElementById('l-fill').style.width = (loadedCount / totalAssets) * 100 + '%';
+            if (loadedCount === totalAssets) { setTimeout(forceStart, 300); }
+        }
+
+        function forceStart() {
+            if (started) return;
+            started = true;
+            document.getElementById('loader').style.opacity = '0';
+            document.getElementById('loader').style.pointerEvents = 'none';
+            startSequence();
+        }
+
+        // 1. STARFIELD BACKGROUND + GALAXY DUST
+        const envGeo = new THREE.SphereGeometry(8000, 64, 64);
+        const envMat = new THREE.MeshBasicMaterial({
+            map: textureLoader.load(TEX.starfield, onAssetLoaded),
+            side: THREE.BackSide, color: 0x444455
+        });
+        scene.add(new THREE.Mesh(envGeo, envMat));
+
+        const dustGeo = new THREE.BufferGeometry();
+        const dustCount = 20000;
+        const dPos = new Float32Array(dustCount * 3);
+        const dCol = new Float32Array(dustCount * 3);
+        for (let i = 0; i < dustCount; i++) {
+            const r = 1000 + Math.random() * 4000;
+            const th = Math.random() * Math.PI * 2;
+            const y = (Math.random() - 0.5) * 800 * Math.exp(-r / 1500);
+            dPos[i * 3] = r * Math.cos(th);
+            dPos[i * 3 + 1] = y + (Math.random() - 0.5) * 100;
+            dPos[i * 3 + 2] = r * Math.sin(th);
+            const mix = Math.random();
+            const color = new THREE.Color();
+            if (mix < 0.3) color.setHex(0x00e5ff); // Cyan
+            else if (mix < 0.6) color.setHex(0xa855f7); // Violet
+            else color.setHex(0xffffff);
+            dCol[i * 3] = color.r; dCol[i * 3 + 1] = color.g; dCol[i * 3 + 2] = color.b;
+        }
+        dustGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
+        dustGeo.setAttribute('color', new THREE.BufferAttribute(dCol, 3));
+        const dustMat = new THREE.PointsMaterial({ size: 3, vertexColors: true, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending, depthWrite: false });
+        const galaxyDust = new THREE.Points(dustGeo, dustMat);
+        scene.add(galaxyDust);
+
+        // --- 2. PHOTOREALISTIC EARTH ---
+        const earthG = new THREE.Group();
+        earthG.position.set(-500, 0, 100);
+        const eRadius = 45;
+
+        const eGeo = new THREE.SphereGeometry(eRadius, 64, 64);
+        const eMat = new THREE.MeshPhongMaterial({
+            map: textureLoader.load(TEX.earthColor, onAssetLoaded),
+            specularMap: textureLoader.load(TEX.earthWater, onAssetLoaded),
+            specular: new THREE.Color(0x333333),
+            shininess: 30
+        });
+        const earthMesh = new THREE.Mesh(eGeo, eMat);
+        earthG.add(earthMesh);
+
+        const atmosGeo = new THREE.SphereGeometry(eRadius * 1.12, 32, 32);
+        const atmosMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.15, side: THREE.BackSide, blending: THREE.AdditiveBlending });
+        earthG.add(new THREE.Mesh(atmosGeo, atmosMat));
+
+        // Orbit rings for sci-fi feel
+        const ringGeo = new THREE.RingGeometry(eRadius * 1.8, eRadius * 2.0, 64);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x00e5ff, side: THREE.DoubleSide, transparent: true, opacity: 0.1 });
+        const earthRing = new THREE.Mesh(ringGeo, ringMat);
+        earthRing.rotation.x = Math.PI / 2;
+        earthG.add(earthRing);
+
+        scene.add(earthG);
+        const earthHitbox = new THREE.Mesh(new THREE.SphereGeometry(eRadius * 2.5, 16, 16), new THREE.MeshBasicMaterial({ visible: false }));
+        earthHitbox.position.copy(earthG.position);
+        earthHitbox.userData = { type: 'planet', data: ROUTES.earth, targetPos: earthG.position.clone(), radius: eRadius };
+        scene.add(earthHitbox); interactables.push(earthHitbox);
+
+
+        // --- 3. PHOTOREALISTIC MARS ---
+        const marsG = new THREE.Group();
+        marsG.position.set(600, 150, -400);
+        const mRadius = 35;
+
+        const mGeo = new THREE.SphereGeometry(mRadius, 64, 64);
+        const mMat = new THREE.MeshPhongMaterial({
+            map: textureLoader.load(TEX.marsColor, onAssetLoaded),
+            specular: new THREE.Color(0x111111),
+            shininess: 5,
+            color: 0xffaaaa // slight tint for wiki image
+        });
+        const marsMesh = new THREE.Mesh(mGeo, mMat);
+        marsG.add(marsMesh);
+
+        const mAtmosGeo = new THREE.SphereGeometry(mRadius * 1.12, 32, 32);
+        const mAtmosMat = new THREE.MeshBasicMaterial({ color: 0xff3300, transparent: true, opacity: 0.15, side: THREE.BackSide, blending: THREE.AdditiveBlending });
+        marsG.add(new THREE.Mesh(mAtmosGeo, mAtmosMat));
+
+        const marsRing = new THREE.Mesh(new THREE.RingGeometry(mRadius * 1.5, mRadius * 1.55, 64), new THREE.MeshBasicMaterial({ color: 0xff3300, side: THREE.DoubleSide, transparent: true, opacity: 0.2 }));
+        marsRing.rotation.x = Math.PI / 3;
+        marsG.add(marsRing);
+
+        scene.add(marsG);
+        const marsHitbox = new THREE.Mesh(new THREE.SphereGeometry(mRadius * 2.5, 16, 16), new THREE.MeshBasicMaterial({ visible: false }));
+        marsHitbox.position.copy(marsG.position);
+        marsHitbox.userData = { type: 'planet', data: ROUTES.mars, targetPos: marsG.position.clone(), radius: mRadius };
+        scene.add(marsHitbox); interactables.push(marsHitbox);
+
+
+        // --- 4. NEURAL MESHWORK CORE ---
+        const neuralG = new THREE.Group();
+        neuralG.position.set(0, -300, -1200);
+
+        const neuronCount = 1200; // denser
+        const nGeo = new THREE.BufferGeometry();
+        const nPos = new Float32Array(neuronCount * 3);
+        const nCol = new Float32Array(neuronCount * 3);
+        const nPts = [];
+
+        // Brain hemispheres math
+        for (let i = 0; i < neuronCount; i++) {
+            const hemi = Math.random() > 0.5 ? 1 : -1;
+            const radius = 60 + Math.random() * 120;
+            const th = Math.random() * Math.PI;
+            const phi = Math.random() * Math.PI * 2;
+            const stretch = 1.2 + Math.random() * 0.5;
+            const x = radius * Math.sin(th) * Math.cos(phi) * stretch + hemi * 80;
+            const y = radius * Math.cos(th);
+            const z = radius * Math.sin(th) * Math.sin(phi) * 0.8;
+            nPos[i * 3] = x; nPos[i * 3 + 1] = y; nPos[i * 3 + 2] = z;
+            nPts.push(new THREE.Vector3(x, y, z));
+
+            const c = new THREE.Color();
+            c.setHSL(0.75 + Math.random() * 0.1, 0.9, 0.5 + Math.random() * 0.3); // mixed purples/pinks
+            nCol[i * 3] = c.r; nCol[i * 3 + 1] = c.g; nCol[i * 3 + 2] = c.b;
+        }
+
+        nGeo.setAttribute('position', new THREE.BufferAttribute(nPos, 3));
+        nGeo.setAttribute('color', new THREE.BufferAttribute(nCol, 3));
+        const nMat = new THREE.PointsMaterial({ size: 4, vertexColors: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false });
+        const neurons = new THREE.Points(nGeo, nMat);
+        neuralG.add(neurons);
+
+        // Synaptic connections (highly optimized)
+        const sGeo = new THREE.BufferGeometry();
+        const sPos = [];
+        for (let i = 0; i < neuronCount; i += 2) { // sample subset to save perf
+            for (let j = i + 1; j < Math.min(i + 30, neuronCount); j++) {
+                if (Math.random() > 0.4 && nPts[i].distanceTo(nPts[j]) < 40) {
+                    sPos.push(nPts[i].x, nPts[i].y, nPts[i].z);
+                    sPos.push(nPts[j].x, nPts[j].y, nPts[j].z);
+                }
+            }
+        }
+        sGeo.setAttribute('position', new THREE.Float32BufferAttribute(sPos, 3));
+        const sMat = new THREE.LineBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending, depthWrite: false });
+        const synapses = new THREE.LineSegments(sGeo, sMat);
+        neuralG.add(synapses);
+
+        // Core Energy Sphere
+        const coreEnergy = new THREE.Mesh(
+            new THREE.SphereGeometry(50, 64, 64),
+            new THREE.MeshBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.15, wireframe: true, blending: THREE.AdditiveBlending })
+        );
+        neuralG.add(coreEnergy);
+
+        const coreGlow = new THREE.Mesh(
+            new THREE.SphereGeometry(90, 32, 32),
+            new THREE.MeshBasicMaterial({ color: 0x00e5ff, transparent: true, opacity: 0.04, side: THREE.BackSide, blending: THREE.AdditiveBlending })
+        );
+        neuralG.add(coreGlow);
+
+        scene.add(neuralG);
+
+        const neuralHitbox = new THREE.Mesh(new THREE.SphereGeometry(250, 16, 16), new THREE.MeshBasicMaterial({ visible: false }));
+        neuralHitbox.position.copy(neuralG.position);
+        neuralHitbox.userData = { type: 'planet', data: ROUTES.core, targetPos: neuralG.position.clone(), radius: 150 };
+        scene.add(neuralHitbox); interactables.push(neuralHitbox);
+
+
+        // --- INTERACTION LOGIC ---
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2(-9999, -9999);
+        const xhair = document.getElementById('xhair');
+        let hovered = null;
+        let currentTarget = null;
+        let progressState = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.addEventListener('click', () => {
+            if (hovered) {
+                warpTo(hovered);
+            } else if (currentTarget) {
+                // Clicked empty space while drilled in - zoom out
+                document.getElementById('datapad').classList.remove('show');
+                document.body.classList.remove('cinematic');
+
+                // Zoom back out to orbital view
+                gsap.to(camera.position, {
+                    x: currentTarget.userData.targetPos.x + 800,
+                    y: currentTarget.userData.targetPos.y + 400,
+                    z: currentTarget.userData.targetPos.z + 800,
+                    duration: 2, ease: "power2.inOut"
+                });
+
+                currentTarget = null;
+            }
+        });
+
+        function showNotification(text) {
+            const n = document.getElementById('notif');
+            n.innerText = text;
+            n.classList.add('show');
+            setTimeout(() => n.classList.remove('show'), 3000);
+        }
+
+        function warpTo(hitbox) {
+            const data = hitbox.userData.data;
+            currentTarget = hitbox;
+
+            // Game Quest state update
+            if (progressState < data.idx) {
+                const el = document.getElementById('obj-' + data.idx);
+                if (el && el.classList.contains('active')) {
+                    el.classList.remove('active');
+                    el.classList.add('done');
+                    showNotification("OBJECTIVE " + data.idx + " SECURED");
+                    if (data.idx < 3) {
+                        document.getElementById('obj-' + (data.idx + 1)).classList.add('active');
+                    } else {
+                        document.querySelector('.pulse').innerText = 'COMPLETED';
+                        document.querySelector('.pulse').style.color = 'var(--cyan)';
+                        document.getElementById('obj-panel').style.borderColor = 'var(--emerald)';
+                    }
+                    progressState = data.idx;
+                }
+            }
+
+            document.body.classList.add('cinematic');
+
+            const pos = hitbox.userData.targetPos;
+            const offset = hitbox.userData.radius * 3.5;
+
+            const camDir = camera.position.clone().sub(pos).normalize();
+            const targetCamPos = pos.clone().add(camDir.multiplyScalar(offset));
+
+            // Warp animation
+            gsap.to(camera.position, {
+                x: targetCamPos.x, y: targetCamPos.y, z: targetCamPos.z,
+                duration: 2.2, ease: "power3.inOut"
+            });
+
+            // Smoother camera target panning
+            gsap.to(controls.target, {
+                x: pos.x, y: pos.y, z: pos.z,
+                duration: 1.5, ease: "power2.out"
+            });
+
+            setTimeout(() => {
+                if (currentTarget !== hitbox) return; // user clicked away
+                document.getElementById('dp-id').innerText = data.id;
+                document.getElementById('dp-status').style.color = data.color;
+                document.getElementById('dp-title').innerText = data.title;
+                document.getElementById('dp-desc').innerText = data.desc;
+                document.getElementById('dp-btn').href = data.url;
+                document.getElementById('dp-btn').style.borderColor = data.color;
+                document.getElementById('dp-btn').style.color = data.color;
+                document.getElementById('datapad').style.borderTopColor = data.color;
+                document.getElementById('datapad').classList.add('show');
+            }, 1800);
+        }
+
+        function startSequence() {
+            camera.position.set(0, 2000, 4000);
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            // Big dynamic dive into the system
+            gsap.to(camera.position, {
+                x: -100, y: 100, z: 1200,
+                duration: 4.5, ease: "power3.out"
+            });
+        }
+
+        // --- RENDER LOOP ---
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const t = clock.getElapsedTime();
+
+            galaxyDust.rotation.y = t * 0.005;
+
+            earthMesh.rotation.y = t * 0.06;
+            earthRing.rotation.z = -t * 0.08;
+
+            marsMesh.rotation.y = t * 0.04;
+            marsRing.rotation.z = t * 0.05;
+
+            neuralG.rotation.y = t * 0.15;
+            coreEnergy.rotation.x = t * 0.3;
+            coreEnergy.rotation.z = t * 0.2;
+            coreEnergy.scale.setScalar(1 + 0.15 * Math.sin(t * 3));
+            coreGlow.scale.setScalar(1 + 0.05 * Math.sin(t * 2));
+            synapses.material.opacity = 0.05 + 0.1 * Math.sin(t * 8);
+
+            // Floating effect for planets
+            earthG.position.y = Math.sin(t) * 10;
+            marsG.position.y = 150 + Math.cos(t * 1.2) * 12;
+            neuralG.position.y = -300 + Math.sin(t * 0.8) * 20;
+
+            earthHitbox.position.copy(earthG.position);
+            marsHitbox.position.copy(marsG.position);
+            neuralHitbox.position.copy(neuralG.position);
+
+            // Raycasting
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(interactables);
+
+            if (intersects.length > 0) {
+                if (hovered !== intersects[0].object) {
+                    hovered = intersects[0].object;
+                    xhair.classList.add('hovering');
+                    document.body.style.cursor = 'none';
+
+                    // Highlight object
+                    const data = hovered.userData.data;
+                    gsap.to(xhair.querySelector('.c-line'), { backgroundColor: data.color, duration: 0.2 });
+                }
+            } else {
+                if (hovered) {
+                    hovered = null;
+                    xhair.classList.remove('hovering');
+                    gsap.to(xhair.querySelector('.c-line'), { backgroundColor: 'var(--cyan)', duration: 0.2 });
+                    if (!currentTarget) document.body.style.cursor = 'default';
+                }
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+
+</html>

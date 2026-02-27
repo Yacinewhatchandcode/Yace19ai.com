@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CreditCard, Shield, Check, Zap, ArrowRight, Copy, Sparkles } from 'lucide-react';
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../lib/supabase';
 
 interface CheckoutModalProps {
     isOpen: boolean;
@@ -10,12 +9,12 @@ interface CheckoutModalProps {
     projectTitle: string;
 }
 
-const STRIPE_PK = import.meta.env.VITE_STRIPE_PK || '';
-
+// PAYMENT DISABLED — Contact mode only (no Stripe, no billing)
+const STRIPE_PK = '';
 const PAYMENT_LINKS: Record<string, string> = {};
 
-const PRICE = '1.00';
-const CURRENCY = '€';
+const PRICE = 'Quote';
+const CURRENCY = '';
 
 const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectId, projectTitle }) => {
     const [step, setStep] = useState<'overview' | 'processing' | 'success'>('overview');
@@ -26,44 +25,16 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectI
     const hasStripe = !!STRIPE_PK || !!paymentLink;
 
     const handlePurchase = () => {
-        if (paymentLink) {
-            // Use Stripe Payment Link (simplest — no backend needed)
-            const url = new URL(paymentLink);
-            if (email) url.searchParams.set('prefilled_email', email);
-            window.open(url.toString(), '_blank');
-            setStep('processing');
-            setTimeout(() => setStep('success'), 2000);
-        } else if (STRIPE_PK) {
-            // Use Stripe Checkout via Supabase Edge Function
-            setStep('processing');
-            fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                },
-                body: JSON.stringify({ projectId, email, amount: 100 })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.url) window.location.href = data.url;
-                    else setStep('success');
-                })
-                .catch(() => {
-                    // Fallback to email
-                    window.open(`mailto:yacine@prime-ai.fr?subject=Acquire & Deploy: ${projectTitle}&body=I'd like to acquire the codebase and setup guide for ${projectTitle} (€1). My email: ${email}`, '_blank');
-                    setStep('success');
-                });
-        } else {
-            // No Stripe — use direct payment via email/PayPal
-            setStep('processing');
-            setTimeout(() => {
-                window.open(`mailto:yacine@prime-ai.fr?subject=Acquire & Deploy: ${projectTitle}&body=Hi Yacine,%0A%0AI'd like to acquire the source code and documentation for "${projectTitle}" for €1.%0A%0AMy email: ${email}%0A%0AThank you!`, '_blank');
-                setStep('success');
-            }, 1200);
-        }
+        // PAYMENT DISABLED — Contact-only mode
+        setStep('processing');
+        setTimeout(() => {
+            window.open(
+                `mailto:yacine@prime-ai.fr?subject=Project Inquiry: ${projectTitle}&body=Hi Yacine,%0A%0AI'm interested in the project: "${projectTitle}".%0A%0AMy email: ${email}%0A%0APlease send me a quote and setup details.%0A%0AThank you!`,
+                '_blank'
+            );
+            setStep('success');
+        }, 800);
     };
-
     const copyPaymentInfo = () => {
         navigator.clipboard.writeText(`IBAN: FR76 XXXX XXXX XXXX XXXX XXXX XXX\nAmount: €1.00\nRef: ${projectId.toUpperCase()}\nEmail: yacine@prime-ai.fr`);
         setCopied(true);
@@ -174,7 +145,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectI
                                         }`}
                                 >
                                     <CreditCard size={18} />
-                                    {hasStripe ? `Pay ${CURRENCY}${PRICE}` : `Acquire for ${CURRENCY}${PRICE}`}
+                                    {`Request Access for ${projectTitle}`}
                                     <ArrowRight size={16} />
                                 </button>
 
@@ -192,7 +163,7 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, projectI
                                 {/* Security footer */}
                                 <div className="flex items-center justify-center gap-2 mt-4 text-[11px] text-gray-500">
                                     <Shield size={12} />
-                                    Secure checkout • SSL encrypted • GDPR compliant
+                                    Secure contact · SSL encrypted · LGPD compliant
                                 </div>
                             </div>
                         )}
