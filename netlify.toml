@@ -12,36 +12,30 @@
 # Netlify Edge Functions routes are defined inside the edge-functions using export const config = { path: '/api/something'}
 
 [[redirects]]
-  from = "/api/voicebox/*"
-  to = "https://srv1307385.hstgr.cloud/voicebox/:splat"
+  from = "/api/*"
+  to = "https://srv1307385.hstgr.cloud/api/:splat"
   status = 200
   force = true
 
 [[redirects]]
-  from = "/api/cognee/*"
-  to = "http://72.62.24.13:8140/:splat"
+  from = "/assets/*"
+  to = "/assets/:splat"
   status = 200
   force = true
 
 [[redirects]]
-  from = "/api/bytebot/*"
-  to = "http://72.62.24.13:9991/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/sim/*"
-  to = "http://72.62.24.13:3014/api/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/sim-socket/*"
-  to = "http://72.62.24.13:3012/:splat"
+  from = "/"
+  to = "/index.html"
   status = 200
   force = true
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "https://prime-ai.fr/:splat"
   status = 200
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Clear-Site-Data = '"cache", "executionContexts"'
