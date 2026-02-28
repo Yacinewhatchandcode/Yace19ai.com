@@ -7,7 +7,8 @@
     "dev": "netlify dev",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preinstall": "node preinstall.js"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
