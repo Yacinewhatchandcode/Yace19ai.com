@@ -97,3 +97,8 @@ body.fullscreen-active {
     opacity: 0.8;
   }
 }
+
+/* Allow click through to canvas while keeping children interactive */
+.child-pointer-auto > * {
+  pointer-events: auto;
+}

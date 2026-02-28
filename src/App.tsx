@@ -210,9 +210,11 @@ function AppContent() {
         </div>
       ) : (
         /* Normal pages: nav + content wrapper */
-        <div className="relative z-10 min-h-[100dvh] text-white font-sans overflow-x-hidden selection:bg-cyan-500/30 selection:text-white flex flex-col pt-[52px] sm:pt-14 md:pt-[72px]">
-          <Navigation />
-          <div className="flex-1 w-full max-w-[1600px] mx-auto px-3 sm:px-6 md:px-8 pb-6 sm:pb-12">
+        <div className="relative z-10 min-h-[100dvh] pointer-events-none text-white font-sans overflow-x-hidden selection:bg-cyan-500/30 selection:text-white flex flex-col pt-[52px] sm:pt-14 md:pt-[72px]">
+          <div className="pointer-events-auto w-full">
+            <Navigation />
+          </div>
+          <div className="flex-1 w-full max-w-[1600px] mx-auto px-3 sm:px-6 md:px-8 pb-6 sm:pb-12 child-pointer-auto">
             <AnimatedRoutes />
           </div>
         </div>

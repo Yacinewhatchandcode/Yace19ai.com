@@ -1,7 +1,8 @@
-import { Float, PointMaterial } from "@react-three/drei";
+import { Float, PointMaterial, Sphere, Html } from "@react-three/drei";
 import { Canvas, useFrame } from '@react-three/fiber';
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, useEffect } from "react";
 import * as THREE from 'three';
+import { useNavigate } from "react-router-dom";
 
 // Shared helix parameters
 const HELIX_PARAMS = {
@@ -342,6 +343,76 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', progress = 1.
     );
 };
 
+const PLANETS = [
+    { path: '/solutions', label: 'Solutions', color: '#00ffff', pos: [-5, 3, -1] },
+    { path: '/voice', label: 'Voice AI', color: '#ff00ff', pos: [4, 4, -2] },
+    { path: '/fleet', label: 'Portfolio', color: '#00ff88', pos: [-3.5, -3, 2] },
+    { path: '/pricing', label: 'Pricing', color: '#ffd700', pos: [5, -2, 1] },
+    { path: '/philosophy', label: 'Philosophy', color: '#ff4444', pos: [0, 5, -4] },
+    { path: '/sovereign', label: 'Sovereign', color: '#00ffcc', pos: [0, -5, -3] }
+];
+
+const InteractivePlanets = () => {
+    const navigate = useNavigate();
+    const groupRef = useRef<THREE.Group>(null);
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+    // Make the planets subtly rotate as a constellation
+    useFrame((state) => {
+        const time = state.clock.getElapsedTime();
+        if (groupRef.current) {
+            groupRef.current.rotation.y = time * 0.05;
+            groupRef.current.position.y = Math.sin(time * 0.5) * 0.3;
+        }
+    });
+
+    useEffect(() => {
+        if (hoveredIndex !== null) {
+            document.body.style.cursor = 'pointer';
+        } else {
+            document.body.style.cursor = 'auto';
+        }
+    }, [hoveredIndex]);
+
+    return (
+        <group ref={groupRef}>
+            {PLANETS.map((planet, i) => {
+                const isHovered = hoveredIndex === i;
+                const scale = isHovered ? 1.4 : 1.0;
+                return (
+                    <group
+                        key={planet.path}
+                        position={new THREE.Vector3(...planet.pos)}
+                        onPointerOver={(e) => { e.stopPropagation(); setHoveredIndex(i); }}
+                        onPointerOut={() => setHoveredIndex(null)}
+                        onClick={(e) => { e.stopPropagation(); navigate(planet.path); }}
+                    >
+                        <Sphere args={[0.35, 32, 32]} scale={scale}>
+                            <meshStandardMaterial
+                                color={planet.color}
+                                emissive={planet.color}
+                                emissiveIntensity={isHovered ? 2.5 : 0.8}
+                                roughness={0.2}
+                                metalness={0.8}
+                            />
+                        </Sphere>
+                        {/* Glow Effect */}
+                        <Sphere args={[0.5, 16, 16]} scale={scale}>
+                            <meshBasicMaterial color={planet.color} transparent opacity={isHovered ? 0.3 : 0.1} blending={THREE.AdditiveBlending} depthWrite={false} />
+                        </Sphere>
+
+                        <Html position={[0, -0.8, 0]} center className="pointer-events-none">
+                            <div className={`transition-all duration-300 font-mono text-center tracking-widest uppercase font-bold text-xs whitespace-nowrap px-3 py-1.5 rounded border ${isHovered ? 'bg-black/80 text-white border-white border-opacity-50 scale-110 shadow-[0_0_15px_rgba(255,255,255,0.3)]' : 'bg-black/50 text-white/70 border-white/10'}`}>
+                                {planet.label}
+                            </div>
+                        </Html>
+                    </group>
+                );
+            })}
+        </group>
+    );
+};
+
 interface NeuralMeshwork3DProps {
     nodeColor?: string;
     lineColor?: string;
@@ -375,6 +446,9 @@ const NeuralMeshwork3D: React.FC<NeuralMeshwork3DProps> = ({
 
                 {/* The Amas de Galaxies background layer */}
                 <GalaxyParticles />
+
+                {/* Interactive V2 UI Planets */}
+                <InteractivePlanets />
 
                 {/* Floating DNA Lifeform */}
                 <Float speed={2.5} rotationIntensity={0.6} floatIntensity={1.0}>

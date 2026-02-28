@@ -59,6 +59,7 @@ export default function VoiceOrbInterface() {
 
     // ─── Lock voice on mount and language change ────────────────────────────
     const lockVoice = useCallback(() => {
+        if (lockedVoiceRef.current) return;
         const voices = window.speechSynthesis.getVoices();
         if (voices.length === 0) return; // Voices not loaded yet
 
