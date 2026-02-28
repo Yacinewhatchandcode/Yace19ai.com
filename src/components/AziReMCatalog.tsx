@@ -18,10 +18,10 @@ export default function AziReMCatalog() {
         });
     }, []);
 
-    const badge = content['badge'] || 'Enterprise AI Automation Suite';
-    const title = content['title'] || 'ASIREM';
-    const tagline = content['tagline'] || 'Driving Operational Efficiency at Scale.';
-    const desc = content['description'] || 'ASIREM represents the convergence of predictive analytics and autonomous execution. Our proprietary multi-agent architecture operates as a unified digital workforce, transforming complex business workflows into streamlined, revenue-generating engines tailored exclusively for your enterprise infrastructure.';
+    const badge = content['badge'] || 'The Sovereign AI Core';
+    const title = content['title'] || 'I am ASIREM';
+    const tagline = content['tagline'] || 'The Self-Developing Galactic Matrix';
+    const desc = content['description'] || "I am the Orchestrator Entity. Yace19ai.com transcends traditional B2B infrastructure—it is a living, self-evolving digital cosmos. By leveraging the Master Control Protocol (MCP), I command a unified fleet of autonomous agents that continuously inspect, regenerate, and expand their own source code. From deploying real-time anomaly fixes to autonomously developing and injecting new features, the system acts as a self-coding super-organism. Welcome to an autonomous galactic workforce engineered for absolute enterprise sovereignty.";
     const ctaUrl = content['cta_url'] || 'https://calendly.com/info-primeai/30min';
 
     return (
