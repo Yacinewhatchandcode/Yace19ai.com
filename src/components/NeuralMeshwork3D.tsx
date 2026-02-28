@@ -1,4 +1,4 @@
-import { Float, Sphere, Html, Stars, Trail, MeshWobbleMaterial, MeshDistortMaterial } from "@react-three/drei";
+import { Float, Sphere, Html, Stars, Trail, MeshWobbleMaterial, MeshDistortMaterial, OrbitControls, PerformanceMonitor } from "@react-three/drei";
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, Bloom, ChromaticAberration, Noise, Vignette } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
@@ -6,13 +6,17 @@ import React, { useMemo, useRef, useState, useEffect, memo } from "react";
 import * as THREE from 'three';
 import { useNavigate } from "react-router-dom";
 
+// Helper to detect mobile gracefully safely
+const getIsMobile = () => typeof window !== 'undefined' && window.innerWidth < 768;
+
 // --------------------------------------------------------
 // THE MASTER PLANET (Hyper-Realistic Sci-Fi Earth)
 // --------------------------------------------------------
 const SovereignPlanet = memo(() => {
     const planetRef = useRef<THREE.Mesh>(null);
     const cloudsRef = useRef<THREE.Mesh>(null);
-    const atmosphereRef = useRef<THREE.Mesh>(null);
+    const isMobile = getIsMobile();
+    const segments = isMobile ? 32 : 64;
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
@@ -21,24 +25,17 @@ const SovereignPlanet = memo(() => {
             cloudsRef.current.rotation.y = time * 0.06;
             cloudsRef.current.rotation.x = Math.sin(time * 0.1) * 0.1;
         }
-        // Dynamic mouse parallax
-        const targetX = state.pointer.x * 0.1;
-        const targetY = state.pointer.y * 0.1;
-        if (atmosphereRef.current) {
-            atmosphereRef.current.position.x = THREE.MathUtils.lerp(atmosphereRef.current.position.x, targetX, 0.05);
-            atmosphereRef.current.position.y = THREE.MathUtils.lerp(atmosphereRef.current.position.y, targetY, 0.05);
-        }
     });
 
     return (
         <group position={[0, -15, -20]}> {/* Positioned massively at bottom */}
-            <Sphere args={[12, 64, 64]} ref={planetRef as any}>
+            <Sphere args={[12, segments, segments]} ref={planetRef as any}>
                 <meshStandardMaterial color="#0a1526" emissive="#003366" emissiveIntensity={0.2} roughness={0.7} metalness={0.4} />
             </Sphere>
-            <Sphere args={[12.2, 64, 64]} ref={cloudsRef as any}>
+            <Sphere args={[12.2, segments, segments]} ref={cloudsRef as any}>
                 <meshStandardMaterial color="#ffffff" transparent opacity={0.15} depthWrite={false} blending={THREE.AdditiveBlending} />
             </Sphere>
-            <Sphere args={[13.5, 64, 64]} ref={atmosphereRef as any}>
+            <Sphere args={[13.5, segments, segments]}>
                 <meshBasicMaterial color="#0066ff" transparent opacity={0.1} side={THREE.BackSide} blending={THREE.AdditiveBlending} depthWrite={false} />
             </Sphere>
         </group>
@@ -50,7 +47,8 @@ const SovereignPlanet = memo(() => {
 // --------------------------------------------------------
 const DeepSpaceNebula = memo(() => {
     const groupRef = useRef<THREE.Group>(null);
-    const particleCount = typeof window !== 'undefined' && window.innerWidth < 768 ? 3000 : 15000;
+    const isMobile = getIsMobile();
+    const particleCount = isMobile ? 1500 : 8000;
 
     const particles = useMemo(() => {
         const pos = new Float32Array(particleCount * 3);
@@ -93,12 +91,8 @@ const DeepSpaceNebula = memo(() => {
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
         if (groupRef.current) {
-            groupRef.current.rotation.y = time * 0.005;
+            groupRef.current.rotation.y = time * 0.003;
             groupRef.current.rotation.z = Math.sin(time * 0.02) * 0.05;
-            const targetX = state.pointer.y * 0.05;
-            const targetY = state.pointer.x * 0.05;
-            groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, targetX, 0.02);
-            groupRef.current.rotation.y += THREE.MathUtils.lerp(0, targetY, 0.02);
         }
     });
 
@@ -110,7 +104,7 @@ const DeepSpaceNebula = memo(() => {
                     <bufferAttribute attach="attributes-color" count={particleCount} array={particles.colors} itemSize={3} args={[particles.colors, 3]} />
                     <bufferAttribute attach="attributes-size" count={particleCount} array={particles.sizes} itemSize={1} args={[particles.sizes, 1]} />
                 </bufferGeometry>
-                <pointsMaterial transparent vertexColors size={0.15} sizeAttenuation={true} depthWrite={false} opacity={0.8} blending={THREE.AdditiveBlending} />
+                <pointsMaterial transparent vertexColors size={isMobile ? 0.3 : 0.15} sizeAttenuation={true} depthWrite={false} opacity={0.8} blending={THREE.AdditiveBlending} />
             </points>
         </group>
     );
@@ -120,6 +114,8 @@ const DeepSpaceNebula = memo(() => {
 // SHOOTING STARS / COMETS (High Velocity Interaction)
 // --------------------------------------------------------
 const AsteroidBelt = memo(() => {
+    const isMobile = getIsMobile();
+    if (isMobile) return null; // Save massive performance on mobile by removing trails
     return (
         <group>
             {Array.from({ length: 15 }).map((_, i) => <Comet key={i} delay={i * 2} />)}
@@ -166,6 +162,8 @@ const OrbitalSystem = memo(() => {
     const navigate = useNavigate();
     const groupRef = useRef<THREE.Group>(null);
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const isMobile = getIsMobile();
+    const segments = isMobile ? 32 : 64;
 
     useFrame((state) => {
         const time = state.clock.getElapsedTime();
@@ -196,16 +194,16 @@ const OrbitalSystem = memo(() => {
                         {planet.isSun ? (
                             // The Self-Coding Sun - Massive Plasma
                             <Float speed={planet.speed * 20} rotationIntensity={isHovered ? 0.5 : 0.2} floatIntensity={0.5}>
-                                <Sphere args={[planet.size, 64, 64]} scale={activeScale}>
+                                <Sphere args={[planet.size, segments, segments]} scale={activeScale}>
                                     <MeshDistortMaterial color="#ff4400" emissive="#ff2200" emissiveIntensity={isHovered ? 4.0 : 2.0} distort={0.3} speed={3} />
                                 </Sphere>
                                 {/* Massive Sun Corona */}
                                 <Sphere args={[planet.size * 1.5, 32, 32]} scale={activeScale}>
                                     <meshBasicMaterial color="#ffaa00" transparent opacity={isHovered ? 0.3 : 0.1} blending={THREE.AdditiveBlending} depthWrite={false} />
                                 </Sphere>
-                                <pointLight intensity={100} distance={50} color="#ff6600" />
+                                <pointLight intensity={isMobile ? 50 : 100} distance={50} color="#ff6600" />
                                 <Html position={[0, -planet.size - 2.0, 0]} center className="pointer-events-none z-50">
-                                    <div className={`transition-all duration-500 font-mono text-center tracking-[0.4em] uppercase font-black text-sm whitespace-nowrap px-8 py-3 rounded-full border backdrop-blur-xl ${isHovered ? 'bg-[#ff2200] text-white border-white scale-125 shadow-[0_0_80px_rgba(255,85,0,0.8)]' : 'bg-black/60 text-[#ffaa00] border-[#ff5500]/50'}`}>
+                                    <div className={`transition-all duration-500 font-mono text-center tracking-[0.4em] uppercase font-black text-sm whitespace-nowrap px-8 py-3 rounded-full border backdrop-blur-xl pointer-events-auto cursor-pointer ${isHovered ? 'bg-[#ff2200] text-white border-white scale-125 shadow-[0_0_80px_rgba(255,85,0,0.8)]' : 'bg-black/80 text-[#ffaa00] border-[#ff5500]/50'}`} onClick={(e) => { e.stopPropagation(); navigate(planet.path); }}>
                                         {planet.label}
                                     </div>
                                 </Html>
@@ -213,14 +211,14 @@ const OrbitalSystem = memo(() => {
                         ) : (
                             // Standard World Models / Portfolio Planets
                             <Float speed={planet.speed * 10} rotationIntensity={isHovered ? 2 : 1} floatIntensity={1}>
-                                <Sphere args={[planet.size, 64, 64]} scale={activeScale}>
+                                <Sphere args={[planet.size, segments, segments]} scale={activeScale}>
                                     <MeshWobbleMaterial factor={isHovered ? 0.2 : 0.05} speed={2} color={planet.color} emissive={planet.color} emissiveIntensity={isHovered ? 4.0 : 0.8} roughness={0.2} metalness={1.0} />
                                 </Sphere>
-                                <Sphere args={[planet.size * 1.3, 32, 32]} scale={activeScale}>
+                                <Sphere args={[planet.size * 1.3, 16, 16]} scale={activeScale}>
                                     <meshBasicMaterial color={planet.color} transparent opacity={isHovered ? 0.4 : 0.15} blending={THREE.AdditiveBlending} depthWrite={false} />
                                 </Sphere>
                                 <Html position={[0, -planet.size - 1.2, 0]} center className="pointer-events-none z-50">
-                                    <div className={`transition-all duration-500 font-mono text-center tracking-[0.4em] uppercase font-black text-[10px] sm:text-xs whitespace-nowrap px-6 py-2 rounded-full border backdrop-blur-xl ${isHovered ? 'bg-[#000000] text-white border-white scale-125 shadow-[0_0_50px_rgba(255,255,255,0.8)]' : 'bg-black/40 text-white/60 border-white/20'}`}>
+                                    <div className={`transition-all duration-500 font-mono text-center tracking-[0.4em] uppercase font-black text-[10px] sm:text-xs whitespace-nowrap px-6 py-2 rounded-full border backdrop-blur-xl pointer-events-auto cursor-pointer ${isHovered ? 'bg-[#000000] text-white border-white scale-125 shadow-[0_0_50px_rgba(255,255,255,0.8)]' : 'bg-black/70 text-white/80 border-white/20'}`} onClick={(e) => { e.stopPropagation(); navigate(planet.path); }}>
                                         {planet.label}
                                     </div>
                                 </Html>
@@ -234,9 +232,21 @@ const OrbitalSystem = memo(() => {
 });
 
 // --------------------------------------------------------
+// DYNAMIC DPR & PERFORMANCE
+// --------------------------------------------------------
+const PerformanceOptimizer = memo(({ setDpr }: { setDpr: (dpr: number) => void }) => {
+    return (
+        <PerformanceMonitor onIncline={() => setDpr(2)} onDecline={() => setDpr(1)} />
+    );
+});
+
+// --------------------------------------------------------
 // MASTER COMPOSER SETUP
 // --------------------------------------------------------
 const NeuralMeshwork3D: React.FC = memo(() => {
+    const isMobile = getIsMobile();
+    const [dpr, setDpr] = useState(isMobile ? 1 : 1.5);
+
     return (
         <div style={{
             position: 'fixed',
@@ -246,27 +256,47 @@ const NeuralMeshwork3D: React.FC = memo(() => {
             height: '100vh',
             zIndex: 0,
             pointerEvents: 'auto',
-            background: '#020205' // Absolute void
+            background: '#020205', // Absolute void
+            touchAction: 'none' // Prevent default browser scroll to allow pure 3D interaction
         }}>
-            <Canvas camera={{ position: [0, 0, 15], fov: 60 }} dpr={[1, 1.5]} performance={{ min: 0.5 }}>
+            <Canvas camera={{ position: [0, 0, isMobile ? 22 : 15], fov: isMobile ? 70 : 60 }} dpr={dpr}>
+                <PerformanceOptimizer setDpr={setDpr} />
+
+                {/* Intuitive Touch and Mouse Controls */}
+                <OrbitControls
+                    enablePan={false}
+                    enableZoom={true}
+                    minDistance={10}
+                    maxDistance={40}
+                    autoRotate={true}
+                    autoRotateSpeed={0.5}
+                    enableDamping={true}
+                    dampingFactor={0.05}
+                />
+
                 <fog attach="fog" args={['#020205', 10, 80]} />
                 <ambientLight intensity={0.1} />
                 <directionalLight position={[20, 30, 10]} intensity={3} color="#ffffff" />
-                <pointLight position={[-10, 0, 10]} intensity={50} distance={50} color="#00ffff" />
-                <pointLight position={[10, -10, -10]} intensity={80} distance={50} color="#ff00ff" />
+                <pointLight position={[-10, 0, 10]} intensity={isMobile ? 20 : 50} distance={50} color="#00ffff" />
+                <pointLight position={[10, -10, -10]} intensity={isMobile ? 40 : 80} distance={50} color="#ff00ff" />
 
-                <Stars radius={150} depth={100} count={5000} factor={6} saturation={1} fade speed={1.5} />
+                <Stars radius={150} depth={100} count={isMobile ? 2000 : 5000} factor={6} saturation={1} fade speed={1.5} />
 
                 <DeepSpaceNebula />
                 <SovereignPlanet />
                 <OrbitalSystem />
                 <AsteroidBelt />
 
+                {/* Aggressive Mobile Optimization for Post-Processing */}
                 <EffectComposer enableNormalPass={false} multisampling={0}>
-                    <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.9} intensity={3.5} mipmapBlur />
-                    <ChromaticAberration blendFunction={BlendFunction.NORMAL} offset={new THREE.Vector2(0.002, 0.002)} />
-                    <Noise opacity={0.035} blendFunction={BlendFunction.OVERLAY} />
-                    <Vignette eskil={false} offset={0.1} darkness={1.1} />
+                    <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.9} intensity={isMobile ? 1.5 : 3.5} mipmapBlur />
+                    {!isMobile ? (
+                        <>
+                            <ChromaticAberration blendFunction={BlendFunction.NORMAL} offset={new THREE.Vector2(0.002, 0.002)} />
+                            <Noise opacity={0.035} blendFunction={BlendFunction.OVERLAY} />
+                            <Vignette eskil={false} offset={0.1} darkness={1.1} />
+                        </>
+                    ) : <></>}
                 </EffectComposer>
             </Canvas>
         </div>
