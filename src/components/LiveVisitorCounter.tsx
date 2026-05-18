@@ -22,10 +22,10 @@ export default function LiveVisitorCounter() {
                 // Base 3 representing core devs + orchestrator, plus real live
                 setVisitors(Math.max(1, totalConnected));
             })
-            .on('presence', { event: 'join' }, ({ key, newPresences }: { key: string, newPresences: any }) => {
+            .on('presence', { event: 'join' }, ({ key, newPresences }: { key: string, newPresences: unknown[] }) => {
                 console.log('join', key, newPresences);
             })
-            .on('presence', { event: 'leave' }, ({ key, leftPresences }: { key: string, leftPresences: any }) => {
+            .on('presence', { event: 'leave' }, ({ key, leftPresences }: { key: string, leftPresences: unknown[] }) => {
                 console.log('leave', key, leftPresences);
             })
             .subscribe(async (status: string) => {

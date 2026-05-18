@@ -38,7 +38,9 @@ const GalaxyParticles = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const particles = useMemo(() => {
+    const [particles, setParticles] = useState<{ pos: Float32Array, colors: Float32Array, sizes: Float32Array } | null>(null);
+
+    React.useEffect(() => {
         const pos = new Float32Array(particleCount * 3);
         const colors = new Float32Array(particleCount * 3);
         const sizes = new Float32Array(particleCount);
@@ -73,7 +75,7 @@ const GalaxyParticles = () => {
             targetColor.toArray(colors, i * 3);
             sizes[i] = (Math.random() * 0.05) + (isCore ? 0.04 : 0.02); // Slightly larger relative to screen
         }
-        return { pos, colors, sizes };
+        setParticles({ pos, colors, sizes });
     }, [particleCount]);
 
     useFrame((state) => {
@@ -89,6 +91,8 @@ const GalaxyParticles = () => {
             groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, -targetY, 0.05);
         }
     });
+
+    if (!particles) return null;
 
     return (
         <group ref={groupRef} position={[0, 0, -10]}>
@@ -109,7 +113,9 @@ const BioMarkers = ({ points, progress }: { points: Float32Array, progress: numb
     const markersRef = useRef<THREE.Points>(null);
     const markerCount = 80;
 
-    const markerData = useMemo(() => {
+    const [markerData, setMarkerData] = useState<{ positions: Float32Array, colors: Float32Array, sizes: Float32Array } | null>(null);
+
+    React.useEffect(() => {
         const positions = new Float32Array(markerCount * 3);
         const colors = new Float32Array(markerCount * 3);
         const sizes = new Float32Array(markerCount);
@@ -127,7 +133,7 @@ const BioMarkers = ({ points, progress }: { points: Float32Array, progress: numb
             color.toArray(colors, i * 3);
             sizes[i] = Math.random() * 1.5 + 0.5; // Random initial scale
         }
-        return { positions, colors, sizes };
+        setMarkerData({ positions, colors, sizes });
     }, []);
 
     useFrame((state) => {
@@ -154,6 +160,8 @@ const BioMarkers = ({ points, progress }: { points: Float32Array, progress: numb
             material.opacity = (0.6 + Math.sin(time * 3) * 0.4) * (progress > 0.1 ? 1 : progress * 5);
         }
     });
+
+    if (!markerData) return null;
 
     return (
         <points ref={markersRef}>
@@ -240,8 +248,10 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', progress = 1.
     const linesRef = useRef<THREE.LineSegments>(null);
     const groupRef = useRef<THREE.Group>(null);
 
+    const [dnaData, setDnaData] = useState<{ particles: Float32Array, connections: Float32Array } | null>(null);
+
     // Generate points in a double helix (DNA) structure
-    const { particles, connections } = useMemo(() => {
+    React.useEffect(() => {
         const count = HELIX_PARAMS.count;
         const temp = new Float32Array(count * 3);
         const linePositions: number[] = [];
@@ -289,10 +299,10 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', progress = 1.
             }
         }
 
-        return {
+        setDnaData({
             particles: temp,
             connections: new Float32Array(linePositions)
-        };
+        });
     }, []);
 
     useFrame((state) => {
@@ -313,31 +323,33 @@ const DNAStrand = ({ nodeColor = '#00ffff', lineColor = '#00aaff', progress = 1.
         }
 
         // Limit visibility based on progress
-        if (pointsRef.current && linesRef.current) {
+        if (dnaData && pointsRef.current && linesRef.current) {
             const count = HELIX_PARAMS.count;
             const visibleParticles = Math.floor(count * progress);
             pointsRef.current.geometry.setDrawRange(0, visibleParticles);
 
-            const visibleLines = Math.floor((connections.length / 3) * progress);
+            const visibleLines = Math.floor((dnaData.connections.length / 3) * progress);
             linesRef.current.geometry.setDrawRange(0, visibleLines * 3);
         }
     });
+
+    if (!dnaData) return null;
 
     return (
         <group ref={groupRef}>
             <points ref={pointsRef}>
                 <bufferGeometry>
-                    <bufferAttribute attach="attributes-position" count={particles.length / 3} array={particles} itemSize={3} args={[particles, 3]} />
+                    <bufferAttribute attach="attributes-position" count={dnaData.particles.length / 3} array={dnaData.particles} itemSize={3} args={[dnaData.particles, 3]} />
                 </bufferGeometry>
                 <PointMaterial transparent color={nodeColor} size={0.15} sizeAttenuation={true} depthWrite={false} opacity={0.6} blending={THREE.AdditiveBlending} />
             </points>
             <lineSegments ref={linesRef}>
                 <bufferGeometry>
-                    <bufferAttribute attach="attributes-position" count={connections.length / 3} array={connections} itemSize={3} args={[connections, 3]} />
+                    <bufferAttribute attach="attributes-position" count={dnaData.connections.length / 3} array={dnaData.connections} itemSize={3} args={[dnaData.connections, 3]} />
                 </bufferGeometry>
                 <lineBasicMaterial attach="material" color={lineColor} transparent opacity={0.15} linewidth={1} blending={THREE.AdditiveBlending} />
             </lineSegments>
-            <BioMarkers points={particles} progress={progress} />
+            <BioMarkers points={dnaData.particles} progress={progress} />
         </group>
     );
 };

@@ -7,6 +7,7 @@ import ReinforcementSandbox from '../components/ReinforcementSandbox';
 import CommandTerminal from '../components/CommandTerminal';
 import AziReMCatalog from '../components/AziReMCatalog';
 import DeploymentProtocols from '../components/DeploymentProtocols';
+import VoiceOrbInterface from '../components/VoiceOrbInterface';
 
 export default function HomePage() {
     return (
@@ -17,6 +18,9 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="flex flex-col gap-6 pt-12"
         >
+            {/* The SEO-friendly Interactive Voice Orb at the Top */}
+            <VoiceOrbInterface />
+
             {/* HER0 BENTO GRID */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-min">
 

@@ -1,6 +1,27 @@
-# React + TypeScript + Vite
+# Yace19ai.com
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Plain-language quick start
+
+This project helps you run a web workflow with a very clear user path.
+You can open the app, click start, and follow each step from input to output.
+The design goal is simple: make each action easy to understand.
+
+### How to use
+
+1. Open the app URL.
+2. Click start.
+3. Complete the form fields requested on screen.
+4. Click run and wait for the status update.
+5. Review your result and continue to the next step.
+
+### What this solves
+
+You and your users can work from the same clear sequence.
+You can see what is done, what is pending, and what to click next.
+
+---
+
+## Technical notes
 
 Currently, two official plugins are available:
 
