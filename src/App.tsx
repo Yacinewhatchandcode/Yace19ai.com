@@ -36,7 +36,7 @@ export default function App() {
             className="flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-cyan-500/5 border border-cyan-400/25 mb-8 text-[10px] font-mono tracking-[0.25em] font-bold text-cyan-400 uppercase shadow-[0_0_15px_rgba(6,182,212,0.1)]"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-            COMING SOON &bull; Fleet Preparing Launch
+            comming sone &bull; Fleet Preparing Launch
           </motion.div>
 
           {/* Domain Title */}
