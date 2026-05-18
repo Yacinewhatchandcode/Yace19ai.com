@@ -8,6 +8,7 @@ import CommandTerminal from '../components/CommandTerminal';
 import AziReMCatalog from '../components/AziReMCatalog';
 import DeploymentProtocols from '../components/DeploymentProtocols';
 import VoiceOrbInterface from '../components/VoiceOrbInterface';
+import SovereignSwarmArena from '../components/SovereignSwarmArena';
 
 export default function HomePage() {
     return (
@@ -60,6 +61,11 @@ export default function HomePage() {
             </div>
 
             {/* A spacer for rhythm */}
+            <div className="h-12"></div>
+
+            {/* INTERACTIVE SWARM ARENA */}
+            <SovereignSwarmArena />
+
             <div className="h-12"></div>
 
             {/* SEAMLESSLY EMBEDDED PREVIOUS SECTIONS */}
