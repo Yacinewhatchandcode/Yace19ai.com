@@ -103,3 +103,13 @@ export default defineConfig([
   },
 ])
 ```
+
+
+---
+
+## 🪐 Sovereign High-Compute Cluster Integration (M4 Max & NAS)
+This repository is configured as an autonomous module of the **AMLAZR V5.0 Sovereign Fleet**.
+- **Central Core Compute**: iMac Apple Silicon `Apple M4 Max` (14 Cores, 36 GB Unified Memory).
+- **Persistent Network Storage**: Synology NAS mapped at `/Volumes/NasYac` (Write Verification: `🟢 Verified`).
+- **Local Services Topology**: Local LLMs (Ollama at Port 11434), Vector Storage (Qdrant at Port 6333), Graph Memory (Neo4j at Port 7474), Event Bus (NATS at Port 8085).
+- **Software Factory Specification**: Implements the 17-layer Universal Agentic Swarm capabilities.
