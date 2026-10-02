@@ -14,7 +14,7 @@ Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/converse-promo.mp4':
 Stream mapping:
   Stream #0:0 -> #0:0 (h264 (native) -> wrapped_avframe (native))
 Press [q] to stop, [?] for help
-[vf#0:0 @ 0xb730b8000] No filtered frames for output stream, trying to initialize anyway.
+[vf#0:0 @ 0xc128c0000] No filtered frames for output stream, trying to initialize anyway.
 Output #0, null, to 'pipe:':
   Metadata:
     major_brand     : isom
@@ -27,6 +27,6 @@ Output #0, null, to 'pipe:':
       handler_name    : VideoHandler
     Side data:
       ICC Profile: (6922 bytes)
-[out#0/null @ 0xb72c44180] video:0KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
-[out#0/null @ 0xb72c44180] Output file is empty, nothing was encoded(check -ss / -t / -frames parameters if used)
-frame=    0 fps=0.0 q=0.0 Lsize=N/A time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.00    
+[out#0/null @ 0xc12834180] video:0KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+[out#0/null @ 0xc12834180] Output file is empty, nothing was encoded(check -ss / -t / -frames parameters if used)
+frame=    0 fps=0.0 q=0.0 Lsize=N/A time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.00

@@ -11,7 +11,7 @@ Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/faith-demo.mp4':
   Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 140 kb/s (default)
     Metadata:
       handler_name    : SoundHandler
-[Parsed_volumedetect_0 @ 0x750c44600] n_samples: 0
+[Parsed_volumedetect_0 @ 0x89cc4c600] n_samples: 0
 Stream mapping:
   Stream #0:1 -> #0:0 (aac (native) -> pcm_s16le (native))
 Press [q] to stop, [?] for help
@@ -25,12 +25,12 @@ Output #0, null, to 'pipe:':
     Metadata:
       encoder         : Lavc62.28.102 pcm_s16le
       handler_name    : SoundHandler
-[Parsed_volumedetect_0 @ 0x750c44a80] n_samples: 768000
-[Parsed_volumedetect_0 @ 0x750c44a80] mean_volume: -20.3 dB
-[Parsed_volumedetect_0 @ 0x750c44a80] max_volume: -5.5 dB
-[Parsed_volumedetect_0 @ 0x750c44a80] histogram_5db: 6
-[Parsed_volumedetect_0 @ 0x750c44a80] histogram_6db: 41
-[Parsed_volumedetect_0 @ 0x750c44a80] histogram_7db: 222
-[Parsed_volumedetect_0 @ 0x750c44a80] histogram_8db: 696
-[out#0/null @ 0x750c44300] video:0KiB audio:1500KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
-size=N/A time=00:00:08.00 bitrate=N/A speed= 231x elapsed=0:00:00.03    
+[Parsed_volumedetect_0 @ 0x89cc4ca80] n_samples: 768000
+[Parsed_volumedetect_0 @ 0x89cc4ca80] mean_volume: -20.3 dB
+[Parsed_volumedetect_0 @ 0x89cc4ca80] max_volume: -5.5 dB
+[Parsed_volumedetect_0 @ 0x89cc4ca80] histogram_5db: 6
+[Parsed_volumedetect_0 @ 0x89cc4ca80] histogram_6db: 41
+[Parsed_volumedetect_0 @ 0x89cc4ca80] histogram_7db: 222
+[Parsed_volumedetect_0 @ 0x89cc4ca80] histogram_8db: 696
+[out#0/null @ 0x89cc4c300] video:0KiB audio:1500KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+size=N/A time=00:00:08.00 bitrate=N/A speed= 322x elapsed=0:00:00.02

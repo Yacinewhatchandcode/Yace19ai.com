@@ -10,6 +10,6 @@ Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/whatsapp-demo.mp4':
       handler_name    : VideoHandler
       encoder         : Lavc62.11.100 libx264
 Output #0, null, to 'pipe:':
-[out#0/null @ 0x9ff0086c0] Output file does not contain any stream
+[out#0/null @ 0x9bcc4c180] Output file does not contain any stream
 Error opening output file -.
 Error opening output files: Invalid argument

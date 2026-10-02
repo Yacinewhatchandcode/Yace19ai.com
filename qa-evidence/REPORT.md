@@ -112,5 +112,5 @@ freed disposable runtimes. Final disk:
 
 ```text
 Filesystem      Size    Used   Avail Capacity iused ifree %iused  Mounted on
-/dev/disk3s5   926Gi   887Gi   5.2Gi   100%     14M   55M   20%   /System/Volumes/Data
+/dev/disk3s5   926Gi   887Gi   5.2Gi   100%     14M   54M   21%   /System/Volumes/Data
 ```

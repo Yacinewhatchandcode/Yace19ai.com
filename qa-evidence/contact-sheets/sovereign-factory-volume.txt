@@ -12,6 +12,6 @@ Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/sovereign-factory.mp4':
     Side data:
       ICC Profile: (6922 bytes)
 Output #0, null, to 'pipe:':
-[out#0/null @ 0x78ac44180] Output file does not contain any stream
+[out#0/null @ 0x772c44180] Output file does not contain any stream
 Error opening output file -.
 Error opening output files: Invalid argument

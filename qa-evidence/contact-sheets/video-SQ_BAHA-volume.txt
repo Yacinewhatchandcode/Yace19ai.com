@@ -7,6 +7,6 @@ Input #0, matroska,webm, from 'public/video-SQ_BAHA.webm':
       ENCODER         : Lavc61.3.100 libvpx
       DURATION        : 00:00:05.160000000
 Output #0, null, to 'pipe:':
-[out#0/null @ 0xba0c28240] Output file does not contain any stream
+[out#0/null @ 0xbf8c28240] Output file does not contain any stream
 Error opening output file -.
 Error opening output files: Invalid argument

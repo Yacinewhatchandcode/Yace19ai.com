@@ -15,6 +15,9 @@ def run(args):
     result = subprocess.run(args, text=True, capture_output=True, check=True)
     return result.stdout + result.stderr
 
+def write_log(path, text):
+    path.write_text("\n".join(line.rstrip() for line in text.splitlines()) + "\n")
+
 def measure(path):
     info = json.loads(run(["ffprobe", "-v", "error", "-show_format", "-show_streams", "-of", "json", str(path)]))
     (out / "contact-sheets" / (path.stem + "-ffprobe.json")).write_text(json.dumps(info, indent=2) + "\n")
@@ -24,7 +27,7 @@ def measure(path):
     volume_result = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(path), "-af", "volumedetect",
                                     "-vn", "-f", "null", "-"], text=True, capture_output=True)
     volume = volume_result.stdout + volume_result.stderr
-    (out / "contact-sheets" / (path.stem + "-volume.txt")).write_text(volume)
+    write_log(out / "contact-sheets" / (path.stem + "-volume.txt"), volume)
     audio_state = "no audio stream"
     if audio:
         volume_result.check_returncode()
@@ -35,7 +38,7 @@ def measure(path):
         stats = run(["ffmpeg", "-hide_banner", "-i", str(path), "-vf",
                      "fps=2,scale=320:-1,signalstats,metadata=print:key=lavfi.signalstats.YMAX:file=-",
                      "-an", "-f", "null", "-"])
-        (out / "contact-sheets" / (path.stem + "-signalstats.txt")).write_text(stats)
+        write_log(out / "contact-sheets" / (path.stem + "-signalstats.txt"), stats)
         maxima = [int(n) for n in re.findall(r"lavfi.signalstats.YMAX=(\d+)", stats)]
         samples = len(maxima)
         ratio = sum(n < 120 for n in maxima) / samples if samples else None
@@ -44,7 +47,7 @@ def measure(path):
             native = run(["ffmpeg", "-hide_banner", "-i", str(path), "-vf",
                           "scale=320:-1,signalstats,metadata=print:key=lavfi.signalstats.YMAX:file=-",
                           "-an", "-f", "null", "-"])
-            (out / "contact-sheets" / (path.stem + "-native-signalstats.txt")).write_text(native)
+            write_log(out / "contact-sheets" / (path.stem + "-native-signalstats.txt"), native)
             values = [int(n) for n in re.findall(r"lavfi.signalstats.YMAX=(\d+)", native)]
             native_ratio = sum(n < 120 for n in values) / len(values) if values else None
         sheet = str(out / "contact-sheets" / (path.stem + ".jpg"))
@@ -53,7 +56,8 @@ def measure(path):
              "-frames:v", "1", "-q:v", "4", sheet])
         posters = Path("public/media-posters")
         posters.mkdir(exist_ok=True)
-        run(["ffmpeg", "-y", "-hide_banner", "-ss", str(duration / 2), "-i", str(path), "-vf", "scale=640:-1",
+        poster_time = 0 if duration < 0.5 else duration / 2
+        run(["ffmpeg", "-y", "-hide_banner", "-ss", str(poster_time), "-i", str(path), "-vf", "scale=640:-1",
              "-frames:v", "1", "-q:v", "4", str(posters / (path.stem + ".jpg"))])
     warnings = []
     if video and ratio is not None and ratio > 0.2:
@@ -74,12 +78,14 @@ def measure(path):
 
 def inspect(path):
     try:
-        return measure(path)
+        result = measure(path)
+        (out / "contact-sheets" / (path.stem + "-error.txt")).unlink(missing_ok=True)
+        return result
     except (subprocess.CalledProcessError, ValueError, KeyError, RuntimeError) as error:
         error_log = str(error)
         if isinstance(error, subprocess.CalledProcessError):
             error_log += "\n" + (error.stderr or "")
-        (out / "contact-sheets" / (path.stem + "-error.txt")).write_text(error_log)
+        write_log(out / "contact-sheets" / (path.stem + "-error.txt"), error_log)
         return {"path": str(path), "url": "/" + str(path.relative_to("public")),
                 "duration": None, "audio_state": "unreadable", "blank_ratio": None,
                 "screenshots": [], "qa_status": "failed",

@@ -1,4 +1,5 @@
 """Assemble persistent local QA evidence and the fleet /urls catalog."""
+import argparse
 import datetime
 import json
 import subprocess
@@ -90,6 +91,11 @@ catalog = {"site": "Yace19ai", "productionUrl": "https://yace19ai.com",
 def output(args):
     return subprocess.check_output(args, text=True).strip()
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--base-ref")
+args = parser.parse_args()
+previous = read("report.json") if (out / "report.json").exists() else {}
+base_commit = output(["git", "rev-parse", args.base_ref or previous.get("change_base_commit", "HEAD")])
 disk = output(["df", "-h", "."])
 service = {"url": BASE, "binding": "127.0.0.1:4181", "detached": True, "shell_id": "yace19ai-server",
            "listener": output(["lsof", "-nP", "-iTCP:4181", "-sTCP:LISTEN"]),
@@ -118,8 +124,10 @@ report = {
                  "execute_called": False,
                  "acceptance_verified": False,
                  "disposition": "Applied honesty/navigation/privacy recommendations. Rejected unrelated Next.js/4180/HashRouter claims copied from other work; local evidence is authoritative."},
-    "changed_files": output(["git", "diff", "--name-only"]).splitlines(),
-    "added_files": output(["git", "ls-files", "--others", "--exclude-standard"]).splitlines(),
+    "change_base_commit": base_commit,
+    "changed_files": output(["git", "diff", base_commit, "--name-only"]).splitlines(),
+    "added_files": sorted(set(output(["git", "diff", base_commit, "--diff-filter=A", "--name-only"]).splitlines()
+                              + output(["git", "ls-files", "--others", "--exclude-standard"]).splitlines())),
     "blockers": blockers,
     "disk": {"final": disk, "guard_GiB": 3,
              "incident": "Shared disk briefly fell below 3 GiB during the necessary lockfile restore. Coordinator freed its disposable runtimes; final headroom is above the guard.",

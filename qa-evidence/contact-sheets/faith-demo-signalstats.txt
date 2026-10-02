@@ -56,5 +56,5 @@ Output #0, null, to 'pipe:':
     Metadata:
       encoder         : Lavc62.28.102 wrapped_avframe
       handler_name    : VideoHandler
-[out#0/null @ 0x7a8c4c300] video:7KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
-frame=   16 fps=0.0 q=-0.0 Lsize=N/A time=00:00:08.00 bitrate=N/A speed=78.8x elapsed=0:00:00.10    
+[out#0/null @ 0x91ec44300] video:7KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=   16 fps=0.0 q=-0.0 Lsize=N/A time=00:00:08.00 bitrate=N/A speed=75.1x elapsed=0:00:00.10

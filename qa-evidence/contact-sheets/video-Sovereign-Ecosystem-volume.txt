@@ -7,6 +7,6 @@ Input #0, matroska,webm, from 'public/video-Sovereign-Ecosystem.webm':
       ENCODER         : Lavc61.3.100 libvpx
       DURATION        : 00:00:05.600000000
 Output #0, null, to 'pipe:':
-[out#0/null @ 0xbd6c44240] Output file does not contain any stream
+[out#0/null @ 0x84e844240] Output file does not contain any stream
 Error opening output file -.
 Error opening output files: Invalid argument

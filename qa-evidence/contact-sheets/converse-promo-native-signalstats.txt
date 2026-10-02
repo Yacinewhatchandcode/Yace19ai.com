@@ -28,5 +28,5 @@ Output #0, null, to 'pipe:':
       handler_name    : VideoHandler
     Side data:
       ICC Profile: (6922 bytes)
-[out#0/null @ 0x750c44180] video:0KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
-frame=    1 fps=0.0 q=-0.0 Lsize=N/A time=00:00:00.04 bitrate=N/A speed=10.7x elapsed=0:00:00.00    
+[out#0/null @ 0xacec44180] video:0KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=    1 fps=0.0 q=-0.0 Lsize=N/A time=00:00:00.04 bitrate=N/A speed=12.4x elapsed=0:00:00.00
