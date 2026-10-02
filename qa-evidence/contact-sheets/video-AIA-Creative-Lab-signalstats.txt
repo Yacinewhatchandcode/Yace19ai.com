@@ -1,0 +1,40 @@
+frame:0    pts:0       pts_time:0
+lavfi.signalstats.YMAX=235
+frame:1    pts:1       pts_time:0.5
+lavfi.signalstats.YMAX=235
+frame:2    pts:2       pts_time:1
+lavfi.signalstats.YMAX=246
+frame:3    pts:3       pts_time:1.5
+lavfi.signalstats.YMAX=246
+frame:4    pts:4       pts_time:2
+lavfi.signalstats.YMAX=246
+frame:5    pts:5       pts_time:2.5
+lavfi.signalstats.YMAX=246
+frame:6    pts:6       pts_time:3
+lavfi.signalstats.YMAX=246
+frame:7    pts:7       pts_time:3.5
+lavfi.signalstats.YMAX=246
+frame:8    pts:8       pts_time:4
+lavfi.signalstats.YMAX=247
+frame:9    pts:9       pts_time:4.5
+lavfi.signalstats.YMAX=247
+Input #0, matroska,webm, from 'public/video-AIA-Creative-Lab.webm':
+  Metadata:
+    ENCODER         : Lavf61.1.100
+  Duration: 00:00:05.04, start: 0.000000, bitrate: 293 kb/s
+  Stream #0:0: Video: vp8, yuv420p(progressive), 800x450, SAR 1:1 DAR 16:9, 25 fps, 25 tbr, 1k tbn
+    Metadata:
+      ENCODER         : Lavc61.3.100 libvpx
+      DURATION        : 00:00:05.040000000
+Stream mapping:
+  Stream #0:0 -> #0:0 (vp8 (native) -> wrapped_avframe (native))
+Press [q] to stop, [?] for help
+Output #0, null, to 'pipe:':
+  Metadata:
+    encoder         : Lavf62.12.102
+  Stream #0:0: Video: wrapped_avframe, yuv420p(tv, bt470bg/unknown/unknown, progressive), 320x180 [SAR 1:1 DAR 16:9], q=2-31, 200 kb/s, 2 fps, 2 tbn
+    Metadata:
+      encoder         : Lavc62.28.102 wrapped_avframe
+      DURATION        : 00:00:05.040000000
+[out#0/null @ 0x8c2848240] video:4KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=   10 fps=0.0 q=-0.0 Lsize=N/A time=00:00:05.00 bitrate=N/A speed= 188x elapsed=0:00:00.02    

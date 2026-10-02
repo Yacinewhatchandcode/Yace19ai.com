@@ -282,10 +282,11 @@ function drawGame() {
 
 // ═══ MENU INPUT ═══
 function handleInput() {
+    if (state === ST.PLAYING) return;
     const gp = pollGP(), ge = gp.e || {};
     if (state === ST.TITLE) {
         if (kEdge['ArrowUp'] || kEdge['KeyW'] || ge.u) { menuSel = Math.max(0, menuSel - 1); audio.menuSelect(); }
-        if (kEdge['ArrowDown'] || kEdge['KeyS'] || ge.d) { menuSel = Math.min(3, menuSel + 1); audio.menuSelect(); }
+        if (kEdge['ArrowDown'] || kEdge['KeyS'] || ge.d) { menuSel = Math.min(2, menuSel + 1); audio.menuSelect(); }
         if (kEdge['Enter'] || kEdge['Space'] || ge.j || ge.st) { audio.menuConfirm(); if (menuSel === 0) startGame(0); else if (menuSel === 1) { state = ST.LEVELS; lvlSel = 0; } else if (menuSel === 2) state = ST.CONTROLS; }
     } else if (state === ST.LEVELS) {
         if (kEdge['ArrowLeft'] || kEdge['KeyA'] || ge.l) { lvlSel = Math.max(0, lvlSel - 1); audio.menuSelect(); }
@@ -313,6 +314,7 @@ function loop() {
     else if (state === ST.PAUSED) { drawGame(); drawOverlay('PAUSED', '#00d4ff', ['RESUME', 'RESTART', 'QUIT TO TITLE'], pauseSel); }
     else if (state === ST.GAMEOVER) { X.fillStyle = '#000'; X.fillRect(0, 0, C.width, C.height); drawOverlay('GAME OVER', '#ff0044', null, 0, 'SCORE: ' + score); }
     else if (state === ST.CLEAR) { drawGame(); drawOverlay('WORLD CLEAR!', '#ffd700', null, 0, `TIME BONUS: ${timer * 50}  SCORE: ${score}`); }
+    kEdge = {};
     requestAnimationFrame(loop);
 }
 audio.init?.();

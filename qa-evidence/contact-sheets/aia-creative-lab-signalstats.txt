@@ -1,0 +1,291 @@
+frame:0    pts:0       pts_time:0
+lavfi.signalstats.YMAX=255
+frame:1    pts:1       pts_time:0.5
+lavfi.signalstats.YMAX=255
+frame:2    pts:2       pts_time:1
+lavfi.signalstats.YMAX=255
+frame:3    pts:3       pts_time:1.5
+lavfi.signalstats.YMAX=255
+frame:4    pts:4       pts_time:2
+lavfi.signalstats.YMAX=255
+frame:5    pts:5       pts_time:2.5
+lavfi.signalstats.YMAX=255
+frame:6    pts:6       pts_time:3
+lavfi.signalstats.YMAX=232
+frame:7    pts:7       pts_time:3.5
+lavfi.signalstats.YMAX=255
+frame:8    pts:8       pts_time:4
+lavfi.signalstats.YMAX=255
+frame:9    pts:9       pts_time:4.5
+lavfi.signalstats.YMAX=255
+frame:10   pts:10      pts_time:5
+lavfi.signalstats.YMAX=255
+frame:11   pts:11      pts_time:5.5
+lavfi.signalstats.YMAX=255
+frame:12   pts:12      pts_time:6
+lavfi.signalstats.YMAX=255
+frame:13   pts:13      pts_time:6.5
+lavfi.signalstats.YMAX=235
+frame:14   pts:14      pts_time:7
+lavfi.signalstats.YMAX=255
+frame:15   pts:15      pts_time:7.5
+lavfi.signalstats.YMAX=255
+frame:16   pts:16      pts_time:8
+lavfi.signalstats.YMAX=255
+frame:17   pts:17      pts_time:8.5
+lavfi.signalstats.YMAX=255
+frame:18   pts:18      pts_time:9
+lavfi.signalstats.YMAX=236
+frame:19   pts:19      pts_time:9.5
+lavfi.signalstats.YMAX=255
+frame:20   pts:20      pts_time:10
+lavfi.signalstats.YMAX=255
+frame:21   pts:21      pts_time:10.5
+lavfi.signalstats.YMAX=255
+frame:22   pts:22      pts_time:11
+lavfi.signalstats.YMAX=255
+frame:23   pts:23      pts_time:11.5
+lavfi.signalstats.YMAX=255
+frame:24   pts:24      pts_time:12
+lavfi.signalstats.YMAX=255
+frame:25   pts:25      pts_time:12.5
+lavfi.signalstats.YMAX=255
+frame:26   pts:26      pts_time:13
+lavfi.signalstats.YMAX=255
+frame:27   pts:27      pts_time:13.5
+lavfi.signalstats.YMAX=255
+frame:28   pts:28      pts_time:14
+lavfi.signalstats.YMAX=240
+frame:29   pts:29      pts_time:14.5
+lavfi.signalstats.YMAX=255
+frame:30   pts:30      pts_time:15
+lavfi.signalstats.YMAX=255
+frame:31   pts:31      pts_time:15.5
+lavfi.signalstats.YMAX=255
+frame:32   pts:32      pts_time:16
+lavfi.signalstats.YMAX=255
+frame:33   pts:33      pts_time:16.5
+lavfi.signalstats.YMAX=255
+frame:34   pts:34      pts_time:17
+lavfi.signalstats.YMAX=255
+frame:35   pts:35      pts_time:17.5
+lavfi.signalstats.YMAX=240
+frame:36   pts:36      pts_time:18
+lavfi.signalstats.YMAX=255
+frame:37   pts:37      pts_time:18.5
+lavfi.signalstats.YMAX=255
+frame:38   pts:38      pts_time:19
+lavfi.signalstats.YMAX=255
+frame:39   pts:39      pts_time:19.5
+lavfi.signalstats.YMAX=255
+frame:40   pts:40      pts_time:20
+lavfi.signalstats.YMAX=255
+frame:41   pts:41      pts_time:20.5
+lavfi.signalstats.YMAX=255
+frame:42   pts:42      pts_time:21
+lavfi.signalstats.YMAX=255
+frame:43   pts:43      pts_time:21.5
+lavfi.signalstats.YMAX=255
+frame:44   pts:44      pts_time:22
+lavfi.signalstats.YMAX=255
+frame:45   pts:45      pts_time:22.5
+lavfi.signalstats.YMAX=255
+frame:46   pts:46      pts_time:23
+lavfi.signalstats.YMAX=239
+frame:47   pts:47      pts_time:23.5
+lavfi.signalstats.YMAX=255
+frame:48   pts:48      pts_time:24
+lavfi.signalstats.YMAX=255
+frame:49   pts:49      pts_time:24.5
+lavfi.signalstats.YMAX=255
+frame:50   pts:50      pts_time:25
+lavfi.signalstats.YMAX=255
+frame:51   pts:51      pts_time:25.5
+lavfi.signalstats.YMAX=255
+frame:52   pts:52      pts_time:26
+lavfi.signalstats.YMAX=255
+frame:53   pts:53      pts_time:26.5
+lavfi.signalstats.YMAX=255
+frame:54   pts:54      pts_time:27
+lavfi.signalstats.YMAX=255
+frame:55   pts:55      pts_time:27.5
+lavfi.signalstats.YMAX=255
+frame:56   pts:56      pts_time:28
+lavfi.signalstats.YMAX=255
+frame:57   pts:57      pts_time:28.5
+lavfi.signalstats.YMAX=255
+frame:58   pts:58      pts_time:29
+lavfi.signalstats.YMAX=222
+frame:59   pts:59      pts_time:29.5
+lavfi.signalstats.YMAX=255
+frame:60   pts:60      pts_time:30
+lavfi.signalstats.YMAX=255
+frame:61   pts:61      pts_time:30.5
+lavfi.signalstats.YMAX=255
+frame:62   pts:62      pts_time:31
+lavfi.signalstats.YMAX=229
+frame:63   pts:63      pts_time:31.5
+lavfi.signalstats.YMAX=255
+frame:64   pts:64      pts_time:32
+lavfi.signalstats.YMAX=255
+frame:65   pts:65      pts_time:32.5
+lavfi.signalstats.YMAX=255
+frame:66   pts:66      pts_time:33
+lavfi.signalstats.YMAX=229
+frame:67   pts:67      pts_time:33.5
+lavfi.signalstats.YMAX=255
+frame:68   pts:68      pts_time:34
+lavfi.signalstats.YMAX=255
+frame:69   pts:69      pts_time:34.5
+lavfi.signalstats.YMAX=255
+frame:70   pts:70      pts_time:35
+lavfi.signalstats.YMAX=235
+frame:71   pts:71      pts_time:35.5
+lavfi.signalstats.YMAX=255
+frame:72   pts:72      pts_time:36
+lavfi.signalstats.YMAX=255
+frame:73   pts:73      pts_time:36.5
+lavfi.signalstats.YMAX=255
+frame:74   pts:74      pts_time:37
+lavfi.signalstats.YMAX=236
+frame:75   pts:75      pts_time:37.5
+lavfi.signalstats.YMAX=227
+frame:76   pts:76      pts_time:38
+lavfi.signalstats.YMAX=255
+frame:77   pts:77      pts_time:38.5
+lavfi.signalstats.YMAX=255
+frame:78   pts:78      pts_time:39
+lavfi.signalstats.YMAX=255
+frame:79   pts:79      pts_time:39.5
+lavfi.signalstats.YMAX=235
+frame:80   pts:80      pts_time:40
+lavfi.signalstats.YMAX=255
+frame:81   pts:81      pts_time:40.5
+lavfi.signalstats.YMAX=255
+frame:82   pts:82      pts_time:41
+lavfi.signalstats.YMAX=255
+frame:83   pts:83      pts_time:41.5
+lavfi.signalstats.YMAX=255
+frame:84   pts:84      pts_time:42
+lavfi.signalstats.YMAX=255
+frame:85   pts:85      pts_time:42.5
+lavfi.signalstats.YMAX=255
+frame:86   pts:86      pts_time:43
+lavfi.signalstats.YMAX=255
+frame:87   pts:87      pts_time:43.5
+lavfi.signalstats.YMAX=255
+frame:88   pts:88      pts_time:44
+lavfi.signalstats.YMAX=255
+frame:89   pts:89      pts_time:44.5
+lavfi.signalstats.YMAX=255
+frame:90   pts:90      pts_time:45
+lavfi.signalstats.YMAX=255
+frame:91   pts:91      pts_time:45.5
+lavfi.signalstats.YMAX=255
+frame:92   pts:92      pts_time:46
+lavfi.signalstats.YMAX=255
+frame:93   pts:93      pts_time:46.5
+lavfi.signalstats.YMAX=235
+frame:94   pts:94      pts_time:47
+lavfi.signalstats.YMAX=255
+frame:95   pts:95      pts_time:47.5
+lavfi.signalstats.YMAX=255
+frame:96   pts:96      pts_time:48
+lavfi.signalstats.YMAX=255
+frame:97   pts:97      pts_time:48.5
+lavfi.signalstats.YMAX=255
+frame:98   pts:98      pts_time:49
+lavfi.signalstats.YMAX=255
+frame:99   pts:99      pts_time:49.5
+lavfi.signalstats.YMAX=255
+frame:100  pts:100     pts_time:50
+lavfi.signalstats.YMAX=255
+frame:101  pts:101     pts_time:50.5
+lavfi.signalstats.YMAX=255
+frame:102  pts:102     pts_time:51
+lavfi.signalstats.YMAX=255
+frame:103  pts:103     pts_time:51.5
+lavfi.signalstats.YMAX=255
+frame:104  pts:104     pts_time:52
+lavfi.signalstats.YMAX=233
+frame:105  pts:105     pts_time:52.5
+lavfi.signalstats.YMAX=255
+frame:106  pts:106     pts_time:53
+lavfi.signalstats.YMAX=255
+frame:107  pts:107     pts_time:53.5
+lavfi.signalstats.YMAX=255
+frame:108  pts:108     pts_time:54
+lavfi.signalstats.YMAX=255
+frame:109  pts:109     pts_time:54.5
+lavfi.signalstats.YMAX=255
+frame:110  pts:110     pts_time:55
+lavfi.signalstats.YMAX=255
+frame:111  pts:111     pts_time:55.5
+lavfi.signalstats.YMAX=255
+frame:112  pts:112     pts_time:56
+lavfi.signalstats.YMAX=255
+frame:113  pts:113     pts_time:56.5
+lavfi.signalstats.YMAX=255
+frame:114  pts:114     pts_time:57
+lavfi.signalstats.YMAX=255
+frame:115  pts:115     pts_time:57.5
+lavfi.signalstats.YMAX=255
+frame:116  pts:116     pts_time:58
+lavfi.signalstats.YMAX=239
+frame:117  pts:117     pts_time:58.5
+lavfi.signalstats.YMAX=255
+frame:118  pts:118     pts_time:59
+lavfi.signalstats.YMAX=255
+frame:119  pts:119     pts_time:59.5
+lavfi.signalstats.YMAX=255
+frame:120  pts:120     pts_time:60
+lavfi.signalstats.YMAX=255
+frame:121  pts:121     pts_time:60.5
+lavfi.signalstats.YMAX=255
+frame:122  pts:122     pts_time:61
+lavfi.signalstats.YMAX=255
+frame:123  pts:123     pts_time:61.5
+lavfi.signalstats.YMAX=255
+frame:124  pts:124     pts_time:62
+lavfi.signalstats.YMAX=238
+frame:125  pts:125     pts_time:62.5
+lavfi.signalstats.YMAX=255
+frame:126  pts:126     pts_time:63
+lavfi.signalstats.YMAX=255
+frame:127  pts:127     pts_time:63.5
+lavfi.signalstats.YMAX=255
+frame:128  pts:128     pts_time:64
+lavfi.signalstats.YMAX=255
+frame:129  pts:129     pts_time:64.5
+lavfi.signalstats.YMAX=255
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/aia-creative-lab.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf59.27.100
+  Duration: 00:01:05.26, start: 0.000000, bitrate: 3734 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 720x1280 [SAR 1:1 DAR 9:16], 3594 kb/s, 25 fps, 25 tbr, 12800 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc59.37.100 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 135 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> wrapped_avframe (native))
+Press [q] to stop, [?] for help
+Output #0, null, to 'pipe:':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf62.12.102
+  Stream #0:0(und): Video: wrapped_avframe, yuv420p(progressive), 320x569 [SAR 5121:5120 DAR 9:16], q=2-31, 200 kb/s, 2 fps, 2 tbn (default)
+    Metadata:
+      encoder         : Lavc62.28.102 wrapped_avframe
+      handler_name    : VideoHandler
+frame=   60 fps=0.0 q=-0.0 size=N/A time=00:00:30.00 bitrate=N/A speed=59.3x elapsed=0:00:00.50    
+frame=  112 fps=111 q=-0.0 size=N/A time=00:00:56.00 bitrate=N/A speed=55.5x elapsed=0:00:01.00    
+[out#0/null @ 0xa03008840] video:54KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=  130 fps=114 q=-0.0 Lsize=N/A time=00:01:05.00 bitrate=N/A speed=57.2x elapsed=0:00:01.13    

@@ -1,0 +1,246 @@
+{
+  "summary": {
+    "total": 37,
+    "passed": 37,
+    "failed": 0
+  },
+  "checks": [
+    {
+      "name": "skip link 390",
+      "pass": true
+    },
+    {
+      "name": "navigation and history 390",
+      "pass": true
+    },
+    {
+      "name": "FR persistence and archive boundary 390",
+      "pass": true
+    },
+    {
+      "name": "Pages direct route entries 390",
+      "pass": true
+    },
+    {
+      "name": "platformer start/move/pause/touch 390",
+      "pass": true
+    },
+    {
+      "name": "platformer menu/back/native parity 390",
+      "pass": true
+    },
+    {
+      "name": "swarm start and movement 390",
+      "pass": true
+    },
+    {
+      "name": "matrix offline execution guard 390",
+      "pass": true
+    },
+    {
+      "name": "reduced motion 390",
+      "pass": true
+    },
+    {
+      "name": "no remote calls or page errors 390",
+      "pass": true
+    },
+    {
+      "name": "skip link 1440",
+      "pass": true
+    },
+    {
+      "name": "navigation and history 1440",
+      "pass": true
+    },
+    {
+      "name": "FR persistence and archive boundary 1440",
+      "pass": true
+    },
+    {
+      "name": "Pages direct route entries 1440",
+      "pass": true
+    },
+    {
+      "name": "platformer start/move/pause/touch 1440",
+      "pass": true
+    },
+    {
+      "name": "platformer menu/back/native parity 1440",
+      "pass": true
+    },
+    {
+      "name": "swarm start and movement 1440",
+      "pass": true
+    },
+    {
+      "name": "matrix offline execution guard 1440",
+      "pass": true
+    },
+    {
+      "name": "reduced motion 1440",
+      "pass": true
+    },
+    {
+      "name": "no remote calls or page errors 1440",
+      "pass": true
+    },
+    {
+      "name": "gold contrast basics",
+      "pass": true,
+      "details": {
+        "body": 11.29384663461236,
+        "goldLinks": 12.727213835926744,
+        "buttonDarkestGradientPoint": 5.726672037125225
+      }
+    },
+    {
+      "name": "normal motion tilt and viewport-only muted reel",
+      "pass": true
+    },
+    {
+      "name": "browser playback /demo.mp4",
+      "pass": true,
+      "details": {
+        "duration": 15,
+        "currentTime": 0.249248,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "name": "browser playback /video-AIA-Creative-Lab.webm",
+      "pass": true,
+      "details": {
+        "duration": 5.04,
+        "currentTime": 0.249061,
+        "width": 800,
+        "height": 450
+      }
+    },
+    {
+      "name": "browser playback /video-AgentCoderYBE.webm",
+      "pass": true,
+      "details": {
+        "duration": 5,
+        "currentTime": 0.250543,
+        "width": 800,
+        "height": 450
+      }
+    },
+    {
+      "name": "browser playback /video-BSQ.webm",
+      "pass": true,
+      "details": {
+        "duration": 5.32,
+        "currentTime": 0.249937,
+        "width": 800,
+        "height": 450
+      }
+    },
+    {
+      "name": "browser playback /video-Faith.webm",
+      "pass": true,
+      "details": {
+        "duration": 4.84,
+        "currentTime": 0.250095,
+        "width": 800,
+        "height": 450
+      }
+    },
+    {
+      "name": "browser playback /video-Prime.AI.webm",
+      "pass": true,
+      "details": {
+        "duration": 4.8,
+        "currentTime": 0.251193,
+        "width": 800,
+        "height": 450
+      }
+    },
+    {
+      "name": "browser playback /video-SQ_BAHA.webm",
+      "pass": true,
+      "details": {
+        "duration": 5.16,
+        "currentTime": 0.250796,
+        "width": 800,
+        "height": 450
+      }
+    },
+    {
+      "name": "browser playback /video-Sovereign-Ecosystem.webm",
+      "pass": true,
+      "details": {
+        "duration": 5.6,
+        "currentTime": 0.249221,
+        "width": 800,
+        "height": 450
+      }
+    },
+    {
+      "name": "browser playback /video-Yace19ai.com.webm",
+      "pass": true,
+      "details": {
+        "duration": 4.84,
+        "currentTime": 0.250817,
+        "width": 800,
+        "height": 450
+      }
+    },
+    {
+      "name": "browser playback /videos/aia-creative-lab.mp4",
+      "pass": true,
+      "details": {
+        "duration": 65.258,
+        "currentTime": 0.193029,
+        "width": 720,
+        "height": 1280
+      }
+    },
+    {
+      "name": "browser playback /videos/converse-promo.mp4",
+      "pass": true,
+      "details": {
+        "duration": 0.04,
+        "currentTime": 0.04,
+        "width": 960,
+        "height": 960
+      }
+    },
+    {
+      "name": "browser playback /videos/faith-demo.mp4",
+      "pass": true,
+      "details": {
+        "duration": 8,
+        "currentTime": 0.186334,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "name": "browser playback /videos/sovereign-factory.mp4",
+      "pass": true,
+      "details": {
+        "duration": 0.04,
+        "currentTime": 0.04,
+        "width": 960,
+        "height": 960
+      }
+    },
+    {
+      "name": "browser playback /videos/whatsapp-demo.mp4",
+      "pass": true,
+      "details": {
+        "duration": 22.575,
+        "currentTime": 0.246467,
+        "width": 392,
+        "height": 760
+      }
+    },
+    {
+      "name": "media ranges, unknown routes and CNAME",
+      "pass": true
+    }
+  ]
+}

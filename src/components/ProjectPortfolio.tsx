@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Github, Code2, Database, Layout, Cpu, Bot, PlayCircle, X } from 'lucide-react';
-import CheckoutModal from './CheckoutModal';
+import React from 'react';
+import Card3D from './Card3D';
+import GoldVisual from './GoldVisual';
+import { Github, Code2, Database, Layout, Cpu, Bot } from 'lucide-react';
+import type { Locale } from '../App';
 
 interface Project {
     id: string;
@@ -27,7 +28,6 @@ const projects: Project[] = [
         description: 'Full-Stack EU AI Act Compliance System — AI Risk Classification, Audit Engine, Knowledge Base, and Bot Integration. Built for enterprise regulatory compliance.',
         tech: ['Python', 'Flask', 'PWA', 'OpenAI', 'EU AI Act'],
         link: 'https://github.com/Yacinewhatchandcode/EU-AI-Act-Compliance',
-        videoFile: '/demo.mp4',
         color: 'from-indigo-600/20 to-violet-500/5',
         icon: <Cpu size={24} className="text-indigo-400" />,
         status: 'live',
@@ -68,7 +68,6 @@ const projects: Project[] = [
         description: 'Main multi-agent orchestration system tracking 30+ classes of AI Models on local hardware & Vast.ai H200s. Exists as the command matrix driving computer-use and voice instances.',
         tech: ['Python', 'Docker', 'Ollama', 'LangChain'],
         link: 'https://github.com/Yacinewhatchandcode/Prime.AI',
-        videoFile: '/video-Prime.AI.webm',
         color: 'from-emerald-500/20 to-teal-500/5',
         icon: <Cpu size={24} className="text-emerald-400" />,
         status: 'live',
@@ -96,7 +95,6 @@ const projects: Project[] = [
         description: 'Official Docker MCP (Model Context Protocol) registry for managing and distributing AI model contexts across distributed offline systems.',
         tech: ['Go', 'Docker', 'Registry', 'Infrastructure'],
         link: 'https://github.com/Yacinewhatchandcode/mcp-registry',
-        videoFile: '/videos/sovereign-factory.mp4',
         color: 'from-orange-500/20 to-red-500/5',
         icon: <Database size={24} className="text-orange-400" />,
         status: 'live',
@@ -138,7 +136,6 @@ const projects: Project[] = [
         description: 'Hyperswitch payment system deployed on Railway cloud with multi-provider support, secure transaction handling, and unified payment gateway.',
         tech: ['Python', 'Railway', 'Payment APIs', 'Cloud'],
         link: 'https://github.com/Yacinewhatchandcode/hyperswitch-cloud',
-        videoFile: '/videos/sovereign-factory.mp4',
         color: 'from-yellow-500/20 to-amber-500/5',
         icon: <Code2 size={24} className="text-yellow-400" />,
         status: 'live',
@@ -165,7 +162,6 @@ const projects: Project[] = [
         description: 'Advanced conversational AI system with intelligent dialogue management and multi-turn conversation capabilities.',
         tech: ['TypeScript', 'AI Agents', 'NLP', 'Conversation'],
         link: 'https://github.com/Yacinewhatchandcode/converse-final-solution',
-        videoFile: '/videos/converse-promo.mp4',
         color: 'from-teal-500/20 to-green-500/5',
         icon: <Bot size={24} className="text-blue-400" />,
         status: 'live',
@@ -197,7 +193,7 @@ const projects: Project[] = [
         icon: <Bot size={24} className="text-amber-400" />,
         status: 'live',
         aiModel: 'Claude Sonnet 3.7',
-        image: '/repo-BSQ-Autonomous-Multi-Agent.png'
+        image: '/repo-BSQ.png'
     },
     {
         id: 'sq-baha',
@@ -211,7 +207,7 @@ const projects: Project[] = [
         icon: <Cpu size={24} className="text-orange-400" />,
         status: 'live',
         aiModel: 'GPT-4',
-        image: '/repo-SQ-BAHA.png'
+        image: '/repo-SQ_BAHA.png'
     },
     {
         id: 'agent-coder-ybe',
@@ -238,7 +234,7 @@ const projects: Project[] = [
         icon: <Database size={24} className="text-blue-400" />,
         status: 'live',
         aiModel: 'Multi-Model',
-        image: '/repo-AIA-Discovery.png'
+        image: '/repo-https-github.com-Yacinewhatchandcode-AIA-DiscoVery.png'
     },
     {
         id: 'agent-y',
@@ -303,233 +299,23 @@ const projects: Project[] = [
     }
 ];
 
-const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, index }) => {
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className={`group relative bg-gray-900/40 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden hover:border-white/10 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-900/20 flex flex-col h-full items-stretch ${isPlaying ? 'md:col-span-2 lg:col-span-2 row-span-2 z-10 scale-[1.02]' : ''}`}
-        >
-            {/* Header / Graphic / Video Demo */}
-            <div className={`transition-all duration-500 bg-gray-900 relative overflow-hidden flex flex-col justify-center items-center shrink-0 ${isPlaying ? 'h-96 md:h-[500px]' : 'h-48 group-hover:h-56'}`}>
-
-                {isPlaying ? (
-                    <div className="absolute inset-0 w-full h-full bg-black">
-                        {project.videoFile ? (
-                            <video
-                                src={project.videoFile}
-                                autoPlay
-                                controls
-                                className="w-full h-full object-contain"
-                            />
-                        ) : project.demoUrl ? (
-                            <iframe
-                                src={project.demoUrl}
-                                className="w-full h-full border-none bg-white"
-                                title={`${project.title} Live Demo`}
-                            />
-                        ) : null}
-                    </div>
-                ) : (
-                    <>
-                        {project.image ? (
-                            <>
-                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent z-10" />
-                                <img
-                                    src={project.image}
-                                    alt={project.title}
-                                    className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"
-                                    onError={(e) => {
-                                        // Fallback if image doesn't exist
-                                        (e.target as HTMLImageElement).style.display = 'none';
-                                    }}
-                                />
-                                {/* Abstract decorative lines representing scanning */}
-                                <div className="absolute top-0 left-0 w-full h-1 bg-cyan-400/50 shadow-[0_0_15px_rgba(6,182,212,1)] opacity-0 group-hover:opacity-100 group-hover:animate-[scan_2s_ease-in-out_infinite] z-20 pointer-events-none" />
-                            </>
-                        ) : (
-                            <div className={`absolute inset-0 bg-gradient-to-br ${project.color}`} />
-                        )}
-
-                        <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md p-2 rounded-lg border border-white/10 z-20">
-                            {project.icon}
-                        </div>
-
-                        <div className="absolute bottom-4 left-6 flex gap-2 z-20">
-                            {project.aiModel && (
-                                <span className="text-[10px] font-bold tracking-wider uppercase text-cyan-300 bg-cyan-900/40 px-2 py-1 rounded backdrop-blur-md border border-cyan-500/30">
-                                    {project.aiModel}
-                                </span>
-                            )}
-                            <span className="text-[10px] font-bold tracking-wider uppercase text-white bg-black/40 px-2 py-1 rounded backdrop-blur-md border border-white/10 backdrop-saturate-150">
-                                {project.category}
-                            </span>
-                        </div>
-
-                        {(project.videoFile || project.demoUrl) && (
-                            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30">
-                                <button
-                                    onClick={() => setIsPlaying(true)}
-                                    className={`flex items-center gap-3 border backdrop-blur-md px-6 py-3 rounded-full text-white font-bold transition-all hover:-translate-y-1 ${project.videoFile ? 'bg-gradient-to-r from-red-600 to-red-800 border-red-400/50 shadow-[0_0_20px_rgba(220,38,38,0.4)] hover:shadow-[0_0_30px_rgba(220,38,38,0.6)]' : 'bg-gradient-to-r from-cyan-600 to-blue-600 border-cyan-400/50 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)]'}`}
-                                >
-                                    <PlayCircle size={24} className="animate-pulse" />
-                                    {project.videoFile ? "Watch Visual Demo" : "Open Live Interface"}
-                                </button>
-                            </div>
-                        )}
-                    </>
-                )}
-
-                {isPlaying && (
-                    <button
-                        onClick={() => setIsPlaying(false)}
-                        className="absolute top-4 right-4 bg-red-500/80 hover:bg-red-500 border border-white/20 text-white p-2 rounded-full backdrop-blur-md z-30 shadow-2xl transition-all"
-                    >
-                        <X size={20} />
-                    </button>
-                )}
-            </div>
-
-            {/* Content */}
-            <div className="p-6 flex-grow flex flex-col bg-gray-900/40 relative z-20">
-                <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">
-                    {project.title}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-grow">
-                    {project.description}
-                </p>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tech.map((t) => (
-                        <span key={t} className="text-xs font-medium px-2 py-1 rounded-md bg-white/5 text-gray-300 border border-white/5">
-                            {t}
-                        </span>
-                    ))}
+export default function ProjectPortfolio({ locale = 'en' }: { locale?: Locale }) {
+    const fr = locale === 'fr';
+    return <section className="intro">
+        <p>{fr ? `${projects.length} archives. Descriptions anglaises non vérifiées. Aucun paiement.` : `${projects.length} archives. Unverified English descriptions. No payments.`}</p>
+        <div className="info-grid">
+            {projects.map(project => <Card3D key={project.id}>
+                {project.videoFile ? <video controls playsInline preload="none" width="800" height="450" poster={project.image} aria-label={project.title}>
+                    <source src={project.videoFile} />
+                </video> : project.image ? <img src={project.image} alt={project.title} width="800" height="450" loading="lazy" /> : <GoldVisual />}
+                <h2 lang="en" title={project.title}>{project.title.split(' ').slice(0, 4).join(' ')}</h2>
+                <p>{fr ? "Archive illustrative · Source externe" : "Illustrative archive · External source"}</p>
+                <details lang="en"><summary>{fr ? "Description (EN)" : "Description (EN)"}</summary><p>{project.description}</p><p>{project.tech.join(' · ')}</p></details>
+                <div className="actions">
+                    {project.link && <a href={project.link} target="_blank" rel="noopener noreferrer"><Github size={16} aria-hidden="true" /> {fr ? "Source" : "Source"}</a>}
+                    {project.demoUrl && <a href={project.demoUrl} target="_blank" rel="noopener noreferrer">{fr ? "Externe, non vérifié" : "External, unverified"}</a>}
                 </div>
-
-                {/* Action Footer */}
-                <div className="mt-auto flex gap-2">
-                    {project.link && (
-                        <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ padding: '0.75rem' }}
-                            className="flex-1 flex items-center justify-center gap-2 text-white rounded-lg border font-bold transition-all shadow-lg text-sm bg-gray-800/80 border-white/10 hover:border-white/30 hover:bg-gray-700/80"
-                        >
-                            <Github size={16} /> Source
-                        </a>
-                    )}
-                    <button
-                        onClick={() => setIsCheckoutOpen(true)}
-                        style={{ padding: '0.75rem' }}
-                        className={`flex-1 flex items-center justify-center gap-2 text-white rounded-lg border font-bold transition-all shadow-lg text-sm cursor-pointer
-                            bg-gradient-to-r from-blue-600 to-blue-800 border-blue-500 shadow-blue-900/40 hover:border-blue-400 hover:scale-[1.02]`}
-                    >
-                        Acquire €1 ↗
-                    </button>
-                    <CheckoutModal
-                        isOpen={isCheckoutOpen}
-                        onClose={() => setIsCheckoutOpen(false)}
-                        projectId={project.id}
-                        projectTitle={project.title}
-                    />
-                </div>
-            </div>
-        </motion.div>
-    );
-};
-
-export default function ProjectPortfolio() {
-    return (
-        <div className="w-full h-full pb-20">
-            {/* Live Deep Audit Metrics */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-12 bg-gray-900/60 backdrop-blur-xl border border-green-500/30 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(34,197,94,0.15)]"
-            >
-                <div className="flex items-center justify-between p-4 border-b border-white/5 bg-green-500/5">
-                    <div className="flex items-center gap-3">
-                        <Database className="text-green-400 animate-pulse" size={24} />
-                        <h2 className="text-xl font-bold text-white tracking-tight font-mono">
-                            SOVEREIGN DISK DEEP AUDIT
-                        </h2>
-                    </div>
-                    <div className="text-xs font-mono text-green-400 flex items-center gap-2 border border-green-500/30 px-3 py-1 bg-green-900/30 rounded-full">
-                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        LIVE VERIFIED - ALL NODES GREEN
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5">
-                    {/* Stat 1 */}
-                    <div className="bg-gray-900/80 p-6 flex flex-col justify-center items-center group hover:bg-gray-800/80 transition-colors">
-                        <div className="text-4xl font-black text-white mb-2 group-hover:scale-110 transition-transform">
-                            21
-                            <span className="text-green-500 text-lg ml-1">🟢</span>
-                        </div>
-                        <div className="text-xs text-gray-400 font-mono text-center tracking-widest uppercase">
-                            GitHub Repositories
-                        </div>
-                    </div>
-
-                    {/* Stat 2 */}
-                    <div className="bg-gray-900/80 p-6 flex flex-col justify-center items-center group hover:bg-gray-800/80 transition-colors">
-                        <div className="text-4xl font-black text-white mb-2 group-hover:scale-110 transition-transform">
-                            125
-                            <span className="text-green-500 text-lg ml-1">🟢</span>
-                        </div>
-                        <div className="text-xs text-gray-400 font-mono text-center tracking-widest uppercase">
-                            Functional UIs
-                        </div>
-                    </div>
-
-                    {/* Stat 3 */}
-                    <div className="bg-gray-900/80 p-6 flex flex-col justify-center items-center group hover:bg-gray-800/80 transition-colors">
-                        <div className="text-4xl font-black text-white mb-2 group-hover:scale-110 transition-transform">
-                            12
-                            <span className="text-green-500 text-lg ml-1">🟢</span>
-                        </div>
-                        <div className="text-xs text-gray-400 font-mono text-center tracking-widest uppercase">
-                            Working CLIs
-                        </div>
-                    </div>
-
-                    {/* Stat 4 */}
-                    <div className="bg-gray-900/80 p-6 flex flex-col justify-center items-center group hover:bg-gray-800/80 transition-colors">
-                        <div className="text-4xl font-black text-white mb-2 group-hover:scale-110 transition-transform">
-                            20
-                            <span className="text-green-500 text-lg ml-1">🟢</span>
-                        </div>
-                        <div className="text-xs text-gray-400 font-mono text-center tracking-widest uppercase">
-                            Functional Games
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
-
-            <div className="flex items-center justify-between mb-8 px-2 md:px-0">
-                <div className="flex items-center gap-3">
-                    <Layout className="text-cyan-500" size={24} />
-                    <h2 className="text-2xl font-bold text-white tracking-tight font-display uppercase">Active Swarm Nodes</h2>
-                </div>
-                <div className="text-sm font-mono tracking-widest text-cyan-400 flex items-center gap-2 bg-cyan-900/20 px-3 py-1 border border-cyan-500/30 rounded">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                    LIVE DEPLOYMENTS
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 auto-rows-min">
-                {projects.map((project, i) => (
-                    <ProjectCard key={project.id} project={project} index={i} />
-                ))}
-            </div>
+            </Card3D>)}
         </div>
-    );
+    </section>;
 }

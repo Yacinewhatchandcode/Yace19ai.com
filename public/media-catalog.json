@@ -1,0 +1,326 @@
+[
+  {
+    "path": "public/demo.mp4",
+    "url": "/demo.mp4",
+    "duration": 15.0,
+    "video_codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 30,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/demo.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "pass_with_context",
+    "caption": "Animated portfolio title card, not an EU AI Act compliance demo. No narration.",
+    "visual_review": "Animated portfolio title card, not an EU AI Act compliance demo. No narration.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/video-AIA-Creative-Lab.webm",
+    "url": "/video-AIA-Creative-Lab.webm",
+    "duration": 5.04,
+    "video_codec": "vp8",
+    "width": 800,
+    "height": 450,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 10,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/video-AIA-Creative-Lab.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "pass_with_context",
+    "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/video-AgentCoderYBE.webm",
+    "url": "/video-AgentCoderYBE.webm",
+    "duration": 5.0,
+    "video_codec": "vp8",
+    "width": 800,
+    "height": 450,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 10,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/video-AgentCoderYBE.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "pass_with_context",
+    "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/video-BSQ.webm",
+    "url": "/video-BSQ.webm",
+    "duration": 5.32,
+    "video_codec": "vp8",
+    "width": 800,
+    "height": 450,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 11,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/video-BSQ.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "pass_with_context",
+    "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/video-Faith.webm",
+    "url": "/video-Faith.webm",
+    "duration": 4.84,
+    "video_codec": "vp8",
+    "width": 800,
+    "height": 450,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 10,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/video-Faith.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "pass_with_context",
+    "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/video-Prime.AI.webm",
+    "url": "/video-Prime.AI.webm",
+    "duration": 4.8,
+    "video_codec": "vp8",
+    "width": 800,
+    "height": 450,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 10,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/video-Prime.AI.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "failed_content",
+    "caption": "Recording shows GitHub 404/sign-in, not the orchestrator. No narration.",
+    "visual_review": "Recording shows GitHub 404/sign-in, not the orchestrator. No narration.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/video-SQ_BAHA.webm",
+    "url": "/video-SQ_BAHA.webm",
+    "duration": 5.16,
+    "video_codec": "vp8",
+    "width": 800,
+    "height": 450,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 10,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/video-SQ_BAHA.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "pass_with_context",
+    "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/video-Sovereign-Ecosystem.webm",
+    "url": "/video-Sovereign-Ecosystem.webm",
+    "duration": 5.6,
+    "video_codec": "vp8",
+    "width": 800,
+    "height": 450,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 11,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/video-Sovereign-Ecosystem.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "pass_with_context",
+    "caption": "GitHub repository listing capture; no functional product demonstration. No narration.",
+    "visual_review": "GitHub repository listing capture; no functional product demonstration. No narration.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/video-Yace19ai.com.webm",
+    "url": "/video-Yace19ai.com.webm",
+    "duration": 4.84,
+    "video_codec": "vp8",
+    "width": 800,
+    "height": 450,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 10,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/video-Yace19ai.com.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "pass_with_context",
+    "caption": "GitHub repository listing capture; not the current site. No narration.",
+    "visual_review": "GitHub repository listing capture; not the current site. No narration.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/videos/agent-coder.mp4",
+    "url": "/videos/agent-coder.mp4",
+    "duration": null,
+    "audio_state": "unreadable",
+    "blank_ratio": null,
+    "screenshots": [],
+    "qa_status": "failed",
+    "warnings": [
+      "Media cannot be decoded; original source required."
+    ],
+    "error": "Command '['ffprobe', '-v', 'error', '-show_format', '-show_streams', '-of', 'json', 'public/videos/agent-coder.mp4']' returned non-zero exit status 1.\n[mov,mp4,m4a,3gp,3g2,mj2 @ 0xad4c34000] moov atom not found\npublic/videos/agent-coder.mp4: Invalid data found when processing input\n",
+    "width": null,
+    "height": null,
+    "caption": "Unavailable recording; not playable."
+  },
+  {
+    "path": "public/videos/aia-creative-lab.mp4",
+    "url": "/videos/aia-creative-lab.mp4",
+    "duration": 65.258,
+    "video_codec": "h264",
+    "width": 720,
+    "height": 1280,
+    "audio_state": "audible",
+    "blank_ratio": 0.0,
+    "blank_samples": 130,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/aia-creative-lab.jpg"
+    ],
+    "warnings": [],
+    "qa_status": "pass_with_context",
+    "caption": "Creative avatar and science-fiction promotional montage; visible HeyGen watermark. Illustrative, not factual footage.",
+    "visual_review": "Creative avatar and science-fiction promotional montage; visible HeyGen watermark. Illustrative, not factual footage.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/videos/converse-promo.mp4",
+    "url": "/videos/converse-promo.mp4",
+    "duration": null,
+    "audio_state": "unreadable",
+    "blank_ratio": null,
+    "screenshots": [],
+    "qa_status": "failed_content",
+    "warnings": [
+      "Media cannot be decoded; original source required."
+    ],
+    "error": "Command '['ffmpeg', '-y', '-hide_banner', '-ss', '0.02', '-i', 'public/videos/converse-promo.mp4', '-vf', 'scale=640:-1', '-frames:v', '1', '-q:v', '4', 'public/media-posters/converse-promo.jpg']' returned non-zero exit status 234.\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/converse-promo.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf62.3.100\n  Duration: 00:00:00.04, start: 0.000000, bitrate: 2279 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt470bg/unknown/unknown, progressive), 960x960, 727 kb/s, 25 fps, 25 tbr, 12800 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      encoder         : Lavc62.11.100 libx264\n    Side data:\n      ICC Profile: (6922 bytes)\nStream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))\nPress [q] to stop, [?] for help\n[vf#0:0 @ 0x738c10000] No filtered frames for output stream, trying to initialize anyway.\n[mjpeg @ 0x739424e00] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.\n[mjpeg @ 0x739424a80] ff_frame_thread_encoder_init failed\n[vost#0:0/mjpeg @ 0x738840000] [enc:mjpeg @ 0x739005810] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.\n[vf#0:0 @ 0x73945c000] Error sending frames to consumers: Invalid argument\n[vf#0:0 @ 0x73945c000] Task finished with error code: -22 (Invalid argument)\n[vf#0:0 @ 0x73945c000] Terminating thread with return code -22 (Invalid argument)\n[vost#0:0/mjpeg @ 0x738840000] [enc:mjpeg @ 0x739005810] Could not open encoder before EOF\n[vost#0:0/mjpeg @ 0x738840000] Task finished with error code: -22 (Invalid argument)\n[vost#0:0/mjpeg @ 0x738840000] Terminating thread with return code -22 (Invalid argument)\n[out#0/image2 @ 0x7390086c0] Nothing was written into output file, because at least one of its streams received no packets.\nframe=    0 fps=0.0 q=0.0 Lsize=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.00    \nConversion failed!\n",
+    "width": null,
+    "height": null,
+    "caption": "Single-frame 'Generating recording...' placeholder, not a completed video.",
+    "visual_review": "Single-frame 'Generating recording...' placeholder, not a completed video.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/videos/faith-demo.mp4",
+    "url": "/videos/faith-demo.mp4",
+    "duration": 8.0,
+    "video_codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "audio_state": "audible",
+    "blank_ratio": 0.0,
+    "blank_samples": 16,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/faith-demo.jpg"
+    ],
+    "warnings": [],
+    "qa_status": "pass_with_context",
+    "caption": "Illustrative promotional animation with globe, humanoid and robot; not functional product evidence.",
+    "visual_review": "Illustrative promotional animation with globe, humanoid and robot; not functional product evidence.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/videos/sovereign-factory.mp4",
+    "url": "/videos/sovereign-factory.mp4",
+    "duration": null,
+    "audio_state": "unreadable",
+    "blank_ratio": null,
+    "screenshots": [],
+    "qa_status": "failed_content",
+    "warnings": [
+      "Media cannot be decoded; original source required."
+    ],
+    "error": "Command '['ffmpeg', '-y', '-hide_banner', '-ss', '0.02', '-i', 'public/videos/sovereign-factory.mp4', '-vf', 'scale=640:-1', '-frames:v', '1', '-q:v', '4', 'public/media-posters/sovereign-factory.jpg']' returned non-zero exit status 234.\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/sovereign-factory.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf62.3.100\n  Duration: 00:00:00.04, start: 0.000000, bitrate: 2098 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt470bg/unknown/unknown, progressive), 960x960, 546 kb/s, 25 fps, 25 tbr, 12800 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      encoder         : Lavc62.11.100 libx264\n    Side data:\n      ICC Profile: (6922 bytes)\nStream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))\nPress [q] to stop, [?] for help\n[vf#0:0 @ 0xbd90bc000] No filtered frames for output stream, trying to initialize anyway.\n[mjpeg @ 0xbd9040e00] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.\n[mjpeg @ 0xbd9040a80] ff_frame_thread_encoder_init failed\n[vost#0:0/mjpeg @ 0xbd9070000] [enc:mjpeg @ 0xbd8c18230] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.\n[vf#0:0 @ 0xbd8404000] Error sending frames to consumers: Invalid argument\n[vf#0:0 @ 0xbd8404000] Task finished with error code: -22 (Invalid argument)\n[vf#0:0 @ 0xbd8404000] Terminating thread with return code -22 (Invalid argument)\n[vost#0:0/mjpeg @ 0xbd9070000] [enc:mjpeg @ 0xbd8c18230] Could not open encoder before EOF\n[vost#0:0/mjpeg @ 0xbd9070000] Task finished with error code: -22 (Invalid argument)\n[vost#0:0/mjpeg @ 0xbd9070000] Terminating thread with return code -22 (Invalid argument)\n[out#0/image2 @ 0xbd8c44180] Nothing was written into output file, because at least one of its streams received no packets.\nframe=    0 fps=0.0 q=0.0 Lsize=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.00    \nConversion failed!\n",
+    "width": null,
+    "height": null,
+    "caption": "Single-frame 'Generating recording...' placeholder, not a completed video.",
+    "visual_review": "Single-frame 'Generating recording...' placeholder, not a completed video.",
+    "visual_reviewed": true
+  },
+  {
+    "path": "public/videos/whatsapp-demo.mp4",
+    "url": "/videos/whatsapp-demo.mp4",
+    "duration": 22.575,
+    "video_codec": "h264",
+    "width": 392,
+    "height": 760,
+    "audio_state": "no audio stream",
+    "blank_ratio": 0.0,
+    "blank_samples": 45,
+    "native_frame_blank_ratio": null,
+    "blank_threshold": "YMAX<120 at 2fps",
+    "screenshots": [
+      "qa-evidence/contact-sheets/whatsapp-demo.jpg"
+    ],
+    "warnings": [
+      "Silent recording; no spoken narration or audible demonstration."
+    ],
+    "qa_status": "pass_with_context",
+    "caption": "Historical French mobile website/Calendly walkthrough. Marketing claims inside the footage are unverified. No narration.",
+    "visual_review": "Historical French mobile website/Calendly walkthrough. Marketing claims inside the footage are unverified. No narration.",
+    "visual_reviewed": true
+  }
+]

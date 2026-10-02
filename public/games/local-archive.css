@@ -1,0 +1,46 @@
+@import "/games/sovereign-gold.css";
+body { background: var(--sg-bg) !important; color: var(--sg-text) !important; font-family: var(--sg-font-sans) !important; }
+h1, h2, h3, .accent, .group-title { color: var(--sg-gold-hi) !important; text-shadow: none !important; background-image: none !important; -webkit-text-fill-color: var(--sg-gold-hi) !important; }
+a { color: var(--sg-gold-hi) !important; border-color: var(--sg-line) !important; }
+p, .subtitle, .tagline, .group-age { color: #ccccd6 !important; }
+.archive-orb { flex-shrink: 0; width: 160px; height: 160px; border-radius: 50%; margin: 24px; background: radial-gradient(circle at 28% 25%,#fff9da,#d4af37 28%,#665018 65%,#07070a); box-shadow: var(--sg-glow),inset -16px -16px 32px #0009; transform: perspective(1200px) rotateY(-12deg); }
+.hub-header .archive-orb { margin: 0 auto 24px; }
+.game-card, .overlay, #levelup-menu { background: var(--sg-surface) !important; border-color: var(--sg-line) !important; box-shadow: var(--sg-depth-2) !important; }
+.btn { background: var(--sg-grad-gold) !important; color: #000 !important; border-color: var(--sg-gold-hi) !important; box-shadow: var(--sg-depth-1) !important; }
+.card-tag { background: var(--sg-surface-2) !important; color: var(--sg-gold-hi) !important; }
+.nebula, .hub-bg .stars { opacity: .15; }
+.canvas-archive .hidden { visibility: hidden; }
+.matrix-archive canvas { filter: sepia(1) saturate(1.6); }
+.canvas-archive:not(.matrix-archive) canvas { filter: sepia(1) saturate(1.35); }
+.hub-bg { background: var(--sg-grad-bg) !important; }
+.matrix-archive .hud-title { color: var(--sg-gold-hi); text-shadow: none; }
+.matrix-archive .hud-status { color: #ccccd6; border-color: var(--sg-gold); }
+.matrix-archive .hud-controls { color: #ccccd6; }
+.archive-banner {
+  position: relative; z-index: 1000; padding: 10px 14px; background: #07070aee; color: #fcfcfc; border-bottom: 1px solid var(--sg-line);
+  font: 14px/1.5 system-ui, sans-serif; text-align: center; box-sizing: border-box;
+}
+.archive-banner a { color: var(--sg-gold-hi); margin: 0 10px; display: inline-block; padding: 4px; }
+.archive-banner a:focus-visible, .touch-controls button:focus-visible { outline: 3px solid var(--sg-gold-hi); }
+body.canvas-archive .archive-banner { position: fixed; left: 0; right: 0; top: 0; }
+.touch-controls { position: fixed; bottom: 10px; left: 10px; right: 10px; z-index: 1001; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.touch-controls button { min-width: 44px; min-height: 44px; padding: 8px 12px; color: var(--sg-gold-hi); background: #16161dee; border: 1px solid var(--sg-line); border-radius: 8px; font: 14px system-ui; touch-action: none; cursor: pointer; }
+body.canvas-archive .hud { top: 70px; }
+body.canvas-archive .hud-controls { bottom: 80px; }
+body.canvas-archive #hud { top: 70px; padding: 10px; }
+.canvas-archive .overlay { padding: 100px 12px 80px; overflow-y: auto; }
+.canvas-archive .overlay h1 { font-size: clamp(26px, 5vw, 64px); overflow-wrap: anywhere; }
+.canvas-archive .subtitle { font-size: clamp(14px, 3vw, 24px); margin-bottom: 16px; }
+.canvas-archive #levelup-menu { padding: 20px; }
+.canvas-archive #levelup-menu h2 { font-size: 24px; }
+.canvas-archive .card-container { flex-wrap: wrap; }
+@media(max-width: 640px) {
+  .canvas-archive .hud { left: 10px; right: 10px; max-width: calc(100% - 20px); }
+  .canvas-archive .hud-title { font-size: 20px; }
+  .canvas-archive .hud-status { white-space: normal; overflow-wrap: anywhere; }
+  #custom-cursor { display: none; }
+  .canvas-archive .hud-controls { font-size: 11px; left: 10px; }
+}
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

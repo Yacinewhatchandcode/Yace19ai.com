@@ -1,0 +1,3401 @@
+{
+  "site": "Yace19ai",
+  "productionUrl": "https://yace19ai.com",
+  "productionStatus": "not-deployed (GitHub Pages prepared)",
+  "routes": [
+    {
+      "path": "/",
+      "url": "http://127.0.0.1:4181/",
+      "qa": [
+        {
+          "path": "/",
+          "url": "http://127.0.0.1:4181/",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 55,
+          "empty": false,
+          "title": "Home | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/fleet",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/home-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/home-390-en-full.jpg",
+          "caption": "Home | Yace19ai \u2014 Local portfolio \u2014 390px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/",
+          "url": "http://127.0.0.1:4181/",
+          "width": 390,
+          "locale": "fr",
+          "status": 200,
+          "words": 56,
+          "empty": false,
+          "title": "Accueil | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/fleet",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/home-390-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/home-390-fr-full.jpg",
+          "caption": "Accueil | Yace19ai \u2014 Local portfolio \u2014 390px, fr; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/",
+          "url": "http://127.0.0.1:4181/",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 56,
+          "empty": false,
+          "title": "Home | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/fleet",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/home-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/home-1440-en-full.jpg",
+          "caption": "Home | Yace19ai \u2014 Local portfolio \u2014 1440px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/",
+          "url": "http://127.0.0.1:4181/",
+          "width": 1440,
+          "locale": "fr",
+          "status": 200,
+          "words": 57,
+          "empty": false,
+          "title": "Accueil | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/fleet",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/home-1440-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/home-1440-fr-full.jpg",
+          "caption": "Accueil | Yace19ai \u2014 Local portfolio \u2014 1440px, fr; local portfolio.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/fleet",
+      "url": "http://127.0.0.1:4181/fleet",
+      "qa": [
+        {
+          "path": "/fleet",
+          "url": "http://127.0.0.1:4181/fleet",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 273,
+          "empty": false,
+          "title": "Projects | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/fleet#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode/EU-AI-Act-Compliance",
+            "https://github.com/Yacinewhatchandcode/ran-sales-copilot",
+            "https://ran-sales-copilot.vercel.app/",
+            "https://github.com/Yacinewhatchandcode/Sovereign-Ecosystem",
+            "https://prime-ai.fr/",
+            "https://github.com/Yacinewhatchandcode/Prime.AI",
+            "https://github.com/Yacinewhatchandcode/Yace19ai.com",
+            "https://github.com/Yacinewhatchandcode/mcp-registry",
+            "https://github.com/Yacinewhatchandcode/Faith",
+            "https://github.com/Yacinewhatchandcode/AIA-Creative-Lab",
+            "https://github.com/Yacinewhatchandcode/hyperswitch-cloud",
+            "https://github.com/Yacinewhatchandcode/hyperswitch-railway",
+            "https://github.com/Yacinewhatchandcode/converse-final-solution",
+            "https://github.com/Yacinewhatchandcode/lovable-spirit-forge",
+            "https://github.com/Yacinewhatchandcode/BSQ-Autonomous-Multi-Agent",
+            "https://github.com/Yacinewhatchandcode/SQ-BAHA",
+            "https://github.com/Yacinewhatchandcode/AgentCoderYBE",
+            "https://github.com/Yacinewhatchandcode/AIA-Discovery",
+            "https://github.com/Yacinewhatchandcode/AgentY",
+            "https://github.com/Yacinewhatchandcode/VoiceCloning",
+            "https://github.com/Yacinewhatchandcode/calendly-connect",
+            "https://github.com/Yacinewhatchandcode/NETWORKING",
+            "https://github.com/Yacinewhatchandcode/antigravity-game",
+            "https://antigravity-game.vercel.app/",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-fleet-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-fleet-390-en-full.jpg",
+          "caption": "Projects | Yace19ai \u2014 Local portfolio \u2014 390px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/fleet",
+          "url": "http://127.0.0.1:4181/fleet",
+          "width": 390,
+          "locale": "fr",
+          "status": 200,
+          "words": 278,
+          "empty": false,
+          "title": "Projets | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/fleet#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode/EU-AI-Act-Compliance",
+            "https://github.com/Yacinewhatchandcode/ran-sales-copilot",
+            "https://ran-sales-copilot.vercel.app/",
+            "https://github.com/Yacinewhatchandcode/Sovereign-Ecosystem",
+            "https://prime-ai.fr/",
+            "https://github.com/Yacinewhatchandcode/Prime.AI",
+            "https://github.com/Yacinewhatchandcode/Yace19ai.com",
+            "https://github.com/Yacinewhatchandcode/mcp-registry",
+            "https://github.com/Yacinewhatchandcode/Faith",
+            "https://github.com/Yacinewhatchandcode/AIA-Creative-Lab",
+            "https://github.com/Yacinewhatchandcode/hyperswitch-cloud",
+            "https://github.com/Yacinewhatchandcode/hyperswitch-railway",
+            "https://github.com/Yacinewhatchandcode/converse-final-solution",
+            "https://github.com/Yacinewhatchandcode/lovable-spirit-forge",
+            "https://github.com/Yacinewhatchandcode/BSQ-Autonomous-Multi-Agent",
+            "https://github.com/Yacinewhatchandcode/SQ-BAHA",
+            "https://github.com/Yacinewhatchandcode/AgentCoderYBE",
+            "https://github.com/Yacinewhatchandcode/AIA-Discovery",
+            "https://github.com/Yacinewhatchandcode/AgentY",
+            "https://github.com/Yacinewhatchandcode/VoiceCloning",
+            "https://github.com/Yacinewhatchandcode/calendly-connect",
+            "https://github.com/Yacinewhatchandcode/NETWORKING",
+            "https://github.com/Yacinewhatchandcode/antigravity-game",
+            "https://antigravity-game.vercel.app/",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-fleet-390-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-fleet-390-fr-full.jpg",
+          "caption": "Projets | Yace19ai \u2014 Local portfolio \u2014 390px, fr; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/fleet",
+          "url": "http://127.0.0.1:4181/fleet",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 274,
+          "empty": false,
+          "title": "Projects | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/fleet#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode/EU-AI-Act-Compliance",
+            "https://github.com/Yacinewhatchandcode/ran-sales-copilot",
+            "https://ran-sales-copilot.vercel.app/",
+            "https://github.com/Yacinewhatchandcode/Sovereign-Ecosystem",
+            "https://prime-ai.fr/",
+            "https://github.com/Yacinewhatchandcode/Prime.AI",
+            "https://github.com/Yacinewhatchandcode/Yace19ai.com",
+            "https://github.com/Yacinewhatchandcode/mcp-registry",
+            "https://github.com/Yacinewhatchandcode/Faith",
+            "https://github.com/Yacinewhatchandcode/AIA-Creative-Lab",
+            "https://github.com/Yacinewhatchandcode/hyperswitch-cloud",
+            "https://github.com/Yacinewhatchandcode/hyperswitch-railway",
+            "https://github.com/Yacinewhatchandcode/converse-final-solution",
+            "https://github.com/Yacinewhatchandcode/lovable-spirit-forge",
+            "https://github.com/Yacinewhatchandcode/BSQ-Autonomous-Multi-Agent",
+            "https://github.com/Yacinewhatchandcode/SQ-BAHA",
+            "https://github.com/Yacinewhatchandcode/AgentCoderYBE",
+            "https://github.com/Yacinewhatchandcode/AIA-Discovery",
+            "https://github.com/Yacinewhatchandcode/AgentY",
+            "https://github.com/Yacinewhatchandcode/VoiceCloning",
+            "https://github.com/Yacinewhatchandcode/calendly-connect",
+            "https://github.com/Yacinewhatchandcode/NETWORKING",
+            "https://github.com/Yacinewhatchandcode/antigravity-game",
+            "https://antigravity-game.vercel.app/",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-fleet-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-fleet-1440-en-full.jpg",
+          "caption": "Projects | Yace19ai \u2014 Local portfolio \u2014 1440px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/fleet",
+          "url": "http://127.0.0.1:4181/fleet",
+          "width": 1440,
+          "locale": "fr",
+          "status": 200,
+          "words": 279,
+          "empty": false,
+          "title": "Projets | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/fleet#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode/EU-AI-Act-Compliance",
+            "https://github.com/Yacinewhatchandcode/ran-sales-copilot",
+            "https://ran-sales-copilot.vercel.app/",
+            "https://github.com/Yacinewhatchandcode/Sovereign-Ecosystem",
+            "https://prime-ai.fr/",
+            "https://github.com/Yacinewhatchandcode/Prime.AI",
+            "https://github.com/Yacinewhatchandcode/Yace19ai.com",
+            "https://github.com/Yacinewhatchandcode/mcp-registry",
+            "https://github.com/Yacinewhatchandcode/Faith",
+            "https://github.com/Yacinewhatchandcode/AIA-Creative-Lab",
+            "https://github.com/Yacinewhatchandcode/hyperswitch-cloud",
+            "https://github.com/Yacinewhatchandcode/hyperswitch-railway",
+            "https://github.com/Yacinewhatchandcode/converse-final-solution",
+            "https://github.com/Yacinewhatchandcode/lovable-spirit-forge",
+            "https://github.com/Yacinewhatchandcode/BSQ-Autonomous-Multi-Agent",
+            "https://github.com/Yacinewhatchandcode/SQ-BAHA",
+            "https://github.com/Yacinewhatchandcode/AgentCoderYBE",
+            "https://github.com/Yacinewhatchandcode/AIA-Discovery",
+            "https://github.com/Yacinewhatchandcode/AgentY",
+            "https://github.com/Yacinewhatchandcode/VoiceCloning",
+            "https://github.com/Yacinewhatchandcode/calendly-connect",
+            "https://github.com/Yacinewhatchandcode/NETWORKING",
+            "https://github.com/Yacinewhatchandcode/antigravity-game",
+            "https://antigravity-game.vercel.app/",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-fleet-1440-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-fleet-1440-fr-full.jpg",
+          "caption": "Projets | Yace19ai \u2014 Local portfolio \u2014 1440px, fr; local portfolio.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/games",
+      "url": "http://127.0.0.1:4181/games",
+      "qa": [
+        {
+          "path": "/games",
+          "url": "http://127.0.0.1:4181/games",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 66,
+          "empty": false,
+          "title": "Games | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games/platformer/index.html",
+            "http://127.0.0.1:4181/games/swarm-architect/index.html",
+            "http://127.0.0.1:4181/games/kids-games/index.html",
+            "http://127.0.0.1:4181/sovereign/index.html",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-390-en-full.jpg",
+          "caption": "Games | Yace19ai \u2014 Local portfolio \u2014 390px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/games",
+          "url": "http://127.0.0.1:4181/games",
+          "width": 390,
+          "locale": "fr",
+          "status": 200,
+          "words": 67,
+          "empty": false,
+          "title": "Jeux | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games/platformer/index.html",
+            "http://127.0.0.1:4181/games/swarm-architect/index.html",
+            "http://127.0.0.1:4181/games/kids-games/index.html",
+            "http://127.0.0.1:4181/sovereign/index.html",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-390-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-390-fr-full.jpg",
+          "caption": "Jeux | Yace19ai \u2014 Local portfolio \u2014 390px, fr; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/games",
+          "url": "http://127.0.0.1:4181/games",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 67,
+          "empty": false,
+          "title": "Games | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games/platformer/index.html",
+            "http://127.0.0.1:4181/games/swarm-architect/index.html",
+            "http://127.0.0.1:4181/games/kids-games/index.html",
+            "http://127.0.0.1:4181/sovereign/index.html",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-1440-en-full.jpg",
+          "caption": "Games | Yace19ai \u2014 Local portfolio \u2014 1440px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/games",
+          "url": "http://127.0.0.1:4181/games",
+          "width": 1440,
+          "locale": "fr",
+          "status": 200,
+          "words": 68,
+          "empty": false,
+          "title": "Jeux | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games/platformer/index.html",
+            "http://127.0.0.1:4181/games/swarm-architect/index.html",
+            "http://127.0.0.1:4181/games/kids-games/index.html",
+            "http://127.0.0.1:4181/sovereign/index.html",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-1440-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-1440-fr-full.jpg",
+          "caption": "Jeux | Yace19ai \u2014 Local portfolio \u2014 1440px, fr; local portfolio.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/philosophy",
+      "url": "http://127.0.0.1:4181/philosophy",
+      "qa": [
+        {
+          "path": "/philosophy",
+          "url": "http://127.0.0.1:4181/philosophy",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 57,
+          "empty": false,
+          "title": "Vision | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/philosophy#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-philosophy-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-philosophy-390-en-full.jpg",
+          "caption": "Vision | Yace19ai \u2014 Local portfolio \u2014 390px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/philosophy",
+          "url": "http://127.0.0.1:4181/philosophy",
+          "width": 390,
+          "locale": "fr",
+          "status": 200,
+          "words": 53,
+          "empty": false,
+          "title": "Vision | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/philosophy#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-philosophy-390-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-philosophy-390-fr-full.jpg",
+          "caption": "Vision | Yace19ai \u2014 Local portfolio \u2014 390px, fr; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/philosophy",
+          "url": "http://127.0.0.1:4181/philosophy",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 58,
+          "empty": false,
+          "title": "Vision | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/philosophy#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-philosophy-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-philosophy-1440-en-full.jpg",
+          "caption": "Vision | Yace19ai \u2014 Local portfolio \u2014 1440px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/philosophy",
+          "url": "http://127.0.0.1:4181/philosophy",
+          "width": 1440,
+          "locale": "fr",
+          "status": 200,
+          "words": 54,
+          "empty": false,
+          "title": "Vision | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/philosophy#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-philosophy-1440-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-philosophy-1440-fr-full.jpg",
+          "caption": "Vision | Yace19ai \u2014 Local portfolio \u2014 1440px, fr; local portfolio.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/media",
+      "url": "http://127.0.0.1:4181/media",
+      "qa": [
+        {
+          "path": "/media",
+          "url": "http://127.0.0.1:4181/media",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 183,
+          "empty": false,
+          "title": "Media | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/media#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-media-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-media-390-en-full.jpg",
+          "caption": "Media | Yace19ai \u2014 Local portfolio \u2014 390px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/media",
+          "url": "http://127.0.0.1:4181/media",
+          "width": 390,
+          "locale": "fr",
+          "status": 200,
+          "words": 186,
+          "empty": false,
+          "title": "M\u00e9dias | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [
+            {
+              "tag": "DIV",
+              "class": "sg-orb",
+              "text": ""
+            },
+            {
+              "tag": "DIV",
+              "class": "sg-ring sg-ring-one",
+              "text": ""
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d is-visible",
+              "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "Faith \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "ARTICLE",
+              "class": "info-card card-3d ",
+              "text": "WhatsApp \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
+            },
+            {
+              "tag": "SPAN",
+              "class": "chapter-chip",
+              "text": "WhatsApp \u00b7 archive"
+            }
+          ],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/media#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-media-390-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-media-390-fr-full.jpg",
+          "caption": "M\u00e9dias | Yace19ai \u2014 Local portfolio \u2014 390px, fr; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/media",
+          "url": "http://127.0.0.1:4181/media",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 184,
+          "empty": false,
+          "title": "Media | Yace19ai \u2014 Local portfolio",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/media#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-media-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-media-1440-en-full.jpg",
+          "caption": "Media | Yace19ai \u2014 Local portfolio \u2014 1440px, en; local portfolio.",
+          "pass": true
+        },
+        {
+          "path": "/media",
+          "url": "http://127.0.0.1:4181/media",
+          "width": 1440,
+          "locale": "fr",
+          "status": 200,
+          "words": 187,
+          "empty": false,
+          "title": "M\u00e9dias | Yace19ai \u2014 Local portfolio",
+          "lang": "fr",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/media#main-content",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/philosophy",
+            "http://127.0.0.1:4181/media",
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/fleet",
+            "http://127.0.0.1:4181/media",
+            "https://github.com/Yacinewhatchandcode"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-media-1440-fr.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-media-1440-fr-full.jpg",
+          "caption": "M\u00e9dias | Yace19ai \u2014 Local portfolio \u2014 1440px, fr; local portfolio.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/animal-sounds/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/games/animal-sounds/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/games/animal-sounds/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/animal-sounds/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Animal Sounds \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-animal-sounds-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-animal-sounds-index-html-390-en-full.jpg",
+          "caption": "Animal Sounds \u2014 Antigravity Kids \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/games/animal-sounds/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/animal-sounds/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Animal Sounds \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-animal-sounds-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-animal-sounds-index-html-1440-en-full.jpg",
+          "caption": "Animal Sounds \u2014 Antigravity Kids \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "blocked-original-source",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/code-rocket/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/games/code-rocket/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/games/code-rocket/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/code-rocket/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Code Rocket \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-code-rocket-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-code-rocket-index-html-390-en-full.jpg",
+          "caption": "Code Rocket \u2014 Antigravity Kids \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/games/code-rocket/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/code-rocket/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Code Rocket \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-code-rocket-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-code-rocket-index-html-1440-en-full.jpg",
+          "caption": "Code Rocket \u2014 Antigravity Kids \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "blocked-original-source",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/color-catcher/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/games/color-catcher/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/games/color-catcher/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/color-catcher/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Color Catcher \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-color-catcher-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-color-catcher-index-html-390-en-full.jpg",
+          "caption": "Color Catcher \u2014 Antigravity Kids \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/games/color-catcher/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/color-catcher/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Color Catcher \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-color-catcher-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-color-catcher-index-html-1440-en-full.jpg",
+          "caption": "Color Catcher \u2014 Antigravity Kids \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "blocked-original-source",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/gravity-maze/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/games/gravity-maze/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/games/gravity-maze/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/gravity-maze/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Gravity Maze \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-gravity-maze-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-gravity-maze-index-html-390-en-full.jpg",
+          "caption": "Gravity Maze \u2014 Antigravity Kids \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/games/gravity-maze/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/gravity-maze/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Gravity Maze \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-gravity-maze-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-gravity-maze-index-html-1440-en-full.jpg",
+          "caption": "Gravity Maze \u2014 Antigravity Kids \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "blocked-original-source",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/math-asteroid/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/games/math-asteroid/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/games/math-asteroid/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/math-asteroid/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Math Asteroid \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-math-asteroid-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-math-asteroid-index-html-390-en-full.jpg",
+          "caption": "Math Asteroid \u2014 Antigravity Kids \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/games/math-asteroid/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/math-asteroid/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Math Asteroid \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-math-asteroid-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-math-asteroid-index-html-1440-en-full.jpg",
+          "caption": "Math Asteroid \u2014 Antigravity Kids \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "blocked-original-source",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/planet-architect/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/games/planet-architect/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/games/planet-architect/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/planet-architect/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Planet Architect \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-planet-architect-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-planet-architect-index-html-390-en-full.jpg",
+          "caption": "Planet Architect \u2014 Antigravity Kids \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/games/planet-architect/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/planet-architect/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Planet Architect \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-planet-architect-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-planet-architect-index-html-1440-en-full.jpg",
+          "caption": "Planet Architect \u2014 Antigravity Kids \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "blocked-original-source",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/shape-builder/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/games/shape-builder/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/games/shape-builder/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/shape-builder/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Shape Builder \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-shape-builder-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-shape-builder-index-html-390-en-full.jpg",
+          "caption": "Shape Builder \u2014 Antigravity Kids \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/games/shape-builder/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/shape-builder/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Shape Builder \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-shape-builder-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-shape-builder-index-html-1440-en-full.jpg",
+          "caption": "Shape Builder \u2014 Antigravity Kids \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "blocked-original-source",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/speed-circuit/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/games/speed-circuit/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/games/speed-circuit/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/speed-circuit/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Speed Circuit \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-speed-circuit-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-speed-circuit-index-html-390-en-full.jpg",
+          "caption": "Speed Circuit \u2014 Antigravity Kids \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/games/speed-circuit/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/speed-circuit/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Speed Circuit \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-speed-circuit-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-speed-circuit-index-html-1440-en-full.jpg",
+          "caption": "Speed Circuit \u2014 Antigravity Kids \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "blocked-original-source",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/word-galaxy/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/games/word-galaxy/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/games/word-galaxy/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/word-galaxy/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Word Galaxy \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-word-galaxy-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-word-galaxy-index-html-390-en-full.jpg",
+          "caption": "Word Galaxy \u2014 Antigravity Kids \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/games/word-galaxy/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/games/word-galaxy/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 13,
+          "empty": false,
+          "title": "Word Galaxy \u2014 Antigravity Kids",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-games-word-galaxy-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-games-word-galaxy-index-html-1440-en-full.jpg",
+          "caption": "Word Galaxy \u2014 Antigravity Kids \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "blocked-original-source",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/index.html",
+      "url": "http://127.0.0.1:4181/games/kids-games/index.html",
+      "qa": [
+        {
+          "path": "/games/kids-games/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 68,
+          "empty": false,
+          "title": "Antigravity Kids \u2014 9 Games for Young Explorers",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/games/color-catcher/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/animal-sounds/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/shape-builder/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/math-asteroid/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/word-galaxy/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/gravity-maze/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/code-rocket/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/planet-architect/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/speed-circuit/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-index-html-390-en-full.jpg",
+          "caption": "Antigravity Kids \u2014 9 Games for Young Explorers \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/kids-games/index.html",
+          "url": "http://127.0.0.1:4181/games/kids-games/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 68,
+          "empty": false,
+          "title": "Antigravity Kids \u2014 9 Games for Young Explorers",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games",
+            "http://127.0.0.1:4181/games/kids-games/games/color-catcher/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/animal-sounds/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/shape-builder/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/math-asteroid/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/word-galaxy/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/gravity-maze/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/code-rocket/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/planet-architect/index.html",
+            "http://127.0.0.1:4181/games/kids-games/games/speed-circuit/index.html"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-kids-games-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-kids-games-index-html-1440-en-full.jpg",
+          "caption": "Antigravity Kids \u2014 9 Games for Young Explorers \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/platformer/index.html",
+      "url": "http://127.0.0.1:4181/games/platformer/index.html",
+      "qa": [
+        {
+          "path": "/games/platformer/index.html",
+          "url": "http://127.0.0.1:4181/games/platformer/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 15,
+          "empty": false,
+          "title": "PRIME.AI \u2014 Sovereign Platformer 3D",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-platformer-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-platformer-index-html-390-en-full.jpg",
+          "caption": "PRIME.AI \u2014 Sovereign Platformer 3D \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/platformer/index.html",
+          "url": "http://127.0.0.1:4181/games/platformer/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 15,
+          "empty": false,
+          "title": "PRIME.AI \u2014 Sovereign Platformer 3D",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-platformer-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-platformer-index-html-1440-en-full.jpg",
+          "caption": "PRIME.AI \u2014 Sovereign Platformer 3D \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/platformer/www/index.html",
+      "url": "http://127.0.0.1:4181/games/platformer/www/index.html",
+      "qa": [
+        {
+          "path": "/games/platformer/www/index.html",
+          "url": "http://127.0.0.1:4181/games/platformer/www/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 15,
+          "empty": false,
+          "title": "PRIME.AI \u2014 Sovereign Platformer 3D",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-platformer-www-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-platformer-www-index-html-390-en-full.jpg",
+          "caption": "PRIME.AI \u2014 Sovereign Platformer 3D \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/platformer/www/index.html",
+          "url": "http://127.0.0.1:4181/games/platformer/www/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 15,
+          "empty": false,
+          "title": "PRIME.AI \u2014 Sovereign Platformer 3D",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-platformer-www-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-platformer-www-index-html-1440-en-full.jpg",
+          "caption": "PRIME.AI \u2014 Sovereign Platformer 3D \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/swarm-architect/index.html",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/index.html",
+      "qa": [
+        {
+          "path": "/games/swarm-architect/index.html",
+          "url": "http://127.0.0.1:4181/games/swarm-architect/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 23,
+          "empty": false,
+          "title": "PRIME.AI: SWARM ARCHITECT",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-swarm-architect-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-swarm-architect-index-html-390-en-full.jpg",
+          "caption": "PRIME.AI: SWARM ARCHITECT \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/swarm-architect/index.html",
+          "url": "http://127.0.0.1:4181/games/swarm-architect/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 23,
+          "empty": false,
+          "title": "PRIME.AI: SWARM ARCHITECT",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-swarm-architect-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-swarm-architect-index-html-1440-en-full.jpg",
+          "caption": "PRIME.AI: SWARM ARCHITECT \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/swarm-architect/www/index.html",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/www/index.html",
+      "qa": [
+        {
+          "path": "/games/swarm-architect/www/index.html",
+          "url": "http://127.0.0.1:4181/games/swarm-architect/www/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 23,
+          "empty": false,
+          "title": "PRIME.AI: SWARM ARCHITECT",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-swarm-architect-www-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-swarm-architect-www-index-html-390-en-full.jpg",
+          "caption": "PRIME.AI: SWARM ARCHITECT \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/games/swarm-architect/www/index.html",
+          "url": "http://127.0.0.1:4181/games/swarm-architect/www/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 23,
+          "empty": false,
+          "title": "PRIME.AI: SWARM ARCHITECT",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-games-swarm-architect-www-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-games-swarm-architect-www-index-html-1440-en-full.jpg",
+          "caption": "PRIME.AI: SWARM ARCHITECT \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/sovereign/index.html",
+      "url": "http://127.0.0.1:4181/sovereign/index.html",
+      "qa": [
+        {
+          "path": "/sovereign/index.html",
+          "url": "http://127.0.0.1:4181/sovereign/index.html",
+          "width": 390,
+          "locale": "en",
+          "status": 200,
+          "words": 16,
+          "empty": false,
+          "title": "Sovereign Interface",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-sovereign-index-html-390-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-sovereign-index-html-390-en-full.jpg",
+          "caption": "Sovereign Interface \u2014 390px, en; English archive.",
+          "pass": true
+        },
+        {
+          "path": "/sovereign/index.html",
+          "url": "http://127.0.0.1:4181/sovereign/index.html",
+          "width": 1440,
+          "locale": "en",
+          "status": 200,
+          "words": 16,
+          "empty": false,
+          "title": "Sovereign Interface",
+          "lang": "en",
+          "overflow": false,
+          "overflowElements": [],
+          "brokenImages": [],
+          "links": [
+            "http://127.0.0.1:4181/games"
+          ],
+          "heroVisual": true,
+          "errors": [],
+          "failedRequests": [],
+          "httpErrors": [],
+          "externalRequests": [],
+          "screenshot": "qa-evidence/final/screenshots/-sovereign-index-html-1440-en.jpg",
+          "fullScreenshot": "qa-evidence/final/screenshots/-sovereign-index-html-1440-en-full.jpg",
+          "caption": "Sovereign Interface \u2014 1440px, en; English archive.",
+          "pass": true
+        }
+      ],
+      "content_status": "available",
+      "locales": [
+        "en"
+      ]
+    }
+  ],
+  "videos": [
+    {
+      "path": "public/demo.mp4",
+      "url": "http://127.0.0.1:4181/demo.mp4",
+      "duration": 15.0,
+      "video_codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 30,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/demo.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "pass_with_context",
+      "caption": "Animated portfolio title card, not an EU AI Act compliance demo. No narration.",
+      "visual_review": "Animated portfolio title card, not an EU AI Act compliance demo. No narration.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/video-AIA-Creative-Lab.webm",
+      "url": "http://127.0.0.1:4181/video-AIA-Creative-Lab.webm",
+      "duration": 5.04,
+      "video_codec": "vp8",
+      "width": 800,
+      "height": 450,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 10,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/video-AIA-Creative-Lab.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "pass_with_context",
+      "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/video-AgentCoderYBE.webm",
+      "url": "http://127.0.0.1:4181/video-AgentCoderYBE.webm",
+      "duration": 5.0,
+      "video_codec": "vp8",
+      "width": 800,
+      "height": 450,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 10,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/video-AgentCoderYBE.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "pass_with_context",
+      "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/video-BSQ.webm",
+      "url": "http://127.0.0.1:4181/video-BSQ.webm",
+      "duration": 5.32,
+      "video_codec": "vp8",
+      "width": 800,
+      "height": 450,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 11,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/video-BSQ.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "pass_with_context",
+      "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/video-Faith.webm",
+      "url": "http://127.0.0.1:4181/video-Faith.webm",
+      "duration": 4.84,
+      "video_codec": "vp8",
+      "width": 800,
+      "height": 450,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 10,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/video-Faith.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "pass_with_context",
+      "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/video-Prime.AI.webm",
+      "url": "http://127.0.0.1:4181/video-Prime.AI.webm",
+      "duration": 4.8,
+      "video_codec": "vp8",
+      "width": 800,
+      "height": 450,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 10,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/video-Prime.AI.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "failed_content",
+      "caption": "Recording shows GitHub 404/sign-in, not the orchestrator. No narration.",
+      "visual_review": "Recording shows GitHub 404/sign-in, not the orchestrator. No narration.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/video-SQ_BAHA.webm",
+      "url": "http://127.0.0.1:4181/video-SQ_BAHA.webm",
+      "duration": 5.16,
+      "video_codec": "vp8",
+      "width": 800,
+      "height": 450,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 10,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/video-SQ_BAHA.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "pass_with_context",
+      "caption": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_review": "GitHub repository listing and README capture; no functional product demonstration. No narration.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/video-Sovereign-Ecosystem.webm",
+      "url": "http://127.0.0.1:4181/video-Sovereign-Ecosystem.webm",
+      "duration": 5.6,
+      "video_codec": "vp8",
+      "width": 800,
+      "height": 450,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 11,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/video-Sovereign-Ecosystem.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "pass_with_context",
+      "caption": "GitHub repository listing capture; no functional product demonstration. No narration.",
+      "visual_review": "GitHub repository listing capture; no functional product demonstration. No narration.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/video-Yace19ai.com.webm",
+      "url": "http://127.0.0.1:4181/video-Yace19ai.com.webm",
+      "duration": 4.84,
+      "video_codec": "vp8",
+      "width": 800,
+      "height": 450,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 10,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/video-Yace19ai.com.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "pass_with_context",
+      "caption": "GitHub repository listing capture; not the current site. No narration.",
+      "visual_review": "GitHub repository listing capture; not the current site. No narration.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/videos/agent-coder.mp4",
+      "url": "http://127.0.0.1:4181/videos/agent-coder.mp4",
+      "duration": null,
+      "audio_state": "unreadable",
+      "blank_ratio": null,
+      "screenshots": [],
+      "qa_status": "failed",
+      "warnings": [
+        "Media cannot be decoded; original source required."
+      ],
+      "error": "Command '['ffprobe', '-v', 'error', '-show_format', '-show_streams', '-of', 'json', 'public/videos/agent-coder.mp4']' returned non-zero exit status 1.\n[mov,mp4,m4a,3gp,3g2,mj2 @ 0xad4c34000] moov atom not found\npublic/videos/agent-coder.mp4: Invalid data found when processing input\n",
+      "width": null,
+      "height": null,
+      "caption": "Unavailable recording; not playable."
+    },
+    {
+      "path": "public/videos/aia-creative-lab.mp4",
+      "url": "http://127.0.0.1:4181/videos/aia-creative-lab.mp4",
+      "duration": 65.258,
+      "video_codec": "h264",
+      "width": 720,
+      "height": 1280,
+      "audio_state": "audible",
+      "blank_ratio": 0.0,
+      "blank_samples": 130,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/aia-creative-lab.jpg"
+      ],
+      "warnings": [],
+      "qa_status": "pass_with_context",
+      "caption": "Creative avatar and science-fiction promotional montage; visible HeyGen watermark. Illustrative, not factual footage.",
+      "visual_review": "Creative avatar and science-fiction promotional montage; visible HeyGen watermark. Illustrative, not factual footage.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/videos/converse-promo.mp4",
+      "url": "http://127.0.0.1:4181/videos/converse-promo.mp4",
+      "duration": null,
+      "audio_state": "unreadable",
+      "blank_ratio": null,
+      "screenshots": [],
+      "qa_status": "failed_content",
+      "warnings": [
+        "Media cannot be decoded; original source required."
+      ],
+      "error": "Command '['ffmpeg', '-y', '-hide_banner', '-ss', '0.02', '-i', 'public/videos/converse-promo.mp4', '-vf', 'scale=640:-1', '-frames:v', '1', '-q:v', '4', 'public/media-posters/converse-promo.jpg']' returned non-zero exit status 234.\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/converse-promo.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf62.3.100\n  Duration: 00:00:00.04, start: 0.000000, bitrate: 2279 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt470bg/unknown/unknown, progressive), 960x960, 727 kb/s, 25 fps, 25 tbr, 12800 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      encoder         : Lavc62.11.100 libx264\n    Side data:\n      ICC Profile: (6922 bytes)\nStream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))\nPress [q] to stop, [?] for help\n[vf#0:0 @ 0x738c10000] No filtered frames for output stream, trying to initialize anyway.\n[mjpeg @ 0x739424e00] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.\n[mjpeg @ 0x739424a80] ff_frame_thread_encoder_init failed\n[vost#0:0/mjpeg @ 0x738840000] [enc:mjpeg @ 0x739005810] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.\n[vf#0:0 @ 0x73945c000] Error sending frames to consumers: Invalid argument\n[vf#0:0 @ 0x73945c000] Task finished with error code: -22 (Invalid argument)\n[vf#0:0 @ 0x73945c000] Terminating thread with return code -22 (Invalid argument)\n[vost#0:0/mjpeg @ 0x738840000] [enc:mjpeg @ 0x739005810] Could not open encoder before EOF\n[vost#0:0/mjpeg @ 0x738840000] Task finished with error code: -22 (Invalid argument)\n[vost#0:0/mjpeg @ 0x738840000] Terminating thread with return code -22 (Invalid argument)\n[out#0/image2 @ 0x7390086c0] Nothing was written into output file, because at least one of its streams received no packets.\nframe=    0 fps=0.0 q=0.0 Lsize=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.00    \nConversion failed!\n",
+      "width": null,
+      "height": null,
+      "caption": "Single-frame 'Generating recording...' placeholder, not a completed video.",
+      "visual_review": "Single-frame 'Generating recording...' placeholder, not a completed video.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/videos/faith-demo.mp4",
+      "url": "http://127.0.0.1:4181/videos/faith-demo.mp4",
+      "duration": 8.0,
+      "video_codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "audio_state": "audible",
+      "blank_ratio": 0.0,
+      "blank_samples": 16,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/faith-demo.jpg"
+      ],
+      "warnings": [],
+      "qa_status": "pass_with_context",
+      "caption": "Illustrative promotional animation with globe, humanoid and robot; not functional product evidence.",
+      "visual_review": "Illustrative promotional animation with globe, humanoid and robot; not functional product evidence.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/videos/sovereign-factory.mp4",
+      "url": "http://127.0.0.1:4181/videos/sovereign-factory.mp4",
+      "duration": null,
+      "audio_state": "unreadable",
+      "blank_ratio": null,
+      "screenshots": [],
+      "qa_status": "failed_content",
+      "warnings": [
+        "Media cannot be decoded; original source required."
+      ],
+      "error": "Command '['ffmpeg', '-y', '-hide_banner', '-ss', '0.02', '-i', 'public/videos/sovereign-factory.mp4', '-vf', 'scale=640:-1', '-frames:v', '1', '-q:v', '4', 'public/media-posters/sovereign-factory.jpg']' returned non-zero exit status 234.\nInput #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/sovereign-factory.mp4':\n  Metadata:\n    major_brand     : isom\n    minor_version   : 512\n    compatible_brands: isomiso2avc1mp41\n    encoder         : Lavf62.3.100\n  Duration: 00:00:00.04, start: 0.000000, bitrate: 2098 kb/s\n  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt470bg/unknown/unknown, progressive), 960x960, 546 kb/s, 25 fps, 25 tbr, 12800 tbn (default)\n    Metadata:\n      handler_name    : VideoHandler\n      encoder         : Lavc62.11.100 libx264\n    Side data:\n      ICC Profile: (6922 bytes)\nStream mapping:\n  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))\nPress [q] to stop, [?] for help\n[vf#0:0 @ 0xbd90bc000] No filtered frames for output stream, trying to initialize anyway.\n[mjpeg @ 0xbd9040e00] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.\n[mjpeg @ 0xbd9040a80] ff_frame_thread_encoder_init failed\n[vost#0:0/mjpeg @ 0xbd9070000] [enc:mjpeg @ 0xbd8c18230] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.\n[vf#0:0 @ 0xbd8404000] Error sending frames to consumers: Invalid argument\n[vf#0:0 @ 0xbd8404000] Task finished with error code: -22 (Invalid argument)\n[vf#0:0 @ 0xbd8404000] Terminating thread with return code -22 (Invalid argument)\n[vost#0:0/mjpeg @ 0xbd9070000] [enc:mjpeg @ 0xbd8c18230] Could not open encoder before EOF\n[vost#0:0/mjpeg @ 0xbd9070000] Task finished with error code: -22 (Invalid argument)\n[vost#0:0/mjpeg @ 0xbd9070000] Terminating thread with return code -22 (Invalid argument)\n[out#0/image2 @ 0xbd8c44180] Nothing was written into output file, because at least one of its streams received no packets.\nframe=    0 fps=0.0 q=0.0 Lsize=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.00    \nConversion failed!\n",
+      "width": null,
+      "height": null,
+      "caption": "Single-frame 'Generating recording...' placeholder, not a completed video.",
+      "visual_review": "Single-frame 'Generating recording...' placeholder, not a completed video.",
+      "visual_reviewed": true
+    },
+    {
+      "path": "public/videos/whatsapp-demo.mp4",
+      "url": "http://127.0.0.1:4181/videos/whatsapp-demo.mp4",
+      "duration": 22.575,
+      "video_codec": "h264",
+      "width": 392,
+      "height": 760,
+      "audio_state": "no audio stream",
+      "blank_ratio": 0.0,
+      "blank_samples": 45,
+      "native_frame_blank_ratio": null,
+      "blank_threshold": "YMAX<120 at 2fps",
+      "screenshots": [
+        "qa-evidence/contact-sheets/whatsapp-demo.jpg"
+      ],
+      "warnings": [
+        "Silent recording; no spoken narration or audible demonstration."
+      ],
+      "qa_status": "pass_with_context",
+      "caption": "Historical French mobile website/Calendly walkthrough. Marketing claims inside the footage are unverified. No narration.",
+      "visual_review": "Historical French mobile website/Calendly walkthrough. Marketing claims inside the footage are unverified. No narration.",
+      "visual_reviewed": true
+    }
+  ],
+  "aliases": [
+    {
+      "path": "/fleet/",
+      "url": "http://127.0.0.1:4181/fleet/",
+      "qa": "390/1440 direct-entry checks in interactions.json"
+    },
+    {
+      "path": "/games/",
+      "url": "http://127.0.0.1:4181/games/",
+      "qa": "390/1440 direct-entry checks in interactions.json"
+    },
+    {
+      "path": "/philosophy/",
+      "url": "http://127.0.0.1:4181/philosophy/",
+      "qa": "390/1440 direct-entry checks in interactions.json"
+    },
+    {
+      "path": "/media/",
+      "url": "http://127.0.0.1:4181/media/",
+      "qa": "390/1440 direct-entry checks in interactions.json"
+    }
+  ],
+  "assets": [
+    {
+      "path": "public/demo.mp4",
+      "url": "http://127.0.0.1:4181/demo.mp4",
+      "bytes": 51815,
+      "http_status": 200
+    },
+    {
+      "path": "public/downloads/Antigravity-Kids_Android.apk",
+      "url": "http://127.0.0.1:4181/downloads/Antigravity-Kids_Android.apk",
+      "bytes": 4117834,
+      "http_status": 200
+    },
+    {
+      "path": "public/downloads/Sovereign-Platformer_Android.apk",
+      "url": "http://127.0.0.1:4181/downloads/Sovereign-Platformer_Android.apk",
+      "bytes": 4147609,
+      "http_status": 200
+    },
+    {
+      "path": "public/downloads/Swarm-Architect_Android.apk",
+      "url": "http://127.0.0.1:4181/downloads/Swarm-Architect_Android.apk",
+      "bytes": 4126193,
+      "http_status": 200
+    },
+    {
+      "path": "public/favicon.png",
+      "url": "http://127.0.0.1:4181/favicon.png",
+      "bytes": 727395,
+      "http_status": 200
+    },
+    {
+      "path": "public/favicon.svg",
+      "url": "http://127.0.0.1:4181/favicon.svg",
+      "bytes": 1877,
+      "http_status": 200
+    },
+    {
+      "path": "public/favicon.webp",
+      "url": "http://127.0.0.1:4181/favicon.webp",
+      "bytes": 111908,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable/splash.png",
+      "bytes": 4040,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-hdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-land-hdpi/splash.png",
+      "bytes": 7705,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-mdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-land-mdpi/splash.png",
+      "bytes": 4040,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-xhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-land-xhdpi/splash.png",
+      "bytes": 9251,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-xxhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-land-xxhdpi/splash.png",
+      "bytes": 13984,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-xxxhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-land-xxxhdpi/splash.png",
+      "bytes": 17683,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-hdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-port-hdpi/splash.png",
+      "bytes": 7934,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-mdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-port-mdpi/splash.png",
+      "bytes": 4096,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-xhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-port-xhdpi/splash.png",
+      "bytes": 9875,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-xxhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-port-xxhdpi/splash.png",
+      "bytes": 13346,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-xxxhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/drawable-port-xxxhdpi/splash.png",
+      "bytes": 17489,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "bytes": 2786,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png",
+      "bytes": 3450,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png",
+      "bytes": 4341,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "bytes": 1869,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png",
+      "bytes": 2110,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png",
+      "bytes": 2725,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "bytes": 3981,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png",
+      "bytes": 5036,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png",
+      "bytes": 6593,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "bytes": 6644,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png",
+      "bytes": 9793,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png",
+      "bytes": 10455,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "bytes": 9441,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
+      "bytes": 15529,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/platformer/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png",
+      "bytes": 15916,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/bg.png",
+      "url": "http://127.0.0.1:4181/games/platformer/bg.png",
+      "bytes": 52320,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
+      "url": "http://127.0.0.1:4181/games/platformer/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512%402x.png",
+      "bytes": 110522,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-1.png",
+      "url": "http://127.0.0.1:4181/games/platformer/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-1.png",
+      "bytes": 41273,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-2.png",
+      "url": "http://127.0.0.1:4181/games/platformer/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-2.png",
+      "bytes": 41273,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/platformer/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png",
+      "url": "http://127.0.0.1:4181/games/platformer/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png",
+      "bytes": 41273,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable/splash.png",
+      "bytes": 4040,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-hdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-land-hdpi/splash.png",
+      "bytes": 7705,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-mdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-land-mdpi/splash.png",
+      "bytes": 4040,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-xhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-land-xhdpi/splash.png",
+      "bytes": 9251,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-xxhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-land-xxhdpi/splash.png",
+      "bytes": 13984,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-xxxhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-land-xxxhdpi/splash.png",
+      "bytes": 17683,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-hdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-port-hdpi/splash.png",
+      "bytes": 7934,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-mdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-port-mdpi/splash.png",
+      "bytes": 4096,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-xhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-port-xhdpi/splash.png",
+      "bytes": 9875,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-xxhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-port-xxhdpi/splash.png",
+      "bytes": 13346,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-xxxhdpi/splash.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/drawable-port-xxxhdpi/splash.png",
+      "bytes": 17489,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "bytes": 2786,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png",
+      "bytes": 3450,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png",
+      "bytes": 4341,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "bytes": 1869,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png",
+      "bytes": 2110,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png",
+      "bytes": 2725,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "bytes": 3981,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png",
+      "bytes": 5036,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png",
+      "bytes": 6593,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "bytes": 6644,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png",
+      "bytes": 9793,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png",
+      "bytes": 10455,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "bytes": 9441,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
+      "bytes": 15529,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png",
+      "bytes": 15916,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512%402x.png",
+      "bytes": 110522,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-1.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-1.png",
+      "bytes": 41273,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-2.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-2.png",
+      "bytes": 41273,
+      "http_status": 200
+    },
+    {
+      "path": "public/games/swarm-architect/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png",
+      "url": "http://127.0.0.1:4181/games/swarm-architect/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png",
+      "bytes": 41273,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/aia-creative-lab.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/aia-creative-lab.jpg",
+      "bytes": 97357,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/converse-promo.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/converse-promo.jpg",
+      "bytes": 12597,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/demo.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/demo.jpg",
+      "bytes": 10168,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/faith-demo.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/faith-demo.jpg",
+      "bytes": 45841,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/sovereign-factory.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/sovereign-factory.jpg",
+      "bytes": 12579,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/video-AIA-Creative-Lab.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/video-AIA-Creative-Lab.jpg",
+      "bytes": 34312,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/video-AgentCoderYBE.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/video-AgentCoderYBE.jpg",
+      "bytes": 26463,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/video-BSQ.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/video-BSQ.jpg",
+      "bytes": 33205,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/video-Faith.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/video-Faith.jpg",
+      "bytes": 23459,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/video-Prime.AI.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/video-Prime.AI.jpg",
+      "bytes": 15584,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/video-SQ_BAHA.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/video-SQ_BAHA.jpg",
+      "bytes": 24382,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/video-Sovereign-Ecosystem.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/video-Sovereign-Ecosystem.jpg",
+      "bytes": 31030,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/video-Yace19ai.com.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/video-Yace19ai.com.jpg",
+      "bytes": 24669,
+      "http_status": 200
+    },
+    {
+      "path": "public/media-posters/whatsapp-demo.jpg",
+      "url": "http://127.0.0.1:4181/media-posters/whatsapp-demo.jpg",
+      "bytes": 23700,
+      "http_status": 200
+    },
+    {
+      "path": "public/og-image.png",
+      "url": "http://127.0.0.1:4181/og-image.png",
+      "bytes": 32249,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-AIA-Creative-Lab.png",
+      "url": "http://127.0.0.1:4181/repo-AIA-Creative-Lab.png",
+      "bytes": 155303,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-AgentCoderYBE.png",
+      "url": "http://127.0.0.1:4181/repo-AgentCoderYBE.png",
+      "bytes": 121407,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-BSQ.png",
+      "url": "http://127.0.0.1:4181/repo-BSQ.png",
+      "bytes": 158983,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-Faith.png",
+      "url": "http://127.0.0.1:4181/repo-Faith.png",
+      "bytes": 141534,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-Prime.AI.png",
+      "url": "http://127.0.0.1:4181/repo-Prime.AI.png",
+      "bytes": 237721,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-SQ_BAHA.png",
+      "url": "http://127.0.0.1:4181/repo-SQ_BAHA.png",
+      "bytes": 164564,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-Sovereign-Ecosystem.png",
+      "url": "http://127.0.0.1:4181/repo-Sovereign-Ecosystem.png",
+      "bytes": 149322,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-Yace19ai.com.png",
+      "url": "http://127.0.0.1:4181/repo-Yace19ai.com.png",
+      "bytes": 160383,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-converse-final-solution.png",
+      "url": "http://127.0.0.1:4181/repo-converse-final-solution.png",
+      "bytes": 59149,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-https-github.com-Yacinewhatchandcode-AIA-DiscoVery.png",
+      "url": "http://127.0.0.1:4181/repo-https-github.com-Yacinewhatchandcode-AIA-DiscoVery.png",
+      "bytes": 63467,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-hyperswitch-cloud.png",
+      "url": "http://127.0.0.1:4181/repo-hyperswitch-cloud.png",
+      "bytes": 146346,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-hyperswitch-railway.png",
+      "url": "http://127.0.0.1:4181/repo-hyperswitch-railway.png",
+      "bytes": 136559,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-lovable-spirit-forge.png",
+      "url": "http://127.0.0.1:4181/repo-lovable-spirit-forge.png",
+      "bytes": 151790,
+      "http_status": 200
+    },
+    {
+      "path": "public/repo-mcp-registry.png",
+      "url": "http://127.0.0.1:4181/repo-mcp-registry.png",
+      "bytes": 149258,
+      "http_status": 200
+    },
+    {
+      "path": "public/twitter-card.png",
+      "url": "http://127.0.0.1:4181/twitter-card.png",
+      "bytes": 32249,
+      "http_status": 200
+    },
+    {
+      "path": "public/video-AIA-Creative-Lab.webm",
+      "url": "http://127.0.0.1:4181/video-AIA-Creative-Lab.webm",
+      "bytes": 184605,
+      "http_status": 200
+    },
+    {
+      "path": "public/video-AgentCoderYBE.webm",
+      "url": "http://127.0.0.1:4181/video-AgentCoderYBE.webm",
+      "bytes": 147572,
+      "http_status": 200
+    },
+    {
+      "path": "public/video-BSQ.webm",
+      "url": "http://127.0.0.1:4181/video-BSQ.webm",
+      "bytes": 243478,
+      "http_status": 200
+    },
+    {
+      "path": "public/video-Faith.webm",
+      "url": "http://127.0.0.1:4181/video-Faith.webm",
+      "bytes": 147996,
+      "http_status": 200
+    },
+    {
+      "path": "public/video-Prime.AI.webm",
+      "url": "http://127.0.0.1:4181/video-Prime.AI.webm",
+      "bytes": 195566,
+      "http_status": 200
+    },
+    {
+      "path": "public/video-SQ_BAHA.webm",
+      "url": "http://127.0.0.1:4181/video-SQ_BAHA.webm",
+      "bytes": 187426,
+      "http_status": 200
+    },
+    {
+      "path": "public/video-Sovereign-Ecosystem.webm",
+      "url": "http://127.0.0.1:4181/video-Sovereign-Ecosystem.webm",
+      "bytes": 236548,
+      "http_status": 200
+    },
+    {
+      "path": "public/video-Yace19ai.com.webm",
+      "url": "http://127.0.0.1:4181/video-Yace19ai.com.webm",
+      "bytes": 204831,
+      "http_status": 200
+    },
+    {
+      "path": "public/videos/agent-coder.mp4",
+      "url": "http://127.0.0.1:4181/videos/agent-coder.mp4",
+      "bytes": 0,
+      "http_status": 200
+    },
+    {
+      "path": "public/videos/aia-creative-lab.mp4",
+      "url": "http://127.0.0.1:4181/videos/aia-creative-lab.mp4",
+      "bytes": 30466470,
+      "http_status": 200
+    },
+    {
+      "path": "public/videos/converse-promo.mp4",
+      "url": "http://127.0.0.1:4181/videos/converse-promo.mp4",
+      "bytes": 11398,
+      "http_status": 200
+    },
+    {
+      "path": "public/videos/faith-demo.mp4",
+      "url": "http://127.0.0.1:4181/videos/faith-demo.mp4",
+      "bytes": 4008783,
+      "http_status": 200
+    },
+    {
+      "path": "public/videos/sovereign-factory.mp4",
+      "url": "http://127.0.0.1:4181/videos/sovereign-factory.mp4",
+      "bytes": 10490,
+      "http_status": 200
+    },
+    {
+      "path": "public/videos/whatsapp-demo.mp4",
+      "url": "http://127.0.0.1:4181/videos/whatsapp-demo.mp4",
+      "bytes": 2450175,
+      "http_status": 200
+    },
+    {
+      "path": "public/vite.svg",
+      "url": "http://127.0.0.1:4181/vite.svg",
+      "bytes": 1497,
+      "http_status": 200
+    },
+    {
+      "path": "dist/assets/founder-C05_QxjF.jpg",
+      "url": "http://127.0.0.1:4181/assets/founder-C05_QxjF.jpg",
+      "bytes": 357250,
+      "http_status": 200
+    },
+    {
+      "path": "dist/assets/index-BE9E7pdx.css",
+      "url": "http://127.0.0.1:4181/assets/index-BE9E7pdx.css",
+      "bytes": 99584,
+      "http_status": 200
+    },
+    {
+      "path": "dist/assets/index-xWn29aBT.js",
+      "url": "http://127.0.0.1:4181/assets/index-xWn29aBT.js",
+      "bytes": 76424,
+      "http_status": 200
+    },
+    {
+      "path": "dist/assets/motion-vendor-DnlgO7Qm.js",
+      "url": "http://127.0.0.1:4181/assets/motion-vendor-DnlgO7Qm.js",
+      "bytes": 36,
+      "http_status": 200
+    },
+    {
+      "path": "dist/assets/philosophy-banner-CTUqgd8J.webp",
+      "url": "http://127.0.0.1:4181/assets/philosophy-banner-CTUqgd8J.webp",
+      "bytes": 58254,
+      "http_status": 200
+    },
+    {
+      "path": "dist/assets/react-vendor-Dh3zDKDA.js",
+      "url": "http://127.0.0.1:4181/assets/react-vendor-Dh3zDKDA.js",
+      "bytes": 11213,
+      "http_status": 200
+    },
+    {
+      "path": "dist/assets/three-vendor-DxoY62JQ.js",
+      "url": "http://127.0.0.1:4181/assets/three-vendor-DxoY62JQ.js",
+      "bytes": 180883,
+      "http_status": 200
+    }
+  ],
+  "source_assets": [
+    {
+      "path": "src/assets/asirem-banner.webp",
+      "bytes": 207718
+    },
+    {
+      "path": "src/assets/cursor_stats.png",
+      "bytes": 217302
+    },
+    {
+      "path": "src/assets/flow_stats.png",
+      "bytes": 151413
+    },
+    {
+      "path": "src/assets/founder.jpg",
+      "bytes": 357250
+    },
+    {
+      "path": "src/assets/philosophy-banner.webp",
+      "bytes": 58254
+    }
+  ],
+  "blockers": [
+    {
+      "kind": "missing_game_source",
+      "paths": [
+        "/games/kids-games/games/animal-sounds/index.html",
+        "/games/kids-games/games/code-rocket/index.html",
+        "/games/kids-games/games/color-catcher/index.html",
+        "/games/kids-games/games/gravity-maze/index.html",
+        "/games/kids-games/games/math-asteroid/index.html",
+        "/games/kids-games/games/planet-architect/index.html",
+        "/games/kids-games/games/shape-builder/index.html",
+        "/games/kids-games/games/speed-circuit/index.html",
+        "/games/kids-games/games/word-galaxy/index.html"
+      ],
+      "action": "Provide original implementations for these nine archive pages. No substitute games were fabricated."
+    },
+    {
+      "kind": "defective_original_media",
+      "paths": [
+        "public/video-Prime.AI.webm",
+        "public/videos/agent-coder.mp4",
+        "public/videos/converse-promo.mp4",
+        "public/videos/sovereign-factory.mp4"
+      ],
+      "action": "Supply a nonempty AgentCoder MP4, completed Converse/Factory videos and a meaningful Prime.AI recording instead of the recorded GitHub 404."
+    },
+    {
+      "kind": "human_gated_publication",
+      "action": "Owner approves/publishes the GitHub Pages workflow, sets Pages custom domain, replaces stale GoDaddy records using DEPLOY.md, and verifies HTTPS. No Netlify restoration is required."
+    }
+  ]
+}

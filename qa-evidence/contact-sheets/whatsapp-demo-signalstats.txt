@@ -1,0 +1,116 @@
+frame:0    pts:0       pts_time:0
+lavfi.signalstats.YMAX=255
+frame:1    pts:1       pts_time:0.5
+lavfi.signalstats.YMAX=255
+frame:2    pts:2       pts_time:1
+lavfi.signalstats.YMAX=255
+frame:3    pts:3       pts_time:1.5
+lavfi.signalstats.YMAX=255
+frame:4    pts:4       pts_time:2
+lavfi.signalstats.YMAX=248
+frame:5    pts:5       pts_time:2.5
+lavfi.signalstats.YMAX=250
+frame:6    pts:6       pts_time:3
+lavfi.signalstats.YMAX=255
+frame:7    pts:7       pts_time:3.5
+lavfi.signalstats.YMAX=255
+frame:8    pts:8       pts_time:4
+lavfi.signalstats.YMAX=248
+frame:9    pts:9       pts_time:4.5
+lavfi.signalstats.YMAX=249
+frame:10   pts:10      pts_time:5
+lavfi.signalstats.YMAX=249
+frame:11   pts:11      pts_time:5.5
+lavfi.signalstats.YMAX=255
+frame:12   pts:12      pts_time:6
+lavfi.signalstats.YMAX=255
+frame:13   pts:13      pts_time:6.5
+lavfi.signalstats.YMAX=255
+frame:14   pts:14      pts_time:7
+lavfi.signalstats.YMAX=255
+frame:15   pts:15      pts_time:7.5
+lavfi.signalstats.YMAX=255
+frame:16   pts:16      pts_time:8
+lavfi.signalstats.YMAX=255
+frame:17   pts:17      pts_time:8.5
+lavfi.signalstats.YMAX=255
+frame:18   pts:18      pts_time:9
+lavfi.signalstats.YMAX=255
+frame:19   pts:19      pts_time:9.5
+lavfi.signalstats.YMAX=255
+frame:20   pts:20      pts_time:10
+lavfi.signalstats.YMAX=255
+frame:21   pts:21      pts_time:10.5
+lavfi.signalstats.YMAX=255
+frame:22   pts:22      pts_time:11
+lavfi.signalstats.YMAX=255
+frame:23   pts:23      pts_time:11.5
+lavfi.signalstats.YMAX=255
+frame:24   pts:24      pts_time:12
+lavfi.signalstats.YMAX=255
+frame:25   pts:25      pts_time:12.5
+lavfi.signalstats.YMAX=253
+frame:26   pts:26      pts_time:13
+lavfi.signalstats.YMAX=253
+frame:27   pts:27      pts_time:13.5
+lavfi.signalstats.YMAX=253
+frame:28   pts:28      pts_time:14
+lavfi.signalstats.YMAX=253
+frame:29   pts:29      pts_time:14.5
+lavfi.signalstats.YMAX=255
+frame:30   pts:30      pts_time:15
+lavfi.signalstats.YMAX=255
+frame:31   pts:31      pts_time:15.5
+lavfi.signalstats.YMAX=255
+frame:32   pts:32      pts_time:16
+lavfi.signalstats.YMAX=255
+frame:33   pts:33      pts_time:16.5
+lavfi.signalstats.YMAX=255
+frame:34   pts:34      pts_time:17
+lavfi.signalstats.YMAX=255
+frame:35   pts:35      pts_time:17.5
+lavfi.signalstats.YMAX=255
+frame:36   pts:36      pts_time:18
+lavfi.signalstats.YMAX=255
+frame:37   pts:37      pts_time:18.5
+lavfi.signalstats.YMAX=255
+frame:38   pts:38      pts_time:19
+lavfi.signalstats.YMAX=255
+frame:39   pts:39      pts_time:19.5
+lavfi.signalstats.YMAX=255
+frame:40   pts:40      pts_time:20
+lavfi.signalstats.YMAX=255
+frame:41   pts:41      pts_time:20.5
+lavfi.signalstats.YMAX=255
+frame:42   pts:42      pts_time:21
+lavfi.signalstats.YMAX=255
+frame:43   pts:43      pts_time:21.5
+lavfi.signalstats.YMAX=255
+frame:44   pts:44      pts_time:22
+lavfi.signalstats.YMAX=252
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/whatsapp-demo.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf62.3.100
+  Duration: 00:00:22.58, start: 0.000000, bitrate: 868 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt709, progressive), 392x760, 856 kb/s, 119.29 fps, 120 tbr, 15360 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc62.11.100 libx264
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> wrapped_avframe (native))
+Press [q] to stop, [?] for help
+Output #0, null, to 'pipe:':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf62.12.102
+  Stream #0:0(und): Video: wrapped_avframe, yuv420p(tv, bt709, progressive), 320x620, q=2-31, 200 kb/s, 2 fps, 2 tbn (default)
+    Metadata:
+      encoder         : Lavc62.28.102 wrapped_avframe
+      handler_name    : VideoHandler
+[out#0/null @ 0x7c0c28180] video:19KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=   45 fps=0.0 q=-0.0 Lsize=N/A time=00:00:22.50 bitrate=N/A speed=  65x elapsed=0:00:00.34    

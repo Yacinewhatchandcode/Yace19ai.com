@@ -1,0 +1,30 @@
+Command '['ffmpeg', '-y', '-hide_banner', '-ss', '0.02', '-i', 'public/videos/sovereign-factory.mp4', '-vf', 'scale=640:-1', '-frames:v', '1', '-q:v', '4', 'public/media-posters/sovereign-factory.jpg']' returned non-zero exit status 234.
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'public/videos/sovereign-factory.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf62.3.100
+  Duration: 00:00:00.04, start: 0.000000, bitrate: 2098 kb/s
+  Stream #0:0[0x1](und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(tv, bt470bg/unknown/unknown, progressive), 960x960, 546 kb/s, 25 fps, 25 tbr, 12800 tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc62.11.100 libx264
+    Side data:
+      ICC Profile: (6922 bytes)
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> mjpeg (native))
+Press [q] to stop, [?] for help
+[vf#0:0 @ 0xbd90bc000] No filtered frames for output stream, trying to initialize anyway.
+[mjpeg @ 0xbd9040e00] Non full-range YUV is non-standard, set strict_std_compliance to at most unofficial to use it.
+[mjpeg @ 0xbd9040a80] ff_frame_thread_encoder_init failed
+[vost#0:0/mjpeg @ 0xbd9070000] [enc:mjpeg @ 0xbd8c18230] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.
+[vf#0:0 @ 0xbd8404000] Error sending frames to consumers: Invalid argument
+[vf#0:0 @ 0xbd8404000] Task finished with error code: -22 (Invalid argument)
+[vf#0:0 @ 0xbd8404000] Terminating thread with return code -22 (Invalid argument)
+[vost#0:0/mjpeg @ 0xbd9070000] [enc:mjpeg @ 0xbd8c18230] Could not open encoder before EOF
+[vost#0:0/mjpeg @ 0xbd9070000] Task finished with error code: -22 (Invalid argument)
+[vost#0:0/mjpeg @ 0xbd9070000] Terminating thread with return code -22 (Invalid argument)
+[out#0/image2 @ 0xbd8c44180] Nothing was written into output file, because at least one of its streams received no packets.
+frame=    0 fps=0.0 q=0.0 Lsize=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.00    
+Conversion failed!

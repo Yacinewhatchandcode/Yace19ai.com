@@ -1,0 +1,997 @@
+{
+  "base_url": "http://127.0.0.1:4181",
+  "routes": [
+    {
+      "path": "/",
+      "kind": "react",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/fleet",
+      "kind": "react",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/games",
+      "kind": "react",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/philosophy",
+      "kind": "react",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/media",
+      "kind": "react",
+      "locales": [
+        "en",
+        "fr"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/animal-sounds/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/code-rocket/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/color-catcher/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/gravity-maze/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/math-asteroid/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/planet-architect/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/shape-builder/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/speed-circuit/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/games/word-galaxy/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/kids-games/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/platformer/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/platformer/www/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/swarm-architect/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/games/swarm-architect/www/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    },
+    {
+      "path": "/sovereign/index.html",
+      "kind": "static",
+      "locales": [
+        "en"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "path": "src/assets/asirem-banner.webp",
+      "bytes": 207718
+    },
+    {
+      "path": "src/assets/cursor_stats.png",
+      "bytes": 217302
+    },
+    {
+      "path": "src/assets/flow_stats.png",
+      "bytes": 151413
+    },
+    {
+      "path": "src/assets/founder.jpg",
+      "bytes": 357250
+    },
+    {
+      "path": "src/assets/philosophy-banner.webp",
+      "bytes": 58254
+    },
+    {
+      "path": "public/demo.mp4",
+      "bytes": 51815
+    },
+    {
+      "path": "public/downloads/Antigravity-Kids_Android.apk",
+      "bytes": 4117834
+    },
+    {
+      "path": "public/downloads/Sovereign-Platformer_Android.apk",
+      "bytes": 4147609
+    },
+    {
+      "path": "public/downloads/Swarm-Architect_Android.apk",
+      "bytes": 4126193
+    },
+    {
+      "path": "public/favicon.png",
+      "bytes": 727395
+    },
+    {
+      "path": "public/favicon.svg",
+      "bytes": 1877
+    },
+    {
+      "path": "public/favicon.webp",
+      "bytes": 111908
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable/splash.png",
+      "bytes": 4040
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-hdpi/splash.png",
+      "bytes": 7705
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-mdpi/splash.png",
+      "bytes": 4040
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-xhdpi/splash.png",
+      "bytes": 9251
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-xxhdpi/splash.png",
+      "bytes": 13984
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-land-xxxhdpi/splash.png",
+      "bytes": 17683
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-hdpi/splash.png",
+      "bytes": 7934
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-mdpi/splash.png",
+      "bytes": 4096
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-xhdpi/splash.png",
+      "bytes": 9875
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-xxhdpi/splash.png",
+      "bytes": 13346
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/drawable-port-xxxhdpi/splash.png",
+      "bytes": 17489
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "bytes": 2786
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png",
+      "bytes": 3450
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png",
+      "bytes": 4341
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "bytes": 1869
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png",
+      "bytes": 2110
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png",
+      "bytes": 2725
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "bytes": 3981
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png",
+      "bytes": 5036
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png",
+      "bytes": 6593
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "bytes": 6644
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png",
+      "bytes": 9793
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png",
+      "bytes": 10455
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "bytes": 9441
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
+      "bytes": 15529
+    },
+    {
+      "path": "public/games/platformer/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png",
+      "bytes": 15916
+    },
+    {
+      "path": "public/games/platformer/bg.png",
+      "bytes": 52320
+    },
+    {
+      "path": "public/games/platformer/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
+      "bytes": 110522
+    },
+    {
+      "path": "public/games/platformer/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-1.png",
+      "bytes": 41273
+    },
+    {
+      "path": "public/games/platformer/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-2.png",
+      "bytes": 41273
+    },
+    {
+      "path": "public/games/platformer/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png",
+      "bytes": 41273
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable/splash.png",
+      "bytes": 4040
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-hdpi/splash.png",
+      "bytes": 7705
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-mdpi/splash.png",
+      "bytes": 4040
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-xhdpi/splash.png",
+      "bytes": 9251
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-xxhdpi/splash.png",
+      "bytes": 13984
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-land-xxxhdpi/splash.png",
+      "bytes": 17683
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-hdpi/splash.png",
+      "bytes": 7934
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-mdpi/splash.png",
+      "bytes": 4096
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-xhdpi/splash.png",
+      "bytes": 9875
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-xxhdpi/splash.png",
+      "bytes": 13346
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/drawable-port-xxxhdpi/splash.png",
+      "bytes": 17489
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+      "bytes": 2786
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png",
+      "bytes": 3450
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png",
+      "bytes": 4341
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+      "bytes": 1869
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png",
+      "bytes": 2110
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png",
+      "bytes": 2725
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+      "bytes": 3981
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png",
+      "bytes": 5036
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png",
+      "bytes": 6593
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+      "bytes": 6644
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png",
+      "bytes": 9793
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png",
+      "bytes": 10455
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+      "bytes": 9441
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png",
+      "bytes": 15529
+    },
+    {
+      "path": "public/games/swarm-architect/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png",
+      "bytes": 15916
+    },
+    {
+      "path": "public/games/swarm-architect/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
+      "bytes": 110522
+    },
+    {
+      "path": "public/games/swarm-architect/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-1.png",
+      "bytes": 41273
+    },
+    {
+      "path": "public/games/swarm-architect/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732-2.png",
+      "bytes": 41273
+    },
+    {
+      "path": "public/games/swarm-architect/ios/App/App/Assets.xcassets/Splash.imageset/splash-2732x2732.png",
+      "bytes": 41273
+    },
+    {
+      "path": "public/media-posters/aia-creative-lab.jpg",
+      "bytes": 97357
+    },
+    {
+      "path": "public/media-posters/converse-promo.jpg",
+      "bytes": 12597
+    },
+    {
+      "path": "public/media-posters/demo.jpg",
+      "bytes": 10168
+    },
+    {
+      "path": "public/media-posters/faith-demo.jpg",
+      "bytes": 45841
+    },
+    {
+      "path": "public/media-posters/sovereign-factory.jpg",
+      "bytes": 12579
+    },
+    {
+      "path": "public/media-posters/video-AIA-Creative-Lab.jpg",
+      "bytes": 34312
+    },
+    {
+      "path": "public/media-posters/video-AgentCoderYBE.jpg",
+      "bytes": 26463
+    },
+    {
+      "path": "public/media-posters/video-BSQ.jpg",
+      "bytes": 33205
+    },
+    {
+      "path": "public/media-posters/video-Faith.jpg",
+      "bytes": 23459
+    },
+    {
+      "path": "public/media-posters/video-Prime.AI.jpg",
+      "bytes": 15584
+    },
+    {
+      "path": "public/media-posters/video-SQ_BAHA.jpg",
+      "bytes": 24382
+    },
+    {
+      "path": "public/media-posters/video-Sovereign-Ecosystem.jpg",
+      "bytes": 31030
+    },
+    {
+      "path": "public/media-posters/video-Yace19ai.com.jpg",
+      "bytes": 24669
+    },
+    {
+      "path": "public/media-posters/whatsapp-demo.jpg",
+      "bytes": 23700
+    },
+    {
+      "path": "public/og-image.png",
+      "bytes": 32249
+    },
+    {
+      "path": "public/repo-AIA-Creative-Lab.png",
+      "bytes": 155303
+    },
+    {
+      "path": "public/repo-AgentCoderYBE.png",
+      "bytes": 121407
+    },
+    {
+      "path": "public/repo-BSQ.png",
+      "bytes": 158983
+    },
+    {
+      "path": "public/repo-Faith.png",
+      "bytes": 141534
+    },
+    {
+      "path": "public/repo-Prime.AI.png",
+      "bytes": 237721
+    },
+    {
+      "path": "public/repo-SQ_BAHA.png",
+      "bytes": 164564
+    },
+    {
+      "path": "public/repo-Sovereign-Ecosystem.png",
+      "bytes": 149322
+    },
+    {
+      "path": "public/repo-Yace19ai.com.png",
+      "bytes": 160383
+    },
+    {
+      "path": "public/repo-converse-final-solution.png",
+      "bytes": 59149
+    },
+    {
+      "path": "public/repo-https-github.com-Yacinewhatchandcode-AIA-DiscoVery.png",
+      "bytes": 63467
+    },
+    {
+      "path": "public/repo-hyperswitch-cloud.png",
+      "bytes": 146346
+    },
+    {
+      "path": "public/repo-hyperswitch-railway.png",
+      "bytes": 136559
+    },
+    {
+      "path": "public/repo-lovable-spirit-forge.png",
+      "bytes": 151790
+    },
+    {
+      "path": "public/repo-mcp-registry.png",
+      "bytes": 149258
+    },
+    {
+      "path": "public/twitter-card.png",
+      "bytes": 32249
+    },
+    {
+      "path": "public/video-AIA-Creative-Lab.webm",
+      "bytes": 184605
+    },
+    {
+      "path": "public/video-AgentCoderYBE.webm",
+      "bytes": 147572
+    },
+    {
+      "path": "public/video-BSQ.webm",
+      "bytes": 243478
+    },
+    {
+      "path": "public/video-Faith.webm",
+      "bytes": 147996
+    },
+    {
+      "path": "public/video-Prime.AI.webm",
+      "bytes": 195566
+    },
+    {
+      "path": "public/video-SQ_BAHA.webm",
+      "bytes": 187426
+    },
+    {
+      "path": "public/video-Sovereign-Ecosystem.webm",
+      "bytes": 236548
+    },
+    {
+      "path": "public/video-Yace19ai.com.webm",
+      "bytes": 204831
+    },
+    {
+      "path": "public/videos/agent-coder.mp4",
+      "bytes": 0
+    },
+    {
+      "path": "public/videos/aia-creative-lab.mp4",
+      "bytes": 30466470
+    },
+    {
+      "path": "public/videos/converse-promo.mp4",
+      "bytes": 11398
+    },
+    {
+      "path": "public/videos/faith-demo.mp4",
+      "bytes": 4008783
+    },
+    {
+      "path": "public/videos/sovereign-factory.mp4",
+      "bytes": 10490
+    },
+    {
+      "path": "public/videos/whatsapp-demo.mp4",
+      "bytes": 2450175
+    },
+    {
+      "path": "public/vite.svg",
+      "bytes": 1497
+    }
+  ],
+  "literal_links": [
+    {
+      "source": "src/App.tsx",
+      "target": "#main-content"
+    },
+    {
+      "source": "src/App.tsx",
+      "target": "/"
+    },
+    {
+      "source": "src/App.tsx",
+      "target": "/games"
+    },
+    {
+      "source": "src/App.tsx",
+      "target": "/fleet"
+    },
+    {
+      "source": "src/App.tsx",
+      "target": "/media"
+    },
+    {
+      "source": "src/App.tsx",
+      "target": "/"
+    },
+    {
+      "source": "src/App.tsx",
+      "target": "https://github.com/Yacinewhatchandcode"
+    },
+    {
+      "source": "src/components/AziReMCatalog.tsx",
+      "target": "https://calendly.com/info-primeai/30min"
+    },
+    {
+      "source": "src/components/AziReMCatalog.tsx",
+      "target": "https://calendly.com/info-primeai/30min"
+    },
+    {
+      "source": "src/components/DeploymentProtocols.tsx",
+      "target": "https://calendly.com/info-primeai/30min"
+    },
+    {
+      "source": "src/components/Footer.tsx",
+      "target": "#projects"
+    },
+    {
+      "source": "src/components/Footer.tsx",
+      "target": "#philosophy"
+    },
+    {
+      "source": "src/components/Footer.tsx",
+      "target": "#agent-stack"
+    },
+    {
+      "source": "src/components/Footer.tsx",
+      "target": "https://calendly.com/info-primeai/30min"
+    },
+    {
+      "source": "src/components/Philosophy.tsx",
+      "target": "/media-posters/faith-demo.jpg"
+    },
+    {
+      "source": "src/components/ReinforcementSandbox.tsx",
+      "target": "https://sovereign-arcade.vercel.app"
+    },
+    {
+      "source": "src/components/ReinforcementSandbox.tsx",
+      "target": "https://sovereign-arcade.vercel.app"
+    },
+    {
+      "source": "src/pages/HomePage.tsx",
+      "target": "/philosophy"
+    },
+    {
+      "source": "src/pages/HomePage.tsx",
+      "target": "/repo-Yace19ai.com.png"
+    },
+    {
+      "source": "src/pages/HomePage.tsx",
+      "target": "/fleet"
+    },
+    {
+      "source": "public/games/kids-games/games/animal-sounds/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/games/animal-sounds/index.html",
+      "target": "../../index.html"
+    },
+    {
+      "source": "public/games/kids-games/games/animal-sounds/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/kids-games/games/code-rocket/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/games/code-rocket/index.html",
+      "target": "../../index.html"
+    },
+    {
+      "source": "public/games/kids-games/games/code-rocket/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/kids-games/games/color-catcher/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/games/color-catcher/index.html",
+      "target": "../../index.html"
+    },
+    {
+      "source": "public/games/kids-games/games/color-catcher/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/kids-games/games/gravity-maze/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/games/gravity-maze/index.html",
+      "target": "../../index.html"
+    },
+    {
+      "source": "public/games/kids-games/games/gravity-maze/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/kids-games/games/math-asteroid/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/games/math-asteroid/index.html",
+      "target": "../../index.html"
+    },
+    {
+      "source": "public/games/kids-games/games/math-asteroid/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/kids-games/games/planet-architect/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/games/planet-architect/index.html",
+      "target": "../../index.html"
+    },
+    {
+      "source": "public/games/kids-games/games/planet-architect/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/kids-games/games/shape-builder/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/games/shape-builder/index.html",
+      "target": "../../index.html"
+    },
+    {
+      "source": "public/games/kids-games/games/shape-builder/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/kids-games/games/speed-circuit/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/games/speed-circuit/index.html",
+      "target": "../../index.html"
+    },
+    {
+      "source": "public/games/kids-games/games/speed-circuit/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/kids-games/games/word-galaxy/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/games/word-galaxy/index.html",
+      "target": "../../index.html"
+    },
+    {
+      "source": "public/games/kids-games/games/word-galaxy/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "hub.css"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "games/color-catcher/index.html"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "games/animal-sounds/index.html"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "games/shape-builder/index.html"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "games/math-asteroid/index.html"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "games/word-galaxy/index.html"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "games/gravity-maze/index.html"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "games/code-rocket/index.html"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "games/planet-architect/index.html"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "games/speed-circuit/index.html"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "hub.js"
+    },
+    {
+      "source": "public/games/kids-games/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/local-controls.js",
+      "target": "/games"
+    },
+    {
+      "source": "public/games/platformer/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/platformer/index.html",
+      "target": "audio.js"
+    },
+    {
+      "source": "public/games/platformer/index.html",
+      "target": "engine3d.js"
+    },
+    {
+      "source": "public/games/platformer/index.html",
+      "target": "engine3d_game.js"
+    },
+    {
+      "source": "public/games/platformer/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/platformer/www/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/platformer/www/index.html",
+      "target": "audio.js"
+    },
+    {
+      "source": "public/games/platformer/www/index.html",
+      "target": "engine3d.js"
+    },
+    {
+      "source": "public/games/platformer/www/index.html",
+      "target": "engine3d_game.js"
+    },
+    {
+      "source": "public/games/platformer/www/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/swarm-architect/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/swarm-architect/index.html",
+      "target": "audio.js"
+    },
+    {
+      "source": "public/games/swarm-architect/index.html",
+      "target": "game.js"
+    },
+    {
+      "source": "public/games/swarm-architect/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/games/swarm-architect/www/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/games/swarm-architect/www/index.html",
+      "target": "audio.js"
+    },
+    {
+      "source": "public/games/swarm-architect/www/index.html",
+      "target": "game.js"
+    },
+    {
+      "source": "public/games/swarm-architect/www/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "public/sovereign/index.html",
+      "target": "/sovereign/assets/index-BwPj7p6k.js"
+    },
+    {
+      "source": "public/sovereign/index.html",
+      "target": "/sovereign/assets/index-B1mRjAX6.css"
+    },
+    {
+      "source": "public/sovereign/index.html",
+      "target": "/games/local-archive.css"
+    },
+    {
+      "source": "public/sovereign/index.html",
+      "target": "/games/local-controls.js"
+    },
+    {
+      "source": "index.html",
+      "target": "/favicon.svg"
+    },
+    {
+      "source": "index.html",
+      "target": "/favicon.webp"
+    },
+    {
+      "source": "index.html",
+      "target": "/favicon.png"
+    },
+    {
+      "source": "index.html",
+      "target": "/favicon.png"
+    },
+    {
+      "source": "index.html",
+      "target": "/site.webmanifest"
+    },
+    {
+      "source": "index.html",
+      "target": "https://yace19ai.com"
+    },
+    {
+      "source": "index.html",
+      "target": "/src/main.tsx"
+    }
+  ],
+  "external_calls": [
+    {
+      "source": "src/components/CheckoutModal.tsx",
+      "target": "/api/create-checkout"
+    },
+    {
+      "source": "public/sovereign/assets/index-BwPj7p6k.js",
+      "target": "http://127.0.0.1:8000/api/v1/telemetry/crowdsource"
+    }
+  ],
+  "note": "Includes dormant sources and native www duplicates; dynamic rendered links are audited by browser QA."
+}

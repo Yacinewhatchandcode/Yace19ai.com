@@ -48,9 +48,15 @@ class Particle {
 
 for (let i = 0; i < 100; i++) particles.push(new Particle());
 
+const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+let animationFrame;
 function animate() {
   ctx.clearRect(0, 0, width, height);
   particles.forEach(p => { p.update(); p.draw(); });
-  requestAnimationFrame(animate);
+  if (!motionPreference.matches) animationFrame = requestAnimationFrame(animate);
 }
+motionPreference.addEventListener('change', () => {
+  cancelAnimationFrame(animationFrame);
+  animate();
+});
 animate();

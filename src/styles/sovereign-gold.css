@@ -1,0 +1,15 @@
+:root {
+  --sg-bg:#000000; --sg-bg-2:#07070a; --sg-surface:#0e0e13; --sg-surface-2:#16161d;
+  --sg-gold:#d4af37; --sg-gold-hi:#f4d77a; --sg-gold-lo:#8a6d1f; --sg-amber:#ff9f1c;
+  --sg-text:#fcfcfc; --sg-muted:#6b6b7b; --sg-line:rgba(212,175,55,.22);
+  --sg-ok:#3ddc97; --sg-warn:#ffb020; --sg-err:#ff5470;
+  --sg-radius:18px; --sg-radius-lg:28px;
+  --sg-depth-1:0 1px 0 rgba(255,255,255,.06) inset,0 10px 30px rgba(0,0,0,.6);
+  --sg-depth-2:0 1px 0 rgba(244,215,122,.18) inset,0 24px 60px rgba(0,0,0,.75),0 0 0 1px var(--sg-line);
+  --sg-glow:0 0 32px rgba(212,175,55,.35);
+  --sg-grad-gold:linear-gradient(135deg,#f4d77a 0%,#d4af37 45%,#8a6d1f 100%);
+  --sg-grad-bg:radial-gradient(1200px 600px at 70% -10%,rgba(212,175,55,.14),transparent 60%),#000;
+  --sg-font-sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sg-font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sg-ease:cubic-bezier(.2,.8,.2,1); --sg-dur:420ms;
+}

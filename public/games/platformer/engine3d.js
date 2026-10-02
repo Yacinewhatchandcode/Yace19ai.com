@@ -104,7 +104,7 @@ function drawTitle() {
     X.font = '500 18px Orbitron'; X.fillStyle = '#00d4ff'; X.shadowBlur = 15; X.shadowColor = '#00d4ff';
     X.fillText('THE SOVEREIGN PLATFORMER', C.width / 2, logoY + 40); X.shadowBlur = 0;
     // PS3-style XMB menu
-    const menuItems = ['START GAME', 'WORLD SELECT', 'CONTROLS', 'OPTIONS'];
+    const menuItems = ['START GAME', 'WORLD SELECT', 'CONTROLS'];
     const my = C.height * 0.55;
     menuItems.forEach((item, i) => {
         const sel = i === menuSel; const iy = my + i * 55;

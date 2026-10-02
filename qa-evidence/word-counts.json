@@ -1,0 +1,184 @@
+{
+  "baseline": "Repaired local site before Sovereign Gold; not the initial coming-soon placeholder.",
+  "method": "Rendered document.body.innerText whitespace tokens at 1440px; closed historical details excluded.",
+  "before": 3820,
+  "after": 1561,
+  "reduction_percent": 59.14,
+  "routes": [
+    {
+      "path": "/",
+      "locale": "en",
+      "before": 115,
+      "after": 56,
+      "reduction_percent": 51.3
+    },
+    {
+      "path": "/",
+      "locale": "fr",
+      "before": 133,
+      "after": 57,
+      "reduction_percent": 57.14
+    },
+    {
+      "path": "/fleet",
+      "locale": "en",
+      "before": 759,
+      "after": 274,
+      "reduction_percent": 63.9
+    },
+    {
+      "path": "/fleet",
+      "locale": "fr",
+      "before": 764,
+      "after": 279,
+      "reduction_percent": 63.48
+    },
+    {
+      "path": "/games",
+      "locale": "en",
+      "before": 139,
+      "after": 67,
+      "reduction_percent": 51.8
+    },
+    {
+      "path": "/games",
+      "locale": "fr",
+      "before": 149,
+      "after": 68,
+      "reduction_percent": 54.36
+    },
+    {
+      "path": "/philosophy",
+      "locale": "en",
+      "before": 134,
+      "after": 58,
+      "reduction_percent": 56.72
+    },
+    {
+      "path": "/philosophy",
+      "locale": "fr",
+      "before": 112,
+      "after": 54,
+      "reduction_percent": 51.79
+    },
+    {
+      "path": "/media",
+      "locale": "en",
+      "before": 371,
+      "after": 184,
+      "reduction_percent": 50.4
+    },
+    {
+      "path": "/media",
+      "locale": "fr",
+      "before": 385,
+      "after": 187,
+      "reduction_percent": 51.43
+    },
+    {
+      "path": "/games/kids-games/games/animal-sounds/index.html",
+      "locale": "en",
+      "before": 41,
+      "after": 13,
+      "reduction_percent": 68.29
+    },
+    {
+      "path": "/games/kids-games/games/code-rocket/index.html",
+      "locale": "en",
+      "before": 41,
+      "after": 13,
+      "reduction_percent": 68.29
+    },
+    {
+      "path": "/games/kids-games/games/color-catcher/index.html",
+      "locale": "en",
+      "before": 41,
+      "after": 13,
+      "reduction_percent": 68.29
+    },
+    {
+      "path": "/games/kids-games/games/gravity-maze/index.html",
+      "locale": "en",
+      "before": 41,
+      "after": 13,
+      "reduction_percent": 68.29
+    },
+    {
+      "path": "/games/kids-games/games/math-asteroid/index.html",
+      "locale": "en",
+      "before": 41,
+      "after": 13,
+      "reduction_percent": 68.29
+    },
+    {
+      "path": "/games/kids-games/games/planet-architect/index.html",
+      "locale": "en",
+      "before": 41,
+      "after": 13,
+      "reduction_percent": 68.29
+    },
+    {
+      "path": "/games/kids-games/games/shape-builder/index.html",
+      "locale": "en",
+      "before": 41,
+      "after": 13,
+      "reduction_percent": 68.29
+    },
+    {
+      "path": "/games/kids-games/games/speed-circuit/index.html",
+      "locale": "en",
+      "before": 41,
+      "after": 13,
+      "reduction_percent": 68.29
+    },
+    {
+      "path": "/games/kids-games/games/word-galaxy/index.html",
+      "locale": "en",
+      "before": 41,
+      "after": 13,
+      "reduction_percent": 68.29
+    },
+    {
+      "path": "/games/kids-games/index.html",
+      "locale": "en",
+      "before": 166,
+      "after": 68,
+      "reduction_percent": 59.04
+    },
+    {
+      "path": "/games/platformer/index.html",
+      "locale": "en",
+      "before": 20,
+      "after": 15,
+      "reduction_percent": 25.0
+    },
+    {
+      "path": "/games/platformer/www/index.html",
+      "locale": "en",
+      "before": 20,
+      "after": 15,
+      "reduction_percent": 25.0
+    },
+    {
+      "path": "/games/swarm-architect/index.html",
+      "locale": "en",
+      "before": 75,
+      "after": 23,
+      "reduction_percent": 69.33
+    },
+    {
+      "path": "/games/swarm-architect/www/index.html",
+      "locale": "en",
+      "before": 75,
+      "after": 23,
+      "reduction_percent": 69.33
+    },
+    {
+      "path": "/sovereign/index.html",
+      "locale": "en",
+      "before": 34,
+      "after": 16,
+      "reduction_percent": 52.94
+    }
+  ]
+}

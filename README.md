@@ -1,115 +1,72 @@
 # Yace19ai.com
 
-## Plain-language quick start
+Yacine Benhamou's React/TypeScript portfolio, prepared for GitHub Pages.
+The local version uses the shared **Sovereign Gold 3D** visual system:
+black/gold tokens, accessible EN/FR navigation, illustrative CSS 3D orbs,
+pointer-tilt cards and a muted, viewport-aware MP4 reel.
 
-This project helps you run a web workflow with a very clear user path.
-You can open the app, click start, and follow each step from input to output.
-The design goal is simple: make each action easy to understand.
+## Run locally
 
-### How to use
+Requires Node.js 20.19+ (or 22.12+) and Python 3.
 
-1. Open the app URL.
-2. Click start.
-3. Complete the form fields requested on screen.
-4. Click run and wait for the status update.
-5. Review your result and continue to the next step.
-
-### What this solves
-
-You and your users can work from the same clear sequence.
-You can see what is done, what is pending, and what to click next.
-
----
-
-## Technical notes
-
-Currently, two official plugins are available:
-
-<div align="center">
-
-https://github.com/user-attachments/assets/demo.mp4
-
-**▶️ Watch the Demo**
-
-</div>
-
----
-
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+npm ci
+npm run build
+python3 qa/serve.py
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open **http://127.0.0.1:4181**. The server binds loopback only and implements
+byte ranges for video seeking. Build output is ignored by Git.
+In the QA session a detached server is already running on this port; do not
+start a second listener until the owner stops that process.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Routes and content
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Route | Content |
+|---|---|
+| `/` | Profile and visual introduction |
+| `/fleet` | 21 historical project entries; English descriptions explicitly marked |
+| `/games` | Local browser games and archive links |
+| `/philosophy` | EN/FR vision |
+| `/media` | All included recordings and measured quality indicators |
+
+Standalone archive pages and native `www` mirrors are inventoried in
+`qa/routes.json`. The two playable canvas games have touch controls.
+The 3D command scene is illustrative; its archived port-8000 execution
+shortcut is blocked. The nine children's game implementations are absent,
+and the pages say so instead of pretending to load.
+
+No microphone capture, real-time search, live fleet metrics, payments,
+remote analytics or external fonts are enabled. Historical footage and
+project descriptions are not proof of current service availability.
+Defective original recordings remain identified; they have not been replaced
+by invented footage.
+
+## QA
+
+Uses installed Playwright/Chromium, ffmpeg and ffprobe. No browser downloads.
+
+```sh
+python3 qa/inventory.py
+python3 qa/media.py
+npm run build
+node qa/browser.cjs final
+node qa/interactions.cjs
 ```
 
+`qa/media.py` records probe, volume and 2fps YMAX measurements and generates
+contact sheets/posters. Its visual annotations reflect the contact sheets
+inspected during this QA; review them again if replacing any recordings.
+The optional route-sheet helper uses an already installed Pillow package.
+The authenticated local-fleet advisory helper never calls `/execute`.
 
----
+See `qa-evidence/REPORT.md`, `report.json`, `catalog.json` and `word-counts.json`.
+Screenshots cover 390px and 1440px, EN/FR application pages and English archives.
+Browser rendering uses the existing Chromium SwiftShader WebGL renderer;
+the baseline's default renderer could not create the archived scene's context.
 
-## 🪐 Sovereign High-Compute Cluster Integration (M4 Max & NAS)
-This repository is configured as an autonomous module of the **AMLAZR V5.0 Sovereign Fleet**.
-- **Central Core Compute**: iMac Apple Silicon `Apple M4 Max` (14 Cores, 36 GB Unified Memory).
-- **Persistent Network Storage**: Synology NAS mapped at `/Volumes/NasYac` (Write Verification: `🟢 Verified`).
-- **Local Services Topology**: Local LLMs (Ollama at Port 11434), Vector Storage (Qdrant at Port 6333), Graph Memory (Neo4j at Port 7474), Event Bus (NATS at Port 8085).
-- **Software Factory Specification**: Implements the 17-layer Universal Agentic Swarm capabilities.
+## Publication is human-gated
+
+See **[DEPLOY.md](DEPLOY.md)** for the exact GitHub Pages/GoDaddy handoff.
+The Pages workflow only supports manual dispatch. A push does **not** deploy.
+No push, deployment or DNS change was performed by local QA.
