@@ -20,16 +20,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
@@ -58,9 +48,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/#main-content",
             "http://127.0.0.1:4181/",
@@ -99,16 +100,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
@@ -137,9 +128,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/#main-content",
             "http://127.0.0.1:4181/",
@@ -178,6 +180,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/#main-content",
             "http://127.0.0.1:4181/",
@@ -216,6 +219,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/#main-content",
             "http://127.0.0.1:4181/",
@@ -265,16 +269,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
@@ -303,9 +297,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/fleet#main-content",
             "http://127.0.0.1:4181/",
@@ -366,16 +371,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
@@ -404,9 +399,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/fleet#main-content",
             "http://127.0.0.1:4181/",
@@ -467,6 +473,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/fleet#main-content",
             "http://127.0.0.1:4181/",
@@ -527,6 +534,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/fleet#main-content",
             "http://127.0.0.1:4181/",
@@ -598,16 +606,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
@@ -636,9 +634,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games#main-content",
             "http://127.0.0.1:4181/",
@@ -679,16 +688,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
@@ -717,9 +716,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games#main-content",
             "http://127.0.0.1:4181/",
@@ -760,6 +770,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games#main-content",
             "http://127.0.0.1:4181/",
@@ -800,6 +811,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games#main-content",
             "http://127.0.0.1:4181/",
@@ -851,16 +863,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
@@ -889,9 +891,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/philosophy#main-content",
             "http://127.0.0.1:4181/",
@@ -928,16 +941,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
@@ -966,9 +969,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/philosophy#main-content",
             "http://127.0.0.1:4181/",
@@ -1005,6 +1019,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/philosophy#main-content",
             "http://127.0.0.1:4181/",
@@ -1041,6 +1056,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/philosophy#main-content",
             "http://127.0.0.1:4181/",
@@ -1088,16 +1104,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustrative \u00b7 Muted"
@@ -1126,9 +1132,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustrative \u00b7 Muted"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/media#main-content",
             "http://127.0.0.1:4181/",
@@ -1165,16 +1182,6 @@
           "overflow": false,
           "overflowElements": [
             {
-              "tag": "DIV",
-              "class": "sg-orb",
-              "text": ""
-            },
-            {
-              "tag": "DIV",
-              "class": "sg-ring sg-ring-one",
-              "text": ""
-            },
-            {
               "tag": "ARTICLE",
               "class": "info-card card-3d is-visible",
               "text": "Faith \u00b7 archivePlayback unavailable. Poster shown.Illustratif \u00b7 Muet"
@@ -1203,9 +1210,20 @@
               "tag": "SPAN",
               "class": "chapter-chip",
               "text": "WhatsApp \u00b7 archive"
+            },
+            {
+              "tag": "VIDEO",
+              "class": "",
+              "text": ""
+            },
+            {
+              "tag": "P",
+              "class": "",
+              "text": "Illustratif \u00b7 Muet"
             }
           ],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/media#main-content",
             "http://127.0.0.1:4181/",
@@ -1242,6 +1260,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/media#main-content",
             "http://127.0.0.1:4181/",
@@ -1278,6 +1297,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/media#main-content",
             "http://127.0.0.1:4181/",
@@ -1325,6 +1345,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1352,6 +1373,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1389,6 +1411,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1416,6 +1439,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1453,6 +1477,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1480,6 +1505,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1517,6 +1543,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1544,6 +1571,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1581,6 +1609,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1608,6 +1637,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1645,6 +1675,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1672,6 +1703,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1709,6 +1741,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1736,6 +1769,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1773,6 +1807,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1800,6 +1835,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1837,6 +1873,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1864,6 +1901,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/index.html"
@@ -1901,6 +1939,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/games/color-catcher/index.html",
@@ -1936,6 +1975,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games",
             "http://127.0.0.1:4181/games/kids-games/games/color-catcher/index.html",
@@ -1981,6 +2021,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -2007,6 +2048,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -2043,6 +2085,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -2069,6 +2112,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -2105,6 +2149,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -2131,6 +2176,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -2167,6 +2213,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -2193,6 +2240,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -2229,6 +2277,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -2255,6 +2304,7 @@
           "overflow": false,
           "overflowElements": [],
           "brokenImages": [],
+          "heroOverlap": false,
           "links": [
             "http://127.0.0.1:4181/games"
           ],
@@ -3321,15 +3371,15 @@
       "http_status": 200
     },
     {
-      "path": "dist/assets/index-BE9E7pdx.css",
-      "url": "http://127.0.0.1:4181/assets/index-BE9E7pdx.css",
-      "bytes": 99584,
+      "path": "dist/assets/index-BL_UC7VL.js",
+      "url": "http://127.0.0.1:4181/assets/index-BL_UC7VL.js",
+      "bytes": 72652,
       "http_status": 200
     },
     {
-      "path": "dist/assets/index-CaEuWwUa.js",
-      "url": "http://127.0.0.1:4181/assets/index-CaEuWwUa.js",
-      "bytes": 72652,
+      "path": "dist/assets/index-BXPMKe_F.css",
+      "url": "http://127.0.0.1:4181/assets/index-BXPMKe_F.css",
+      "bytes": 99662,
       "http_status": 200
     },
     {

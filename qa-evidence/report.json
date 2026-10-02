@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T21:23:00.897357+00:00",
+  "generated_at": "2026-10-02T21:26:52.529232+00:00",
   "status": "local-ready-with-original-content-blockers",
   "local_url": "http://127.0.0.1:4181",
   "service": {
@@ -863,7 +863,7 @@
     }
   ],
   "disk": {
-    "final": "Filesystem      Size    Used   Avail Capacity iused ifree %iused  Mounted on\n/dev/disk3s5   926Gi   887Gi   5.2Gi   100%     14M   54M   21%   /System/Volumes/Data",
+    "final": "Filesystem      Size    Used   Avail Capacity iused ifree %iused  Mounted on\n/dev/disk3s5   926Gi   887Gi   5.1Gi   100%     14M   54M   21%   /System/Volumes/Data",
     "guard_GiB": 3,
     "incident": "Shared disk briefly fell below 3 GiB during the necessary lockfile restore. Coordinator freed its disposable runtimes; final headroom is above the guard.",
     "dependencies": "Lockfile npm ci after missing-dependency build failure; sibling dependencies lacked the required packages."

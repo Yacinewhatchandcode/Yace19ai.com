@@ -38,6 +38,10 @@ fs.mkdirSync(`${out}/screenshots`, { recursive: true });
           const checks = await page.evaluate(() => {
             const body = document.body.innerText.trim();
             const canvas = [...document.querySelectorAll('canvas')].some(c => c.width > 0 && c.height > 0);
+            const orb = document.querySelector('.sg-hero > .sg-orb')?.getBoundingClientRect();
+            const copy = document.querySelector('.hero-copy')?.getBoundingClientRect();
+            const heroOverlap = !!orb && !!copy && orb.left < copy.right && orb.right > copy.left
+              && orb.top < copy.bottom && orb.bottom > copy.top;
             return {
               words: body.split(/\s+/).filter(Boolean).length,
               empty: !body && !canvas,
@@ -48,6 +52,7 @@ fs.mkdirSync(`${out}/screenshots`, { recursive: true });
                 return r.width && (r.left < -1 || r.right > innerWidth + 1) && getComputedStyle(el).position !== 'fixed';
               }).slice(0, 8).map(el => ({ tag: el.tagName, class: el.className, text: el.textContent.slice(0, 80) })),
               brokenImages: [...document.images].filter(img => img.complete && !img.naturalWidth).map(img => img.src),
+              heroOverlap,
               links: [...document.querySelectorAll('a[href]')].map(a => a.href),
               heroVisual: [...document.querySelectorAll('canvas, video, .sg-orb, .archive-orb')].some(el => {
                 const r = el.getBoundingClientRect();
@@ -76,7 +81,7 @@ fs.mkdirSync(`${out}/screenshots`, { recursive: true });
             path: route.path, url: base + route.path, width, locale, status,
             ...checks, errors, failedRequests: requests, httpErrors, externalRequests: external,
             screenshot, fullScreenshot, caption: `${checks.title} — ${width}px, ${locale}; ${route.kind === 'static' ? 'English archive' : 'local portfolio'}.`,
-            pass: status === 200 && !checks.empty && !checks.overflow && !checks.brokenImages.length
+            pass: status === 200 && !checks.empty && !checks.overflow && !checks.heroOverlap && !checks.brokenImages.length
               && !errors.length && !requests.length && !httpErrors.length && !external.length,
           });
         } catch (error) {
@@ -94,8 +99,9 @@ fs.mkdirSync(`${out}/screenshots`, { recursive: true });
   console.log(JSON.stringify(summary));
   console.log(JSON.stringify(results.filter(r => !r.pass).map(r => ({
     path: r.path, width: r.width, locale: r.locale, fatal: r.fatal, errors: r.errors,
-    overflow: r.overflow, overflowElements: r.overflowElements, brokenImages: r.brokenImages,
+    overflow: r.overflow, heroOverlap: r.heroOverlap, overflowElements: r.overflowElements, brokenImages: r.brokenImages,
     failedRequests: r.failedRequests, externalRequests: r.externalRequests
   })), null, 2));
   await browser.close();
+  if (summary.failed || summary.failedLinks) process.exitCode = 1;
 })().catch(error => { console.error(error); process.exitCode = 1; });

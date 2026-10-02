@@ -166,7 +166,9 @@ Four defective content items remain defective even though three can decode.
 The exact shared tokens are imported once per entry point. A fixed 64px glass
 bar, bilingual nav, illustrative CSS 3D orb hero, rAF ±8° tilt cards, MP4 reel
 and one-line footer replace the coming-soon screen. All routes have an
-above-fold visual. Gold controls and archival canvas filtering remove the
+above-fold visual. The mobile hero stacks its orb above the copy with a
+24px gap; route QA rejects orb/text bounding-box overlap.
+Gold controls and archival canvas filtering remove the
 conflicting live UI palette. Existing footage is not recolored or presented
 as current factual evidence.
 
