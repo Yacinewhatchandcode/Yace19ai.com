@@ -4,6 +4,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { reauthorize } from "./pages-release-admission.mjs";
 import {
   canonicalSingleOwnerApproval,
   inventoryFiles,
@@ -170,4 +171,30 @@ test("manifest verifier binds exact static files, source SHA and canonical tree 
   } finally {
     fs.rmSync(temporary, { recursive: true });
   }
+});
+
+test("environment admission rechecks actors, opt-in, branch policy and artifact expiry from fresh API records", () => {
+  const { request } = fixture();
+  const records = {
+    "": request.repo,
+    "actions/variables/STATIC_RELEASE_APPROVAL_POLICY": { value: request.repositoryPolicy },
+    "environments/github-pages": request.environment,
+    "environments/github-pages/deployment-branch-policies": { branch_policies: request.branchPolicies },
+    [`actions/artifacts/${request.artifactId}`]: request.artifact,
+    [`actions/runs/${request.validationRunId}/attempts/${request.validationAttempt}`]: request.run,
+    "actions/workflows/deploy.yml": request.currentWorkflow,
+    "branches/main": { commit: { sha: request.sourceSha } },
+  };
+  const context = { GITHUB_REPOSITORY: request.repository, GITHUB_SHA: request.sourceSha,
+    GITHUB_ACTOR: request.actor, TRIGGERING_ACTOR: request.triggeringActor };
+  assert.equal(reauthorize(request, context, key => records[key]).sourceSha, request.sourceSha);
+  for (const [key, value] of [
+    ["actions/variables/STATIC_RELEASE_APPROVAL_POLICY", { value: "disabled" }],
+    [`actions/artifacts/${request.artifactId}`, { ...request.artifact, expired: true }],
+    ["environments/github-pages/deployment-branch-policies", { branch_policies: [{ name: "*", type: "branch" }] }],
+    ["branches/main", { commit: { sha: "b".repeat(40) } }],
+  ]) {
+    assert.throws(() => reauthorize(request, context, endpoint => endpoint === key ? value : records[endpoint]));
+  }
+  assert.throws(() => reauthorize(request, { ...context, TRIGGERING_ACTOR: "someone-else" }, key => records[key]));
 });

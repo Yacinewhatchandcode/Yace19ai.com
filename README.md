@@ -114,6 +114,23 @@ The documented pre-constellation rollback reference is
 separately authorized rollback procedure that preserves the exact deployed-SHA
 binding.
 
+The older main artifact `11279276106` from run `37137634050` is **not eligible**
+for the new policy workflow: its source and workflow definition predate the
+policy changes. A newly authorized non-publishing main validation is required
+after the corrective policy PR is merged. No duplicate validation or publishing
+dispatch is performed by this change.
+
+After environment approval, authorization is checked again against fresh
+environment, owner identity, repository opt-in and artifact-expiry records.
+Owner mode needs permission to read the repository approval variable through
+the API; an inaccessible variable fails closed, not back to a cached opt-in.
+Release evidence binds the exact publishing run/attempt to the deployment
+status log URL and hashes every reviewed live file (index, routes, assets and
+archive files), rather than interpreting HTTP 200 as proof of released bytes.
+Automatic release is **not ready**: rollback execution remains unimplemented,
+and the configured reviewer-policy interpretation requires the release owner's
+explicit reconciliation of the later user-directed policy change.
+
 ## QA
 
 Uses installed Playwright/Chromium, ffmpeg and ffprobe. No browser downloads.
