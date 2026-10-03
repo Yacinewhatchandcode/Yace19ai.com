@@ -91,3 +91,52 @@ test("reviewed historical preservation is pinned despite the subsequent workflow
   assert.throws(() => validateRestore(preserved, { ...fresh, run: { ...run, head_sha: context.GITHUB_SHA },
     artifact: { ...artifact, workflow_run: { ...artifact.workflow_run, head_sha: context.GITHUB_SHA } } }, context));
 });
+
+function assertSkippedAncestorGates(workflow) {
+  const jobs = new Map([...workflow.split("\njobs:\n")[1].matchAll(
+    /^  ([\w-]+):\n([\s\S]*?)(?=^  [\w-]+:\n|$(?![\s\S]))/gm,
+  )].map(([, name, body]) => [name, {
+    condition: body.match(/^    if: (.+)$/m)?.[1] || "",
+    needs: (body.match(/^    needs: (.+)$/m)?.[1] || "")
+      .replace(/[[\]]/g, "").split(",").map(value => value.trim()).filter(Boolean),
+  }]));
+  const skippedRoots = new Set();
+  for (const job of jobs.values()) {
+    for (const [, skipped] of job.condition.matchAll(/needs\.([\w-]+)\.result == 'skipped'/g)) {
+      assert.ok(job.needs.includes(skipped));
+      assert.ok(job.condition.includes("always()"), "Skipped-result bridge must override implicit success()");
+      skippedRoots.add(skipped);
+    }
+  }
+  function hasSkippedAncestor(name) {
+    return jobs.get(name).needs.some(dependency =>
+      skippedRoots.has(dependency) || hasSkippedAncestor(dependency));
+  }
+  for (const [name, job] of jobs) {
+    if (!hasSkippedAncestor(name)) continue;
+    assert.ok(job.condition.includes("always()"), `${name} must override skipped ancestor success()`);
+    for (const dependency of job.needs) {
+      const expected = skippedRoots.has(dependency) ? "skipped" : "success";
+      assert.ok(job.condition.includes(`needs.${dependency}.result == '${expected}'`),
+        `${name} must explicitly gate ${dependency} result`);
+    }
+  }
+  return { jobs, hasSkippedAncestor };
+}
+
+test("skipped-ancestor release jobs override implicit success with explicit dependency result gates", () => {
+  const workflow = fs.readFileSync(".github/workflows/deploy.yml", "utf8");
+  const { jobs, hasSkippedAncestor } = assertSkippedAncestorGates(workflow);
+  assert.deepEqual(jobs.get("deploy").needs, ["prepare-release"]);
+  assert.ok(hasSkippedAncestor("deploy"));
+  assert.deepEqual(jobs.get("restore").needs, ["prepare-restore"]);
+  assert.equal(jobs.get("prepare-restore").needs.length, 0);
+  assert.equal(hasSkippedAncestor("restore"), false);
+  assert.throws(() => assertSkippedAncestorGates(workflow.replace(
+    "if: always() && github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish && needs.prepare-release.result == 'success'",
+    "if: github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish",
+  )));
+  assert.throws(() => assertSkippedAncestorGates(workflow.replace(
+    " && needs.prepare-release.result == 'success'", "",
+  )));
+});
