@@ -180,6 +180,12 @@ This code does not dispatch preservation, restore or production publication;
 the designated release owner must verify the preserved artifact receipt before
 authorizing publication under the shared release lock.
 
+The metadata helpers join the repository root without a trailing slash. Hosted
+validation performs read-only probes of that root, the Pages environment and
+its branch-policy endpoint using the actual `GITHUB_TOKEN` permissions used
+by preservation. A successful probe is not a successful preservation: the
+release owner must still execute and inspect the non-deploying preserve run.
+
 ## QA
 
 Uses installed Playwright/Chromium, ffmpeg and ffprobe. No browser downloads.

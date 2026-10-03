@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import { execFileSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
+import { repositoryApi } from "./github-repository-api.mjs";
 import { validateRequest } from "./pages-release-authorization.mjs";
 
 export function reauthorize(request, context, api) {
@@ -28,6 +28,6 @@ export function reauthorize(request, context, api) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [requestPath, outputPath] = process.argv.slice(2);
   const request = JSON.parse(fs.readFileSync(requestPath, "utf8"));
-  const api = endpoint => JSON.parse(execFileSync("gh", ["api", `repos/${process.env.GITHUB_REPOSITORY}/${endpoint}`], { encoding: "utf8" }));
+  const api = repositoryApi(process.env.GITHUB_REPOSITORY);
   fs.writeFileSync(outputPath, `${JSON.stringify(reauthorize(request, process.env, api), null, 2)}\n`);
 }

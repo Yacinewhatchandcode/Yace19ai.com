@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
+import { repositoryApi } from "./github-repository-api.mjs";
 
 export const original = {
   repository: "Yacinewhatchandcode/Yace19ai.com",
@@ -78,7 +79,7 @@ export function validateInventory(request, inventory) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [mode, directory] = process.argv.slice(2);
   assert.ok(["prepare", "admission"].includes(mode));
-  const api = endpoint => JSON.parse(execFileSync("gh", ["api", `repos/${original.repository}/${endpoint}`], { encoding: "utf8" }));
+  const api = repositoryApi(original.repository);
   const request = mode === "prepare" ? {
     operation: process.env.RESTORE_OPERATION,
     runId: process.env.RESTORE_RUN_ID,

@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
-import { execFileSync } from "node:child_process";
+import { repositoryApi } from "./github-repository-api.mjs";
 import { deploymentLogBinding, verifyDeployment, verifyLiveFiles } from "./pages-live-verification.mjs";
 
 const [evidenceDirectory, pageUrl, outputPath] = process.argv.slice(2);
 const repository = process.env.GITHUB_REPOSITORY;
-const api = endpoint => JSON.parse(execFileSync("gh", ["api", `repos/${repository}/${endpoint}`], { encoding: "utf8" }));
+const api = repositoryApi(repository);
 const run = api(`actions/runs/${process.env.GITHUB_RUN_ID}/attempts/${process.env.GITHUB_RUN_ATTEMPT}`);
 assert.equal(String(run.id), process.env.GITHUB_RUN_ID);
 assert.equal(String(run.run_attempt), process.env.GITHUB_RUN_ATTEMPT);
