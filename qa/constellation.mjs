@@ -194,43 +194,16 @@ for (const width of [390, 1440]) {
     return "all four entries expand to three links; current site is marked";
   });
 
-  await check(`Julia runtime integration and research tools at ${width}px`, async () => {
+  await check(`Julia portal availability disclosures at ${width}px`, async () => {
     await page.goto(base);
     await page.getByRole("button", { name: "Open Julia, research companion" }).click();
     await expect(page.getByRole("heading", { name: "Julia" })).toBeVisible();
-    await expect(page.getByText(/retrieval, LLM and server voice services are not connected or verified/)).toBeVisible();
-    await page.getByRole("button", { name: "Try 5-minute demo" }).click();
-    await expect(page.getByText(/Demo window active/)).toBeVisible();
-    const mounted = await page.evaluate(() => window.__juliaMount);
-    assert.equal(mounted.site, "yace19ai");
-    assert.deepEqual(mounted.names, ["navigate", "scrollTo", "highlight", "click", "fill", "openConstellation", "switchSite"]);
-
-    await page.evaluate(async () => {
-      await window.__juliaTools.navigate({ path: "/fleet#systems" });
-    });
-    await expect(page).toHaveURL(/\/fleet#systems$/);
-    await page.evaluate(async () => {
-      await window.__juliaTools.navigate({ path: "/#research-domains" });
-    });
-    await expect(page).toHaveURL(/\/#research-domains$/);
-    await expect(page.locator("#publication-query")).toBeVisible();
-    await page.evaluate(async () => {
-      await window.__juliaTools.scrollTo({ selector: "#domain-scientific-ai" });
-    });
-    await page.evaluate(async () => {
-      await window.__juliaTools.fill({ selector: "#publication-query", value: "world models" });
-      await window.__juliaTools.click({ selector: "#publication-search-submit" });
-    });
-    await expect(page.locator(".publication-search-status")).toContainText(/No DOI-verified publications match/);
-    await page.evaluate(async () => {
-      await window.__juliaTools.openConstellation({});
-    });
-    await expect(page.getByRole("region", { name: "Sovereign Constellation sites" })).toBeVisible();
-
-    await page.clock.runFor(3_000);
-    await expect(page.getByText(/five-minute preview has ended/i)).toBeVisible();
-    await expect(page.getByRole("link", { name: /Continue the conversation/ })).toBeVisible();
-    return "shared mount payload, route/section navigation, publication search and three-second mock issuer expiry";
+    await expect(page.getByText("The Julia demo is not available on this site yet.")).toBeVisible();
+    await expect(page.getByText(/no assistant session or backend is connected/i)).toBeVisible();
+    await expect(page.getByRole("button", { name: /Try 5-minute demo/ })).toHaveCount(0);
+    await expect(page.getByText(/Five-minute demo · requires the shared preview service/)).toHaveCount(0);
+    assert.equal(await page.evaluate(() => window.__juliaMount), undefined, "The disabled portal must not mount the session runtime");
+    return "static portrait disclosure; no demo CTA or runtime session is mounted";
   });
 
   await check(`skip link, archive routes and no browser errors at ${width}px`, async () => {
@@ -273,9 +246,8 @@ for (const width of [390, 1440]) {
     }
     await fallbackPage.getByRole("button", { name: "Close constellation" }).click();
     await fallbackPage.getByRole("button", { name: "Open Julia, research companion" }).click();
-    await fallbackPage.getByRole("button", { name: "Try 5-minute demo" }).click();
-    await expect(fallbackPage.getByText(/could not be loaded/)).toBeVisible();
-    await expect(fallbackPage.getByText(/static fallback, not a connected assistant/)).toBeVisible();
+    await expect(fallbackPage.getByText("The Julia demo is not available on this site yet.")).toBeVisible();
+    await expect(fallbackPage.getByRole("button", { name: /Try 5-minute demo/ })).toHaveCount(0);
     await fallbackPage.close();
     return "offline shared runtime leaves local constellation links and Julia portrait fallback available";
   });

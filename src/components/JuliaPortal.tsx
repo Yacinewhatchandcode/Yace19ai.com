@@ -4,6 +4,8 @@ import { ArrowUpRight, Mic, X } from "lucide-react";
 import type { JuliaInstance, JuliaToolHandlers, JuliaWindowSession } from "../lib/julia";
 import { juliaWindowEndpoint, loadJuliaRuntime } from "../lib/julia";
 
+const starterTrialEnabled = import.meta.env.VITE_JULIA_STARTER_ENABLED === "true";
+
 function formatTime(seconds: number) {
   return `${Math.floor(seconds / 60).toString().padStart(2, "0")}:${(seconds % 60).toString().padStart(2, "0")}`;
 }
@@ -126,21 +128,26 @@ export default function JuliaPortal({
             <div><p className="eyebrow">Research companion</p><h2 id="julia-title">Julia</h2></div>
             <button className="icon-button" type="button" aria-label="Close Julia panel" onClick={() => setOpen(false)}><X size={18} /></button>
           </header>
-          <p className="julia-intro">Research companion demo. The shared runtime provides scripted responses and browser speech; retrieval, LLM and server voice services are not connected or verified.</p>
+          <p className="julia-intro">{starterTrialEnabled
+            ? "Research companion demo with scripted responses and browser speech only; retrieval, LLM and server voice services are not connected or verified."
+            : "Julia is a research companion. This site currently provides a portrait and static information only; no assistant session or backend is connected."}</p>
           <div className="julia-session-status" role="status" aria-live="polite">
-            {status === "idle" && <span>Five-minute demo · requires the shared preview service</span>}
+            {!starterTrialEnabled && <span>The Julia demo is not available on this site yet.</span>}
+            {starterTrialEnabled && status === "idle" && <span>Five-minute demo · requires the shared preview service</span>}
             {status === "connecting" && <span>Connecting to the shared Julia runtime…</span>}
             {status === "active" && <span><span className="status-dot" /> Demo window active · {formatTime(secondsLeft)} remaining · {agentState}</span>}
             {status === "offline" && <span>{message || "Julia's shared runtime is not available yet."}</span>}
             {status === "ended" && <span>{message}</span>}
           </div>
           {status === "offline" && <p className="julia-fallback-note">The shared service is unavailable. This portrait is a static fallback, not a connected assistant.</p>}
-          {status === "ended"
+          {starterTrialEnabled && status === "ended"
             ? <a className="button button-primary julia-cta" href="https://calendly.com/info-primeai/30min" target="_blank" rel="noreferrer">Continue the conversation <ArrowUpRight size={16} /></a>
-            : status !== "active" && <button className="button button-primary julia-cta" type="button" disabled={status === "connecting"} onClick={startSession}>
+            : starterTrialEnabled && status !== "active" && <button className="button button-primary julia-cta" type="button" disabled={status === "connecting"} onClick={startSession}>
               <Mic size={16} /> {status === "connecting" ? "Connecting…" : status === "offline" ? "Try again" : "Try 5-minute demo"}
             </button>}
-          <p className="julia-disclosure">When available, the shared PRIME-AI issuer signs the demo window; this countdown mirrors its expiry. An issued window does not establish a working retrieval or voice backend.</p>
+          {starterTrialEnabled
+            ? <p className="julia-disclosure">When available, the shared PRIME-AI issuer signs the demo window; this countdown mirrors its expiry. An issued window does not establish a working retrieval or voice backend.</p>
+            : <p className="julia-disclosure">No session starts from this page. A connected research assistant is not available here yet.</p>}
         </section>
       )}
     </aside>

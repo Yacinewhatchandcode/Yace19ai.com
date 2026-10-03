@@ -14,8 +14,41 @@ on:
         required: true
         default: false
         type: boolean
+      approval_policy:
+        description: Explicitly select the reviewer gate or opted-in single-owner gate
+        required: true
+        default: required-reviewers/v1
+        type: choice
+        options:
+          - required-reviewers/v1
+          - single-owner/v1
+      reviewed_run_id:
+        description: Successful immutable main validation run ID
+        required: false
+        type: string
+      reviewed_run_attempt:
+        description: Exact successful validation run attempt
+        required: false
+        type: string
+      reviewed_artifact_id:
+        description: Immutable GitHub artifact ID produced by that run attempt
+        required: false
+        type: string
+      reviewed_artifact_zip_sha256:
+        description: GitHub artifact archive SHA-256, 64 lowercase hex characters
+        required: false
+        type: string
+      reviewed_tree_sha256:
+        description: Canonical static tree SHA-256 over sorted path-NUL-fileSHA-newline records
+        required: false
+        type: string
+      policy_approval:
+        description: Exact single-owner/v1 consent string binding repo, source, tree, validation run and artifact ID
+        required: false
+        type: string
 
 permissions:
+  actions: read
   contents: read
 
 concurrency:
@@ -24,6 +57,7 @@ concurrency:
 
 jobs:
   validate:
+    if: github.event_name == 'pull_request' || inputs.publish != true
     runs-on: ubuntu-latest
     outputs:
       sha: ${{ steps.candidate.outputs.sha }}
@@ -34,10 +68,15 @@ jobs:
           CANDIDATE: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
           EVENT: ${{ github.event_name }}
           REF: ${{ github.ref }}
+          RUN_SHA: ${{ github.sha }}
         run: |
           [[ "$CANDIDATE" =~ ^[0-9a-f]{40}$ ]] || exit 1
           if [[ "$EVENT" == workflow_dispatch && "$REF" != refs/heads/main ]]; then
             echo "::error::Manual release workflow must run from main"
+            exit 1
+          fi
+          if [[ "$EVENT" == workflow_dispatch && "$CANDIDATE" != "$RUN_SHA" ]]; then
+            echo "::error::Manual validation must build the exact main commit that triggered the run"
             exit 1
           fi
           echo "sha=$CANDIDATE" >> "$GITHUB_OUTPUT"
@@ -45,6 +84,11 @@ jobs:
         with:
           ref: ${{ steps.candidate.outputs.sha }}
           fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: .workflow-support
           persist-credentials: false
       - name: Verify source SHA and release ancestry
         env:
@@ -61,8 +105,14 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Test artifact integrity gates
-        run: node --test qa/pages-integrity.test.mjs
+        if: github.event_name == 'pull_request'
+        working-directory: .workflow-support
+        run: |
+          node --test qa/pages-integrity.test.mjs qa/pages-release-authorization.test.mjs
+          python3 -m unittest qa.test_extract_pages_artifact
       - run: npm run build
+        env:
+          VITE_JULIA_STARTER_ENABLED: "false"
       - name: Install CI browser
         run: npx playwright install --with-deps chromium
       - name: Test built static artifact
@@ -81,7 +131,14 @@ jobs:
       - name: Record static artifact integrity
         env:
           CANDIDATE: ${{ steps.candidate.outputs.sha }}
-        run: node qa/pages-integrity.mjs create dist "$CANDIDATE" pages-integrity.json
+        run: |
+          node qa/pages-integrity.mjs create dist "$CANDIDATE" pages-integrity.json
+          node .workflow-support/qa/pages-release-authorization.mjs tree dist | tee "$RUNNER_TEMP/tree-digest.json"
+          {
+            echo "### Immutable static artifact"
+            echo "- Source SHA: \`$CANDIDATE\`"
+            jq -r '"- Canonical tree SHA-256: \(.treeSha256)"' "$RUNNER_TEMP/tree-digest.json"
+          } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         with:
           name: candidate-${{ steps.candidate.outputs.sha }}
@@ -92,45 +149,228 @@ jobs:
           retention-days: 30
 
   prepare-release:
-    if: github.event_name == 'workflow_dispatch' && inputs.publish
+    if: always() && github.event_name == 'workflow_dispatch' && inputs.publish && needs.validate.result == 'skipped'
     needs: validate
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      deployments: read
+    outputs:
+      source_sha: ${{ steps.authorization.outputs.source_sha }}
     steps:
-      - name: Require reviewer-protected production environment
+      - name: Validate requested immutable source SHA
+        env:
+          SOURCE_SHA: ${{ inputs.candidate_sha }}
+          REF: ${{ github.ref }}
+        run: |
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || {
+            echo "::error::candidate_sha must be a full 40-character lowercase commit SHA"
+            exit 1
+          }
+          test "$REF" = refs/heads/main
+      - name: Checkout authorization helpers at the immutable source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Fetch exact source, validation-attempt, artifact and environment records
+        id: authorization
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ inputs.candidate_sha }}
+          VALIDATION_RUN_ID: ${{ inputs.reviewed_run_id }}
+          VALIDATION_ATTEMPT: ${{ inputs.reviewed_run_attempt }}
+          ARTIFACT_ID: ${{ inputs.reviewed_artifact_id }}
+          ARTIFACT_ZIP_SHA256: ${{ inputs.reviewed_artifact_zip_sha256 }}
+          TREE_SHA256: ${{ inputs.reviewed_tree_sha256 }}
+          APPROVAL_POLICY: ${{ inputs.approval_policy }}
+          POLICY_APPROVAL: ${{ inputs.policy_approval }}
+          REPOSITORY_POLICY: ${{ vars.STATIC_RELEASE_APPROVAL_POLICY }}
+          ACTOR: ${{ github.actor }}
+          TRIGGERING_ACTOR: ${{ github.triggering_actor }}
+          OWNER_LOGIN: ${{ github.repository_owner }}
+          REPOSITORY: ${{ github.repository }}
+          RELEASE_WORKFLOW_SHA: ${{ github.sha }}
+        run: |
+          test "$SOURCE_SHA" = "$RELEASE_WORKFLOW_SHA"
+          main_sha="$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq .commit.sha)"
+          compare_status="$(gh api "repos/$GITHUB_REPOSITORY/compare/$SOURCE_SHA...$main_sha" --jq .status)"
+          [[ "$compare_status" == "ahead" || "$compare_status" == "identical" ]]
+          gh api "repos/$GITHUB_REPOSITORY" > "$RUNNER_TEMP/repository.json"
+          gh api "repos/$GITHUB_REPOSITORY/environments/github-pages" > "$RUNNER_TEMP/environment.json"
+          gh api "repos/$GITHUB_REPOSITORY/environments/github-pages/deployment-branch-policies" > "$RUNNER_TEMP/branch-policies.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/deploy.yml" > "$RUNNER_TEMP/current-workflow.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$VALIDATION_RUN_ID/attempts/$VALIDATION_ATTEMPT" > "$RUNNER_TEMP/validation-run.json"
+          validation_head_sha="$(jq -r .head_sha "$RUNNER_TEMP/validation-run.json")"
+          [[ "$validation_head_sha" =~ ^[0-9a-f]{40}$ ]]
+          validation_workflow_compare="$(gh api "repos/$GITHUB_REPOSITORY/compare/$validation_head_sha...$main_sha" --jq .status)"
+          [[ "$validation_workflow_compare" == ahead || "$validation_workflow_compare" == identical ]]
+          gh api "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=$validation_head_sha" \
+            --jq .content | base64 --decode > "$RUNNER_TEMP/validation-workflow.yml"
+          cmp --silent .github/workflows/deploy.yml "$RUNNER_TEMP/validation-workflow.yml"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID" > "$RUNNER_TEMP/artifact.json"
+          jq -n \
+            --slurpfile repo "$RUNNER_TEMP/repository.json" \
+            --slurpfile environment "$RUNNER_TEMP/environment.json" \
+            --slurpfile branchPolicies "$RUNNER_TEMP/branch-policies.json" \
+            --slurpfile currentWorkflow "$RUNNER_TEMP/current-workflow.json" \
+            --slurpfile run "$RUNNER_TEMP/validation-run.json" \
+            --slurpfile artifact "$RUNNER_TEMP/artifact.json" \
+            --arg approvalPolicy "$APPROVAL_POLICY" \
+            --arg repositoryPolicy "$REPOSITORY_POLICY" \
+            --arg repository "$REPOSITORY" \
+            --arg ownerLogin "$OWNER_LOGIN" \
+            --arg actor "$ACTOR" \
+            --arg triggeringActor "$TRIGGERING_ACTOR" \
+            --arg sourceSha "$SOURCE_SHA" \
+            --arg mainSha "$main_sha" \
+            --arg validationRunId "$VALIDATION_RUN_ID" \
+            --arg validationAttempt "$VALIDATION_ATTEMPT" \
+            --arg artifactId "$ARTIFACT_ID" \
+            --arg artifactZipSha256 "sha256:$ARTIFACT_ZIP_SHA256" \
+            --arg treeSha256 "$TREE_SHA256" \
+            --arg validationWorkflowMatchesCurrent "true" \
+            --arg policyApproval "$POLICY_APPROVAL" \
+            '{
+              approvalPolicy:$approvalPolicy, repositoryPolicy:$repositoryPolicy,
+              repository:$repository, ownerLogin:$ownerLogin, ownerType:$repo[0].owner.type,
+              actor:$actor, triggeringActor:$triggeringActor, sourceSha:$sourceSha,
+              sourceIsAncestorOfMain:true, mainSha:$mainSha, validationRunId:$validationRunId,
+              validationAttempt:$validationAttempt, artifactId:$artifactId,
+              artifactZipSha256:$artifactZipSha256, treeSha256:$treeSha256,
+              validationWorkflowMatchesCurrent:($validationWorkflowMatchesCurrent == "true"),
+              releaseKind:"candidate",
+              policyApproval:$policyApproval,
+              repo:$repo[0], environment:$environment[0],
+              branchPolicies:$branchPolicies[0].branch_policies,
+              currentWorkflow:$currentWorkflow[0],
+              run:$run[0], artifact:$artifact[0]
+            }' > "$RUNNER_TEMP/release-request.json"
+          node qa/pages-release-authorization.mjs authorize \
+            "$RUNNER_TEMP/release-request.json" "$RUNNER_TEMP/release-approval.json"
+          echo "source_sha=$SOURCE_SHA" >> "$GITHUB_OUTPUT"
+      - name: Verify and download the exact reviewed artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VALIDATION_RUN_ID: ${{ inputs.reviewed_run_id }}
+          VALIDATION_ATTEMPT: ${{ inputs.reviewed_run_attempt }}
+          ARTIFACT_ID: ${{ inputs.reviewed_artifact_id }}
+          ARTIFACT_ZIP_SHA256: ${{ inputs.reviewed_artifact_zip_sha256 }}
+          SOURCE_SHA: ${{ inputs.candidate_sha }}
+          TREE_SHA256: ${{ inputs.reviewed_tree_sha256 }}
+          RELEASE_WORKFLOW_SHA: ${{ github.sha }}
+        run: |
+          test "$SOURCE_SHA" = "$RELEASE_WORKFLOW_SHA"
+          archive="$RUNNER_TEMP/reviewed-static-artifact.zip"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" --output "$archive"
+          actual_digest="sha256:$(sha256sum "$archive" | cut -d' ' -f1)"
+          test "$actual_digest" = "sha256:$ARTIFACT_ZIP_SHA256"
+          python3 qa/extract_pages_artifact.py "$archive" "$RUNNER_TEMP/reviewed-artifact"
+          node qa/pages-integrity.mjs verify \
+            "$RUNNER_TEMP/reviewed-artifact/dist" "$SOURCE_SHA" \
+            "$RUNNER_TEMP/reviewed-artifact/pages-integrity.json"
+          actual_tree="$(node qa/pages-release-authorization.mjs verify-manifest \
+            "$RUNNER_TEMP/reviewed-artifact/pages-integrity.json" \
+            "$RUNNER_TEMP/reviewed-artifact/dist" "$SOURCE_SHA" | jq -r .treeSha256)"
+          test "$actual_tree" = "$TREE_SHA256"
+          echo "Validated immutable artifact $ARTIFACT_ID for $SOURCE_SHA (validation $VALIDATION_RUN_ID/$VALIDATION_ATTEMPT; tree $actual_tree; archive $actual_digest)"
+      - name: Capture current successful Pages deployment for rollback evidence
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/environments/github-pages" \
-            --jq '(.can_admins_bypass == false) and (.deployment_branch_policy.custom_branch_policies == true) and any(.protection_rules[]; .type == "required_reviewers" and .prevent_self_review == true and (.reviewers | length > 0))' \
-            | grep -qx true
-          gh api "repos/$GITHUB_REPOSITORY/environments/github-pages/deployment-branch-policies" \
-            --jq '(.branch_policies | length == 1) and (.branch_policies[0].name == "main") and (.branch_policies[0].type == "branch")' \
-            | grep -qx true
-      - uses: actions/checkout@v4
+          gh api "repos/$GITHUB_REPOSITORY/deployments?environment=github-pages&per_page=100" > "$RUNNER_TEMP/deployments.json"
+          ids="$(jq -r 'sort_by(.created_at) | reverse | .[] | select(.environment == "github-pages") | .id' "$RUNNER_TEMP/deployments.json")"
+          previous=""
+          for deployment_id in $ids; do
+            gh api "repos/$GITHUB_REPOSITORY/deployments/$deployment_id/statuses" > "$RUNNER_TEMP/deployment-statuses.json"
+            if jq -e 'sort_by(.created_at) | last | .state == "success"' "$RUNNER_TEMP/deployment-statuses.json" > /dev/null; then
+              previous="$(jq --argjson id "$deployment_id" '[.[] | select(.id == $id)][0]' "$RUNNER_TEMP/deployments.json")"
+              previous_status="$(jq '[.[] | select(.state == "success")][0]' "$RUNNER_TEMP/deployment-statuses.json")"
+              break
+            fi
+          done
+          test -n "$previous"
+          jq -n --argjson deployment "$previous" --argjson status "$previous_status" \
+            '{previousDeployment:$deployment, successfulStatus:$status}' > "$RUNNER_TEMP/rollback-evidence.json"
+      - name: Stage only the verified static artifact for protected deployment
+        uses: actions/upload-pages-artifact@v3
         with:
-          ref: ${{ needs.validate.outputs.sha }}
-          persist-credentials: false
-      - uses: actions/download-artifact@v4
+          path: ${{ runner.temp }}/reviewed-artifact/dist
+      - name: Preserve per-release consent and rollback evidence
+        uses: actions/upload-artifact@v4
         with:
-          name: candidate-${{ needs.validate.outputs.sha }}
-          path: candidate
-      - name: Verify downloaded artifact and embedded candidate SHA
-        env:
-          CANDIDATE: ${{ needs.validate.outputs.sha }}
-        run: node qa/pages-integrity.mjs verify candidate/dist "$CANDIDATE" candidate/pages-integrity.json
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: candidate/dist
+          name: release-preflight-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/release-approval.json
+            ${{ runner.temp }}/rollback-evidence.json
+          if-no-files-found: error
+          retention-days: 90
 
   deploy:
-    needs: [validate, prepare-release]
+    if: github.event_name == 'workflow_dispatch' && inputs.publish
+    needs: [prepare-release]
     runs-on: ubuntu-latest
     permissions:
+      actions: read
+      contents: read
+      deployments: read
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Read release provenance from protected preflight
+        uses: actions/download-artifact@v4
+        with:
+          name: release-preflight-${{ github.run_id }}
+          path: release-evidence
       - uses: actions/deploy-pages@v4
         id: deployment
+      - name: Verify deployed commit and live static site; record rollback reference
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ inputs.candidate_sha }}
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          RUN_STARTED_AT: ${{ github.run_started_at }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/deployments?environment=github-pages&per_page=100" > "$RUNNER_TEMP/deployments.json"
+          deployment_id="$(jq -r --arg sha "$SOURCE_SHA" --arg started "$GITHUB_RUN_STARTED_AT" \
+            '[.[] | select(.environment == "github-pages" and .ref == "main" and .sha == $sha and .created_at >= $started)] | sort_by(.created_at) | last | .id // empty' \
+            "$RUNNER_TEMP/deployments.json")"
+          test -n "$deployment_id"
+          gh api "repos/$GITHUB_REPOSITORY/deployments/$deployment_id/statuses" > "$RUNNER_TEMP/deployment-statuses.json"
+          page_url="${PAGE_URL%/}"
+          jq -e --arg url "$page_url" 'any(.[]; .state == "success" and (.environment_url | sub("/$"; "")) == $url)' \
+            "$RUNNER_TEMP/deployment-statuses.json" > /dev/null
+          curl --fail --silent --show-error "$PAGE_URL/" -o "$RUNNER_TEMP/live-index.html"
+          jq -n \
+            --argjson id "$deployment_id" \
+            --arg sha "$SOURCE_SHA" \
+            --arg url "$PAGE_URL" \
+            --slurpfile deployment "$RUNNER_TEMP/deployments.json" \
+            --slurpfile status "$RUNNER_TEMP/deployment-statuses.json" \
+            --slurpfile approval "$RUNNER_TEMP/release-evidence/release-approval.json" \
+            --slurpfile rollback "$RUNNER_TEMP/release-evidence/rollback-evidence.json" \
+            '{
+              current:{id:$id,sha:$sha,url:$url,record:($deployment[0][]|select(.id==$id)),
+                successfulStatus:[$status[0][]|select(.state=="success" and (.environment_url|sub("/$";""))==$url)][0]},
+              approval:$approval[0], rollback:$rollback[0].previousDeployment,
+              rollbackSuccessfulStatus:$rollback[0].successfulStatus
+            }' > "$RUNNER_TEMP/release-evidence.json"
+          {
+            echo "## Verified static Pages release"
+            echo "- Source SHA: \`$SOURCE_SHA\`"
+            echo "- Deployment ID: \`$deployment_id\`"
+            echo "- Live URL: $PAGE_URL"
+            echo "- Health: HTTP 200"
+            jq -r '"- Approval policy: \(.approval.approvalPolicy); actor: \(.approval.actor)\n- Validation run/attempt: \(.approval.validationRunId)/\(.approval.validationAttempt)\n- Artifact ID: \(.approval.artifactId); tree SHA-256: \(.approval.treeSha256); zip SHA-256: \(.approval.artifactZipSha256)\n- Previous deployment ID: \(.rollback.id); SHA: \(.rollback.sha)"' "$RUNNER_TEMP/release-evidence.json"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Archive exact deployment and rollback evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-evidence-${{ github.run_id }}
+          path: ${{ runner.temp }}/release-evidence.json
+          if-no-files-found: error
+          retention-days: 90
