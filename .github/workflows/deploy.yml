@@ -105,10 +105,9 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Test artifact integrity gates
-        if: github.event_name == 'pull_request'
         working-directory: .workflow-support
         run: |
-          node --test qa/pages-integrity.test.mjs qa/pages-release-authorization.test.mjs
+          node --test qa/pages-integrity.test.mjs qa/pages-release-authorization.test.mjs qa/pages-live-verification.test.mjs
           python3 -m unittest qa.test_extract_pages_artifact
       - run: npm run build
         env:
@@ -303,7 +302,9 @@ jobs:
           name: release-preflight-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/release-approval.json
+            ${{ runner.temp }}/release-request.json
             ${{ runner.temp }}/rollback-evidence.json
+            ${{ runner.temp }}/reviewed-artifact/pages-integrity.json
           if-no-files-found: error
           retention-days: 90
 
@@ -321,11 +322,23 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - name: Read release provenance from protected preflight
         uses: actions/download-artifact@v4
         with:
           name: release-preflight-${{ github.run_id }}
           path: release-evidence
+      - name: Recheck release authorization after environment admission
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TRIGGERING_ACTOR: ${{ github.triggering_actor }}
+        run: node qa/pages-release-admission.mjs release-evidence/release-request.json release-evidence/release-approval.json
       - uses: actions/deploy-pages@v4
         id: deployment
       - name: Verify deployed commit and live static site; record rollback reference
@@ -333,40 +346,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           SOURCE_SHA: ${{ inputs.candidate_sha }}
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
-          RUN_STARTED_AT: ${{ github.run_started_at }}
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/deployments?environment=github-pages&per_page=100" > "$RUNNER_TEMP/deployments.json"
-          deployment_id="$(jq -r --arg sha "$SOURCE_SHA" --arg started "$GITHUB_RUN_STARTED_AT" \
-            '[.[] | select(.environment == "github-pages" and .ref == "main" and .sha == $sha and .created_at >= $started)] | sort_by(.created_at) | last | .id // empty' \
-            "$RUNNER_TEMP/deployments.json")"
-          test -n "$deployment_id"
-          gh api "repos/$GITHUB_REPOSITORY/deployments/$deployment_id/statuses" > "$RUNNER_TEMP/deployment-statuses.json"
-          page_url="${PAGE_URL%/}"
-          jq -e --arg url "$page_url" 'any(.[]; .state == "success" and (.environment_url | sub("/$"; "")) == $url)' \
-            "$RUNNER_TEMP/deployment-statuses.json" > /dev/null
-          curl --fail --silent --show-error "$PAGE_URL/" -o "$RUNNER_TEMP/live-index.html"
-          jq -n \
-            --argjson id "$deployment_id" \
-            --arg sha "$SOURCE_SHA" \
-            --arg url "$PAGE_URL" \
-            --slurpfile deployment "$RUNNER_TEMP/deployments.json" \
-            --slurpfile status "$RUNNER_TEMP/deployment-statuses.json" \
-            --slurpfile approval "$RUNNER_TEMP/release-evidence/release-approval.json" \
-            --slurpfile rollback "$RUNNER_TEMP/release-evidence/rollback-evidence.json" \
-            '{
-              current:{id:$id,sha:$sha,url:$url,record:($deployment[0][]|select(.id==$id)),
-                successfulStatus:[$status[0][]|select(.state=="success" and (.environment_url|sub("/$";""))==$url)][0]},
-              approval:$approval[0], rollback:$rollback[0].previousDeployment,
-              rollbackSuccessfulStatus:$rollback[0].successfulStatus
-            }' > "$RUNNER_TEMP/release-evidence.json"
-          {
-            echo "## Verified static Pages release"
-            echo "- Source SHA: \`$SOURCE_SHA\`"
-            echo "- Deployment ID: \`$deployment_id\`"
-            echo "- Live URL: $PAGE_URL"
-            echo "- Health: HTTP 200"
-            jq -r '"- Approval policy: \(.approval.approvalPolicy); actor: \(.approval.actor)\n- Validation run/attempt: \(.approval.validationRunId)/\(.approval.validationAttempt)\n- Artifact ID: \(.approval.artifactId); tree SHA-256: \(.approval.treeSha256); zip SHA-256: \(.approval.artifactZipSha256)\n- Previous deployment ID: \(.rollback.id); SHA: \(.rollback.sha)"' "$RUNNER_TEMP/release-evidence.json"
-          } >> "$GITHUB_STEP_SUMMARY"
+          node qa/record-pages-release.mjs release-evidence "$PAGE_URL" "$RUNNER_TEMP/release-evidence.json"
       - name: Archive exact deployment and rollback evidence
         uses: actions/upload-artifact@v4
         with:

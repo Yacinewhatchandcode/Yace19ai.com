@@ -97,6 +97,7 @@ function validateRequest(request) {
   assert.equal(artifact.name, `candidate-${sourceSha}`);
   assert.equal(artifact.digest, artifactZipSha256, "GitHub artifact archive digest mismatch");
   assert.equal(artifact.expired, false, "Validation artifact has expired");
+  assert.ok(Date.parse(artifact.expires_at) > Date.now(), "Validation artifact expiry must be in the future");
   assert.equal(artifact.workflow_run.id, Number(validationRunId));
   assert.equal(artifact.workflow_run.head_sha, run.head_sha, "Artifact must originate from the exact validation run");
   assert.equal(artifact.workflow_run.head_sha, sourceSha);

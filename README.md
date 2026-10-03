@@ -92,7 +92,9 @@ reviewer and exactly one custom deployment branch policy (`main`). GitHub
 requires one approval from the configured reviewer list, not all listed
 reviewers. The workflow preserves the environment's current
 `prevent_self_review` and `can_admins_bypass` values; it does not claim those
-settings provide independent review. Configure release authorization and
+settings provide independent review or authorize use of administrator bypass.
+The owner/self-review decision does not authorize administrator bypass.
+Configure release authorization and
 approvals in accordance with the active repository policy.
 
 An explicitly selected `single-owner/v1` mode is an opt-in exception for this
@@ -113,6 +115,23 @@ The documented pre-constellation rollback reference is
 `37129793980`. This reference is evidence only; restoring it requires a
 separately authorized rollback procedure that preserves the exact deployed-SHA
 binding.
+
+The older main artifact `11279276106` from run `37137634050` is **not eligible**
+for the new policy workflow: its source and workflow definition predate the
+policy changes. A newly authorized non-publishing main validation is required
+after the corrective policy PR is merged. No duplicate validation or publishing
+dispatch is performed by this change.
+
+After environment approval, authorization is checked again against fresh
+environment, owner identity, repository opt-in and artifact-expiry records.
+Owner mode needs permission to read the repository approval variable through
+the API; an inaccessible variable fails closed, not back to a cached opt-in.
+Release evidence binds the exact publishing run/attempt to the deployment
+status log URL and hashes every reviewed live file (index, routes, assets and
+archive files), rather than interpreting HTTP 200 as proof of released bytes.
+Automatic release is **not ready**: rollback execution remains unimplemented,
+and the configured reviewer-policy interpretation requires the release owner's
+explicit reconciliation of the later user-directed policy change.
 
 ## QA
 
