@@ -64,6 +64,7 @@ The standalone archives are retained for existing links and are not presented as
 ## Shared Julia integration
 
 - The lead-published `julia-embed-READY.md` API is integrated through the external module loader; the app does not implement the avatar runtime.
-- `mount({ site: "yace19ai", container?, tools, windowEndpoint })` is passed the shared exact-name handler map. `mountConstellation({ site: "yace19ai", container })` owns the shared accordion after it connects; the local four-entry accordion is the offline fallback.
+- `mount({ site: "yace19ai", container?, tools, windowEndpoint })` is passed the shared exact-name handler map. `mountConstellation({ site: "yace19ai" })` owns a body-level shared accordion after it connects; the local four-entry accordion is the offline fallback.
 - The server-issued `exp` and `ttl` drive the visible countdown. Session tokens are not placed in URLs, storage or logs; cross-site handoff uses the runtime's exact-origin `handoff`.
 - The local embed defaults to `http://192.168.1.80:5176/julia/embed.js`, with the YACE preview at `http://192.168.1.80:5175`. Production defaults to `https://prime-ai.fr/julia/embed.js`. Both can be overridden with `VITE_JULIA_EMBED_URL` and `VITE_JULIA_WINDOW_ENDPOINT`.
+- Julia is explicitly labeled as a scripted demo with browser speech. Retrieval, LLM and server voice services are unconnected or unverified; the timed session issuer is not evidence of those capabilities. The offline portrait is labeled as a static fallback.

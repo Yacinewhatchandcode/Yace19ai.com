@@ -187,7 +187,7 @@ function Site() {
       <a className="skip-link" href="#main-content">{locale === "fr" ? "Aller au contenu" : "Skip to content"}</a>
       <header className="site-header">
         <Link className="brand" aria-label="YACE19AI home" to="/">
-          <span className="brand-mark" aria-hidden="true"><span /></span>
+          <img className="brand-mark" src="/prime-trinity.svg" alt="" width="32" height="32" />
           <span>YACE19AI</span>
         </Link>
         <button
@@ -230,12 +230,12 @@ function Site() {
 
       <footer className="site-footer">
         <div className="footer-main">
-          <Link className="brand footer-brand" to="/"><span className="brand-mark" aria-hidden="true"><span /></span><span>YACE19AI</span></Link>
+          <Link className="brand footer-brand" to="/"><img className="brand-mark" src="/prime-trinity.svg" alt="" width="32" height="32" /><span>YACE19AI</span></Link>
           <p>Research, imagination and world models.</p>
           <p className="constellation-label">Part of the PRIME-AI Sovereign Constellation</p>
           <nav aria-label="Sovereign Constellation">
-            <a href="https://yace19ai.com/">YACE19AI</a>
             <a href="https://prime-ai.fr/">PRIME-AI</a>
+            <a href="https://yace19ai.com/">YACE19AI</a>
             <a href="https://amlazr.com/">AMLAZR</a>
             <a href="https://www.linkedin.com/in/yacine-benhamou-b26386124/" target="_blank" rel="noreferrer">LinkedIn</a>
           </nav>

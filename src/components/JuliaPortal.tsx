@@ -126,21 +126,21 @@ export default function JuliaPortal({
             <div><p className="eyebrow">Research companion</p><h2 id="julia-title">Julia</h2></div>
             <button className="icon-button" type="button" aria-label="Close Julia panel" onClick={() => setOpen(false)}><X size={18} /></button>
           </header>
-          <p className="julia-intro">Explore world models, scientific AI and open research. Julia can help you find your way around this lab.</p>
+          <p className="julia-intro">Research companion demo. The shared runtime provides scripted responses and browser speech; retrieval, LLM and server voice services are not connected or verified.</p>
           <div className="julia-session-status" role="status" aria-live="polite">
-            {status === "idle" && <span>Five-minute preview · no signup</span>}
+            {status === "idle" && <span>Five-minute demo · requires the shared preview service</span>}
             {status === "connecting" && <span>Connecting to the shared Julia runtime…</span>}
-            {status === "active" && <span><span className="status-dot" /> Session active · {formatTime(secondsLeft)} remaining · {agentState}</span>}
+            {status === "active" && <span><span className="status-dot" /> Demo window active · {formatTime(secondsLeft)} remaining · {agentState}</span>}
             {status === "offline" && <span>{message || "Julia's shared runtime is not available yet."}</span>}
             {status === "ended" && <span>{message}</span>}
           </div>
-          {status === "offline" && <p className="julia-fallback-note">Julia's portrait stays here while the shared runtime reconnects. Try again later.</p>}
+          {status === "offline" && <p className="julia-fallback-note">The shared service is unavailable. This portrait is a static fallback, not a connected assistant.</p>}
           {status === "ended"
             ? <a className="button button-primary julia-cta" href="https://calendly.com/info-primeai/30min" target="_blank" rel="noreferrer">Continue the conversation <ArrowUpRight size={16} /></a>
             : status !== "active" && <button className="button button-primary julia-cta" type="button" disabled={status === "connecting"} onClick={startSession}>
-              <Mic size={16} /> {status === "connecting" ? "Connecting…" : status === "offline" ? "Try again" : "Start free 5-minute session"}
+              <Mic size={16} /> {status === "connecting" ? "Connecting…" : status === "offline" ? "Try again" : "Try 5-minute demo"}
             </button>}
-          <p className="julia-disclosure">The shared PRIME-AI service signs and expires the session window; this countdown mirrors its issued expiry.</p>
+          <p className="julia-disclosure">When available, the shared PRIME-AI issuer signs the demo window; this countdown mirrors its expiry. An issued window does not establish a working retrieval or voice backend.</p>
         </section>
       )}
     </aside>

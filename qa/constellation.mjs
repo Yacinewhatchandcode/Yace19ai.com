@@ -120,6 +120,12 @@ for (const width of [390, 1440]) {
     assert.equal(await page.locator(".layer-step").count(), 3);
     assert.equal(await page.locator(".domain-row").count(), 3);
     assert.equal(await page.locator(".evidence-list strong").count(), 3);
+    await expect(page.locator(".site-header .brand-mark")).toHaveAttribute("src", "/prime-trinity.svg");
+    assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--blue").trim()), "#1461cd");
+    const sharedNav = page.getByRole("navigation", { name: "Sovereign Constellation", exact: true });
+    for (const [name, href] of [["PRIME-AI", "https://prime-ai.fr/"], ["YACE19AI", "https://yace19ai.com/"], ["AMLAZR", "https://amlazr.com/"]]) {
+      await expect(sharedNav.getByRole("link", { name, exact: true })).toHaveAttribute("href", href);
+    }
     const layout = await page.evaluate(() => ({
       viewport: window.innerWidth,
       document: document.documentElement.scrollWidth,
@@ -192,8 +198,9 @@ for (const width of [390, 1440]) {
     await page.goto(base);
     await page.getByRole("button", { name: "Open Julia, research companion" }).click();
     await expect(page.getByRole("heading", { name: "Julia" })).toBeVisible();
-    await page.getByRole("button", { name: "Start free 5-minute session" }).click();
-    await expect(page.getByText(/Session active/)).toBeVisible();
+    await expect(page.getByText(/retrieval, LLM and server voice services are not connected or verified/)).toBeVisible();
+    await page.getByRole("button", { name: "Try 5-minute demo" }).click();
+    await expect(page.getByText(/Demo window active/)).toBeVisible();
     const mounted = await page.evaluate(() => window.__juliaMount);
     assert.equal(mounted.site, "yace19ai");
     assert.deepEqual(mounted.names, ["navigate", "scrollTo", "highlight", "click", "fill", "openConstellation", "switchSite"]);
@@ -266,8 +273,9 @@ for (const width of [390, 1440]) {
     }
     await fallbackPage.getByRole("button", { name: "Close constellation" }).click();
     await fallbackPage.getByRole("button", { name: "Open Julia, research companion" }).click();
-    await fallbackPage.getByRole("button", { name: "Start free 5-minute session" }).click();
+    await fallbackPage.getByRole("button", { name: "Try 5-minute demo" }).click();
     await expect(fallbackPage.getByText(/could not be loaded/)).toBeVisible();
+    await expect(fallbackPage.getByText(/static fallback, not a connected assistant/)).toBeVisible();
     await fallbackPage.close();
     return "offline shared runtime leaves local constellation links and Julia portrait fallback available";
   });

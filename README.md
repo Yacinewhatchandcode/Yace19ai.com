@@ -58,6 +58,34 @@ cannot be reached, the portrait and local constellation links remain usable.
 Historical footage and project links are not proof of current service
 availability.
 
+Julia is labeled as a scripted demo with browser speech, not a verified
+retrieval, LLM or server voice service. The session issuer only authorizes a
+timed demo window. Production availability must be checked separately before
+release; static GitHub Pages hosting cannot execute the issuer API itself.
+
+The shared constellation identity uses `public/prime-trinity.svg` and YACE's
+blue accent `#1461cd`; PRIME uses `#c93347` and AMLAZR uses `#53627d`.
+Cross-site navigation preserves each site's distinct design and internal routes.
+
+## Pages release and rollback
+
+Production is built from this repository's `main` using the manual
+`Deploy to GitHub Pages` workflow. Merge only a validated release; dispatch
+`deploy.yml` on `main` only after release authorization. Do not change DNS.
+
+The pre-constellation rollback target is
+`10b39a606fc43e4929595188ab3cb9d06b0e52cc`, successful deployment run
+`37129793980`. If an authorized release regresses, restore it by rerunning all
+jobs of that original run, not by dispatching the workflow on a newer `main`:
+
+```sh
+gh run rerun 37129793980 --repo Yacinewhatchandcode/Yace19ai.com
+gh run watch 37129793980 --repo Yacinewhatchandcode/Yace19ai.com --exit-status
+```
+
+Then verify `https://yace19ai.com`, the primary routes and archive links.
+The workflow has no SHA input; a new dispatch uses its selected ref.
+
 ## QA
 
 Uses installed Playwright/Chromium, ffmpeg and ffprobe. No browser downloads.

@@ -2,7 +2,7 @@
   --ink: #17253a;
   --ink-soft: #3a4b63;
   --muted: #65758b;
-  --blue: #2466c4;
+  --blue: #1461cd;
   --blue-dark: #144a9c;
   --blue-pale: #eef6ff;
   --line: #dbe5f1;
@@ -29,8 +29,7 @@
   backdrop-filter: blur(16px);
 }
 .brand { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; color: #18385f; font-size: 14px; font-weight: 800; letter-spacing: .12em; }
-.brand-mark { display: grid; width: 25px; height: 25px; place-items: center; border: 1px solid #94bce8; border-radius: 50%; background: linear-gradient(135deg,#fff,#d5e9ff); }
-.brand-mark span { width: 9px; height: 9px; border-radius: 50%; background: linear-gradient(140deg,#79b8f5,#245cae); box-shadow: 0 0 12px #79b8f5; }
+.brand-mark { width: 32px; height: 32px; flex: 0 0 auto; }
 .primary-navigation { display: flex; align-items: center; height: 100%; gap: 30px; margin-left: auto; }
 .primary-navigation a { position: relative; display: flex; align-items: center; height: 100%; color: var(--muted); font-size: 13px; font-weight: 600; transition: color .18s ease; }
 .primary-navigation a:hover, .primary-navigation a.active { color: var(--blue-dark); }
@@ -206,8 +205,8 @@ main:focus { outline: none; }
 .constellation-entry { border-top: 1px solid #e5ebf3; }
 .constellation-site-trigger { display: flex; width: 100%; align-items: center; gap: 11px; padding: 13px 0; border: 0; text-align: left; background: transparent; cursor: pointer; }
 .site-orb { display: grid; width: 33px; height: 33px; flex: 0 0 auto; place-items: center; border: 1px solid #9cc5ee; border-radius: 50%; color: #2865ad; background: radial-gradient(circle at 35% 30%,#fff,#dceeff); }
-.prime .site-orb { border-color: #c9b4ec; color: #6740a2; background: #f3edfc; }
-.amlazr .site-orb { border-color: #ffc5bd; color: #bd493a; background: #fff1ef; }
+.prime .site-orb { border-color: #c93347; color: #c93347; background: #fff; }
+.amlazr .site-orb { border-color: #53627d; color: #53627d; background: #fff; }
 .network .site-orb { border-color: #bed4eb; color: #235486; background: #f0f6fc; }
 .site-entry-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 3px; }
 .site-entry-copy strong { color: #233a56; font-size: 11px; }
