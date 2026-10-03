@@ -114,7 +114,7 @@ function assertSkippedAncestorGates(workflow) {
   }
   for (const [name, job] of jobs) {
     if (!hasSkippedAncestor(name)) continue;
-    assert.ok(job.condition.includes("always()"), `${name} must override skipped ancestor success()`);
+    assert.ok(/always\(\)|!cancelled\(\)/.test(job.condition), `${name} must override skipped ancestor success()`);
     for (const dependency of job.needs) {
       const expected = skippedRoots.has(dependency) ? "skipped" : "success";
       assert.ok(job.condition.includes(`needs.${dependency}.result == '${expected}'`),
@@ -133,10 +133,40 @@ test("skipped-ancestor release jobs override implicit success with explicit depe
   assert.equal(jobs.get("prepare-restore").needs.length, 0);
   assert.equal(hasSkippedAncestor("restore"), false);
   assert.throws(() => assertSkippedAncestorGates(workflow.replace(
-    "if: always() && github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish && needs.prepare-release.result == 'success'",
+    "if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish && needs.prepare-release.result == 'success' }}",
     "if: github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish",
   )));
   assert.throws(() => assertSkippedAncestorGates(workflow.replace(
     " && needs.prepare-release.result == 'success'", "",
   )));
+});
+
+test("actual deploy job graph and inputs admit skipped validation only after successful preparation and never cancellation", () => {
+  const workflow = fs.readFileSync(".github/workflows/deploy.yml", "utf8");
+  const { jobs } = assertSkippedAncestorGates(workflow);
+  const condition = jobs.get("deploy").condition.replace(/^\$\{\{\s*|\s*\}\}$/g, "");
+  assert.ok(condition.includes("!cancelled()"));
+  assert.deepEqual(jobs.get("deploy").needs, ["prepare-release"]);
+  assert.deepEqual(jobs.get("prepare-release").needs, ["validate"]);
+  assert.ok(jobs.get("prepare-release").condition.includes("needs.validate.result == 'skipped'"));
+  const baseline = { cancelled: false, event: "workflow_dispatch", operation: "candidate",
+    publish: true, validate: "skipped", prepare: "success" };
+  function reachable(context) {
+    return condition.split(/\s*&&\s*/).every(clause => {
+      switch (clause) {
+        case "!cancelled()": return !context.cancelled;
+        case "github.event_name == 'workflow_dispatch'": return context.event === "workflow_dispatch";
+        case "inputs.operation == 'candidate'": return context.operation === "candidate";
+        case "inputs.publish": return context.publish;
+        case "needs.prepare-release.result == 'success'": return context.prepare === "success";
+        default: assert.fail(`Uncovered real deploy condition: ${clause}`);
+      }
+    });
+  }
+  assert.equal(reachable(baseline), true);
+  for (const change of [
+    { prepare: "failure" }, { prepare: "skipped" }, { prepare: "cancelled" },
+    { cancelled: true }, { publish: false }, { operation: "restore" },
+    { operation: "preserve" }, { event: "pull_request" },
+  ]) assert.equal(reachable({ ...baseline, ...change }), false, JSON.stringify(change));
 });

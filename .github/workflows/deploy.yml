@@ -375,7 +375,7 @@ jobs:
           retention-days: 90
 
   deploy:
-    if: always() && github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish && needs.prepare-release.result == 'success'
+    if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish && needs.prepare-release.result == 'success' }}
     needs: [prepare-release]
     runs-on: ubuntu-latest
     permissions:
