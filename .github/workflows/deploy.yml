@@ -5,9 +5,18 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
+      operation:
+        description: Candidate validation/publish, exact old-artifact restore, or non-deploying preservation
+        required: true
+        default: candidate
+        type: choice
+        options:
+          - candidate
+          - preserve
+          - restore
       candidate_sha:
         description: Full immutable commit SHA already on main
-        required: true
+        required: false
         type: string
       publish:
         description: Request production deployment after validation and environment approval
@@ -46,6 +55,26 @@ on:
         description: Exact single-owner/v1 consent string binding repo, source, tree, validation run and artifact ID
         required: false
         type: string
+      restore_run_id:
+        description: Source run (original 37129793980 or reviewed preserve run)
+        required: false
+        type: string
+      restore_artifact_id:
+        description: Source github-pages artifact ID (original 11275823921 or preserved artifact)
+        required: false
+        type: string
+      restore_artifact_digest:
+        description: Exact source archive digest including sha256 prefix
+        required: false
+        type: string
+      restore_source_sha:
+        description: Exact original content SHA 10b39a606fc43e4929595188ab3cb9d06b0e52cc
+        required: false
+        type: string
+      restore_tar_sha256:
+        description: Reviewed original artifact.tar digest (mandatory when consuming preserved archive)
+        required: false
+        type: string
 
 permissions:
   actions: read
@@ -57,7 +86,7 @@ concurrency:
 
 jobs:
   validate:
-    if: github.event_name == 'pull_request' || inputs.publish != true
+    if: github.event_name == 'pull_request' || (inputs.operation == 'candidate' && inputs.publish != true)
     runs-on: ubuntu-latest
     outputs:
       sha: ${{ steps.candidate.outputs.sha }}
@@ -107,8 +136,8 @@ jobs:
       - name: Test artifact integrity gates
         working-directory: .workflow-support
         run: |
-          node --test qa/pages-integrity.test.mjs qa/pages-release-authorization.test.mjs qa/pages-live-verification.test.mjs
-          python3 -m unittest qa.test_extract_pages_artifact
+          node --test qa/pages-integrity.test.mjs qa/pages-release-authorization.test.mjs qa/pages-live-verification.test.mjs qa/pages-restore.test.mjs
+          python3 -m unittest qa.test_extract_pages_artifact qa.test_extract_restore_artifact
       - run: npm run build
         env:
           VITE_JULIA_STARTER_ENABLED: "false"
@@ -148,7 +177,7 @@ jobs:
           retention-days: 30
 
   prepare-release:
-    if: always() && github.event_name == 'workflow_dispatch' && inputs.publish && needs.validate.result == 'skipped'
+    if: always() && github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish && needs.validate.result == 'skipped'
     needs: validate
     runs-on: ubuntu-latest
     permissions:
@@ -309,7 +338,7 @@ jobs:
           retention-days: 90
 
   deploy:
-    if: github.event_name == 'workflow_dispatch' && inputs.publish
+    if: github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish
     needs: [prepare-release]
     runs-on: ubuntu-latest
     permissions:
@@ -353,5 +382,113 @@ jobs:
         with:
           name: release-evidence-${{ github.run_id }}
           path: ${{ runner.temp }}/release-evidence.json
+          if-no-files-found: error
+          retention-days: 90
+
+  prepare-restore:
+    if: github.event_name == 'workflow_dispatch' && (inputs.operation == 'preserve' || inputs.operation == 'restore')
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Enforce separate non-candidate mode
+        env:
+          REF: ${{ github.ref }}
+          PUBLISH: ${{ inputs.publish }}
+        run: |
+          test "$REF" = refs/heads/main
+          test "$PUBLISH" = false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Verify old source binding, archive and unchanged tar bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TRIGGERING_ACTOR: ${{ github.triggering_actor }}
+          RESTORE_OPERATION: ${{ inputs.operation }}
+          RESTORE_RUN_ID: ${{ inputs.restore_run_id }}
+          RESTORE_ARTIFACT_ID: ${{ inputs.restore_artifact_id }}
+          RESTORE_ARTIFACT_DIGEST: ${{ inputs.restore_artifact_digest }}
+          RESTORE_SOURCE_SHA: ${{ inputs.restore_source_sha }}
+          RESTORE_TAR_SHA256: ${{ inputs.restore_tar_sha256 }}
+        run: node qa/pages-restore.mjs prepare "$RUNNER_TEMP/restore"
+      - name: Preserve byte-identical Pages tar (no repack)
+        id: preserved
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/restore/verified/artifact.tar
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+      - name: Record new wrapper identity separately from original tar
+        env:
+          ARTIFACT_ID: ${{ steps.preserved.outputs.artifact-id }}
+          ARCHIVE_DIGEST: ${{ steps.preserved.outputs.artifact-digest }}
+        run: |
+          jq -n --arg id "$ARTIFACT_ID" --arg zip "$ARCHIVE_DIGEST" \
+            --slurpfile provenance "$RUNNER_TEMP/restore/verified/restore-provenance.json" \
+            '{preservedArtifactId:$id,preservedZipSha256:$zip,original:$provenance[0].original,tarSha256:$provenance[0].tarSha256}' \
+            > "$RUNNER_TEMP/restore/preservation-receipt.json"
+          cat "$RUNNER_TEMP/restore/preservation-receipt.json" >> "$GITHUB_STEP_SUMMARY"
+      - name: Archive restore authorization and inventory
+        uses: actions/upload-artifact@v4
+        with:
+          name: restore-evidence-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/restore/restore-request.json
+            ${{ runner.temp }}/restore/pages-integrity.json
+            ${{ runner.temp }}/restore/release-approval.json
+            ${{ runner.temp }}/restore/preservation-receipt.json
+            ${{ runner.temp }}/restore/verified/restore-provenance.json
+          if-no-files-found: error
+          retention-days: 90
+
+  restore:
+    if: github.event_name == 'workflow_dispatch' && inputs.operation == 'restore' && inputs.publish == false
+    needs: prepare-restore
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      deployments: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.restoration.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        with:
+          name: restore-evidence-${{ github.run_id }}
+          path: restore-evidence
+      - name: Recheck exact restore authority after owner environment approval
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TRIGGERING_ACTOR: ${{ github.triggering_actor }}
+        run: node qa/pages-restore.mjs admission restore-evidence
+      - uses: actions/deploy-pages@v4
+        id: restoration
+      - name: Verify restoration deployment identity and every live content hash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PAGE_URL: ${{ steps.restoration.outputs.page_url }}
+        run: node qa/record-pages-release.mjs restore-evidence "$PAGE_URL" "$RUNNER_TEMP/restore-receipt.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: restore-receipt-${{ github.run_id }}
+          path: ${{ runner.temp }}/restore-receipt.json
           if-no-files-found: error
           retention-days: 90

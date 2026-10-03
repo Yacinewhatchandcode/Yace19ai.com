@@ -34,12 +34,15 @@ assert.equal(matches.length, 1, "Require one deployment bound to this exact run/
 const { deployment, statuses, job } = matches[0];
 const status = verifyDeployment(deployment, statuses, run, repository, pageUrl, job);
 const manifest = JSON.parse(fs.readFileSync(path.join(evidenceDirectory, "pages-integrity.json"), "utf8"));
-assert.equal(manifest.candidateSha, run.head_sha);
+assert.equal(manifest.candidateSha, approval.artifactSourceSha ?? run.head_sha);
 const live = await verifyLiveFiles(manifest.files, pageUrl);
-const rollback = JSON.parse(fs.readFileSync(path.join(evidenceDirectory, "rollback-evidence.json"), "utf8"));
+const rollback = approval.operation === "restore"
+  ? { previousDeployment: null, successfulStatus: null }
+  : JSON.parse(fs.readFileSync(path.join(evidenceDirectory, "rollback-evidence.json"), "utf8"));
 const receipt = { current: { id: deployment.id, sha: deployment.sha, url: pageUrl, record: deployment, successfulStatus: status },
+  artifactSourceSha: manifest.candidateSha,
   publishingRun: { id: run.id, attempt: run.run_attempt, startedAt: run.run_started_at, deploymentJob: job },
   approval, live, rollback: rollback.previousDeployment, rollbackSuccessfulStatus: rollback.successfulStatus };
 fs.writeFileSync(outputPath, `${JSON.stringify(receipt, null, 2)}\n`);
 fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
-  `## Verified immutable static release\n\nSource: \`${deployment.sha}\`\n\nDeployment: ${deployment.id}; run: ${run.id}/${run.run_attempt}\n\nLive URL: ${pageUrl}; verified file hashes: ${live.verifiedFiles}\n\nPrevious deployment: ${rollback.previousDeployment.id} (\`${rollback.previousDeployment.sha}\`). Rollback execution remains unavailable.\n`);
+  `## Verified immutable static release\n\nTooling/deployment SHA: \`${deployment.sha}\`; content SHA: \`${manifest.candidateSha}\`\n\nDeployment: ${deployment.id}; run: ${run.id}/${run.run_attempt}\n\nLive URL: ${pageUrl}; verified file hashes: ${live.verifiedFiles}\n\nPrevious deployment: ${rollback.previousDeployment?.id ?? "restore operation"}; original tar: ${approval.tarSha256 ?? "candidate artifact"}.\n`);
