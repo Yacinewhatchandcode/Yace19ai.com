@@ -185,6 +185,11 @@ validation performs read-only probes of that root, the Pages environment and
 its branch-policy endpoint using the actual `GITHUB_TOKEN` permissions used
 by preservation. A successful probe is not a successful preservation: the
 release owner must still execute and inspect the non-deploying preserve run.
+All candidate/restore/provenance downloads share a binary file-descriptor
+download helper, using supported `gh api` flags without text conversion or
+stdout-buffer limits. Failed downloads remove their own partial file and
+propagate the error. Hosted validation also downloads the original rollback
+ZIP and verifies its exact pinned digest without uploading or deploying.
 
 ## QA
 

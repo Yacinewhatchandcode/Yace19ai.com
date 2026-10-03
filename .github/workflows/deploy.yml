@@ -136,7 +136,7 @@ jobs:
       - name: Test artifact integrity gates
         working-directory: .workflow-support
         run: |
-          node --test qa/github-repository-api.test.mjs qa/pages-integrity.test.mjs qa/pages-release-authorization.test.mjs qa/pages-live-verification.test.mjs qa/pages-restore.test.mjs
+          node --test qa/github-artifact-download.test.mjs qa/github-repository-api.test.mjs qa/pages-integrity.test.mjs qa/pages-release-authorization.test.mjs qa/pages-live-verification.test.mjs qa/pages-restore.test.mjs
           python3 -m unittest qa.test_extract_pages_artifact qa.test_extract_restore_artifact
       - name: Probe restore metadata endpoints with actual read-only workflow token
         env:
@@ -150,6 +150,17 @@ jobs:
             console.log(`Read-only GITHUB_TOKEN metadata probe passed: ${endpoint || "(repository root)"}`);
           }
           JS
+      - name: Probe original binary archive download and exact ZIP digest (no upload or deploy)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="$RUNNER_TEMP/original-restore-download-probe.zip"
+          node qa/github-artifact-download.mjs "$GITHUB_REPOSITORY" 11275823921 "$archive"
+          echo "d7b97e55a9a126b2a3ca58e6baa21ae22619cffb1b7170465e27edda6110b77c  $archive" | sha256sum --check --strict
+          python3 qa/extract_restore_artifact.py "$archive" "$RUNNER_TEMP/original-restore-probe" \
+            sha256:d7b97e55a9a126b2a3ca58e6baa21ae22619cffb1b7170465e27edda6110b77c
+          jq '{tarSha256, fileCount:(.files | length)}' "$RUNNER_TEMP/original-restore-probe/tar-inventory.json"
+          rm "$archive"
       - run: npm run build
         env:
           VITE_JULIA_STARTER_ENABLED: "false"
@@ -303,7 +314,7 @@ jobs:
         run: |
           test "$SOURCE_SHA" = "$RELEASE_WORKFLOW_SHA"
           archive="$RUNNER_TEMP/reviewed-static-artifact.zip"
-          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" --output "$archive"
+          node qa/github-artifact-download.mjs "$GITHUB_REPOSITORY" "$ARTIFACT_ID" "$archive"
           actual_digest="sha256:$(sha256sum "$archive" | cut -d' ' -f1)"
           test "$actual_digest" = "sha256:$ARTIFACT_ZIP_SHA256"
           python3 qa/extract_pages_artifact.py "$archive" "$RUNNER_TEMP/reviewed-artifact"

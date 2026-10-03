@@ -4,6 +4,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
 import { repositoryApi } from "./github-repository-api.mjs";
+import { downloadArtifact } from "./github-artifact-download.mjs";
 
 export const original = {
   repository: "Yacinewhatchandcode/Yace19ai.com",
@@ -107,7 +108,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   fs.mkdirSync(directory, { recursive: true });
   if (mode === "prepare") {
     const archive = path.join(directory, "source.zip");
-    execFileSync("gh", ["api", `repos/${original.repository}/actions/artifacts/${request.artifactId}/zip`, "--output", archive]);
+    downloadArtifact(original.repository, request.artifactId, archive);
     const output = path.join(directory, "verified");
     execFileSync("python3", ["qa/extract_restore_artifact.py", archive, output, request.archiveDigest, request.tarSha256], { stdio: "inherit" });
     const inventory = JSON.parse(fs.readFileSync(path.join(output, "tar-inventory.json"), "utf8"));
@@ -120,7 +121,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       assert.ok(Date.parse(evidence[0].created_at) >= Date.parse(run.run_started_at));
       assert.ok(Date.parse(evidence[0].created_at) <= Date.parse(run.updated_at));
       const evidenceZip = path.join(directory, "preserved-provenance.zip");
-      execFileSync("gh", ["api", `repos/${original.repository}/actions/artifacts/${evidence[0].id}/zip`, "--output", evidenceZip]);
+      downloadArtifact(original.repository, evidence[0].id, evidenceZip);
       const digest = execFileSync("sha256sum", [evidenceZip], { encoding: "utf8" }).split(" ")[0];
       assert.equal(`sha256:${digest}`, evidence[0].digest);
       inventory.provenance = JSON.parse(execFileSync("python3", ["-c",
@@ -150,7 +151,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     assert.equal(staged.expired, false);
     assert.ok(Date.parse(staged.expires_at) > Date.now());
     const archive = path.join(directory, "staged.zip");
-    execFileSync("gh", ["api", `repos/${original.repository}/actions/artifacts/${staged.id}/zip`, "--output", archive]);
+    downloadArtifact(original.repository, staged.id, archive);
     const output = path.join(directory, "verified-staged");
     execFileSync("python3", ["qa/extract_restore_artifact.py", archive, output, zipDigest, receipt.tarSha256], { stdio: "inherit" });
     const inventory = JSON.parse(fs.readFileSync(path.join(output, "tar-inventory.json"), "utf8"));
