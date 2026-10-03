@@ -73,40 +73,46 @@ PRs run the `Validate and release static Pages` workflow against their exact
 head SHA. It builds and browser-tests the static output, then records a
 SHA-256 file inventory bound to the candidate commit. Julia tests are mocked
 and do not establish availability of a retrieval or voice service.
+The five-minute Julia starter trial is disabled by default and explicitly
+disabled in the Pages build; the site shows a static portrait and an explicit
+not-available disclosure instead.
 
-For an authorized release, dispatch `deploy.yml` from `main` with a full
-40-character `candidate_sha` already reachable from `main` and `publish=true`.
-The manual run validates that same immutable source, downloads and verifies
-its artifact, and uploads only `dist` to Pages. No API service is deployed.
-The `github-pages` environment must have at least one required reviewer
-(GitHub user or team), prevent self-review enabled, administrator bypass
-disabled, and exactly one custom deployment branch policy: branch `main`
-(no tag or wildcard rules). The workflow fails closed if any condition is
-missing. GitHub requires one approval from the configured reviewer list;
-it does not require all listed reviewers to approve. Configure approval in
-repository Settings > Environments > github-pages before release. Reviewers approve the
-final deploy job after checks pass. A dispatch with `publish=false` validates
-without deploying. Do not change DNS.
+For a release, dispatch `deploy.yml` from `main` with `candidate_sha` equal to
+the exact commit that triggered the run. First use `publish=false` to build and
+validate that source and produce its immutable `candidate-<SHA>` artifact.
+Record the successful run ID and attempt, artifact ID and archive digest, and
+canonical tree digest from the validation run summary. A separate
+`publish=true` dispatch must provide those exact values; it downloads and
+verifies that artifact and uploads only its `dist` directory. It never rebuilds
+the site in the publishing job. No API service is deployed. If `main` advances
+between validation and publishing, validate the new head again.
 
-The pre-constellation rollback target is
+The `github-pages` environment must have at least one required user/team
+reviewer and exactly one custom deployment branch policy (`main`). GitHub
+requires one approval from the configured reviewer list, not all listed
+reviewers. The workflow preserves the environment's current
+`prevent_self_review` and `can_admins_bypass` values; it does not claim those
+settings provide independent review. Configure release authorization and
+approvals in accordance with the active repository policy.
+
+An explicitly selected `single-owner/v1` mode is an opt-in exception for this
+personal repository only. It requires the repository variable
+`STATIC_RELEASE_APPROVAL_POLICY=single-owner/v1`, the owner as both triggering
+and rerunning actor, a `User` repository, an exact per-release consent value
+`single-owner/v1:<repository>:<sourceSHA>:<treeSHA256>:<validationRunID>:<artifactID>`,
+and the same main-only environment branch restriction. The final deploy job
+still uses the `github-pages` environment. Do not select the mode or add its
+opt-in variable without the owner's explicit policy decision. Before
+publishing, the workflow captures the prior successful deployment ID and SHA
+as rollback evidence. Rollback itself is not exposed by this workflow; do not
+rerun a legacy workflow or dispatch a different source as a rollback shortcut.
+Do not change DNS.
+
+The documented pre-constellation rollback reference is
 `10b39a606fc43e4929595188ab3cb9d06b0e52cc`, successful deployment run
-`37129793980`. If an authorized release regresses, restore it by rerunning all
-jobs of that original run, not by dispatching the workflow on a newer `main`:
-
-```sh
-gh run rerun 37129793980 --repo Yacinewhatchandcode/Yace19ai.com
-gh run watch 37129793980 --repo Yacinewhatchandcode/Yace19ai.com --exit-status
-```
-
-Then verify `https://yace19ai.com`, the primary routes and archive links.
-Read-only verification confirmed that this original run succeeded at the
-recorded SHA and its `github-pages` artifact had not expired. Rerunning all jobs
-rebuilds that original source using its original workflow; it is not a rollback
-test deployment, and no rerun has been executed. The old workflow did not check
-reviewer configuration, so obtain explicit rollback authorization and confirm
-environment approval protection before invoking it. Artifact retention and
-dependency availability must be rechecked at rollback time. Do not use a new
-dispatch on latest `main` as a substitute for the original rollback run.
+`37129793980`. This reference is evidence only; restoring it requires a
+separately authorized rollback procedure that preserves the exact deployed-SHA
+binding.
 
 ## QA
 

@@ -7,11 +7,11 @@ the Pages workflow.
 
 ## Owner actions, in order
 
-1. Review and merge/push this branch yourself when approved.
+1. Review and merge the approved source to `main`.
 2. In `Yacinewhatchandcode/Yace19ai.com` → Settings → Pages, select **GitHub Actions**
-   as the build source. The `Deploy to GitHub Pages` workflow runs **only** through
-   `workflow_dispatch`; pushing does not deploy it. Manually dispatch it on the
-   approved branch. Confirm the run succeeds and the Pages artifact is published.
+   as the build source. A push does not publish. Follow the immutable-artifact
+   and approval procedure in the README's **Pages release and rollback** section;
+   do not use a legacy workflow rerun as a release or rollback shortcut.
 3. In GoDaddy DNS for `yace19ai.com`, replace the stale apex record `75.2.60.5`
    and the stale `www` Netlify CNAME with the records below. Keep existing mail,
    verification and other unrelated records. Remove conflicting apex/`www`
