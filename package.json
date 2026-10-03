@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node qa/pages-build.mjs",
+    "build": "tsc -b && vite build && node qa/pages-build.mjs && node qa/encyclopedia-build.mjs",
     "lint": "eslint .",
+    "test:encyclopedia": "node qa/encyclopedia-build.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRIME-AI · ROI Feature Factors · yace19ai.com</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=19">
+  <style>
+    .roi-wrap { max-width: 820px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    .roi-wrap h1 { font-family: var(--font-display); font-size: 2rem; margin: 0 0 0.5rem; color: var(--ink); }
+    .roi-score { font-size: 2.4rem; font-weight: 700; color: var(--gold); margin: 0.5rem 0 1rem; }
+    .roi-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; }
+    .roi-table th, .roi-table td { border-bottom: 1px solid var(--line); padding: 0.55rem 0.35rem; text-align: left; font-size: 0.9rem; color: var(--ink); }
+    .roi-sources a { color: var(--gold); }
+    .roi-note { color: var(--muted); font-size: 0.85rem; }
+  </style>
+</head>
+<body class="page-essay theme-galaxy">
+  <header class="top-bar" role="banner">
+    <div class="top-bar-start">
+      <div class="top-bar-brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-primary">PRIME-AI</span>
+      </div>
+    </div>
+    <nav class="top-bar-nav" aria-label="Site sections">
+      <a class="top-bar-link" href="home.html">Home</a>
+      <a class="top-bar-link" href="index.html">Tree</a>
+      <a class="top-bar-link" href="films/index.html">Films</a>
+      <a class="top-bar-link is-active" href="roi.html">ROI</a>
+    </nav>
+    <div class="top-bar-end"><span class="top-bar-count">8 factors</span></div>
+  </header>
+  <main class="roi-wrap">
+    <p class="essay-kicker">DEEPSCAN · research retrieval · AgentOps landscape</p>
+    <h1>ROI Feature Factors</h1>
+    <p>Score the sovereign agentic ecosystem from measured outcomes — not vibes. Formula: <code>100 × Σ(weight × metric)</code>.</p>
+    <p class="roi-score" id="roi-score">—</p>
+    <p class="roi-note" id="roi-interp"></p>
+    <table class="roi-table" id="roi-table">
+      <thead><tr><th>Factor</th><th>Weight</th><th>Metric</th><th>Score</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <h2>Money ROI</h2>
+    <p id="roi-money"></p>
+    <h2>OSS / article sources</h2>
+    <ul class="roi-sources" id="roi-sources"></ul>
+    <p class="roi-note">Data: <a href="public/roi-feature-factors.json">roi-feature-factors.json</a> · score computed in this page</p>
+  </main>
+  <script>
+    async function boot() {
+      const model = await fetch("public/roi-feature-factors.json").then((r) => r.json());
+      const inputs = model.scorecard_example.inputs;
+      const body = document.querySelector("#roi-table tbody");
+      let total = 0;
+      model.factors.forEach((factor) => {
+        const value = inputs[factor.id];
+        total += factor.weight * value;
+        const row = document.createElement("tr");
+        row.innerHTML = `<td><strong>${factor.name}</strong><br><span class="roi-note">${factor.id}</span></td><td>${Math.round(factor.weight * 100)}%</td><td>${factor.metric}</td><td>${Math.round(value * 100)}%</td>`;
+        body.appendChild(row);
+      });
+      const score = Math.round(total * 1000) / 10;
+      document.getElementById("roi-score").textContent = `${score} / 100`;
+      document.getElementById("roi-interp").textContent = model.scorecard_example.interpretation;
+      document.getElementById("roi-money").textContent = `${model.formula.money_roi} · ${model.formula.value_created} · ${model.formula.agent_cost}`;
+      const list = document.getElementById("roi-sources");
+      model.retrieval.sources.forEach((source) => {
+        const item = document.createElement("li");
+        item.innerHTML = `<a href="${source.url}" target="_blank" rel="noopener">${source.name}</a> — ${(source.measures || []).join(", ")}`;
+        list.appendChild(item);
+      });
+    }
+    boot().catch((error) => {
+      document.getElementById("roi-interp").textContent = String(error);
+    });
+  </script>
+</body>
+</html>

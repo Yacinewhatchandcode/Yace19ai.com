@@ -1,0 +1,152 @@
+{
+  "guide": {
+    "name": "AzIrEm",
+    "callsign": "AZI-REM",
+    "tagline": "Real-time fleet series — I fly each document and explain what it means for you."
+  },
+  "series": {
+    "dwellMs": 9000,
+    "explainDelayMs": 700,
+    "label": "Sovereign Fleet Live Series"
+  },
+  "personas": [
+    {
+      "id": "fleet-series",
+      "label": "Full series",
+      "blurb": "Real-time build: all 18 Tier B documents, explained in order.",
+      "phases": [
+        "ep00", "ep01", "ep02", "ep03", "ep04", "ep05", "ep06", "ep07",
+        "ep08", "ep09", "ep10", "ep11", "ep12", "ep13", "ep14", "ep15",
+        "ep16", "ep17"
+      ]
+    },
+    {
+      "id": "commander",
+      "label": "Commander cut",
+      "blurb": "Shorter path: vision, hub, command, trust, wire.",
+      "phases": ["ep00", "ep01", "ep02", "ep04", "ep14", "ep17"]
+    },
+    {
+      "id": "builder",
+      "label": "Builder cut",
+      "blurb": "Shorter path: hub, MCP, substrate, kernel, wire.",
+      "phases": ["ep00", "ep02", "ep10", "ep11", "ep12", "ep17"]
+    },
+    {
+      "id": "verifier",
+      "label": "Verifier cut",
+      "blurb": "Shorter path: vision, verification, trust, capacity.",
+      "phases": ["ep00", "ep01", "ep07", "ep14", "ep03", "ep17"]
+    }
+  ],
+  "phases": {
+    "ep00": {
+      "title": "Master Arborescence",
+      "deckId": "P00-master",
+      "say": "Episode 1 — the core. This is the map of the whole operating encyclopedia.",
+      "explain": "Document P00 is the Master Arborescence: one hub tree that holds every Tier B deck. From here the fleet is not a pile of slides — it is a living sky you can navigate. Everything we open next hangs from this core."
+    },
+    "ep01": {
+      "title": "Vision and Zero-Illusion",
+      "deckId": "P01-vision",
+      "say": "Episode 2 — law of the house. Truth before theatre.",
+      "explain": "P01 sets Zero-Illusion: no fake done, no cosmetic certainty. PRIME-AI turns intent into routed work, then verifies before close. If a claim has no challenger and no evidence, it is not finished."
+    },
+    "ep02": {
+      "title": "AACI and Hub",
+      "deckId": "P02-aaci-hub",
+      "say": "Episode 3 — how agents talk. Hub to specialist, not chat chaos.",
+      "explain": "P02 is AACI: Agent-to-Agent Communication Interface. One hub hears the ask, the router picks a desk, MCP is the shared plug, and any agent can call another as a tool. This is the spine of the fleet."
+    },
+    "ep03": {
+      "title": "Keywords and Capacity",
+      "deckId": "P03-keywords",
+      "say": "Episode 4 — capacity dial. How many minds you wake.",
+      "explain": "P03 maps the keyword dial: 1 house, 5 departments, 6 awake, 9 frontier, 12 per mission, 24 roles, 321 roster. Capacity is policy — wake only what the mission needs on M4."
+    },
+    "ep04": {
+      "title": "Command Department",
+      "deckId": "P04-command",
+      "say": "Episode 5 — Command wing. Intent becomes mission shape.",
+      "explain": "P04 is Command: fleet commander, mission compiler, strategic planner, workflow orchestrator, governance controller. This wing sets the objective and keeps the fleet pointed."
+    },
+    "ep05": {
+      "title": "Intelligence Department",
+      "deckId": "P05-intelligence",
+      "say": "Episode 6 — Intelligence wing. Sense before you strike.",
+      "explain": "P05 gathers research, OSINT, tech and market intel, competitor read, and knowledge synthesis. Command decides; Intelligence feeds the truth surface they decide on."
+    },
+    "ep06": {
+      "title": "Execution Department",
+      "deckId": "P06-execution",
+      "say": "Episode 7 — Execution wing. Hands on the work.",
+      "explain": "P06 ships the work: coding, QA, Playwright, DevOps, content, outreach, reporting, documents. Specialists wake when tasked — they do not idle on the stage."
+    },
+    "ep07": {
+      "title": "Verification Department",
+      "deckId": "P07-verification",
+      "say": "Episode 8 — Verification wing. Done means challenged.",
+      "explain": "P07 is the challenger desk: fact verifier, security auditor, output critic, evidence collector. Nothing closes as complete until this wing has spoken or evidence is logged."
+    },
+    "ep08": {
+      "title": "Infrastructure Department",
+      "deckId": "P08-infrastructure",
+      "say": "Episode 9 — Infrastructure. Keep the house standing.",
+      "explain": "P08 watches the floor — fleet sentinel and node health. Without this wing, every clever mission collapses into downtime and guesswork."
+    },
+    "ep09": {
+      "title": "Frontier Nine and OMNI",
+      "deckId": "P09-frontier",
+      "say": "Episode 10 — Frontier Nine. Outer scouts under OMNI.",
+      "explain": "P09 holds the nine frontier specialists and OMNI unify: ZERO, DEEPSCAN, CLAW, CCR, HERMES, MID, ORACLE, FORGE, and the parade that keeps them coherent. Depth without drowning the hub."
+    },
+    "ep10": {
+      "title": "MCP Control Plane",
+      "deckId": "P10-mcp",
+      "say": "Episode 11 — MCP plane. Tools as hardpoints.",
+      "explain": "P10 is the control plane for MCP plugs: sovereign fleet MCP, prime router, iMac SSH, Benjamin fleet, Ollama router. This is how AzIrEm and every agent touch real systems safely."
+    },
+    "ep11": {
+      "title": "Substrate Services",
+      "deckId": "P11-substrate",
+      "say": "Episode 12 — Substrate. Memory under the mission.",
+      "explain": "P11 is local substrate: Ollama, NATS, Neo4j, Qdrant, command center, council, voice, ZeroClaw. Ports on localhost — the floor AzIrEm stands on while briefing you."
+    },
+    "ep12": {
+      "title": "Cognitive Kernel and Missions",
+      "deckId": "P12-kernel",
+      "say": "Episode 13 — Kernel. Loops become doctrine.",
+      "explain": "P12 is the cognitive kernel: intent, planner, research, fleet scheduler, departments, prompt pipeline, consensus, learning, acceptance, evidence. Missions run as verified loops, not one-shot chats."
+    },
+    "ep13": {
+      "title": "Nodes and Placement",
+      "deckId": "P13-nodes",
+      "say": "Episode 14 — Placement. M4 is the active house.",
+      "explain": "P13 places the fleet: M4 is the sole active command node in the M4-only profile. iMac, Pi, Synology, VPS stay in the encyclopedia as deferred nodes — not awake noise."
+    },
+    "ep14": {
+      "title": "Trust Evidence Governance",
+      "deckId": "P14-trust",
+      "say": "Episode 15 — Trust lock. Hash it, keep it, prove it.",
+      "explain": "P14 is trust and evidence governance: policy, verify, retain. Every serious claim in this series should land with a trail you can audit — that is Zero-Illusion made durable."
+    },
+    "ep15": {
+      "title": "Orb Voice Design System",
+      "deckId": "P15-orb-voice",
+      "say": "Episode 16 — Voice of the Orb. How the fleet sounds.",
+      "explain": "P15 is the Orb voice and design system — tone, language, and visual grammar so every deck and film feel like one house, not eighteen random brands."
+    },
+    "ep16": {
+      "title": "GitHub ORB Ecosystem",
+      "deckId": "P16-github-orb",
+      "say": "Episode 17 — GitHub ORB. Remote control plane.",
+      "explain": "P16 ties the encyclopedia to the GitHub ORB ecosystem — source of truth for the control plane, so the live fleet and the documented fleet stay the same story."
+    },
+    "ep17": {
+      "title": "yace19ai.com 3D Wire",
+      "deckId": "P17-yace19ai",
+      "say": "Episode 18 — you are inside the wire. Series complete for this sky.",
+      "explain": "P17 is this 3D site: the wire that lets you walk the tree, call AzIrEm, and download each PPTX. The map and the mission are the same object — that is the point of the live series."
+    }
+  }
+}

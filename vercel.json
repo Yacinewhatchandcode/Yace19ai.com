@@ -1,7 +1,7 @@
 {
     "rewrites": [
         {
-            "source": "/((?!sovereign/|_next/|assets/|.*\\..*).*)$",
+            "source": "/((?!encyclopedia/|sovereign/|_next/|assets/|.*\\..*).*)$",
             "destination": "/index.html"
         }
     ]

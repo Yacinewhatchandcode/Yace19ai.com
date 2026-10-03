@@ -1,0 +1,276 @@
+{
+  "id": "prime-roi-feature-factors-v1",
+  "title": "PRIME-AI Agentic Ecosystem ROI Feature Factors",
+  "as_of": "2026-08-05",
+  "retrieval": {
+    "agents_intended": [
+      "DEEPSCAN",
+      "research",
+      "HERMES"
+    ],
+    "mcp": [
+      "web-search",
+      "github",
+      "ollama-router"
+    ],
+    "notes": [
+      "Perplexity MCP 401 (invalid key)",
+      "Brave MCP 422 (invalid subscription token)",
+      "ollama-router DEEPSCAN/HERMES failed (model required / Ollama empty)",
+      "Completed via WebSearch + GitHub gh search + AgentOps landscape corpus"
+    ],
+    "sources": [
+      {
+        "type": "github",
+        "name": "AgentOps-AI/agentops",
+        "url": "https://github.com/AgentOps-AI/agentops",
+        "measures": [
+          "session replay",
+          "LLM cost",
+          "tool usage",
+          "failure detection"
+        ]
+      },
+      {
+        "type": "github",
+        "name": "langfuse/langfuse",
+        "url": "https://github.com/langfuse/langfuse",
+        "measures": [
+          "OTel tracing",
+          "cost",
+          "evals"
+        ]
+      },
+      {
+        "type": "github",
+        "name": "confident-ai/deepeval",
+        "url": "https://github.com/confident-ai/deepeval",
+        "measures": [
+          "unit-test style LLM/agent metrics",
+          "CI gates"
+        ]
+      },
+      {
+        "type": "github",
+        "name": "vibrantlabsai/ragas",
+        "url": "https://github.com/vibrantlabsai/ragas",
+        "measures": [
+          "retrieval quality",
+          "faithfulness",
+          "answer relevancy"
+        ]
+      },
+      {
+        "type": "github",
+        "name": "Helicone/helicone",
+        "url": "https://github.com/Helicone/helicone",
+        "measures": [
+          "gateway cost analytics",
+          "request logging"
+        ]
+      },
+      {
+        "type": "github",
+        "name": "Arize-ai/phoenix",
+        "url": "https://github.com/Arize-ai/phoenix",
+        "measures": [
+          "tracing",
+          "eval",
+          "drift"
+        ]
+      },
+      {
+        "type": "github",
+        "name": "promptfoo/promptfoo",
+        "url": "https://github.com/promptfoo/promptfoo",
+        "measures": [
+          "regression",
+          "red-team"
+        ]
+      },
+      {
+        "type": "github",
+        "name": "dyronrh/awesome-agentops-landscape",
+        "url": "https://github.com/dyronrh/awesome-agentops-landscape",
+        "measures": [
+          "2026 AgentOps tool taxonomy"
+        ]
+      },
+      {
+        "type": "article",
+        "name": "Agent Observability (AgentOps) in 2025 \u2014 HireNinja",
+        "url": "https://blog.hireninja.com/2025/11/14/agent-observability-agentops-in-2025-the-missing-layer-to-make-ai-agents-reliable-and-roi-positive/",
+        "measures": [
+          "task success",
+          "cost/task",
+          "human intervention",
+          "hallucination rate"
+        ]
+      },
+      {
+        "type": "article",
+        "name": "DeepEval vs RAGAS vs LangSmith \u2014 Descope",
+        "url": "https://www.descope.com/blog/post/deepeval-vs-ragas-vs-langsmith",
+        "measures": [
+          "eval framework selection"
+        ]
+      }
+    ]
+  },
+  "formula": {
+    "name": "ROI_Feature_Score",
+    "score_0_100": "100 * sum(weight_i * normalize(metric_i))",
+    "money_roi": "(ValueCreated - AgentCost) / AgentCost",
+    "value_created": "HoursSaved * FullyLoadedHourlyRate + ErrorCostAvoided + RevenueAttributed",
+    "agent_cost": "LocalComputeCost + ExternalTokenCost + ToolApiCost + HumanEscalationCost",
+    "capacity_guard": "awake_agents <= 6 AND mission_agents <= 12",
+    "zero_illusion_gate": "no_completion_without_verification == true"
+  },
+  "factors": [
+    {
+      "id": "F1_task_success",
+      "name": "Task / mission success rate",
+      "weight": 0.2,
+      "metric": "completed_missions / attempted_missions",
+      "prime_map": "acceptance.js + evidence hash",
+      "oss_tools": [
+        "AgentOps",
+        "LangSmith",
+        "Langfuse"
+      ]
+    },
+    {
+      "id": "F2_cost_per_done",
+      "name": "Cost per completed task",
+      "weight": 0.15,
+      "metric": "1 - min(1, cost_per_done / baseline_manual_cost)",
+      "prime_map": "local Ollama preferred; MCP tool spend ledger",
+      "oss_tools": [
+        "Helicone",
+        "LiteLLM",
+        "AgentOps"
+      ]
+    },
+    {
+      "id": "F3_latency_cycle",
+      "name": "Cycle-time reduction",
+      "weight": 0.1,
+      "metric": "max(0, 1 - agent_cycle_ms / baseline_cycle_ms)",
+      "prime_map": "mission dwell + hyperspace tour timing",
+      "oss_tools": [
+        "OpenTelemetry GenAI",
+        "Phoenix"
+      ]
+    },
+    {
+      "id": "F4_verification_pass",
+      "name": "Second-voice / verification pass rate",
+      "weight": 0.15,
+      "metric": "verified_completions / claimed_completions",
+      "prime_map": "Zero-Illusion + Council :7071",
+      "oss_tools": [
+        "DeepEval",
+        "Promptfoo",
+        "Guardrails"
+      ]
+    },
+    {
+      "id": "F5_retrieval_quality",
+      "name": "Retrieval / evidence quality",
+      "weight": 0.1,
+      "metric": "avg(faithfulness, context_precision, evidence_present)",
+      "prime_map": "DEEPSCAN + Qdrant + Neo4j + evidence hash",
+      "oss_tools": [
+        "RAGAS",
+        "DeepEval"
+      ]
+    },
+    {
+      "id": "F6_containment",
+      "name": "Containment (no human escalation)",
+      "weight": 0.1,
+      "metric": "1 - human_interventions / sessions",
+      "prime_map": "Hub route + capacity policy",
+      "oss_tools": [
+        "AgentOps",
+        "Langfuse"
+      ]
+    },
+    {
+      "id": "F7_tool_reliability",
+      "name": "MCP / tool-call success",
+      "weight": 0.1,
+      "metric": "successful_tool_calls / tool_calls",
+      "prime_map": "MCP control plane + ZeroClaw gate",
+      "oss_tools": [
+        "OpenLLMetry",
+        "AgentOps"
+      ]
+    },
+    {
+      "id": "F8_capacity_efficiency",
+      "name": "Capacity efficiency under 6/12 caps",
+      "weight": 0.1,
+      "metric": "useful_agent_minutes / scheduled_agent_minutes",
+      "prime_map": "fleet-registry capacity_class + scheduler",
+      "oss_tools": [
+        "custom Prime telemetry",
+        "OTel metrics"
+      ]
+    }
+  ],
+  "feature_to_factor_map": {
+    "Home Full Context": [
+      "F5_retrieval_quality"
+    ],
+    "3D Tree + downloads": [
+      "F1_task_success",
+      "F3_latency_cycle"
+    ],
+    "AzIrEm gold-road tour": [
+      "F3_latency_cycle",
+      "F1_task_success"
+    ],
+    "Skills neural mesh": [
+      "F5_retrieval_quality",
+      "F7_tool_reliability"
+    ],
+    "Films gallery": [
+      "F1_task_success"
+    ],
+    "QA/E2E coverage 100%": [
+      "F4_verification_pass",
+      "F1_task_success"
+    ],
+    "Local-first Ollama": [
+      "F2_cost_per_done"
+    ],
+    "AACI Hub routing": [
+      "F6_containment",
+      "F8_capacity_efficiency"
+    ]
+  },
+  "baseline_targets": {
+    "task_success_pct": 0.85,
+    "verification_pass_pct": 0.95,
+    "tool_success_pct": 0.9,
+    "human_escalation_pct_max": 0.2,
+    "cost_vs_manual_max": 0.35,
+    "awake_agents_max": 6,
+    "mission_agents_max": 12
+  },
+  "scorecard_example": {
+    "inputs": {
+      "F1_task_success": 0.88,
+      "F2_cost_per_done": 0.72,
+      "F3_latency_cycle": 0.65,
+      "F4_verification_pass": 0.93,
+      "F5_retrieval_quality": 0.8,
+      "F6_containment": 0.78,
+      "F7_tool_reliability": 0.91,
+      "F8_capacity_efficiency": 0.7
+    },
+    "ROI_Feature_Score": 80.8,
+    "interpretation": "Production-useful agentic ecosystem; invest next in cycle-time + capacity efficiency."
+  }
+}

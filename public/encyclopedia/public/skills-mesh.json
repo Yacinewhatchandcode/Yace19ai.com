@@ -1,0 +1,37 @@
+{
+  "label": "Skills Neural Mesh",
+  "blurb": "Concept skills as living synapses inside the galactic civilization.",
+  "nodes": [
+    { "id": "skills", "label": "Skills", "kind": "core", "orbit": 0.0, "radius": 11.5 },
+    { "id": "tools", "label": "Tools", "kind": "skill", "orbit": 0.52, "radius": 13.2 },
+    { "id": "mcp", "label": "MCP", "kind": "skill", "orbit": 1.05, "radius": 14.0 },
+    { "id": "aaci", "label": "AACI", "kind": "skill", "orbit": 1.57, "radius": 12.8 },
+    { "id": "agent-tool", "label": "Agent-as-Tool", "kind": "skill", "orbit": 2.09, "radius": 14.6 },
+    { "id": "memory", "label": "Memory", "kind": "skill", "orbit": 2.62, "radius": 13.5 },
+    { "id": "prompt", "label": "Prompt", "kind": "skill", "orbit": 3.14, "radius": 12.2 },
+    { "id": "model", "label": "Model", "kind": "skill", "orbit": 3.67, "radius": 14.2 },
+    { "id": "verify", "label": "Verify", "kind": "skill", "orbit": 4.19, "radius": 13.0 },
+    { "id": "evidence", "label": "Evidence", "kind": "skill", "orbit": 4.71, "radius": 14.8 },
+    { "id": "hub", "label": "Hub", "kind": "civ", "orbit": 5.24, "radius": 11.8 },
+    { "id": "mission", "label": "Mission", "kind": "civ", "orbit": 5.76, "radius": 13.8 }
+  ],
+  "links": [
+    ["skills", "tools"],
+    ["skills", "mcp"],
+    ["skills", "prompt"],
+    ["tools", "mcp"],
+    ["mcp", "aaci"],
+    ["aaci", "hub"],
+    ["aaci", "agent-tool"],
+    ["agent-tool", "skills"],
+    ["prompt", "model"],
+    ["model", "memory"],
+    ["memory", "evidence"],
+    ["verify", "evidence"],
+    ["verify", "hub"],
+    ["hub", "mission"],
+    ["mission", "skills"],
+    ["tools", "model"],
+    ["mcp", "memory"]
+  ]
+}
