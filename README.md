@@ -106,21 +106,24 @@ and the same main-only environment branch restriction. The final deploy job
 still uses the `github-pages` environment. Do not select the mode or add its
 opt-in variable without the owner's explicit policy decision. Before
 publishing, the workflow captures the prior successful deployment ID and SHA
-as rollback evidence. Rollback itself is not exposed by this workflow; do not
-rerun a legacy workflow or dispatch a different source as a rollback shortcut.
+as rollback evidence. Exact restoration uses the separate old-artifact mode
+below; do not rerun a legacy workflow or dispatch a different candidate source
+as a rollback shortcut.
 Do not change DNS.
 
 The documented pre-constellation rollback reference is
 `10b39a606fc43e4929595188ab3cb9d06b0e52cc`, successful deployment run
-`37129793980`. This reference is evidence only; restoring it requires a
-separately authorized rollback procedure that preserves the exact deployed-SHA
-binding.
+`37129793980`. Rerunning that workflow rebuilds rather than restoring identical
+bytes and is not the exact-artifact recovery mechanism.
 
 The older main artifact `11279276106` from run `37137634050` is **not eligible**
 for the new policy workflow: its source and workflow definition predate the
 policy changes. A newly authorized non-publishing main validation is required
 after the corrective policy PR is merged. No duplicate validation or publishing
 dispatch is performed by this change.
+Likewise, main validation artifact `11281092033` predates the restore-mode
+workflow definition and must not be reused after this change; the release owner
+will perform a single fresh main validation.
 
 After environment approval, authorization is checked again against fresh
 environment, owner identity, repository opt-in and artifact-expiry records.
@@ -129,9 +132,53 @@ the API; an inaccessible variable fails closed, not back to a cached opt-in.
 Release evidence binds the exact publishing run/attempt to the deployment
 status log URL and hashes every reviewed live file (index, routes, assets and
 archive files), rather than interpreting HTTP 200 as proof of released bytes.
-Automatic release is **not ready**: rollback execution remains unimplemented,
-and the configured reviewer-policy interpretation requires the release owner's
-explicit reconciliation of the later user-directed policy change.
+Automatic release is **not ready** until a preservation receipt has been
+verified by the release owner and a current main validation succeeds.
+
+### Exact artifact preservation and restoration
+
+`operation=preserve` and `operation=restore` are separate from candidate
+validation/publishing. Both require `publish=false`, a dispatch from current
+`main`, the personal repository owner as both actor and triggering actor, and
+the existing main-only environment with the owner as sole required reviewer.
+Only `restore` admits a Pages deployment; its deploy job still requires the
+`github-pages` environment approval. Preservation has no Pages-write or OIDC
+permissions and never creates a deployment.
+
+For the original source, supply:
+
+| Input | Pinned original value |
+|---|---|
+| `restore_run_id` | `37129793980` |
+| `restore_artifact_id` | `11275823921` |
+| `restore_artifact_digest` | `sha256:d7b97e55a9a126b2a3ca58e6baa21ae22619cffb1b7170465e27edda6110b77c` |
+| `restore_source_sha` | `10b39a606fc43e4929595188ab3cb9d06b0e52cc` |
+
+The workflow checks successful main run identity, source SHA, workflow path,
+artifact name/ID, API archive digest and future expiry. It rehashes the
+downloaded ZIP, validates the tar inventory without extracting paths onto the
+filesystem, and uploads **the unchanged `artifact.tar` only** as `github-pages`
+with requested 90-day retention (subject to repository retention limits).
+There is no rebuild or tar repack. Provenance and file hashes are retained in
+a separate `restore-evidence-<run>` artifact.
+
+The preservation receipt records the **new** wrapper ZIP digest and artifact
+ID separately from the original tar SHA-256. To restore from that preserved
+copy, provide its successful preservation run ID, new artifact ID/digest,
+original source SHA and `restore_tar_sha256` from the reviewed receipt. The
+preserved run must use the trusted current workflow definition and owner
+identity; its separately verified provenance must bind the original run,
+artifact, ZIP digest and identical tar/file inventory. Expired or inaccessible
+sources fail closed.
+
+After environment admission the restore rechecks identity, environment, expiry
+and staged archive/tar integrity. After deployment, its receipt explicitly
+distinguishes the **current tooling/deployment SHA** from the **old content
+SHA** and verifies every live file hash against the original tar inventory.
+Do not interpret a tooling deployment SHA as the restored content commit.
+This code does not dispatch preservation, restore or production publication;
+the designated release owner must verify the preserved artifact receipt before
+authorizing publication under the shared release lock.
 
 ## QA
 
