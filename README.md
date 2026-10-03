@@ -92,7 +92,9 @@ reviewer and exactly one custom deployment branch policy (`main`). GitHub
 requires one approval from the configured reviewer list, not all listed
 reviewers. The workflow preserves the environment's current
 `prevent_self_review` and `can_admins_bypass` values; it does not claim those
-settings provide independent review. Configure release authorization and
+settings provide independent review or authorize use of administrator bypass.
+The owner/self-review decision does not authorize administrator bypass.
+Configure release authorization and
 approvals in accordance with the active repository policy.
 
 An explicitly selected `single-owner/v1` mode is an opt-in exception for this
