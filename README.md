@@ -171,6 +171,16 @@ identity; its separately verified provenance must bind the original run,
 artifact, ZIP digest and identical tar/file inventory. Expired or inaccessible
 sources fail closed.
 
+The reviewed preservation run `37144381401` (attempt 1, tooling
+`72e8189ee773a22d8be21d96a18052e56463805a`) is an exact historical exception
+to workflow-byte equality: artifact `11281767092`, ZIP
+`sha256:a21342cdf37244b12f5af9d67fcbcdcbfad202fd3b058547de323b15b354dd26`,
+tar `fca9c99d935ce300e136eb548131e08ed3068f3f1bbbae4c2c873c99224bd25c`
+and evidence artifact `11282036433` with its pinned digest are bound together.
+Other preserved sources still require current workflow bytes. Evidence ZIPs
+and downloaded admission directories require exactly
+`verified/restore-provenance.json`; alternate or duplicate provenance fails.
+
 After environment admission the restore rechecks identity, environment, expiry
 and staged archive/tar integrity. After deployment, its receipt explicitly
 distinguishes the **current tooling/deployment SHA** from the **old content
@@ -188,8 +198,11 @@ release owner must still execute and inspect the non-deploying preserve run.
 All candidate/restore/provenance downloads share a binary file-descriptor
 download helper, using supported `gh api` flags without text conversion or
 stdout-buffer limits. Failed downloads remove their own partial file and
-propagate the error. Hosted validation also downloads the original rollback
-ZIP and verifies its exact pinned digest without uploading or deploying.
+propagate the error. Hosted validation downloads the reviewed preserved
+ZIP and evidence, verifies both pinned digests and the unchanged tar's 752-file
+inventory/provenance without uploading or deploying. It no longer depends on
+the original artifact's October 4 expiry. The preserved copy expires January 1,
+2027; expiry still fails closed.
 
 ## QA
 
