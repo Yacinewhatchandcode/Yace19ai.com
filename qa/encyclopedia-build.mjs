@@ -15,6 +15,9 @@ const allowedExtensions = new Set([
 ]);
 const forbiddenArtifact = /(?:^|\/)(?:qa-factory|.*(?:AUTONOMOUS_TOUT_STATUS|DESIGN_CONTRACT|E2E_PATHWAY_REPORT|FEATURE_COVERAGE_REPORT|GAP_ANALYSIS|QA_COVERAGE_REPORT).*)/i;
 const forbiddenContent = /(?:\/Users\/|docs\/presentations\/site-yace19ai|qa-factory)/;
+const source = JSON.parse(await readFile("qa/encyclopedia-source.json", "utf8"));
+
+assert.match(source.commit, /^[0-9a-f]{40}$/, "encyclopedia source must pin a full commit SHA");
 
 async function walk(root, directory = root) {
   const paths = [];
@@ -64,6 +67,11 @@ async function validateRuntime(root) {
   const treeHtml = await readFile(join(root, "index.html"), "utf8");
   assert.match(treeHtml, /PRIME-AI · Tier B Arborescence/);
   assert.match(treeHtml, /public\/registry\.json|app\.js/);
+
+  const homeHtml = await readFile(join(root, "home.html"), "utf8");
+  assert.match(homeHtml, /active SSH-controlled iMac worker/);
+  assert.match(homeHtml, /yace19ai\.com\/encyclopedia\//);
+  assert.doesNotMatch(homeHtml, /pending deploy|Blocked:<\/strong> Deploy|still awaiting deploy/i);
 }
 
 await validateRuntime(sourceRoot);

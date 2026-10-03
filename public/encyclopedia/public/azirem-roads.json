@@ -122,7 +122,7 @@
       "title": "Nodes and Placement",
       "deckId": "P13-nodes",
       "say": "Episode 14 — Placement. M4 is the active house.",
-      "explain": "P13 places the fleet: M4 is the sole active command node in the M4-only profile. iMac, Pi, Synology, VPS stay in the encyclopedia as deferred nodes — not awake noise."
+      "explain": "P13 places the fleet: M4 is the sole command node. The iMac is an active SSH-controlled worker, while Pi, Synology, VPS, and heavier iMac services remain deferred — not awake noise."
     },
     "ep14": {
       "title": "Trust Evidence Governance",
