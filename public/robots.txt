@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yace19ai.com/sitemap.xml

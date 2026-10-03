@@ -1,47 +1,136 @@
-name: Deploy to GitHub Pages
+name: Validate and release static Pages
 
 on:
+  pull_request:
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      candidate_sha:
+        description: Full immutable commit SHA already on main
+        required: true
+        type: string
+      publish:
+        description: Request production deployment after validation and environment approval
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: 'pages'
-  cancel-in-progress: true
+  group: pages-${{ github.event_name == 'workflow_dispatch' && 'release' || github.event.pull_request.number }}
+  cancel-in-progress: false
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.candidate.outputs.sha }}
+    steps:
+      - name: Resolve immutable candidate
+        id: candidate
+        env:
+          CANDIDATE: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+          EVENT: ${{ github.event_name }}
+          REF: ${{ github.ref }}
+        run: |
+          [[ "$CANDIDATE" =~ ^[0-9a-f]{40}$ ]] || exit 1
+          if [[ "$EVENT" == workflow_dispatch && "$REF" != refs/heads/main ]]; then
+            echo "::error::Manual release workflow must run from main"
+            exit 1
+          fi
+          echo "sha=$CANDIDATE" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.candidate.outputs.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify source SHA and release ancestry
+        env:
+          CANDIDATE: ${{ steps.candidate.outputs.sha }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE"
+          if [[ "$EVENT" == workflow_dispatch ]]; then
+            git merge-base --is-ancestor "$CANDIDATE" origin/main
+          fi
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Test artifact integrity gates
+        run: node --test qa/pages-integrity.test.mjs
+      - run: npm run build
+      - name: Install CI browser
+        run: npx playwright install --with-deps chromium
+      - name: Test built static artifact
+        env:
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 --strictPort > "$RUNNER_TEMP/yace-preview.log" 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent "$PLAYWRIGHT_BASE_URL" > /dev/null; then break; fi
+            sleep 1
+          done
+          curl --fail --silent "$PLAYWRIGHT_BASE_URL" > /dev/null
+          npm run test:e2e
+      - name: Record static artifact integrity
+        env:
+          CANDIDATE: ${{ steps.candidate.outputs.sha }}
+        run: node qa/pages-integrity.mjs create dist "$CANDIDATE" pages-integrity.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: candidate-${{ steps.candidate.outputs.sha }}
+          path: |
+            dist
+            pages-integrity.json
+          if-no-files-found: error
+          retention-days: 30
+
+  prepare-release:
+    if: github.event_name == 'workflow_dispatch' && inputs.publish
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require reviewer-protected production environment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/environments/github-pages" \
+            --jq '(.can_admins_bypass == false) and (.deployment_branch_policy.custom_branch_policies == true) and any(.protection_rules[]; .type == "required_reviewers" and .prevent_self_review == true and (.reviewers | length > 0))' \
+            | grep -qx true
+          gh api "repos/$GITHUB_REPOSITORY/environments/github-pages/deployment-branch-policies" \
+            --jq '(.branch_policies | length == 1) and (.branch_policies[0].name == "main") and (.branch_policies[0].type == "branch")' \
+            | grep -qx true
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.validate.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: candidate-${{ needs.validate.outputs.sha }}
+          path: candidate
+      - name: Verify downloaded artifact and embedded candidate SHA
+        env:
+          CANDIDATE: ${{ needs.validate.outputs.sha }}
+        run: node qa/pages-integrity.mjs verify candidate/dist "$CANDIDATE" candidate/pages-integrity.json
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: candidate/dist
+
   deploy:
+    needs: [validate, prepare-release]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Build
-        run: npm run build
-      
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
-      
-      - name: Deploy to GitHub Pages
+      - uses: actions/deploy-pages@v4
         id: deployment
-        uses: actions/deploy-pages@v4

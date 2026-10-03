@@ -1,71 +1,39 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 :root {
-  font-family: 'Outfit', 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #000000;
-
-  font-synthesis: none;
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+  color: #17253a;
+  background: #fff;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  color-scheme: light;
+  font-synthesis: none;
+  text-size-adjust: 100%;
 }
 
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 92px; }
 body {
   margin: 0;
-  display: block;
   min-width: 320px;
   min-height: 100vh;
-  overflow-x: hidden;
-  background-color: #000;
+  background: #fff;
 }
+button, input, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { color: inherit; }
+a { color: inherit; text-decoration: none; }
+img, svg, video { display: block; max-width: 100%; }
+::selection { color: #10213b; background: #b8dcff; }
 
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 4px;
-  /* Horizontal scrollbar height */
-}
-
-::-webkit-scrollbar-track {
-  background: #0a0a0a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Utilities */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.mask-linear-fade {
-  mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
-}
-
-@media (min-width: 768px) {
-  .mask-linear-fade {
-    mask-image: none;
-    -webkit-mask-image: none;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
   }
 }

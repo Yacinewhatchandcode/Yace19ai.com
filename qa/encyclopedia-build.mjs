@@ -80,7 +80,7 @@ try {
   await stat(distRoot);
   await validateRuntime(distRoot);
   const rootHtml = await readFile("dist/index.html", "utf8");
-  assert.match(rootHtml, /Yace19ai — Local portfolio/, "existing homepage was replaced");
+  assert.match(rootHtml, /Research the possible\./, "research homepage title is missing");
 } catch (error) {
   if (error.code !== "ENOENT") throw error;
 }

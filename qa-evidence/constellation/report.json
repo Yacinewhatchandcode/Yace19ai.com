@@ -1,0 +1,95 @@
+{
+  "summary": {
+    "total": 14,
+    "passed": 14,
+    "failed": 0
+  },
+  "results": [
+    {
+      "name": "home layout and research content at 390px",
+      "pass": true,
+      "details": {
+        "viewport": 390,
+        "document": 390,
+        "title": "Research the possible. | YACE19AI",
+        "lang": "en",
+        "vitals": {
+          "lcp": 184,
+          "cls": 0
+        }
+      }
+    },
+    {
+      "name": "route-specific metadata at 390px",
+      "pass": true,
+      "details": "four secondary React routes have unique canonical head data and shared JSON-LD"
+    },
+    {
+      "name": "navigation and EN/FR language at 390px",
+      "pass": true
+    },
+    {
+      "name": "constellation accordion at 390px",
+      "pass": true,
+      "details": "all four entries expand to three links; current site is marked"
+    },
+    {
+      "name": "Julia runtime integration and research tools at 390px",
+      "pass": true,
+      "details": "shared mount payload, route/section navigation, publication search and three-second mock issuer expiry"
+    },
+    {
+      "name": "skip link, archive routes and no browser errors at 390px",
+      "pass": true,
+      "details": "15 archive URLs return successfully"
+    },
+    {
+      "name": "offline fallback at 390px",
+      "pass": true,
+      "details": "offline shared runtime leaves local constellation links and Julia portrait fallback available"
+    },
+    {
+      "name": "home layout and research content at 1440px",
+      "pass": true,
+      "details": {
+        "viewport": 1440,
+        "document": 1440,
+        "title": "Research the possible. | YACE19AI",
+        "lang": "en",
+        "vitals": {
+          "lcp": 116,
+          "cls": 0.006
+        }
+      }
+    },
+    {
+      "name": "route-specific metadata at 1440px",
+      "pass": true,
+      "details": "four secondary React routes have unique canonical head data and shared JSON-LD"
+    },
+    {
+      "name": "navigation and EN/FR language at 1440px",
+      "pass": true
+    },
+    {
+      "name": "constellation accordion at 1440px",
+      "pass": true,
+      "details": "all four entries expand to three links; current site is marked"
+    },
+    {
+      "name": "Julia runtime integration and research tools at 1440px",
+      "pass": true,
+      "details": "shared mount payload, route/section navigation, publication search and three-second mock issuer expiry"
+    },
+    {
+      "name": "skip link, archive routes and no browser errors at 1440px",
+      "pass": true,
+      "details": "15 archive URLs return successfully"
+    },
+    {
+      "name": "offline fallback at 1440px",
+      "pass": true,
+      "details": "offline shared runtime leaves local constellation links and Julia portrait fallback available"
+    }
+  ]
+}

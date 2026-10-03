@@ -1,25 +1,44 @@
-import type { Locale } from "../App";
 import media from "../../public/media-catalog.json";
-import Card3D from "../components/Card3D";
+import type { Locale } from "../App";
 
 export default function MediaPage({ locale }: { locale: Locale }) {
   const fr = locale === "fr";
   return (
-    <section className="intro">
-      <p>{fr ? "Archives illustratives. Sombre : YMAX < 120 à 2 images/s. Aucune preuve de disponibilité actuelle." : "Illustrative archives. Dark: YMAX < 120 at 2fps. No proof of current availability."}</p>
-      <div className="info-grid">
-        {media.map(item => <Card3D key={item.path}>
-          <h2 className="media-name">{item.url.split("/").pop()?.replace(/^video-/, "").replace(/\.(mp4|webm)$/, "")}</h2>
-          <p>{item.duration !== null ? `${item.duration}s` : "—"} · {item.audio_state === "audible" ? (fr ? "Audio" : "Audio") : (fr ? "Sans narration" : "No narration")} · {item.blank_ratio === null ? "—" : `${(item.blank_ratio * 100).toFixed(0)}% ${fr ? "sombre" : "dark"}`}</p>
-          {item.qa_status === "failed" ? <p role="status">{fr ? "Illisible. Source requise." : "Unreadable. Source required."}</p> : <>
-            <video controls preload="none" playsInline width={item.width || 800} height={item.height || 450} poster={`/media-posters/${item.url.split("/").pop()?.replace(/\.(mp4|webm)$/, "")}.jpg`} aria-label={item.url.split("/").pop()}>
-              <source src={item.url} />
-              {fr ? "Votre navigateur ne prend pas en charge cette vidéo." : "Your browser does not support this video."}
-            </video>
-            {item.qa_status === "failed_content" && <p>{fr ? "Archive défectueuse" : "Defective archive"}</p>}
-          </>}
-        </Card3D>)}
-      </div>
-    </section>
+    <div className="archive-page">
+      <section className="page-hero">
+        <p className="eyebrow">YACE19AI / Archive</p>
+        <h1>{fr ? "Archives visuelles." : "A record of experiments."}</h1>
+        <p>{fr
+          ? "Des enregistrements illustratifs, conservés comme archives — pas comme preuve de disponibilité actuelle."
+          : "Illustrative recordings kept as an archive, not as proof of current availability."}</p>
+      </section>
+      <section className="section media-archive" aria-label={fr ? "Archives vidéo" : "Video archive"}>
+        <div className="archive-note"><strong>Archive note</strong><span>Historical demos may be incomplete or unverified. Each recording is labeled with its local QA status.</span></div>
+        <div className="media-grid">
+          {media.map(item => {
+            const filename = item.url.split("/").pop() ?? item.url;
+            const title = filename.replace(/^video-/, "").replace(/\.(mp4|webm)$/, "").replaceAll("-", " ");
+            return (
+              <article className="media-card" key={item.path}>
+                <div className="media-card-heading"><p className="eyebrow">Recorded experiment</p><h2>{title}</h2></div>
+                {item.qa_status === "failed"
+                  ? <p className="archive-warning" role="status">{fr ? "Source vidéo manquante ou illisible." : "Video source unavailable or unreadable."}</p>
+                  : <video controls preload="none" playsInline width={item.width || 800} height={item.height || 450} poster={`/media-posters/${filename.replace(/\.(mp4|webm)$/, "")}.jpg`} aria-label={filename}>
+                    <source src={item.url} />
+                    {fr ? "La lecture vidéo n'est pas prise en charge." : "Your browser does not support video playback."}
+                  </video>}
+                <p className="media-metadata">
+                  {item.duration !== null ? `${item.duration}s` : "Duration unverified"}
+                  <span aria-hidden="true"> · </span>
+                  {item.audio_state === "audible" ? "Audio recorded" : "No narration"}
+                  <span aria-hidden="true"> · </span>
+                  {item.qa_status === "passed" ? "Local playback checked" : "QA note: review source"}
+                </p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </div>
   );
 }

@@ -1,22 +1,34 @@
-# Yace19ai.com
+# YACE19AI
 
-Yacine Benhamou's React/TypeScript portfolio, prepared for GitHub Pages.
-The local version uses the shared **Sovereign Gold 3D** visual system:
-black/gold tokens, accessible EN/FR navigation, illustrative CSS 3D orbs,
-pointer-tilt cards and a muted, viewport-aware MP4 reel.
+YACE19AI is the research and imagination layer of the PRIME-AI Sovereign
+Constellation. This Vite/React site focuses on world models, scientific AI,
+open models and clearly labeled research artifacts.
 
 ## Run locally
 
-Requires Node.js 20.19+ (or 22.12+) and Python 3.
+Requires Node.js 20.19+ (or 22.12+).
 
 ```sh
 npm ci
-npm run build
-python3 qa/serve.py
+npm run dev
 ```
 
-Open **http://127.0.0.1:4181**. The server binds loopback only and implements
-byte ranges for video seeking. Build output is ignored by Git.
+The development server binds `0.0.0.0:5175`; on the project LAN open
+**http://192.168.1.80:5175**. For mobile microphone access, use the
+self-signed HTTPS dev option with `npm run dev:https` and accept the local
+certificate warning on the test device.
+
+To build and run the browser coverage:
+
+```sh
+npm run build
+npm run dev
+# in another terminal
+npm run test:e2e
+```
+
+The legacy static QA server remains available with `python3 qa/serve.py` at
+**http://127.0.0.1:4181** for archive/media checks.
 In the QA session a detached server is already running on this port; do not
 start a second listener until the owner stops that process.
 
@@ -24,23 +36,77 @@ start a second listener until the owner stops that process.
 
 | Route | Content |
 |---|---|
-| `/` | Profile and visual introduction |
-| `/fleet` | 21 historical project entries; English descriptions explicitly marked |
-| `/games` | Local browser games and archive links |
-| `/philosophy` | EN/FR vision |
-| `/media` | All included recordings and measured quality indicators |
+| `/` | Research home, mission, lab systems, domains and evidence TODOs |
+| `/fleet` | Selected public repository index |
+| `/philosophy` | Research approach |
+| `/games` | Local browser experiments archive |
+| `/media` | Historical media archive with QA context |
 
-Standalone archive pages and native `www` mirrors are inventoried in
-`qa/routes.json`. The two playable canvas games have touch controls.
-The 3D command scene is illustrative; its archived port-8000 execution
-shortcut is blocked. The nine children's game implementations are absent,
-and the pages say so instead of pretending to load.
+All five React routes are documented in `docs/constellation-audit.md`; the
+fifteen standalone archive paths remain inventoried in `qa/routes.json`.
+Publication, model and benchmark claims remain TODO until verifiable evidence
+is available.
 
-No microphone capture, real-time search, live fleet metrics, payments,
-remote analytics or external fonts are enabled. Historical footage and
-project descriptions are not proof of current service availability.
-Defective original recordings remain identified; they have not been replaced
-by invented footage.
+The Julia portal and constellation accordion load the shared runtime from
+`VITE_JULIA_EMBED_URL` (local default
+`http://192.168.1.80:5176/julia/embed.js`, production
+`https://prime-ai.fr/julia/embed.js`) on demand. The runtime issues the signed
+five-minute window through `VITE_JULIA_WINDOW_ENDPOINT` (derived from the
+embed origin by default); the token stays in runtime memory and is handed
+between allow-listed sites with exact-origin `postMessage`. If the runtime
+cannot be reached, the portrait and local constellation links remain usable.
+Historical footage and project links are not proof of current service
+availability.
+
+Julia is labeled as a scripted demo with browser speech, not a verified
+retrieval, LLM or server voice service. The session issuer only authorizes a
+timed demo window. Production availability must be checked separately before
+release; static GitHub Pages hosting cannot execute the issuer API itself.
+
+The shared constellation identity uses `public/prime-trinity.svg` and YACE's
+blue accent `#1461cd`; PRIME uses `#c93347` and AMLAZR uses `#53627d`.
+Cross-site navigation preserves each site's distinct design and internal routes.
+
+## Pages release and rollback
+
+PRs run the `Validate and release static Pages` workflow against their exact
+head SHA. It builds and browser-tests the static output, then records a
+SHA-256 file inventory bound to the candidate commit. Julia tests are mocked
+and do not establish availability of a retrieval or voice service.
+
+For an authorized release, dispatch `deploy.yml` from `main` with a full
+40-character `candidate_sha` already reachable from `main` and `publish=true`.
+The manual run validates that same immutable source, downloads and verifies
+its artifact, and uploads only `dist` to Pages. No API service is deployed.
+The `github-pages` environment must have at least one required reviewer
+(GitHub user or team), prevent self-review enabled, administrator bypass
+disabled, and exactly one custom deployment branch policy: branch `main`
+(no tag or wildcard rules). The workflow fails closed if any condition is
+missing. GitHub requires one approval from the configured reviewer list;
+it does not require all listed reviewers to approve. Configure approval in
+repository Settings > Environments > github-pages before release. Reviewers approve the
+final deploy job after checks pass. A dispatch with `publish=false` validates
+without deploying. Do not change DNS.
+
+The pre-constellation rollback target is
+`10b39a606fc43e4929595188ab3cb9d06b0e52cc`, successful deployment run
+`37129793980`. If an authorized release regresses, restore it by rerunning all
+jobs of that original run, not by dispatching the workflow on a newer `main`:
+
+```sh
+gh run rerun 37129793980 --repo Yacinewhatchandcode/Yace19ai.com
+gh run watch 37129793980 --repo Yacinewhatchandcode/Yace19ai.com --exit-status
+```
+
+Then verify `https://yace19ai.com`, the primary routes and archive links.
+Read-only verification confirmed that this original run succeeded at the
+recorded SHA and its `github-pages` artifact had not expired. Rerunning all jobs
+rebuilds that original source using its original workflow; it is not a rollback
+test deployment, and no rerun has been executed. The old workflow did not check
+reviewer configuration, so obtain explicit rollback authorization and confirm
+environment approval protection before invoking it. Artifact retention and
+dependency availability must be rechecked at rollback time. Do not use a new
+dispatch on latest `main` as a substitute for the original rollback run.
 
 ## QA
 

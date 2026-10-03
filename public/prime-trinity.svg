@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title description">
+  <title id="title">PRIME-AI three-triangle constellation</title>
+  <desc id="description">A custom nine-point brand mark formed by three interlocking triangles in blue, white and red. Inspired by the user's symbolism; not an official religious emblem.</desc>
+  <g fill="none" stroke="#172855" stroke-width="3.8" stroke-linejoin="round">
+    <path d="M32 3 57.115 46.5H6.885Z"/>
+    <path d="M32 3 57.115 46.5H6.885Z" transform="rotate(40 32 32)"/>
+    <path d="M32 3 57.115 46.5H6.885Z" transform="rotate(80 32 32)"/>
+  </g>
+  <g fill="none" stroke-width="2.1" stroke-linejoin="round">
+    <path d="M32 3 57.115 46.5H6.885Z" stroke="#1461cd"/>
+    <path d="M32 3 57.115 46.5H6.885Z" stroke="#fff" transform="rotate(40 32 32)"/>
+    <path d="M32 3 57.115 46.5H6.885Z" stroke="#e24353" transform="rotate(80 32 32)"/>
+  </g>
+</svg>
