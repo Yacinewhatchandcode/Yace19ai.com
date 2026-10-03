@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Execution Wing · PRIME-AI</title>
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --bg: #F9F8F4;
+      --cream: #F9F8F4;
+      --ink: #1A1612;
+      --muted: #7A746C;
+      --gold: #C9A15A;
+      --panel: #FFFFFF;
+      --line: #E6E2D9;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "DM Sans", system-ui, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+    }
+    .film { position: relative; width: 100%; height: 100vh; }
+    .beat {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 4rem;
+      opacity: 0;
+    }
+    .hero-beat {
+      animation: hero-cycle 65s ease-in-out infinite;
+    }
+    .story-beat {
+      animation: story-cycle 65s ease-in-out infinite;
+      align-items: flex-start;
+      padding: 6rem 8rem;
+    }
+    .diagram-beat {
+      animation: diagram-cycle 65s ease-in-out infinite;
+      align-items: flex-start;
+      padding: 5rem 6rem;
+    }
+    .close-beat {
+      animation: close-cycle 65s ease-in-out infinite;
+    }
+    @keyframes hero-cycle {
+      0%, 2% { opacity: 0; transform: scale(0.92); }
+      4%, 10.307692307692308% { opacity: 1; transform: scale(1); }
+      12.307692307692308%, 100% { opacity: 0; }
+    }
+    @keyframes story-cycle {
+      0%, 11.307692307692308% { opacity: 0; transform: translateY(24px); }
+      13.307692307692308%, 41.07692307692308% { opacity: 1; transform: translateY(0); }
+      43.07692307692308%, 100% { opacity: 0; }
+    }
+    @keyframes diagram-cycle {
+      0%, 42.07692307692308% { opacity: 0; }
+      44.07692307692308%, 71.84615384615385% { opacity: 1; }
+      73.84615384615385%, 100% { opacity: 0; }
+    }
+    @keyframes close-cycle {
+      0%, 72.84615384615385% { opacity: 0; }
+      74.84615384615385%, 96% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .mark {
+      width: 18px; height: 18px;
+      background: var(--gold);
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+      margin-bottom: 1rem;
+    }
+    .eyebrow {
+      font-size: 0.875rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .hero-word {
+      font-size: clamp(4rem, 12vw, 7.5rem);
+      font-weight: 700; letter-spacing: -0.02em;
+    }
+    .story-line {
+      font-size: clamp(1.25rem, 2.5vw, 2.25rem);
+      line-height: 1.5; margin-bottom: 1.5rem;
+      max-width: 52rem;
+    }
+    .story-line.line-0 { color: var(--ink); font-weight: 600; }
+    .story-line { color: var(--muted); }
+    .diagram-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+    }
+    .nodes {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+    }
+    .node {
+      background: var(--panel);
+      border: 2px solid var(--line);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.9rem; font-weight: 600;
+      animation: node-pop 0.6s ease-out both;
+    }
+    .node-0 { border-color: var(--gold); animation-delay: 0.2s; }
+    .node-1 { animation-delay: 0.35s; }
+    .node-2 { animation-delay: 0.5s; }
+    .node-3 { animation-delay: 0.65s; }
+    .node-4 { animation-delay: 0.8s; }
+    .node-5 { animation-delay: 0.95s; }
+    .node-6 { animation-delay: 1.1s; }
+    .node-7 { animation-delay: 1.25s; }
+    .node-8 { animation-delay: 1.4s; }
+    @keyframes node-pop {
+      from { opacity: 0; transform: scale(0.85); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .close-line {
+      font-size: clamp(1.5rem, 3vw, 2.625rem);
+      font-weight: 700; text-align: center;
+      max-width: 40rem; line-height: 1.3;
+    }
+    .footer {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.875rem; color: var(--gold);
+      margin-top: 2rem;
+    }
+    .pulse-ring {
+      position: absolute; top: 50%; left: 50%;
+      width: 200px; height: 200px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 65s ease-in-out infinite;
+      pointer-events: none; opacity: 0;
+    }
+    @keyframes pulse {
+      14.307692307692308%, 41.07692307692308% {
+        opacity: 0.3; transform: translate(-50%, -50%) scale(1.5);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="film" data-id="execution-wing" data-pillar="P06">
+    <div class="pulse-ring"></div>
+    <section class="beat hero-beat">
+      <div class="mark"></div>
+      <p class="eyebrow">DEPARTMENT P06</p>
+      <h1 class="hero-word">EXEC</h1>
+    </section>
+    <section class="beat story-beat">
+      <div class="mark"></div>
+      <p class="story-line line-0">Execution builds, tests, deploys, and delivers.</p>
+      <p class="story-line line-1">Coding, QA, Playwright, DevOps, Content, Outreach.</p>
+      <p class="story-line line-2">Reporting and Document complete the deliverable chain.</p>
+    </section>
+    <section class="beat diagram-beat">
+      <p class="diagram-label">EXECUTION ROLES</p>
+      <div class="nodes">
+      <div class="node node-0">CODE</div>
+      <div class="node node-1">QA</div>
+      <div class="node node-2">PLAYWRIGHT</div>
+      <div class="node node-3">DEVOPS</div>
+      <div class="node node-4">CONTENT</div>
+      <div class="node node-5">OUTREACH</div>
+      <div class="node node-6">REPORT</div>
+      <div class="node node-7">DOC</div>
+      </div>
+    </section>
+    <section class="beat close-beat">
+      <div class="mark"></div>
+      <p class="close-line">Work gets done. Artifacts ship.</p>
+      <p class="footer">prime-ai.fr · execution-wing</p>
+    </section>
+  </div>
+</body>
+</html>

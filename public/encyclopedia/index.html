@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRIME-AI · Tier B Arborescence · yace19ai.com</title>
+  <meta name="description" content="Interactive 3D deck tree for the Prime AI Sovereign Fleet Tier-B presentation arborescence.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=19">
+</head>
+<body class="page-tree theme-galaxy">
+  <header class="top-bar" role="banner">
+    <div class="top-bar-start">
+      <button type="button" class="top-bar-btn" id="drawer-left-toggle" aria-expanded="false" aria-controls="filter-drawer">
+        <span class="top-bar-btn-label">Filters</span>
+      </button>
+      <div class="top-bar-brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-primary">PRIME-AI</span>
+      </div>
+    </div>
+    <nav class="top-bar-nav" aria-label="Site sections">
+      <a class="top-bar-link" href="home.html">Home</a>
+      <a class="top-bar-link is-active" href="index.html">Tree</a>
+      <a class="top-bar-link" href="films/index.html">Films</a>
+      <a class="top-bar-link" href="roi.html">ROI</a>
+    </nav>
+    <div class="top-bar-end">
+      <span class="top-bar-count" id="deck-count-chip">— decks</span>
+    </div>
+  </header>
+
+  <div class="tree-shell">
+    <aside id="filter-drawer" class="drawer drawer-left" aria-label="Search and filters" aria-hidden="true">
+      <div class="drawer-header">
+        <h2 class="drawer-title">Explore</h2>
+        <button type="button" class="drawer-close" id="filter-drawer-close" aria-label="Close filters">&times;</button>
+      </div>
+      <div class="drawer-body">
+        <details class="tree-intro" id="tree-intro">
+          <summary class="tree-intro-toggle">About this tree</summary>
+          <div class="tree-intro-body">
+            <h1 class="tree-intro-headline">Sovereign Fleet <em>Deck Arborescence</em></h1>
+            <p class="tree-intro-support">Galaxy map of Tier B operating tree and Tier C census — core, orbital pillars, spiral leaves. Tap any star for detail and download.</p>
+          </div>
+        </details>
+        <div class="controls">
+          <label class="search-wrap" for="deck-search">
+            <span class="search-label">Search</span>
+            <input id="deck-search" type="search" placeholder="ID, title, or keyword…" autocomplete="off" spellcheck="false">
+          </label>
+          <div class="filter-row" id="tier-filters" role="group" aria-label="Filter by tier">
+            <button type="button" class="filter-btn" data-tier="all">All tiers</button>
+            <button type="button" class="filter-btn is-active" data-tier="B">Tier B</button>
+            <button type="button" class="filter-btn" data-tier="C">Tier C</button>
+          </div>
+          <div class="filter-row" id="kind-filters" role="group" aria-label="Filter by kind">
+            <button type="button" class="filter-btn" data-kind="all">All kinds</button>
+            <button type="button" class="filter-btn" data-kind="root">Root</button>
+            <button type="button" class="filter-btn is-active" data-kind="pillar">Pillars</button>
+            <button type="button" class="filter-btn" data-kind="leaf">Leaves</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="stage" aria-label="Interactive deck tree">
+      <div class="stage-fx" aria-hidden="true">
+        <div class="stage-vignette"></div>
+        <div class="stage-scan"></div>
+        <div class="stage-horizon"></div>
+      </div>
+      <div id="graph-host"></div>
+      <div class="graph-hint" id="graph-hint">Drag to orbit · scroll to zoom · click a node</div>
+    </main>
+
+    <aside id="detail-panel" class="drawer drawer-right detail-panel is-hidden" aria-hidden="true" aria-label="Node detail">
+      <div class="drawer-header">
+        <p class="detail-kind" id="detail-kind"></p>
+        <button type="button" class="drawer-close detail-close" id="detail-close" aria-label="Close detail panel">&times;</button>
+      </div>
+      <div class="drawer-body detail-body">
+        <h2 class="detail-title" id="detail-title"></h2>
+        <p class="detail-id" id="detail-id"></p>
+        <dl class="detail-meta">
+          <div><dt>Parent</dt><dd id="detail-parent"></dd></div>
+          <div><dt>Route</dt><dd id="detail-route"></dd></div>
+          <div><dt>Pillar</dt><dd id="detail-pillar"></dd></div>
+        </dl>
+        <div class="detail-keywords" id="detail-keywords"></div>
+        <a class="detail-download" id="detail-download" href="#" download>Download deck</a>
+      </div>
+    </aside>
+  </div>
+
+  <div class="drawer-scrim" id="drawer-scrim" aria-hidden="true"></div>
+
+  <div id="hyperspace-overlay" class="hyperspace-overlay" aria-hidden="true">
+    <div class="hyperspace-flash"></div>
+    <div class="hyperspace-streaks" aria-hidden="true"></div>
+    <div class="hyperspace-route" role="status" aria-live="polite">
+      <p class="hyperspace-label">WATCH THE GOLD ROAD</p>
+      <p class="hyperspace-episode" id="hyperspace-episode">Flying…</p>
+      <div class="hyperspace-leg">
+        <div class="hyperspace-end">
+          <span class="hyperspace-end-kicker">Leaving</span>
+          <strong class="hyperspace-end-title" id="hyperspace-from-title">—</strong>
+          <span class="hyperspace-end-id" id="hyperspace-from-id">—</span>
+        </div>
+        <span class="hyperspace-arrow" aria-hidden="true">→</span>
+        <div class="hyperspace-end hyperspace-end-to">
+          <span class="hyperspace-end-kicker">Going to</span>
+          <strong class="hyperspace-end-title" id="hyperspace-to-title">—</strong>
+          <span class="hyperspace-end-id" id="hyperspace-to-id">—</span>
+        </div>
+      </div>
+      <div class="hyperspace-path" aria-label="Flight progress">
+        <div class="hyperspace-path-track">
+          <div class="hyperspace-path-fill" id="hyperspace-path-fill"></div>
+          <span class="hyperspace-path-ship" id="hyperspace-path-ship" aria-hidden="true">▲</span>
+        </div>
+        <p class="hyperspace-path-now" id="hyperspace-path-now">AzIrEm is moving on the gold road</p>
+        <ol class="hyperspace-path-stops is-hidden" id="hyperspace-path-stops" hidden></ol>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="azirem-fab" id="azirem-open" aria-controls="azirem-panel" aria-expanded="false">
+    <span class="azirem-fab-mark" aria-hidden="true"></span>
+    <span class="azirem-fab-text">AzIrEm</span>
+  </button>
+
+  <aside id="azirem-panel" class="azirem-panel azirem-panel--simple" aria-hidden="true" aria-label="AzIrEm document tour">
+    <div class="azirem-panel-header">
+      <div>
+        <p class="azirem-callsign" id="azirem-name">AzIrEm</p>
+        <p class="azirem-phase-title" id="azirem-phase-title">Document tour</p>
+        <p class="azirem-episode" id="azirem-episode">Press Start — I fly the gold road between docs</p>
+      </div>
+      <button type="button" class="drawer-close" id="azirem-close" aria-label="Close AzIrEm">&times;</button>
+    </div>
+    <div class="azirem-build-track" aria-hidden="true"><span class="azirem-build" id="azirem-build"></span></div>
+    <p class="azirem-speech is-live" id="azirem-speech">I fly from one document to the next on a gold road. Watch the ship move.</p>
+    <p class="azirem-step" id="azirem-step">Ready · 18 stops</p>
+    <div class="azirem-personas is-hidden" id="azirem-personas" hidden aria-hidden="true"></div>
+    <div class="azirem-progress is-hidden" id="azirem-progress" hidden aria-hidden="true"></div>
+    <div class="azirem-actions azirem-actions--simple">
+      <button type="button" class="azirem-btn azirem-btn-primary azirem-btn-hero" id="azirem-start" data-playing="false">Start tour</button>
+      <button type="button" class="azirem-btn" id="azirem-next">Skip to next</button>
+      <button type="button" class="azirem-btn is-hidden" id="azirem-prev" hidden>Back</button>
+    </div>
+  </aside>
+
+  <button type="button" class="help-fab" id="help-legend-toggle" aria-expanded="false" aria-controls="help-legend">
+    <span class="help-fab-text">Legend</span>
+  </button>
+  <div class="help-legend" id="help-legend" aria-hidden="true" role="dialog" aria-label="Tree legend">
+    <div class="help-legend-header">
+      <h3 class="help-legend-title">Node types</h3>
+      <button type="button" class="drawer-close" id="help-legend-close" aria-label="Close legend">&times;</button>
+    </div>
+    <ul class="help-legend-list">
+      <li><span class="legend-dot legend-dot-root"></span><strong>Core</strong> — center map</li>
+      <li><span class="legend-dot legend-dot-pillar"></span><strong>Orbit</strong> — document planet</li>
+      <li><span class="legend-dot legend-dot-road"></span><strong>Gold road</strong> — AzIrEm flight path</li>
+      <li><span class="legend-dot legend-dot-skill"></span><strong>Skills</strong> — neural mesh (optional)</li>
+    </ul>
+    <button type="button" class="legend-toggle-mesh" id="skills-mesh-toggle">Show / hide skills</button>
+  </div>
+
+  <div id="boot-error" class="boot-error is-hidden" role="alert"></div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three/three.module.js",
+      "three/addons/": "./vendor/three/examples/jsm/"
+    }
+  }
+  </script>
+  <script src="shell.js?v=2" defer></script>
+  <script type="module" src="app.js?v=18"></script>
+  <script>
+    window.addEventListener("error", (event) => {
+      const box = document.getElementById("boot-error");
+      if (!box) return;
+      box.classList.remove("is-hidden");
+      box.textContent = "Tree failed to load: " + (event.message || "unknown error") + " — hard refresh Cmd+Shift+R";
+    });
+    window.addEventListener("unhandledrejection", (event) => {
+      const box = document.getElementById("boot-error");
+      if (!box) return;
+      box.classList.remove("is-hidden");
+      box.textContent = "Tree failed: " + (event.reason && event.reason.message ? event.reason.message : String(event.reason));
+    });
+  </script>
+</body>
+</html>
