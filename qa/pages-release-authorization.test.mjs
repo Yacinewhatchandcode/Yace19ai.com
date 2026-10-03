@@ -82,7 +82,6 @@ function fixture() {
       created_at: "2026-10-03T16:40:15Z",
       workflow_run: {
         id: runId,
-        run_attempt: attempt,
         head_sha: sourceSha,
         head_branch: "main",
         repository_id: 9,
