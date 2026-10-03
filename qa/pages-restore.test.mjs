@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { original, validateRestore, validateInventory } from "./pages-restore.mjs";
+import { original, reviewedPreserved, validateRestore, validateInventory } from "./pages-restore.mjs";
 
 function fixture() {
   const context = { GITHUB_REPOSITORY: original.repository, GITHUB_REF: "refs/heads/main",
@@ -72,4 +72,22 @@ test("preserve is deployment-free and candidate source enforcement remains separ
   assert.match(workflow, /inputs\.operation == 'restore' && inputs\.publish == false/);
   assert.match(workflow, /test "\$SOURCE_SHA" = "\$RELEASE_WORKFLOW_SHA"/);
   assert.match(prepare, /path: \$\{\{ runner.temp \}\}\/restore\/verified\/artifact\.tar/);
+});
+
+test("reviewed historical preservation is pinned despite the subsequent workflow correction", () => {
+  const { context, request, records } = fixture();
+  const preserved = { ...request, ...reviewedPreserved, sourceSha: original.sourceSha };
+  const run = { ...records.run, id: Number(preserved.runId), head_sha: reviewedPreserved.sourceSha,
+    run_attempt: 1, actor: { login: context.GITHUB_ACTOR }, triggering_actor: { login: context.TRIGGERING_ACTOR } };
+  const artifact = { ...records.artifact, id: Number(preserved.artifactId), digest: preserved.archiveDigest,
+    workflow_run: { ...records.artifact.workflow_run, id: run.id, head_sha: run.head_sha } };
+  const fresh = { ...records, run, artifact, workflowMatchesCurrent: false };
+  validateRestore(preserved, fresh, context);
+  for (const change of [{ tarSha256: "c".repeat(64) }, { runId: "123" },
+    { archiveDigest: `sha256:${"d".repeat(64)}` }]) {
+    assert.throws(() => validateRestore({ ...preserved, ...change }, fresh, context));
+  }
+  assert.throws(() => validateRestore(preserved, { ...fresh, run: { ...run, run_attempt: 2 } }, context));
+  assert.throws(() => validateRestore(preserved, { ...fresh, run: { ...run, head_sha: context.GITHUB_SHA },
+    artifact: { ...artifact, workflow_run: { ...artifact.workflow_run, head_sha: context.GITHUB_SHA } } }, context));
 });
