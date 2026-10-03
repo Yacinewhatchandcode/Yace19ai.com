@@ -1,22 +1,34 @@
-# Yace19ai.com
+# YACE19AI
 
-Yacine Benhamou's React/TypeScript portfolio, prepared for GitHub Pages.
-The local version uses the shared **Sovereign Gold 3D** visual system:
-black/gold tokens, accessible EN/FR navigation, illustrative CSS 3D orbs,
-pointer-tilt cards and a muted, viewport-aware MP4 reel.
+YACE19AI is the research and imagination layer of the PRIME-AI Sovereign
+Constellation. This Vite/React site focuses on world models, scientific AI,
+open models and clearly labeled research artifacts.
 
 ## Run locally
 
-Requires Node.js 20.19+ (or 22.12+) and Python 3.
+Requires Node.js 20.19+ (or 22.12+).
 
 ```sh
 npm ci
-npm run build
-python3 qa/serve.py
+npm run dev
 ```
 
-Open **http://127.0.0.1:4181**. The server binds loopback only and implements
-byte ranges for video seeking. Build output is ignored by Git.
+The development server binds `0.0.0.0:5175`; on the project LAN open
+**http://192.168.1.80:5175**. For mobile microphone access, use the
+self-signed HTTPS dev option with `npm run dev:https` and accept the local
+certificate warning on the test device.
+
+To build and run the browser coverage:
+
+```sh
+npm run build
+npm run dev
+# in another terminal
+npm run test:e2e
+```
+
+The legacy static QA server remains available with `python3 qa/serve.py` at
+**http://127.0.0.1:4181** for archive/media checks.
 In the QA session a detached server is already running on this port; do not
 start a second listener until the owner stops that process.
 
@@ -24,23 +36,27 @@ start a second listener until the owner stops that process.
 
 | Route | Content |
 |---|---|
-| `/` | Profile and visual introduction |
-| `/fleet` | 21 historical project entries; English descriptions explicitly marked |
-| `/games` | Local browser games and archive links |
-| `/philosophy` | EN/FR vision |
-| `/media` | All included recordings and measured quality indicators |
+| `/` | Research home, mission, lab systems, domains and evidence TODOs |
+| `/fleet` | Selected public repository index |
+| `/philosophy` | Research approach |
+| `/games` | Local browser experiments archive |
+| `/media` | Historical media archive with QA context |
 
-Standalone archive pages and native `www` mirrors are inventoried in
-`qa/routes.json`. The two playable canvas games have touch controls.
-The 3D command scene is illustrative; its archived port-8000 execution
-shortcut is blocked. The nine children's game implementations are absent,
-and the pages say so instead of pretending to load.
+All five React routes are documented in `docs/constellation-audit.md`; the
+fifteen standalone archive paths remain inventoried in `qa/routes.json`.
+Publication, model and benchmark claims remain TODO until verifiable evidence
+is available.
 
-No microphone capture, real-time search, live fleet metrics, payments,
-remote analytics or external fonts are enabled. Historical footage and
-project descriptions are not proof of current service availability.
-Defective original recordings remain identified; they have not been replaced
-by invented footage.
+The Julia portal and constellation accordion load the shared runtime from
+`VITE_JULIA_EMBED_URL` (local default
+`http://192.168.1.80:5176/julia/embed.js`, production
+`https://prime-ai.fr/julia/embed.js`) on demand. The runtime issues the signed
+five-minute window through `VITE_JULIA_WINDOW_ENDPOINT` (derived from the
+embed origin by default); the token stays in runtime memory and is handed
+between allow-listed sites with exact-origin `postMessage`. If the runtime
+cannot be reached, the portrait and local constellation links remain usable.
+Historical footage and project links are not proof of current service
+availability.
 
 ## QA
 

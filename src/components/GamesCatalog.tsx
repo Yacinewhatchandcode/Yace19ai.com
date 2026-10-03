@@ -1,26 +1,34 @@
+import { ArrowUpRight, Gamepad2 } from "lucide-react";
 import type { Locale } from "../App";
-import Card3D from "./Card3D";
-import GoldVisual from "./GoldVisual";
 
-const games = [
-  { title: "Sovereign Platformer", url: "/games/platformer/index.html", description: ["A local canvas platformer. Keyboard and touch controls; synthesized game audio.", "Un jeu de plateforme local sur canvas. Clavier et commandes tactiles ; sons synthétisés."] },
-  { title: "Swarm Architect", url: "/games/swarm-architect/index.html", description: ["A local arcade survival game, not an autonomous AI workforce.", "Un jeu d'arcade local de survie, pas une flotte autonome d'IA."] },
-  { title: "Antigravity Kids", url: "/games/kids-games/index.html", description: ["Archive hub. Nine game pages are placeholders; game implementations are not included.", "Archives. Les neuf pages de jeux sont des espaces réservés ; les jeux ne sont pas inclus."] },
-  { title: "Sovereign Interface", url: "/sovereign/index.html", description: ["Illustrative 3D scene. No backend execution; keyboard navigation and local touch controls.", "Scène 3D illustrative. Aucune exécution serveur ; navigation au clavier et commandes tactiles locales."] },
+const experiments = [
+  { title: "Sovereign Platformer", path: "/games/platformer/index.html", note: "A local canvas platformer with keyboard and touch controls." },
+  { title: "Swarm Architect", path: "/games/swarm-architect/index.html", note: "A local arcade survival game; not an autonomous AI workforce." },
+  { title: "Antigravity Kids", path: "/games/kids-games/index.html", note: "Archive hub. Some linked game pages are placeholders." },
+  { title: "Sovereign Interface", path: "/sovereign/index.html", note: "An illustrative 3D scene. No backend execution." },
 ];
 
 export default function GamesCatalog({ locale = "en" }: { locale?: Locale }) {
   const fr = locale === "fr";
   return (
-    <section className="intro">
-      <p>{fr ? "Archives EN. Neuf indisponibles." : "EN archives. Nine unavailable."}</p>
-      <div className="info-grid">
-        {games.map(game => <Card3D key={game.url}>
-          <GoldVisual />
-          <h2 lang="en">{game.title}</h2>
-          <a className="primary-link" href={game.url}>{fr ? "Ouvrir (EN)" : "Open (EN)"}</a>
-        </Card3D>)}
-      </div>
-    </section>
+    <div className="archive-page">
+      <section className="page-hero">
+        <p className="eyebrow">YACE19AI / Interactive archive</p>
+        <h1>{fr ? "Expériences interactives." : "Ideas you can play with."}</h1>
+        <p>{fr
+          ? "Une archive de prototypes locaux et d'expériences interactives — distincte de la recherche et sans promesse d'exécution distante."
+          : "A small archive of local prototypes and interactive experiments—separate from the research work, with no promise of remote execution."}</p>
+      </section>
+      <section className="section experiment-list" aria-label="Interactive archive">
+        {experiments.map((experiment, index) => (
+          <article className="experiment-row" key={experiment.path}>
+            <span className="experiment-index">0{index + 1}</span>
+            <Gamepad2 size={20} aria-hidden="true" />
+            <div><h2>{experiment.title}</h2><p>{experiment.note}</p></div>
+            <a className="text-link" href={experiment.path}>{fr ? "Ouvrir l'archive" : "Open archive"} <ArrowUpRight size={15} /></a>
+          </article>
+        ))}
+      </section>
+    </div>
   );
 }

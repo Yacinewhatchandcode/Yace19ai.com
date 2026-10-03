@@ -1,0 +1,21 @@
+# YACE19AI
+
+> Research, imagination and world models.
+
+YACE19AI explores world models, scientific AI and open models through research, prototypes and open questions. It is the research and imagination brand in the PRIME-AI Sovereign Constellation.
+
+## Pages
+- [Research home](https://yace19ai.com/): Mission, research domains, lab systems and evidence placeholders.
+- [Lab systems](https://yace19ai.com/fleet): Selected repositories linked to the research and engineering work.
+- [Our approach](https://yace19ai.com/philosophy): Principles for research-led prototyping.
+- [Interactive archive](https://yace19ai.com/games): Historical local experiments; not claims of AI execution.
+- [Media archive](https://yace19ai.com/media): Recorded demos with archive and QA context.
+
+## Evidence policy
+Publication, model and benchmark entries are marked TODO until DOI-linked papers, model cards or reproducible results are available. Repository links indicate public source only, not service availability, production deployment or measured performance.
+
+## Constellation
+- YACE19AI: https://yace19ai.com/
+- PRIME-AI: https://prime-ai.fr/
+- AMLAZR: https://amlazr.com/
+- Network: https://www.linkedin.com/in/yacine-benhamou-b26386124/
