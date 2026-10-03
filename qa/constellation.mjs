@@ -182,7 +182,7 @@ for (const width of [390, 1440]) {
     await page.goto(base);
     await page.getByRole("button", { name: /Constellation/ }).click();
     const entries = page.locator(".constellation-entry");
-    assert.equal(await entries.count(), 4);
+    await expect(entries).toHaveCount(4);
     for (const [index, name] of ["YACE19AI", "PRIME-AI", "AMLAZR", "LinkedIn"].entries()) {
       const entry = entries.nth(index);
       await expect(entry.getByRole("button")).toContainText(name);
