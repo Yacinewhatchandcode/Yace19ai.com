@@ -184,13 +184,34 @@ jobs:
             jq -r '"- Canonical tree SHA-256: \(.treeSha256)"' "$RUNNER_TEMP/tree-digest.json"
           } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
+        id: candidate-artifact
         with:
           name: candidate-${{ steps.candidate.outputs.sha }}
           path: |
             dist
             pages-integrity.json
           if-no-files-found: error
+          include-hidden-files: true
           retention-days: 30
+      - name: Round-trip uploaded candidate through release integrity checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.candidate-artifact.outputs.artifact-id }}
+          ARTIFACT_DIGEST: ${{ steps.candidate-artifact.outputs.artifact-digest }}
+          SOURCE_SHA: ${{ steps.candidate.outputs.sha }}
+        run: |
+          archive="$RUNNER_TEMP/uploaded-candidate.zip"
+          node .workflow-support/qa/github-artifact-download.mjs "$GITHUB_REPOSITORY" "$ARTIFACT_ID" "$archive"
+          echo "$ARTIFACT_DIGEST  $archive" | sha256sum --check --strict
+          python3 .workflow-support/qa/extract_pages_artifact.py "$archive" "$RUNNER_TEMP/uploaded-candidate"
+          node .workflow-support/qa/pages-integrity.mjs verify \
+            "$RUNNER_TEMP/uploaded-candidate/dist" "$SOURCE_SHA" \
+            "$RUNNER_TEMP/uploaded-candidate/pages-integrity.json"
+          actual_tree="$(node .workflow-support/qa/pages-release-authorization.mjs verify-manifest \
+            "$RUNNER_TEMP/uploaded-candidate/pages-integrity.json" \
+            "$RUNNER_TEMP/uploaded-candidate/dist" "$SOURCE_SHA" | jq -r .treeSha256)"
+          test "$actual_tree" = "$(jq -r .treeSha256 "$RUNNER_TEMP/tree-digest.json")"
+          echo "Uploaded candidate $ARTIFACT_ID round-trip verified for $SOURCE_SHA (tree $actual_tree)"
 
   prepare-release:
     if: always() && github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish && needs.validate.result == 'skipped'

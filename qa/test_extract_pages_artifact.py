@@ -1,4 +1,5 @@
 import pathlib
+import subprocess
 import tempfile
 import unittest
 import zipfile
@@ -37,6 +38,40 @@ class ExtractPagesArtifactTests(unittest.TestCase):
                 })
                 with self.assertRaises(ValueError):
                     extract(archive, root / "out")
+
+    def test_hidden_file_round_trip_matches_manifest_and_missing_hidden_file_fails(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = pathlib.Path(temporary)
+            source = root / "dist"
+            hidden = source / "games/platformer/android/.gitignore"
+            hidden.parent.mkdir(parents=True)
+            hidden.write_bytes(b"build/\n")
+            (source / "index.html").write_bytes(b"<h1>Static</h1>")
+            manifest = root / "pages-integrity.json"
+            sha = "a" * 40
+            subprocess.run(["node", "qa/pages-integrity.mjs", "create", str(source), sha, str(manifest)],
+                           check=True, capture_output=True)
+            entries = {
+                "dist/index.html": (source / "index.html").read_bytes(),
+                "dist/games/platformer/android/.gitignore": hidden.read_bytes(),
+                "pages-integrity.json": manifest.read_bytes(),
+            }
+            for keep_hidden in (True, False):
+                with self.subTest(keep_hidden=keep_hidden):
+                    contents = entries if keep_hidden else {
+                        name: value for name, value in entries.items() if not name.endswith("/.gitignore")
+                    }
+                    archive = self.make_archive(root, contents)
+                    destination = root / ("complete" if keep_hidden else "missing")
+                    extract(archive, destination)
+                    for command in [
+                        ["node", "qa/pages-integrity.mjs", "verify", str(destination / "dist"),
+                         sha, str(destination / "pages-integrity.json")],
+                        ["node", "qa/pages-release-authorization.mjs", "verify-manifest",
+                         str(destination / "pages-integrity.json"), str(destination / "dist"), sha],
+                    ]:
+                        result = subprocess.run(command, capture_output=True)
+                        self.assertEqual(result.returncode == 0, keep_hidden, result.stderr.decode())
 
 if __name__ == "__main__":
     unittest.main()
