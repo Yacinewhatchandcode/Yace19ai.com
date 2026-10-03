@@ -80,6 +80,7 @@ function fixture() {
       name: `candidate-${sourceSha}`,
       digest: `sha256:${"b".repeat(64)}`,
       expired: false,
+      expires_at: "2099-01-01T00:00:00Z",
       created_at: "2026-10-03T16:40:15Z",
       workflow_run: {
         id: runId,
@@ -191,6 +192,7 @@ test("environment admission rechecks actors, opt-in, branch policy and artifact 
   for (const [key, value] of [
     ["actions/variables/STATIC_RELEASE_APPROVAL_POLICY", { value: "disabled" }],
     [`actions/artifacts/${request.artifactId}`, { ...request.artifact, expired: true }],
+    [`actions/artifacts/${request.artifactId}`, { ...request.artifact, expired: false, expires_at: "2020-01-01T00:00:00Z" }],
     ["environments/github-pages/deployment-branch-policies", { branch_policies: [{ name: "*", type: "branch" }] }],
     ["branches/main", { commit: { sha: "b".repeat(40) } }],
   ]) {
