@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { repositoryApi } from "./github-repository-api.mjs";
 import { deploymentLogBinding, verifyDeployment, verifyLiveFiles } from "./pages-live-verification.mjs";
+import { readReceiptEvidence } from "./pages-receipt-evidence.mjs";
 
 const [evidenceDirectory, pageUrl, outputPath] = process.argv.slice(2);
 const repository = process.env.GITHUB_REPOSITORY;
@@ -11,7 +12,7 @@ const run = api(`actions/runs/${process.env.GITHUB_RUN_ID}/attempts/${process.en
 assert.equal(String(run.id), process.env.GITHUB_RUN_ID);
 assert.equal(String(run.run_attempt), process.env.GITHUB_RUN_ATTEMPT);
 assert.equal(run.head_sha, process.env.GITHUB_SHA);
-const approval = JSON.parse(fs.readFileSync(path.join(evidenceDirectory, "release-approval.json"), "utf8"));
+const { approval, manifest, rollback } = readReceiptEvidence(evidenceDirectory);
 assert.equal(approval.sourceSha, run.head_sha);
 const deployments = api("deployments?environment=github-pages&per_page=100");
 const candidates = deployments.filter(item => item.sha === run.head_sha
@@ -33,12 +34,8 @@ for (const deployment of candidates) {
 assert.equal(matches.length, 1, "Require one deployment bound to this exact run/attempt, not latest matching SHA");
 const { deployment, statuses, job } = matches[0];
 const status = verifyDeployment(deployment, statuses, run, repository, pageUrl, job);
-const manifest = JSON.parse(fs.readFileSync(path.join(evidenceDirectory, "pages-integrity.json"), "utf8"));
 assert.equal(manifest.candidateSha, approval.artifactSourceSha ?? run.head_sha);
 const live = await verifyLiveFiles(manifest.files, pageUrl);
-const rollback = approval.operation === "restore"
-  ? { previousDeployment: null, successfulStatus: null }
-  : JSON.parse(fs.readFileSync(path.join(evidenceDirectory, "rollback-evidence.json"), "utf8"));
 const receipt = { current: { id: deployment.id, sha: deployment.sha, url: pageUrl, record: deployment, successfulStatus: status },
   artifactSourceSha: manifest.candidateSha,
   publishingRun: { id: run.id, attempt: run.run_attempt, startedAt: run.run_started_at, deploymentJob: job },
