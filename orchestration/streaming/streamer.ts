@@ -124,7 +124,7 @@ function generateFrame(event: AgentEvent): string {
 // ═══════════════════════════════════════════════════════════════════════════════
 // Video Compilation (ffmpeg)
 // ═══════════════════════════════════════════════════════════════════════════════
-function compileVideo(outputPath: string, audioPath?: string): Promise<void> {
+export function compileVideo(outputPath: string, audioPath?: string): Promise<void> {
     return new Promise((resolve, reject) => {
         const args = [
             '-framerate', '1',
