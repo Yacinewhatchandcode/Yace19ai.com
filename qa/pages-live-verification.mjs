@@ -33,6 +33,8 @@ export function verifyDeployment(deployment, statuses, run, repository, pageUrl,
     assert.equal(job.run_id, run.id, "Deployment job must belong to the publishing run");
     assert.equal(job.run_attempt, run.run_attempt, "Deployment job must belong to the publishing attempt");
     assert.equal(job.html_url, status.log_url, "Deployment job URL must match the provider status log");
+    assert.equal(job.status, "completed", "Receipt requires a completed deployment job");
+    assert.equal(job.conclusion, "success", "Receipt requires a successful deployment job");
   }
   return status;
 }

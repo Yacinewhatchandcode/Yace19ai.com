@@ -168,6 +168,27 @@ test("actual deploy job graph and inputs admit skipped validation only after suc
         default: assert.fail(`Uncovered real deploy condition: ${clause}`);
       }
     });
+
+    test("candidate and restore receipts run only after successful environment jobs without a second deployment environment", () => {
+      const workflow = fs.readFileSync(".github/workflows/deploy.yml", "utf8");
+      const { jobs } = assertSkippedAncestorGates(workflow);
+      for (const [publisher, verifier] of [["deploy", "verify-release"], ["restore", "verify-restore"]]) {
+        const publishBody = workflow.split(`\n  ${publisher}:`)[1].split(/\n  [\w-]+:/)[0];
+        const verifyBody = workflow.split(`\n  ${verifier}:`)[1].split(/\n  [\w-]+:/)[0];
+        assert.ok(publishBody.includes("actions/deploy-pages@v4"));
+        assert.ok(publishBody.includes("environment:"));
+        assert.ok(!publishBody.includes("record-pages-release.mjs"));
+        assert.deepEqual(jobs.get(verifier).needs, [publisher]);
+        assert.ok(jobs.get(verifier).condition.includes("!cancelled()"));
+        assert.ok(jobs.get(verifier).condition.includes(`needs.${publisher}.result == 'success'`));
+        assert.ok(verifyBody.includes(`PAGE_URL: \${{ needs.${publisher}.outputs.page_url }}`));
+        assert.ok(verifyBody.includes("record-pages-release.mjs"));
+        assert.ok(!verifyBody.includes("environment:"));
+        assert.ok(!verifyBody.includes("actions/deploy-pages"));
+        assert.ok(!verifyBody.includes("pages: write"));
+        assert.ok(!verifyBody.includes("id-token: write"));
+      }
+    });
   }
   assert.equal(reachable(baseline), true);
   for (const change of [
