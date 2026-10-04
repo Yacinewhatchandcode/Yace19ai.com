@@ -115,6 +115,9 @@ function assertSkippedAncestorGates(workflow) {
   for (const [name, job] of jobs) {
     if (!hasSkippedAncestor(name)) continue;
     assert.ok(/always\(\)|!cancelled\(\)/.test(job.condition), `${name} must override skipped ancestor success()`);
+    if (name === "deploy") {
+      assert.ok(job.condition.includes("!cancelled()"), "Deployment must explicitly exclude cancellation");
+    }
     for (const dependency of job.needs) {
       const expected = skippedRoots.has(dependency) ? "skipped" : "success";
       assert.ok(job.condition.includes(`needs.${dependency}.result == '${expected}'`),
@@ -139,6 +142,9 @@ test("skipped-ancestor release jobs override implicit success with explicit depe
   assert.throws(() => assertSkippedAncestorGates(workflow.replace(
     " && needs.prepare-release.result == 'success'", "",
   )));
+  assert.throws(() => assertSkippedAncestorGates(workflow.replace(
+    "!cancelled()", "always()",
+  )), /explicitly exclude cancellation/);
 });
 
 test("actual deploy job graph and inputs admit skipped validation only after successful preparation and never cancellation", () => {
