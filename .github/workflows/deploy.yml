@@ -377,6 +377,8 @@ jobs:
   deploy:
     if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish && needs.prepare-release.result == 'success' }}
     needs: [prepare-release]
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -407,11 +409,32 @@ jobs:
         run: node qa/pages-release-admission.mjs release-evidence/release-request.json release-evidence/release-approval.json
       - uses: actions/deploy-pages@v4
         id: deployment
+
+  verify-release:
+    if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.operation == 'candidate' && inputs.publish && needs.deploy.result == 'success' }}
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      deployments: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-preflight-${{ github.run_id }}
+          path: release-evidence
       - name: Verify deployed commit and live static site; record rollback reference
         env:
           GH_TOKEN: ${{ github.token }}
           SOURCE_SHA: ${{ inputs.candidate_sha }}
-          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          PAGE_URL: ${{ needs.deploy.outputs.page_url }}
         run: |
           node qa/record-pages-release.mjs release-evidence "$PAGE_URL" "$RUNNER_TEMP/release-evidence.json"
       - name: Archive exact deployment and rollback evidence
@@ -489,6 +512,8 @@ jobs:
   restore:
     if: github.event_name == 'workflow_dispatch' && inputs.operation == 'restore' && inputs.publish == false
     needs: prepare-restore
+    outputs:
+      page_url: ${{ steps.restoration.outputs.page_url }}
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -518,10 +543,31 @@ jobs:
         run: node qa/pages-restore.mjs admission restore-evidence
       - uses: actions/deploy-pages@v4
         id: restoration
+
+  verify-restore:
+    if: ${{ !cancelled() && github.event_name == 'workflow_dispatch' && inputs.operation == 'restore' && inputs.publish == false && needs.restore.result == 'success' }}
+    needs: restore
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      deployments: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/download-artifact@v4
+        with:
+          name: restore-evidence-${{ github.run_id }}
+          path: restore-evidence
       - name: Verify restoration deployment identity and every live content hash
         env:
           GH_TOKEN: ${{ github.token }}
-          PAGE_URL: ${{ steps.restoration.outputs.page_url }}
+          PAGE_URL: ${{ needs.restore.outputs.page_url }}
         run: node qa/record-pages-release.mjs restore-evidence "$PAGE_URL" "$RUNNER_TEMP/restore-receipt.json"
       - uses: actions/upload-artifact@v4
         with:
